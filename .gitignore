@@ -1,0 +1,8 @@
+*.class
+backend/tz-tavern/.idea
+backend/tz-tavern/.idea/*
+backend/tz-tavern/.idea/**
+backend/tz-tavern/.idea/libraries/Maven__org_springframework_spring_webmvc_4_3_21_RELEASE.xml
+backend/tz-tavern/*.iml
+*.iml
+*.iml
