@@ -3,7 +3,7 @@ package com.tuozuo.tavern.shuiruyi.service;
 import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.tavern.shuiruyi.model.CompanyInfo;
+import com.tuozuo.tavern.shuiruyi.model.CompanyInfo;
 
 /**
  * Code Monkey: 何彪 <br>

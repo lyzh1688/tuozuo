@@ -2,12 +2,12 @@ package com.tuozuo.tavern.shuiruyi.service.impl;
 
 import java.util.List;
 
+import com.tuozuo.tavern.shuiruyi.model.CompanyInfo;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.tavern.shuiruyi.model.CompanyInfo;
-import com.tuozuo.tavern.shuiruyi.dao.CompanyInfoDao;
+import com.tuozuo.tavern.shuiruyi.dao.CompanyInfoMapper;
 import com.tuozuo.tavern.shuiruyi.service.CompanyInfoService;
 
 /**
@@ -15,7 +15,7 @@ import com.tuozuo.tavern.shuiruyi.service.CompanyInfoService;
  * Dev Time: 2019/08/10 <br>
  */
 @Service
-public class CompanyInfoServiceImpl extends ServiceImpl<CompanyInfoDao, CompanyInfo> implements CompanyInfoService {
+public class CompanyInfoServiceImpl extends ServiceImpl<CompanyInfoMapper, CompanyInfo> implements CompanyInfoService {
 
     @Override
     public List<CompanyInfo> fuzzyQueryCompany(String companyName, int queryCnt, boolean showAll) {

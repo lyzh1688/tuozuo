@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuozuo.tavern.shuiruyi.dao.CustomStatisticSnapshotMapper">
+  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.shuiruyi.model.CustomStatisticSnapshot">
+    <id column="custom_id" jdbcType="VARCHAR" property="customId" />
+    <result column="total_fee" jdbcType="DECIMAL" property="totalFee" />
+    <result column="total_deposit" jdbcType="DECIMAL" property="totalDeposit" />
+    <result column="update_date" jdbcType="DATE" property="updateDate" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from custom_statistic_snapshot
+    where custom_id = #{customId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tuozuo.tavern.shuiruyi.model.CustomStatisticSnapshot">
+    insert into custom_statistic_snapshot (custom_id, total_fee, total_deposit, 
+      update_date)
+    values (#{customId,jdbcType=VARCHAR}, #{totalFee,jdbcType=DECIMAL}, #{totalDeposit,jdbcType=DECIMAL}, 
+      #{updateDate,jdbcType=DATE})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.shuiruyi.model.CustomStatisticSnapshot">
+    update custom_statistic_snapshot
+    set total_fee = #{totalFee,jdbcType=DECIMAL},
+      total_deposit = #{totalDeposit,jdbcType=DECIMAL},
+      update_date = #{updateDate,jdbcType=DATE}
+    where custom_id = #{customId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select custom_id, total_fee, total_deposit, update_date
+    from custom_statistic_snapshot
+    where custom_id = #{customId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select custom_id, total_fee, total_deposit, update_date
+    from custom_statistic_snapshot
+  </select>
+</mapper>

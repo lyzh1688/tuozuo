@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuozuo.tavern.shuiruyi.dao.ContractInfoMapper">
+  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.shuiruyi.model.ContractInfo">
+    <id column="contract_id" jdbcType="VARCHAR" property="contractId" />
+    <result column="company_id" jdbcType="VARCHAR" property="companyId" />
+    <result column="company_party_A_name" jdbcType="VARCHAR" property="companyPartyAName" />
+    <result column="company_party_B_name" jdbcType="VARCHAR" property="companyPartyBName" />
+    <result column="contract_name" jdbcType="VARCHAR" property="contractName" />
+    <result column="contract_amount" jdbcType="DECIMAL" property="contractAmount" />
+    <result column="invoice_pattern" jdbcType="VARCHAR" property="invoicePattern" />
+    <result column="contract_file" jdbcType="VARCHAR" property="contractFile" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="contract_status" jdbcType="VARCHAR" property="contractStatus" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from contract_info
+    where contract_id = #{contractId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tuozuo.tavern.shuiruyi.model.ContractInfo">
+    insert into contract_info (contract_id, company_id, company_party_A_name, 
+      company_party_B_name, contract_name, contract_amount, 
+      invoice_pattern, contract_file, remark, 
+      contract_status)
+    values (#{contractId,jdbcType=VARCHAR}, #{companyId,jdbcType=VARCHAR}, #{companyPartyAName,jdbcType=VARCHAR}, 
+      #{companyPartyBName,jdbcType=VARCHAR}, #{contractName,jdbcType=VARCHAR}, #{contractAmount,jdbcType=DECIMAL}, 
+      #{invoicePattern,jdbcType=VARCHAR}, #{contractFile,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{contractStatus,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.shuiruyi.model.ContractInfo">
+    update contract_info
+    set company_id = #{companyId,jdbcType=VARCHAR},
+      company_party_A_name = #{companyPartyAName,jdbcType=VARCHAR},
+      company_party_B_name = #{companyPartyBName,jdbcType=VARCHAR},
+      contract_name = #{contractName,jdbcType=VARCHAR},
+      contract_amount = #{contractAmount,jdbcType=DECIMAL},
+      invoice_pattern = #{invoicePattern,jdbcType=VARCHAR},
+      contract_file = #{contractFile,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      contract_status = #{contractStatus,jdbcType=VARCHAR}
+    where contract_id = #{contractId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select contract_id, company_id, company_party_A_name, company_party_B_name, contract_name, 
+    contract_amount, invoice_pattern, contract_file, remark, contract_status
+    from contract_info
+    where contract_id = #{contractId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select contract_id, company_id, company_party_A_name, company_party_B_name, contract_name, 
+    contract_amount, invoice_pattern, contract_file, remark, contract_status
+    from contract_info
+  </select>
+</mapper>

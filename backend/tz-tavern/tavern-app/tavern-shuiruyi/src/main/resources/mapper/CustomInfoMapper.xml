@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuozuo.tavern.shuiruyi.dao.CustomInfoMapper">
+  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.shuiruyi.model.CustomInfo">
+    <id column="custom_id" jdbcType="VARCHAR" property="customId" />
+    <result column="custom_name" jdbcType="VARCHAR" property="customName" />
+    <result column="custom_pswd" jdbcType="VARCHAR" property="customPswd" />
+    <result column="custom_contact" jdbcType="VARCHAR" property="customContact" />
+    <result column="balance" jdbcType="DECIMAL" property="balance" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="update_date" jdbcType="DATE" property="updateDate" />
+    <result column="custom_type" jdbcType="VARCHAR" property="customType" />
+    <result column="has_paid" jdbcType="VARCHAR" property="hasPaid" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from custom_info
+    where custom_id = #{customId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tuozuo.tavern.shuiruyi.model.CustomInfo">
+    insert into custom_info (custom_id, custom_name, custom_pswd, 
+      custom_contact, balance, province, 
+      update_date, custom_type, has_paid
+      )
+    values (#{customId,jdbcType=VARCHAR}, #{customName,jdbcType=VARCHAR}, #{customPswd,jdbcType=VARCHAR}, 
+      #{customContact,jdbcType=VARCHAR}, #{balance,jdbcType=DECIMAL}, #{province,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=DATE}, #{customType,jdbcType=VARCHAR}, #{hasPaid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.shuiruyi.model.CustomInfo">
+    update custom_info
+    set custom_name = #{customName,jdbcType=VARCHAR},
+      custom_pswd = #{customPswd,jdbcType=VARCHAR},
+      custom_contact = #{customContact,jdbcType=VARCHAR},
+      balance = #{balance,jdbcType=DECIMAL},
+      province = #{province,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=DATE},
+      custom_type = #{customType,jdbcType=VARCHAR},
+      has_paid = #{hasPaid,jdbcType=VARCHAR}
+    where custom_id = #{customId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select custom_id, custom_name, custom_pswd, custom_contact, balance, province, update_date, 
+    custom_type, has_paid
+    from custom_info
+    where custom_id = #{customId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select custom_id, custom_name, custom_pswd, custom_contact, balance, province, update_date, 
+    custom_type, has_paid
+    from custom_info
+  </select>
+</mapper>

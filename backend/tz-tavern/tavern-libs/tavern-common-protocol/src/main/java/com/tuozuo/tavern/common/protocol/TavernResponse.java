@@ -20,6 +20,10 @@ public class TavernResponse<T> {
         return new TavernResponse(code, message, data);
     }
 
+    public static <T> TavernResponse<T> bizFailure(String message) {
+        return new TavernResponse(RetCodeDict.BIZ_FAILURE, message, null);
+    }
+
     private TavernResponse() {
     }
 

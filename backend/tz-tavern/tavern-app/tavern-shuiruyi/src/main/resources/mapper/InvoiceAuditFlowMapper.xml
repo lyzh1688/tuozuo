@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuozuo.tavern.shuiruyi.dao.InvoiceAuditFlowMapper">
+  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.shuiruyi.model.InvoiceAuditFlow">
+    <id column="flow_id" jdbcType="VARCHAR" property="flowId" />
+    <result column="invoice_id" jdbcType="VARCHAR" property="invoiceId" />
+    <result column="event" jdbcType="VARCHAR" property="event" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="user_type" jdbcType="VARCHAR" property="userType" />
+    <result column="result_snapshot" jdbcType="VARCHAR" property="resultSnapshot" />
+    <result column="update_date" jdbcType="DATE" property="updateDate" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from invoice_audit_flow
+    where flow_id = #{flowId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tuozuo.tavern.shuiruyi.model.InvoiceAuditFlow">
+    insert into invoice_audit_flow (flow_id, invoice_id, event, 
+      user_id, user_type, result_snapshot, 
+      update_date)
+    values (#{flowId,jdbcType=VARCHAR}, #{invoiceId,jdbcType=VARCHAR}, #{event,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=VARCHAR}, #{userType,jdbcType=VARCHAR}, #{resultSnapshot,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=DATE})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.shuiruyi.model.InvoiceAuditFlow">
+    update invoice_audit_flow
+    set invoice_id = #{invoiceId,jdbcType=VARCHAR},
+      event = #{event,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      user_type = #{userType,jdbcType=VARCHAR},
+      result_snapshot = #{resultSnapshot,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=DATE}
+    where flow_id = #{flowId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select flow_id, invoice_id, event, user_id, user_type, result_snapshot, update_date
+    from invoice_audit_flow
+    where flow_id = #{flowId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select flow_id, invoice_id, event, user_id, user_type, result_snapshot, update_date
+    from invoice_audit_flow
+  </select>
+</mapper>
