@@ -1,0 +1,8 @@
+com\tuozuo\tavern\libs\auth\JwtAuthenticationProperty.class
+com\tuozuo\tavern\libs\auth\UserTypeDict.class
+com\tuozuo\tavern\libs\auth\AuthTokenFactor.class
+com\tuozuo\tavern\libs\auth\utils\PwdUtils.class
+com\tuozuo\tavern\libs\auth\utils\PwdEncoder.class
+com\tuozuo\tavern\libs\auth\TokenHelper.class
+com\tuozuo\tavern\libs\auth\AuthTokenFactor$Factor.class
+com\tuozuo\tavern\libs\auth\AuthConfiguration.class

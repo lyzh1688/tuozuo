@@ -19,7 +19,7 @@ public class TokenHelper {
                 .claim(AuthTokenFactor.Factor.USER_TYPE, tokenFactor.getUserType())
                 .claim(AuthTokenFactor.Factor.ROLE_ID, tokenFactor.getRoleId())
                 .setIssuedAt(Date.from(now))
-                .setIssuer("TUOYOU")
+                .setIssuer("TUOZUO")
                 .setExpiration(Date.from(now.plusSeconds(config.getExpiration())))
                 .signWith(SignatureAlgorithm.HS256, config.getSecret().getBytes())
                 .compact();

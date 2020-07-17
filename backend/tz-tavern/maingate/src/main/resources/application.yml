@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: tavern-maingate
+
+zuul:
+  routes:
+    tavern-login:
+      path: /login/**
+      url: http://127.0.0.1:8081/
+      sensitiveHeaders: Cookie,Set-Cookie
+      stripPrefix: false
+    tavern-alleria:
+      path: /shuiruyi/**
+      url: http://127.0.0.1:8070/
+  host:
+    connect-timeout-millis: 10000
+    socket-timeout-millis: 60000
+
+tavern.security.jwt.secret: tavern
