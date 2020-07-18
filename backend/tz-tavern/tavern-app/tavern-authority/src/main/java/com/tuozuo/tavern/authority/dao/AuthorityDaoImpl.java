@@ -2,6 +2,7 @@ package com.tuozuo.tavern.authority.dao;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tuozuo.tavern.authority.mapper.AuthUserMapper;
 import com.tuozuo.tavern.authority.model.User;
 import com.tuozuo.tavern.libs.auth.encrypt.RSAKeyPair;
@@ -21,13 +22,10 @@ import java.util.concurrent.TimeUnit;
  */
 
 @Repository
-public class AuthorityDaoImpl implements AuthorityDao {
+public class AuthorityDaoImpl extends ServiceImpl<AuthUserMapper, User> implements AuthorityDao {
 
     @Autowired
     RedisTemplate<String, String> redisTemplate;
-
-    @Autowired
-    AuthUserMapper authUserMapper;
 
     @Override
     public boolean saveRSAKey(String userId, String systemId, String roleGroup, RSAKeyPair pair) {
@@ -57,7 +55,7 @@ public class AuthorityDaoImpl implements AuthorityDao {
                 .eq("user_id", userId)
                 .eq("system_id", systemId)
                 .eq("role_group", roleGroup);
-        return this.authUserMapper.selectById(wrapper);
+        return this.getOne(wrapper);
     }
 
 }

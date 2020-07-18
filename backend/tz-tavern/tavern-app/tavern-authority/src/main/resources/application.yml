@@ -13,7 +13,7 @@ spring:
     password: tuozuo
 # 数据源
   datasource:
-    type: com.zaxxer.hikari.HikariDataSource
+#    type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: y2iaciej
