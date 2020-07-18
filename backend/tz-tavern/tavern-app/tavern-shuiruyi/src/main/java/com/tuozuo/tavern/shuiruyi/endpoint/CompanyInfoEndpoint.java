@@ -39,7 +39,7 @@ public class CompanyInfoEndpoint {
                                            @RequestHeader(TavernRequestAuthFields.USER_ID) String userId,
                                            @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
         try {
-            List<CompanyInfo> companyInfoList = this.companyInfoService.fuzzyQueryCompany(companyName, queryCnt, showAll);
+            List<CompanyInfo> companyInfoList = this.companyInfoService.fuzzyQueryCompany(companyName, queryCnt, showAll, userId, roleGroup);
             List<BusinessDictDTO> businessDictList = companyInfoList.stream()
                     .map(BusinessConverter::companyInfoToDTO)
                     .collect(Collectors.toList());

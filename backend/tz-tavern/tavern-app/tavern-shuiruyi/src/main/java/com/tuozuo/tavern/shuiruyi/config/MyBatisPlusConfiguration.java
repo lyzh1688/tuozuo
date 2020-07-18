@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.shuiruyi.config;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,6 +10,7 @@ import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
  * Code Monkey: 何彪 <br>
  * Dev Time: 2019/07/02 <br>
  */
+@MapperScan("com.tuozuo.tavern.shuiruyi.mapper.*")
 @Configuration
 public class MyBatisPlusConfiguration {
     /**

@@ -1,10 +1,9 @@
 package com.tuozuo.tavern.shuiruyi.service.impl;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.tuozuo.tavern.shuiruyi.mapper.BusinessDictMapper;
+import com.tuozuo.tavern.shuiruyi.dao.BusinessDictDao;
 import com.tuozuo.tavern.shuiruyi.model.BusinessDict;
 import com.tuozuo.tavern.shuiruyi.service.BusinessDictService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,13 +13,13 @@ import java.util.List;
  * Dev Time: 2020/7/18 <br>
  */
 @Service
-public class BusinessDictServiceImpl extends ServiceImpl<BusinessDictMapper, BusinessDict> implements BusinessDictService {
+public class BusinessDictServiceImpl implements BusinessDictService {
+
+    @Autowired
+    private BusinessDictDao businessDictDao;
 
     @Override
     public List<BusinessDict> queryBuinessDicts(String group) {
-        return this.list(Wrappers.<BusinessDict>query()
-                .lambda()
-                .eq(BusinessDict::getBusinessGroup, group)
-                .orderByAsc(BusinessDict::getBusinessName));
+        return this.businessDictDao.selectBuinessDicts(group);
     }
 }

@@ -16,51 +16,39 @@
     <result column="bank_flow_file" jdbcType="VARCHAR" property="bankFlowFile" />
     <result column="auth_letter_file" jdbcType="VARCHAR" property="authLetterFile" />
     <result column="contract_id" jdbcType="VARCHAR" property="contractId" />
+    <result column="invoice_date" jdbcType="Timestamp" property="invoiceDate" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from invoice_info
-    where invoice_id = #{invoiceId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.tuozuo.tavern.shuiruyi.model.InvoiceInfo">
-    insert into invoice_info (invoice_id, company_id, invoice_type, 
-      invoice_amount, recv_amount, tax, 
-      invoice_status, recv_date, invoice_content, 
-      delivery_id, remark, bank_flow_file, 
-      auth_letter_file, contract_id)
-    values (#{invoiceId,jdbcType=VARCHAR}, #{companyId,jdbcType=VARCHAR}, #{invoiceType,jdbcType=VARCHAR}, 
-      #{invoiceAmount,jdbcType=DECIMAL}, #{recvAmount,jdbcType=DECIMAL}, #{tax,jdbcType=DECIMAL}, 
-      #{invoiceStatus,jdbcType=VARCHAR}, #{recvDate,jdbcType=DATE}, #{invoiceContent,jdbcType=VARCHAR}, 
-      #{deliveryId,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{bankFlowFile,jdbcType=VARCHAR}, 
-      #{authLetterFile,jdbcType=VARCHAR}, #{contractId,jdbcType=VARCHAR})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.shuiruyi.model.InvoiceInfo">
-    update invoice_info
-    set company_id = #{companyId,jdbcType=VARCHAR},
-      invoice_type = #{invoiceType,jdbcType=VARCHAR},
-      invoice_amount = #{invoiceAmount,jdbcType=DECIMAL},
-      recv_amount = #{recvAmount,jdbcType=DECIMAL},
-      tax = #{tax,jdbcType=DECIMAL},
-      invoice_status = #{invoiceStatus,jdbcType=VARCHAR},
-      recv_date = #{recvDate,jdbcType=DATE},
-      invoice_content = #{invoiceContent,jdbcType=VARCHAR},
-      delivery_id = #{deliveryId,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR},
-      bank_flow_file = #{bankFlowFile,jdbcType=VARCHAR},
-      auth_letter_file = #{authLetterFile,jdbcType=VARCHAR},
-      contract_id = #{contractId,jdbcType=VARCHAR}
-    where invoice_id = #{invoiceId,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select invoice_id, company_id, invoice_type, invoice_amount, recv_amount, tax, invoice_status, 
-    recv_date, invoice_content, delivery_id, remark, bank_flow_file, auth_letter_file, 
-    contract_id
-    from invoice_info
-    where invoice_id = #{invoiceId,jdbcType=VARCHAR}
+  <resultMap id="BaseStatisticsResultMap" type="com.tuozuo.tavern.shuiruyi.model.InvoiceStatistic">
+    <result column="company_id" jdbcType="VARCHAR" property="invoiceCnt" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="invoice_cnt" jdbcType="INTEGER" property="invoiceCnt" />
+    <result column="invoice_amount" jdbcType="DECIMAL" property="invoiceAmount" />
+    <result column="invoice_date" jdbcType="VARCHAR" property="invoiceDate" />
+  </resultMap>
+  <select id="selectStatistic"  resultMap="BaseStatisticsResultMap">
+     select  t1.company_id, t1.company_name,count(t.invoice_id) invoice_cnt,
+     date_format(t.invoice_date,'%Y-%m-%d') invoice_date,sum(t.invoice_amount) invoice_amount
+     from invoice_info t  JOIN company_info t1
+		on t.company_id = t1.company_id
+		 JOIN custom_info t2
+		on t1.custom_id = t2.custom_id
+		where t2.custom_id = #{customId}
+		<if test="companyId != null and companyId != ''">
+            and t.company_id = #{companyId}
+        </if>
+		<if test="beginMonth != null and beginMonth != ''">
+            and t2.TRADE_DATE >= STR_TO_DATE(#{beginMonth},'%Y-%m')
+        </if>
+		<if test="endMonth != null and endMonth != ''">
+            and t2.TRADE_DATE <![CDATA[ <= ]]> STR_TO_DATE(#{endMonth},'%Y-%m')
+        </if>
+		group by t.invoice_date
+		order by invoice_date
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select invoice_id, company_id, invoice_type, invoice_amount, recv_amount, tax, invoice_status, 
     recv_date, invoice_content, delivery_id, remark, bank_flow_file, auth_letter_file, 
-    contract_id
+    contract_id,invoice_date
     from invoice_info
   </select>
 </mapper>

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 @TableName("invoice_dict")
 public class InvoiceInfo extends Model<InvoiceInfo> {
@@ -36,6 +37,8 @@ public class InvoiceInfo extends Model<InvoiceInfo> {
     private String authLetterFile;
 
     private String contractId;
+
+    private LocalDate invoiceDate;
 
     public String getInvoiceId() {
         return invoiceId;
@@ -147,5 +150,13 @@ public class InvoiceInfo extends Model<InvoiceInfo> {
 
     public void setContractId(String contractId) {
         this.contractId = contractId == null ? null : contractId.trim();
+    }
+
+    public LocalDate getInvoiceDate() {
+        return invoiceDate;
+    }
+
+    public void setInvoiceDate(LocalDate invoiceDate) {
+        this.invoiceDate = invoiceDate;
     }
 }

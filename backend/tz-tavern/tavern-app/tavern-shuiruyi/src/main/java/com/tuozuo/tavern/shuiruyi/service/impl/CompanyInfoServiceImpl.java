@@ -1,9 +1,12 @@
 package com.tuozuo.tavern.shuiruyi.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.tuozuo.tavern.common.protocol.UserTypeDict;
+import com.tuozuo.tavern.shuiruyi.dao.CompanyInfoDao;
 import com.tuozuo.tavern.shuiruyi.model.CompanyDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.CompanyInfo;
 import com.tuozuo.tavern.shuiruyi.service.CompanyInfoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,42 +19,32 @@ import java.util.List;
 @Service
 public class CompanyInfoServiceImpl implements CompanyInfoService {
 
-    /*@Override
-    public List<CompanyInfo> fuzzyQueryCompany(String companyName, int queryCnt, boolean showAll) {
-        //1、管理员
+    @Autowired
+    private CompanyInfoDao companyInfoDao;
 
-        //2、用户：需要携带用户ID
-
-
-
-
-        return null;
-       *//* if (showAll) {
-            return this.list(Wrappers.<CompanyInfo>query()
-                    .lambda()
-                    .like(CompanyInfo::getCompanyName, companyName)
-                    .orderByAsc(CompanyInfo::getCompanyName));
-        } else {
-
-            return this.list(Wrappers.<CompanyInfo>query()
-                    .lambda()
-                    .like(CompanyInfo::getCompanyName, companyName)
-                    .orderByAsc(CompanyInfo::getCompanyName)
-                    .last("limit " + queryCnt));
-        }*//*
-
-    }
-*/
     @Override
     public List<CompanyInfo> fuzzyQueryCompany(String companyName, int queryCnt, boolean isAll, String userId, String roleGroup) {
-        if()
+        if (roleGroup.equals(UserTypeDict.custom)) {
 
+            if (isAll) {
+                return this.companyInfoDao.selectAllCustomCompanyList(companyName, userId);
+            } else {
+                return this.companyInfoDao.selectCustomCompanyList(companyName, queryCnt, userId);
+            }
 
-        return null;
+        } else {
+            if (isAll) {
+                return this.companyInfoDao.selectAllCompanyList(companyName);
+            } else {
+                return this.companyInfoDao.selectCompanyList(companyName, queryCnt);
+            }
+
+        }
+
     }
 
     @Override
     public CompanyDetailInfo queryCompanyDetail(String companyId) {
-        return this.baseMapper.selectDetailInfo(companyId);
+        return this.companyInfoDao.selectDetailInfo(companyId).isPresent() ? this.companyInfoDao.selectDetailInfo(companyId).get() : null;
     }
 }
