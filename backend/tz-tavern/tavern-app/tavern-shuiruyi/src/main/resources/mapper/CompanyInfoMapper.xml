@@ -24,52 +24,32 @@
     <result column="cfo_id_pic_up" jdbcType="VARCHAR" property="cfoIdPicUp" />
     <result column="cfo_id_pic_back" jdbcType="VARCHAR" property="cfoIdPicBack" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from company_info
-    where company_id = #{companyId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.tuozuo.tavern.shuiruyi.model.CompanyInfo">
-    insert into company_info (company_id, company_status, custom_id, 
-      company_name, company_type, tax, 
-      address, free_delivery, include_cancel, 
-      begin_date, end_date, boss_name, 
-      boss_id, boss_contact, boss_id_pic_up, 
-      boss_id_pic_back, cfo_name, cfo_id, 
-      cfo_contact, cfo_id_pic_up, cfo_id_pic_back
-      )
-    values (#{companyId,jdbcType=VARCHAR}, #{companyStatus,jdbcType=VARCHAR}, #{customId,jdbcType=VARCHAR}, 
-      #{companyName,jdbcType=VARCHAR}, #{companyType,jdbcType=VARCHAR}, #{tax,jdbcType=DECIMAL}, 
-      #{address,jdbcType=VARCHAR}, #{freeDelivery,jdbcType=INTEGER}, #{includeCancel,jdbcType=VARCHAR}, 
-      #{beginDate,jdbcType=DATE}, #{endDate,jdbcType=DATE}, #{bossName,jdbcType=VARCHAR}, 
-      #{bossId,jdbcType=VARCHAR}, #{bossContact,jdbcType=VARCHAR}, #{bossIdPicUp,jdbcType=VARCHAR}, 
-      #{bossIdPicBack,jdbcType=VARCHAR}, #{cfoName,jdbcType=VARCHAR}, #{cfoId,jdbcType=VARCHAR}, 
-      #{cfoContact,jdbcType=VARCHAR}, #{cfoIdPicUp,jdbcType=VARCHAR}, #{cfoIdPicBack,jdbcType=VARCHAR}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.shuiruyi.model.CompanyInfo">
-    update company_info
-    set company_status = #{companyStatus,jdbcType=VARCHAR},
-      custom_id = #{customId,jdbcType=VARCHAR},
-      company_name = #{companyName,jdbcType=VARCHAR},
-      company_type = #{companyType,jdbcType=VARCHAR},
-      tax = #{tax,jdbcType=DECIMAL},
-      address = #{address,jdbcType=VARCHAR},
-      free_delivery = #{freeDelivery,jdbcType=INTEGER},
-      include_cancel = #{includeCancel,jdbcType=VARCHAR},
-      begin_date = #{beginDate,jdbcType=DATE},
-      end_date = #{endDate,jdbcType=DATE},
-      boss_name = #{bossName,jdbcType=VARCHAR},
-      boss_id = #{bossId,jdbcType=VARCHAR},
-      boss_contact = #{bossContact,jdbcType=VARCHAR},
-      boss_id_pic_up = #{bossIdPicUp,jdbcType=VARCHAR},
-      boss_id_pic_back = #{bossIdPicBack,jdbcType=VARCHAR},
-      cfo_name = #{cfoName,jdbcType=VARCHAR},
-      cfo_id = #{cfoId,jdbcType=VARCHAR},
-      cfo_contact = #{cfoContact,jdbcType=VARCHAR},
-      cfo_id_pic_up = #{cfoIdPicUp,jdbcType=VARCHAR},
-      cfo_id_pic_back = #{cfoIdPicBack,jdbcType=VARCHAR}
-    where company_id = #{companyId,jdbcType=VARCHAR}
-  </update>
+  <resultMap id="BaseResultDetailMap" type="com.tuozuo.tavern.shuiruyi.model.CompanyDetailInfo">
+    <id column="company_id" jdbcType="VARCHAR" property="companyId" />
+    <result column="company_status" jdbcType="VARCHAR" property="companyStatus" />
+    <result column="custom_id" jdbcType="VARCHAR" property="customId" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="company_type" jdbcType="VARCHAR" property="companyType" />
+    <result column="tax" jdbcType="DECIMAL" property="tax" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="free_delivery" jdbcType="INTEGER" property="freeDelivery" />
+    <result column="include_cancel" jdbcType="VARCHAR" property="includeCancel" />
+    <result column="begin_date" jdbcType="DATE" property="beginDate" />
+    <result column="end_date" jdbcType="DATE" property="endDate" />
+    <result column="boss_name" jdbcType="VARCHAR" property="bossName" />
+    <result column="boss_id" jdbcType="VARCHAR" property="bossId" />
+    <result column="boss_contact" jdbcType="VARCHAR" property="bossContact" />
+    <result column="boss_id_pic_up" jdbcType="VARCHAR" property="bossIdPicUp" />
+    <result column="boss_id_pic_back" jdbcType="VARCHAR" property="bossIdPicBack" />
+    <result column="cfo_name" jdbcType="VARCHAR" property="cfoName" />
+    <result column="cfo_id" jdbcType="VARCHAR" property="cfoId" />
+    <result column="cfo_contact" jdbcType="VARCHAR" property="cfoContact" />
+    <result column="cfo_id_pic_up" jdbcType="VARCHAR" property="cfoIdPicUp" />
+    <result column="cfo_id_pic_back" jdbcType="VARCHAR" property="cfoIdPicBack" />
+    <result column="total_invoice_num" jdbcType="VARCHAR" property="totalInvoiceNum" />
+    <result column="invoiced_num" jdbcType="VARCHAR" property="invoicedNum" />
+    <result column="total_invoice_amount" jdbcType="VARCHAR" property="totalInvoiceAmt" />
+  </resultMap>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select company_id, company_status, custom_id, company_name, company_type, tax, address, 
     free_delivery, include_cancel, begin_date, end_date, boss_name, boss_id, boss_contact, 
@@ -77,10 +57,31 @@
     from company_info
     where company_id = #{companyId,jdbcType=VARCHAR}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select company_id, company_status, custom_id, company_name, company_type, tax, address, 
-    free_delivery, include_cancel, begin_date, end_date, boss_name, boss_id, boss_contact, 
-    boss_id_pic_up, boss_id_pic_back, cfo_name, cfo_id, cfo_contact, cfo_id_pic_up, cfo_id_pic_back
-    from company_info
+  <select id="selectDetailInfo" resultMap="BaseResultDetailMap">
+    select company_id, company_status, custom_id, company_name, company_type, tax, address,
+    free_delivery, include_cancel, begin_date, end_date, boss_name, boss_id, boss_contact,
+    boss_id_pic_up, boss_id_pic_back, cfo_name, cfo_id, cfo_contact, cfo_id_pic_up, cfo_id_pic_back,
+	sum(total_invoice_num) total_invoice_num,sum(invoiced_num) invoiced_num,sum(invoice_amount) total_invoice_amount
+	from
+    (
+       select t.company_id, t.company_status, t.custom_id, t.company_name, t.company_type, t.tax, t.address,
+          t.free_delivery, t.include_cancel, t.begin_date, t.end_date, t.boss_name, t.boss_id, t.boss_contact,
+          t.boss_id_pic_up, t.boss_id_pic_back, t.cfo_name, t.cfo_id, t.cfo_contact, t.cfo_id_pic_up, t.cfo_id_pic_back,
+           count(t1.invoice_id) invoice_num,count(t1.invoice_id) invoiced_num,sum(invoice_amount) invoice_amount
+          from company_info t LEFT JOIN invoice_info t1 on t.company_id = t1.company_id
+              where t1.invoice_status = 3 and t.company_id = #{companyId}
+              GROUP BY t.company_id
+
+              union all
+
+              select t.company_id, t.company_status, t.custom_id, t.company_name, t.company_type, t.tax, t.address,
+          t.free_delivery, t.include_cancel, t.begin_date, t.end_date, t.boss_name, t.boss_id, t.boss_contact,
+          t.boss_id_pic_up, t.boss_id_pic_back, t.cfo_name, t.cfo_id, t.cfo_contact, t.cfo_id_pic_up, t.cfo_id_pic_back,
+          count(t1.invoice_id) invoice_num,0 invoiced_num,sum(invoice_amount) invoice_amount
+          from company_info t LEFT JOIN invoice_info t1 on t.company_id = t1.company_id
+          where t1.invoice_status != 3 and t.company_id = #{companyId}
+          GROUP BY t.company_id
+
+		) t group by company_id
   </select>
 </mapper>

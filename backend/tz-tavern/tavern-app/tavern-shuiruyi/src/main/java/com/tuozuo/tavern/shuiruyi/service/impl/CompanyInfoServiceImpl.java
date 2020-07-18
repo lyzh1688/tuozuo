@@ -2,6 +2,7 @@ package com.tuozuo.tavern.shuiruyi.service.impl;
 
 import java.util.List;
 
+import com.tuozuo.tavern.shuiruyi.model.CompanyDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.CompanyInfo;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tuozuo.tavern.shuiruyi.dao.CompanyInfoMapper;
 import com.tuozuo.tavern.shuiruyi.service.CompanyInfoService;
+
 
 /**
  * Code Monkey: 何彪 <br>
@@ -36,7 +38,7 @@ public class CompanyInfoServiceImpl extends ServiceImpl<CompanyInfoMapper, Compa
     }
 
     @Override
-    public CompanyInfo queryCompanyDetail(String companyId) {
-        return this.getById(companyId);
+    public CompanyDetailInfo queryCompanyDetail(String companyId) {
+        return this.baseMapper.selectDetailInfo(companyId);
     }
 }

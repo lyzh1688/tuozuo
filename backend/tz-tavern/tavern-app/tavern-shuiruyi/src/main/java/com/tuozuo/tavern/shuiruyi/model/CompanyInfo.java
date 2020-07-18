@@ -11,47 +11,47 @@ import java.time.LocalDateTime;
 public class CompanyInfo extends Model<CompanyInfo> {
 
     @TableId
-    private String companyId;
+    String companyId;
 
-    private String companyStatus;
+    String companyStatus;
 
-    private String customId;
+    String customId;
 
-    private String companyName;
+    String companyName;
 
-    private String companyType;
+    String companyType;
 
-    private BigDecimal tax;
+    BigDecimal tax;
 
-    private String address;
+    String address;
 
-    private Integer freeDelivery;
+    int freeDelivery;
 
-    private String includeCancel;
+    String includeCancel;
 
-    private LocalDateTime beginDate;
+    LocalDateTime beginDate;
 
-    private LocalDateTime endDate;
+    LocalDateTime endDate;
 
-    private String bossName;
+    String bossName;
 
-    private String bossId;
+    String bossId;
 
-    private String bossContact;
+    String bossContact;
 
-    private String bossIdPicUp;
+    String bossIdPicUp;
 
-    private String bossIdPicBack;
+    String bossIdPicBack;
 
-    private String cfoName;
+    String cfoName;
 
-    private String cfoId;
+    String cfoId;
 
-    private String cfoContact;
+    String cfoContact;
 
-    private String cfoIdPicUp;
+    String cfoIdPicUp;
 
-    private String cfoIdPicBack;
+    String cfoIdPicBack;
 
     public String getCompanyId() {
         return companyId;
@@ -109,11 +109,11 @@ public class CompanyInfo extends Model<CompanyInfo> {
         this.address = address == null ? null : address.trim();
     }
 
-    public Integer getFreeDelivery() {
+    public int getFreeDelivery() {
         return freeDelivery;
     }
 
-    public void setFreeDelivery(Integer freeDelivery) {
+    public void setFreeDelivery(int freeDelivery) {
         this.freeDelivery = freeDelivery;
     }
 
