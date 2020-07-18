@@ -19,7 +19,7 @@ public class JwtAuthenticationProperty {
 
     private long tokenTimeout = 15;     //分钟
 
-    private String secret;
+    private String secret = "OUZOUT";
 
     public String getAuthPrefix() {
         return authPrefix;

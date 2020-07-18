@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.authority.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.tuozuo.tavern.libs.auth.jwt.AuthTokenFactor;
@@ -21,7 +22,11 @@ public class User {
     String roleGroup;
     String userPswd;
     int failedTimes;
+    @TableField(exist = false)
     TokenAuthority tokenAuthority = new TokenAuthority();
+
+    public User() {
+    }
 
     public User(String userId, String systemId, String roleGroup, String userPswd) {
         this.userId = userId;

@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.authority.endpoint;
 
+import com.tuozuo.tavern.authority.model.Password;
 import com.tuozuo.tavern.authority.model.RSAPublicKey;
 import com.tuozuo.tavern.authority.model.TokenAuthority;
 import com.tuozuo.tavern.authority.service.AuthorityService;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
+
+import static com.tuozuo.tavern.common.protocol.RetCodeDict.AUTH_FAILURE;
 
 /**
  * Created by 刘悦之 on 2020/7/17.
@@ -34,19 +38,27 @@ public class AuthorityEndpoint {
         try {
             rsaPublicKey = authorityService.getRSAPublicKeys(userId, systemId, roleGroup);
         } catch (NoSuchAlgorithmException e) {
-            LOGGER.error("获取公钥失败",e);
+            LOGGER.error("获取公钥失败", e);
         }
         return TavernResponse.ok(rsaPublicKey);
     }
 
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public TavernResponse<TokenAuthority> login(@RequestParam("userId") String userId,
                                                 @RequestParam("password") String password,
                                                 @RequestParam("systemId") String systemId,
                                                 @RequestParam("roleGroup") String roleGroup) {
 
-        TokenAuthority tokenAuthority = new TokenAuthority();
-        return TavernResponse.ok(tokenAuthority);
+        Optional<TokenAuthority> optional = this.authorityService.login(userId, new Password(password), systemId, roleGroup);
+        if (optional.isPresent()) {
+            TokenAuthority tokenAuthority = optional.get();
+            if (tokenAuthority.getLoginSuccess()) {
+                return TavernResponse.ok(tokenAuthority);
+            } else {
+                return TavernResponse.createResponse(AUTH_FAILURE, tokenAuthority.getLoginMessage(), tokenAuthority);
+            }
+        }
+        return TavernResponse.bizFailure("内部服务错误");
     }
 
     @RequestMapping("/logout")

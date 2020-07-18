@@ -5,6 +5,7 @@ package com.tuozuo.tavern.common.protocol;
  * Dev Time: 2020/7/17 <br>
  */
 public class RetCodeDict {
+    public static final int AUTH_FAILURE = 1999;
     public static final int BIZ_FAILURE = 2000;
 
 }
