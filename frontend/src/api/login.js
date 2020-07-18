@@ -1,8 +1,9 @@
 import request from '@/utils/request'
-
+const systemId = 'shuiruyi'
 const userApi = {
-  Login: '/auth/login',
-  Logout: '/auth/logout',
+  Login: '/login',
+  Logout: '/logout',
+  PublicKey: '/key',
   ForgePassword: '/auth/forge-password',
   Register: '/auth/register',
   twoStepCode: '/auth/2step-code',
@@ -25,13 +26,21 @@ const userApi = {
  * @returns {*}
  */
 export function login (parameter) {
+  parameter['userId'] = parameter.username
+  delete parameter.username
+  parameter['systemId'] = systemId
   return request({
     url: userApi.Login,
     method: 'post',
     data: parameter
   })
 }
-
+export function getPublicKey (userId, roleGroup) {
+  return request({
+    url: userApi.PublicKey + '?userId=' + userId + '&roleGroup=' + roleGroup + '&systemId=' + systemId,
+    method: 'get'
+  })
+}
 export function getSmsCaptcha (parameter) {
   return request({
     url: userApi.SendSms,

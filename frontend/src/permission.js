@@ -11,8 +11,8 @@ import { i18nRender } from '@/locales'
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = ['login', 'register', 'registerResult'] // no redirect whitelist
-const loginRoutePath = '/user/login'
-const defaultRoutePath = '/dashboard/workplace'
+const loginRoutePath = '/login'
+// const defaultRoutePath = '/dashboard/workplace'
 
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
@@ -20,7 +20,8 @@ router.beforeEach((to, from, next) => {
   /* has token */
   if (storage.get(ACCESS_TOKEN)) {
     if (to.path === loginRoutePath) {
-      next({ path: defaultRoutePath })
+      // next({ path: defaultRoutePath })
+      next()
       NProgress.done()
     } else {
       // check login user.roles is null

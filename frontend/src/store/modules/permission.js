@@ -37,19 +37,32 @@ function hasRole(roles, route) {
   }
 }
 
-function filterAsyncRouter (routerMap, roles) {
-  const accessedRouters = routerMap.filter(route => {
-    if (hasPermission(roles.permissionList, route)) {
+// function filterAsyncRouter (routerMap, roles) {
+//   const accessedRouters = routerMap.filter(route => {
+//     if (hasPermission(roles.permissionList, route)) {
+//       if (route.children && route.children.length) {
+//         route.children = filterAsyncRouter(route.children, roles)
+//       }
+//       return true
+//     }
+//     return false
+//   })
+//   return accessedRouters
+// }
+ function filterAsyncRoutes (routes, roles) {
+  const res = []
+  routes.forEach(route => {
+    const tmp = { ...route }
+    if (hasPermission(roles.permissionList, tmp)) {
       if (route.children && route.children.length) {
-        route.children = filterAsyncRouter(route.children, roles)
+        tmp.children = filterAsyncRoutes(tmp.children, roles)
       }
-      return true
+      res.push(tmp)
     }
-    return false
   })
-  return accessedRouters
-}
 
+  return res
+}
 const permission = {
   state: {
     routers: constantRouterMap,
@@ -65,7 +78,8 @@ const permission = {
     GenerateRoutes ({ commit }, data) {
       return new Promise(resolve => {
         const { roles } = data
-        const accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
+        const accessedRouters = filterAsyncRoutes(asyncRouterMap, roles)
+        console.log('accrouter', accessedRouters, constantRouterMap, roles)
         commit('SET_ROUTERS', accessedRouters)
         resolve()
       })

@@ -11,21 +11,18 @@
     :i18nRender="i18nRender"
     v-bind="settings"
   >
-    <!-- Ads begin
-      广告代码 真实项目中请移除
-      production remove this Ads
-    -->
-    <ads v-if="isProPreviewSite && !collapsed"/>
-    <!-- Ads end -->
-
     <setting-drawer :settings="settings" @change="handleSettingChange" />
+    <MultiTab />
+
     <template v-slot:rightContentRender>
-      <right-content :top-menu="settings.layout === 'topmenu'" :is-mobile="isMobile" :theme="settings.theme" />
+      <right-content :username="username" :top-menu="settings.layout === 'topmenu'" :is-mobile="isMobile" :theme="settings.theme" />
     </template>
     <template v-slot:footerRender>
       <global-footer />
     </template>
-    <router-view />
+    <keep-alive>
+      <router-view />
+    </keep-alive>
   </pro-layout>
 </template>
 
@@ -38,16 +35,15 @@ import { SIDEBAR_TYPE, TOGGLE_MOBILE_TYPE } from '@/store/mutation-types'
 import defaultSettings from '@/config/defaultSettings'
 import RightContent from '@/components/GlobalHeader/RightContent'
 import GlobalFooter from '@/components/GlobalFooter'
-import Ads from '@/components/Other/CarbonAds'
 import LogoSvg from '../assets/logo.svg?inline'
-
+import MultiTab from '@/components/MultiTab'
 export default {
   name: 'BasicLayout',
   components: {
     SettingDrawer,
     RightContent,
     GlobalFooter,
-    Ads
+    MultiTab
   },
   data () {
     return {
@@ -86,7 +82,8 @@ export default {
   computed: {
     ...mapState({
       // 动态主路由
-      mainMenu: state => state.permission.addRouters
+      mainMenu: state => state.permission.addRouters,
+      username: state => state.user.name
     })
   },
   created () {

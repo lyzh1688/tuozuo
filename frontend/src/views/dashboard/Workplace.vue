@@ -10,6 +10,9 @@
             {{ timeFix }}，{{ user.name }}<span class="welcome-text">，{{ welcome }}</span>
           </div>
           <div>前端工程师 | 蚂蚁金服 - 某某某事业群 - VUE平台</div>
+          <a-button type="primary" @click="toLogin">
+            Back Loging
+          </a-button>
         </div>
       </div>
     </template>
@@ -224,6 +227,9 @@ export default {
     this.initRadar()
   },
   methods: {
+    toLogin () {
+      this.$router.push({ path: '/login' })
+    },
     getProjects () {
       this.$http.get('/list/search/projects')
         .then(res => {

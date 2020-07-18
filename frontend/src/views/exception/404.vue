@@ -4,6 +4,9 @@
       <a-button type="primary" @click="toHome">
         Back Home
       </a-button>
+      <a-button type="primary" @click="toLogin">
+        Back Loging
+      </a-button>
     </template>
   </a-result>
 </template>
@@ -14,6 +17,9 @@ export default {
   methods: {
     toHome () {
       this.$router.push({ path: '/' })
+    },
+     toLogin () {
+      this.$router.push({ path: '/login' })
     }
   }
 }

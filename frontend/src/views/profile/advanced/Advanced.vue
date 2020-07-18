@@ -6,6 +6,9 @@
     @tabChange="handleTabChange"
   >
     <template v-slot:content>
+      <a-button type="primary" @click="toLogin">
+        Back Loging
+      </a-button>
       <a-descriptions size="small" :column="isMobile ? 1 : 2">
         <a-descriptions-item label="创建人">曲丽丽</a-descriptions-item>
         <a-descriptions-item label="订购产品">XX 服务</a-descriptions-item>
@@ -323,6 +326,9 @@ export default {
     }
   },
   methods: {
+     toLogin () {
+      this.$router.push({ path: '/login', query: { redirect: this.$router.fullPath } })
+    },
     handleTabChange (key) {
       console.log('')
       this.tabActiveKey = key

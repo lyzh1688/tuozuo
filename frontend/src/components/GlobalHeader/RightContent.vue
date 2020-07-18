@@ -1,19 +1,18 @@
 <template>
   <div :class="wrpCls">
     <avatar-dropdown :menu="showMenu" :current-user="currentUser" :class="prefixCls" />
-    <select-lang :class="prefixCls" />
   </div>
 </template>
 
 <script>
 import AvatarDropdown from './AvatarDropdown'
-import SelectLang from '@/components/SelectLang'
+import MultiTab from '@/components/MultiTab'
 
 export default {
   name: 'RightContent',
   components: {
     AvatarDropdown,
-    SelectLang
+    MultiTab
   },
   props: {
     prefixCls: {
@@ -29,6 +28,10 @@ export default {
       required: true
     },
     theme: {
+      type: String,
+      required: true
+    },
+    username: {
       type: String,
       required: true
     }
@@ -50,7 +53,7 @@ export default {
   mounted () {
     setTimeout(() => {
       this.currentUser = {
-        name: 'Serati Ma'
+        name: this.username
       }
     }, 1500)
   }

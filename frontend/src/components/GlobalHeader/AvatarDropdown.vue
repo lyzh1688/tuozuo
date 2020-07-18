@@ -29,7 +29,6 @@
 
 <script>
 import { Modal } from 'ant-design-vue'
-
 export default {
   name: 'AvatarDropdown',
   props: {
