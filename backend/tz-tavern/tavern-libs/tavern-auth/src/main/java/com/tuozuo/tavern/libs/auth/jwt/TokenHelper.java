@@ -1,4 +1,4 @@
-package com.tuozuo.tavern.libs.auth;
+package com.tuozuo.tavern.libs.auth.jwt;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -11,13 +11,13 @@ import java.util.Date;
  */
 public class TokenHelper {
 
-    public static String createToken(JwtAuthenticationProperty config,AuthTokenFactor tokenFactor){
+    public static String createToken(JwtAuthenticationProperty config, AuthTokenFactor tokenFactor){
         Instant now = Instant.now();
         String token = Jwts.builder()
-                .setSubject(tokenFactor.getUserAccnt())
-                .claim(AuthTokenFactor.Factor.USER_ACCNT, tokenFactor.getUserAccnt())
-                .claim(AuthTokenFactor.Factor.USER_TYPE, tokenFactor.getUserType())
-                .claim(AuthTokenFactor.Factor.ROLE_ID, tokenFactor.getRoleId())
+                .setSubject(tokenFactor.getUserId())
+                .claim(AuthTokenFactor.Factor.USER_ID, tokenFactor.getUserId())
+                .claim(AuthTokenFactor.Factor.SYSTEM_ID, tokenFactor.getSystemId())
+                .claim(AuthTokenFactor.Factor.ROLE_GROUP, tokenFactor.getRoleGroup())
                 .setIssuedAt(Date.from(now))
                 .setIssuer("TUOZUO")
                 .setExpiration(Date.from(now.plusSeconds(config.getExpiration())))

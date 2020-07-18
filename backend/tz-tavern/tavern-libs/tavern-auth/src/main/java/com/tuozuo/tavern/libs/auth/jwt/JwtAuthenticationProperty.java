@@ -1,4 +1,4 @@
-package com.tuozuo.tavern.libs.auth;
+package com.tuozuo.tavern.libs.auth.jwt;
 
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -9,30 +9,32 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "tavern.security.jwt")
 public class JwtAuthenticationProperty {
 
-    private String url = "/login";
+    private String authPrefix = "auth";
 
-    private String header = "Authorization";
+    private String accessToken = "access-token";
 
     private String prefix = "Bearer";
 
     private int expiration = 8 * 60 * 60; // default 8 hours
 
+    private long tokenTimeout = 15;     //分钟
+
     private String secret;
 
-    public String getUrl() {
-        return url;
+    public String getAuthPrefix() {
+        return authPrefix;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setAuthPrefix(String authPrefix) {
+        this.authPrefix = authPrefix;
     }
 
-    public String getHeader() {
-        return header;
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    public void setHeader(String header) {
-        this.header = header;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
     public String getPrefix() {
@@ -57,5 +59,13 @@ public class JwtAuthenticationProperty {
 
     public void setSecret(String secret) {
         this.secret = secret;
+    }
+
+    public long getTokenTimeout() {
+        return tokenTimeout;
+    }
+
+    public void setTokenTimeout(long tokenTimeout) {
+        this.tokenTimeout = tokenTimeout;
     }
 }
