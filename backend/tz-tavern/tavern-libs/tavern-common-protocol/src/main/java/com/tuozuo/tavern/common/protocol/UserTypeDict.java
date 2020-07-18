@@ -1,4 +1,4 @@
-package com.tuozuo.tavern.libs.auth;
+package com.tuozuo.tavern.common.protocol;
 
 /**
  * Created by 刘悦之 on 2019/6/30.
