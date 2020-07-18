@@ -28,19 +28,6 @@
             <artifactId>tavern-common-protocol</artifactId>
             <version>${tavern.version}</version>
         </dependency>
-        <!-- mapstruct -->
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>${org.mapstruct.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-            <version>${org.mapstruct.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
         <!--mybatis-->
         <dependency>
             <groupId>com.baomidou</groupId>
