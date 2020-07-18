@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * Dev Time: 2020/7/18 <br>
  */
 @RestController
-@RequestMapping("/shuiruyi/dict")
+@RequestMapping("/tuozuo/shuiruyi/v1/dict")
 public class BusinessDictEndpoint {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BusinessDictEndpoint.class);

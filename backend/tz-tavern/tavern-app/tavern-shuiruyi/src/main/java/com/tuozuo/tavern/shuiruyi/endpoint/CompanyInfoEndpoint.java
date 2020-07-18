@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.shuiruyi.endpoint;
 
+import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.shuiruyi.convert.BusinessConverter;
 import com.tuozuo.tavern.shuiruyi.dto.BusinessDictDTO;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
  * Dev Time: 2019/08/10 <br>
  */
 @RestController
-@RequestMapping("/shuiruyi/company")
+@RequestMapping("/tuozuo/shuiruyi/v1/company")
 public class CompanyInfoEndpoint {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyInfoEndpoint.class);
@@ -29,12 +30,14 @@ public class CompanyInfoEndpoint {
     private CompanyInfoService companyInfoService;
 
     /**
-     * 我的个独公司模糊查询
+     * 个独公司模糊查询
      */
     @GetMapping()
     public TavernResponse queryCompanyDict(@RequestParam(name = "companyName", defaultValue = "") String companyName,
                                            @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt,
-                                           @RequestParam(name = "showAll", defaultValue = "0") boolean showAll) {
+                                           @RequestParam(name = "showAll", required = false) boolean showAll,
+                                           @RequestHeader(TavernRequestAuthFields.USER_ID) String userId,
+                                           @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
         try {
             List<CompanyInfo> companyInfoList = this.companyInfoService.fuzzyQueryCompany(companyName, queryCnt, showAll);
             List<BusinessDictDTO> businessDictList = companyInfoList.stream()

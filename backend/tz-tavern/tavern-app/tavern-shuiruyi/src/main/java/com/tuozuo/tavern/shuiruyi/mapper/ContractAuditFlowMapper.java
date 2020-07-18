@@ -1,9 +1,9 @@
-package com.tuozuo.tavern.shuiruyi.dao;
+package com.tuozuo.tavern.shuiruyi.mapper;
 
 import com.tuozuo.tavern.shuiruyi.model.ContractAuditFlow;
 import java.util.List;
 
-public interface contractAuditFlowMapper {
+public interface ContractAuditFlowMapper {
     int deleteByPrimaryKey(String flowId);
 
     int insert(ContractAuditFlow record);

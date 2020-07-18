@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuozuo.tavern.shuiruyi.dao.CustomInfoMapper">
+<mapper namespace="com.tuozuo.tavern.shuiruyi.mapper.CustomInfoMapper">
   <resultMap id="BaseResultMap" type="com.tuozuo.tavern.shuiruyi.model.CustomInfo">
     <id column="custom_id" jdbcType="VARCHAR" property="customId" />
     <result column="custom_name" jdbcType="VARCHAR" property="customName" />

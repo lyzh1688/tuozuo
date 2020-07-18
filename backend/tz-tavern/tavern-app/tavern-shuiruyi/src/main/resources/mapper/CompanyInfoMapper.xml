@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuozuo.tavern.shuiruyi.dao.CompanyInfoMapper">
+<mapper namespace="com.tuozuo.tavern.shuiruyi.mapper.CompanyInfoMapper">
   <resultMap id="BaseResultMap" type="com.tuozuo.tavern.shuiruyi.model.CompanyInfo">
     <id column="company_id" jdbcType="VARCHAR" property="companyId" />
     <result column="company_status" jdbcType="VARCHAR" property="companyStatus" />

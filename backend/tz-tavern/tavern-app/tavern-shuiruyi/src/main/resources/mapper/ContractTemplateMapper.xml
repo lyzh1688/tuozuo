@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuozuo.tavern.shuiruyi.dao.ContractTemplateMapper">
+<mapper namespace="com.tuozuo.tavern.shuiruyi.mapper.ContractTemplateMapper">
   <resultMap id="BaseResultMap" type="com.tuozuo.tavern.shuiruyi.model.ContractTemplate">
     <id column="contract_templte_id" jdbcType="VARCHAR" property="contractTemplteId" />
     <result column="contract_template_name" jdbcType="VARCHAR" property="contractTemplateName" />

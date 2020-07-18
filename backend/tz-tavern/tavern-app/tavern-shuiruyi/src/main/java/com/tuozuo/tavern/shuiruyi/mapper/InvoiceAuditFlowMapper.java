@@ -1,4 +1,4 @@
-package com.tuozuo.tavern.shuiruyi.dao;
+package com.tuozuo.tavern.shuiruyi.mapper;
 
 import com.tuozuo.tavern.shuiruyi.model.InvoiceAuditFlow;
 import java.util.List;

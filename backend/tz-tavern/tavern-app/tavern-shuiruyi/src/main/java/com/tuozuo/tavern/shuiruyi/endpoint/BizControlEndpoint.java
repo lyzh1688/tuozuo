@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
  * Dev Time: 2020/7/18 <br>
  */
 @RestController
-@RequestMapping("/shuiruyi/bizControl")
+@RequestMapping("/tuozuo/shuiruyi/v1/bizControl")
 public class BizControlEndpoint {
+
+
+
 }

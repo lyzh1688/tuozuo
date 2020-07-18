@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuozuo.tavern.shuiruyi.dao.InvoiceInfoMapper">
+<mapper namespace="com.tuozuo.tavern.shuiruyi.mapper.InvoiceInfoMapper">
   <resultMap id="BaseResultMap" type="com.tuozuo.tavern.shuiruyi.model.InvoiceInfo">
     <id column="invoice_id" jdbcType="VARCHAR" property="invoiceId" />
     <result column="company_id" jdbcType="VARCHAR" property="companyId" />

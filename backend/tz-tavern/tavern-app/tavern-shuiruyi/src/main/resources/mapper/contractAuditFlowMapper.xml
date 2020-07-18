@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuozuo.tavern.shuiruyi.dao.contractAuditFlowMapper">
+<mapper namespace="com.tuozuo.tavern.shuiruyi.mapper.ContractAuditFlowMapper">
   <resultMap id="BaseResultMap" type="com.tuozuo.tavern.shuiruyi.model.ContractAuditFlow">
     <id column="flow_id" jdbcType="VARCHAR" property="flowId" />
     <result column="contract_id" jdbcType="VARCHAR" property="contractId" />

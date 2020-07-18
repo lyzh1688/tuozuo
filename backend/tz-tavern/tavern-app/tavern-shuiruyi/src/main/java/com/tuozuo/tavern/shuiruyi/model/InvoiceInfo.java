@@ -1,9 +1,14 @@
 package com.tuozuo.tavern.shuiruyi.model;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+
 import java.math.BigDecimal;
 import java.util.Date;
-
-public class InvoiceInfo {
+@TableName("invoice_dict")
+public class InvoiceInfo extends Model<InvoiceInfo> {
+    @TableId
     private String invoiceId;
 
     private String companyId;

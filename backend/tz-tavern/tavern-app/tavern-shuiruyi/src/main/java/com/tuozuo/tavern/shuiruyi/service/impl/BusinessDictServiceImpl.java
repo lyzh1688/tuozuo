@@ -2,7 +2,7 @@ package com.tuozuo.tavern.shuiruyi.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.tuozuo.tavern.shuiruyi.dao.BusinessDictMapper;
+import com.tuozuo.tavern.shuiruyi.mapper.BusinessDictMapper;
 import com.tuozuo.tavern.shuiruyi.model.BusinessDict;
 import com.tuozuo.tavern.shuiruyi.service.BusinessDictService;
 import org.springframework.stereotype.Service;
