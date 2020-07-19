@@ -5,6 +5,7 @@ import com.tuozuo.tavern.shuiruyi.model.CustomDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.CustomInfo;
 import com.tuozuo.tavern.shuiruyi.model.CustomTradeFlow;
 import com.tuozuo.tavern.shuiruyi.vo.CustomInfoVO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,6 +23,14 @@ public interface CustomInfoService {
 
     void addCustomInfo(CustomInfoVO vo);
 
-    void modifyCustomInfo(CustomInfoVO vo,String customId);
+    void modifyCustomInfo(CustomInfoVO vo, String customId);
+
+    IPage<CustomInfo> queryCustomInfoList(String customName, String hasPaid, int pageNo, int pageSize);
+
+    void investAndPayment(String customId,
+                          String customType,
+                          String event,
+                          String amount,
+                          MultipartFile tradeSnapshot);
 
 }

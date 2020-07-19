@@ -31,9 +31,18 @@
     on t.custom_id = t1.custom_id
     where custom_id = #{customId,jdbcType=VARCHAR}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
+  <select id="selectCustomInfoList" resultMap="BaseResultMap">
     select custom_id, custom_name, custom_pswd, custom_contact, balance, province, update_date, 
     custom_type, has_paid
     from custom_info
+    <where>
+      <if test="customName != null and customName != ''">
+        custom_name = #{customName}
+      </if>
+      <if test="hasPaid != null and hasPaid != ''">
+        has_paid = #{hasPaid}
+      </if>
+      order by custom_name
+    </where>
   </select>
 </mapper>

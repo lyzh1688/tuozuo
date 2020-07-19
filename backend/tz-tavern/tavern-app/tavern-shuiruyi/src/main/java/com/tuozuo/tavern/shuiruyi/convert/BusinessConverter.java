@@ -3,6 +3,7 @@ package com.tuozuo.tavern.shuiruyi.convert;
 import com.tuozuo.tavern.shuiruyi.dto.*;
 import com.tuozuo.tavern.shuiruyi.model.*;
 import com.tuozuo.tavern.shuiruyi.utils.DateUtils;
+import org.springframework.beans.BeanUtils;
 
 import java.util.Objects;
 
@@ -18,7 +19,8 @@ public class BusinessConverter {
         businessDictDTO.setName(companyInfo.getCompanyName());
         return null;
     }
-    public static BusinessDictDTO customInfoToDTO(CustomInfo customInfo) {
+
+    public static BusinessDictDTO customInfoToDictDTO(CustomInfo customInfo) {
         BusinessDictDTO businessDictDTO = new BusinessDictDTO();
         businessDictDTO.setId(customInfo.getCustomId());
         businessDictDTO.setName(customInfo.getCustomName());
@@ -74,13 +76,13 @@ public class BusinessConverter {
         return businessDictDTO;
     }
 
-    public static CustomInfoDTO customDetailToDTO(CustomDetailInfo customDetailInfo) {
-        CustomInfoDTO customInfoDTO = new CustomInfoDTO();
-        customInfoDTO.setCustomName(customDetailInfo.getCustomName());
-        customInfoDTO.setCustomContact(customDetailInfo.getCustomContact());
-        customInfoDTO.setProvince(customDetailInfo.getProvince());
-        customInfoDTO.setTotalServerCharge(customDetailInfo.getTotalServerCharge());
-        return customInfoDTO;
+    public static CustomInfoDetailDTO customDetailToDTO(CustomDetailInfo customDetailInfo) {
+        CustomInfoDetailDTO customInfoDetailDTO = new CustomInfoDetailDTO();
+        customInfoDetailDTO.setCustomName(customDetailInfo.getCustomName());
+        customInfoDetailDTO.setCustomContact(customDetailInfo.getCustomContact());
+        customInfoDetailDTO.setProvince(customDetailInfo.getProvince());
+        customInfoDetailDTO.setTotalServerCharge(customDetailInfo.getTotalServerCharge());
+        return customInfoDetailDTO;
     }
 
     public static CustomTradeFlowDTO customTradeFlowToDTO(CustomTradeFlow customTradeFlow) {
@@ -93,4 +95,10 @@ public class BusinessConverter {
         return customTradeFlowDTO;
     }
 
+    public static CustomInfoDTO customInfoToDTO(CustomInfo customInfo) {
+        CustomInfoDTO customInfoDTO = new CustomInfoDTO();
+        BeanUtils.copyProperties(customInfo,customInfoDTO);
+        customInfoDTO.setUpdateDate(DateUtils.formatDate(customInfo.getUpdateDate()));
+        return customInfoDTO;
+    }
 }

@@ -54,4 +54,10 @@ public class CustomInfoDaoImpl implements CustomInfoDao {
     public void update(CustomInfo customInfo) {
         this.customInfoMapper.updateById(customInfo);
     }
+
+    @Override
+    public IPage<CustomInfo> selectCustomInfoList(String customName, String hasPaid, int pageNo, int pageSize) {
+        Page<CustomInfo> page = new Page<>(pageNo, pageSize);
+        return this.customInfoMapper.selectCustomInfoList(customName, hasPaid, page);
+    }
 }

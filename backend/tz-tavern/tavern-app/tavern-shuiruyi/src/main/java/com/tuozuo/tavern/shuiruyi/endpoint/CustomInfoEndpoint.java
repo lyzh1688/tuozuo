@@ -3,20 +3,19 @@ package com.tuozuo.tavern.shuiruyi.endpoint;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.shuiruyi.convert.BusinessConverter;
-import com.tuozuo.tavern.shuiruyi.dto.BusinessDictDTO;
-import com.tuozuo.tavern.shuiruyi.dto.CustomInfoDTO;
-import com.tuozuo.tavern.shuiruyi.dto.CustomTradeFlowDTO;
-import com.tuozuo.tavern.shuiruyi.dto.CustomTradeFlowListDTO;
+import com.tuozuo.tavern.shuiruyi.dto.*;
 import com.tuozuo.tavern.shuiruyi.model.CustomDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.CustomInfo;
 import com.tuozuo.tavern.shuiruyi.model.CustomTradeFlow;
 import com.tuozuo.tavern.shuiruyi.service.CustomInfoService;
 import com.tuozuo.tavern.shuiruyi.vo.CustomInfoVO;
+import com.tuozuo.tavern.shuiruyi.vo.CustomListVO;
 import com.tuozuo.tavern.shuiruyi.vo.PageVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -36,14 +35,14 @@ public class CustomInfoEndpoint {
     private CustomInfoService customInfoService;
 
     /**
-     * 客户详情信息 
+     * 客户详情信息
      */
     @GetMapping("/{customId}")
     public TavernResponse queryCustomDetail(@PathVariable("customId") String customId) {
         try {
             CustomDetailInfo customDetailInfo = this.customInfoService.queryCustomInfo(customId);
-            CustomInfoDTO customInfoDTO = BusinessConverter.customDetailToDTO(customDetailInfo);
-            return TavernResponse.ok(customInfoDTO);
+            CustomInfoDetailDTO customInfoDetailDTO = BusinessConverter.customDetailToDTO(customDetailInfo);
+            return TavernResponse.ok(customInfoDetailDTO);
         } catch (Exception e) {
             LOGGER.error("[客户详情信息] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
@@ -81,7 +80,7 @@ public class CustomInfoEndpoint {
         try {
             List<CustomInfo> customInfoList = this.customInfoService.fuzzyQueryCustomInfo(customName, queryCnt);
             List<BusinessDictDTO> businessDictList = customInfoList.stream()
-                    .map(BusinessConverter::customInfoToDTO)
+                    .map(BusinessConverter::customInfoToDictDTO)
                     .collect(Collectors.toList());
 
             return TavernResponse.ok(businessDictList);
@@ -120,5 +119,43 @@ public class CustomInfoEndpoint {
         }
     }
 
+
+    /**
+     * 我的客户列表
+     */
+    @GetMapping("/list")
+    public TavernResponse queryCustomList(@RequestBody @Valid CustomListVO vo) {
+        try {
+            IPage<CustomInfo> page = this.customInfoService.queryCustomInfoList(vo.getCustomName(), vo.getHasPaid(), vo.getPageNo(), vo.getPageSize());
+            List<CustomInfoDTO> customInfoDTOList = page.getRecords()
+                    .stream()
+                    .map(BusinessConverter::customInfoToDTO)
+                    .collect(Collectors.toList());
+            CustomInfoListDTO customInfoListDTO = new CustomInfoListDTO();
+            customInfoListDTO.setCustomers(customInfoDTOList);
+            customInfoListDTO.setTotal((int) page.getTotal());
+            return TavernResponse.ok(customInfoListDTO);
+        } catch (Exception e) {
+            LOGGER.error("[我的客户列表] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 充值扣款
+     */
+    @PutMapping("/trade/{customId}")
+    public TavernResponse investAndPayment(@PathVariable("customId") String customId,
+                                           @RequestParam("customType") String customType,
+                                           @RequestParam("event") String event,
+                                           @RequestParam("amount") String amount,
+                                           @RequestParam("tradeSnapshot") MultipartFile tradeSnapshot) {
+        try {
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[充值扣款] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
 
 }

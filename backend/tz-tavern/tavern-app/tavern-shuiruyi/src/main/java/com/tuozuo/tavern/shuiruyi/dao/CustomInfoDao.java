@@ -22,4 +22,6 @@ public interface CustomInfoDao {
     void insert(CustomInfo customInfo);
 
     void update(CustomInfo customInfo);
+
+    IPage<CustomInfo> selectCustomInfoList(String customName, String hasPaid, int pageNo, int pageSize);
 }

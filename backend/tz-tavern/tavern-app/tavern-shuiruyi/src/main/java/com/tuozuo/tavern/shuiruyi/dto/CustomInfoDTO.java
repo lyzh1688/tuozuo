@@ -4,21 +4,49 @@ import java.math.BigDecimal;
 
 /**
  * Code Monkey: 何彪 <br>
- * Dev Time: 2020/7/18 <br>
+ * Dev Time: 2020/7/19 <br>
  */
 public class CustomInfoDTO {
+    String customId;
 
-    private String customName;
-    private String customContact;
-    private BigDecimal totalServerCharge;
-    private String province;
+    String customName;
+
+    String customPswd;
+
+    String customContact;
+
+    BigDecimal balance;
+
+    String province;
+
+    String updateDate;
+
+    String customType;
+
+    String hasPaid;
+
+    public String getCustomId() {
+        return customId;
+    }
+
+    public void setCustomId(String customId) {
+        this.customId = customId == null ? null : customId.trim();
+    }
 
     public String getCustomName() {
         return customName;
     }
 
     public void setCustomName(String customName) {
-        this.customName = customName;
+        this.customName = customName == null ? null : customName.trim();
+    }
+
+    public String getCustomPswd() {
+        return customPswd;
+    }
+
+    public void setCustomPswd(String customPswd) {
+        this.customPswd = customPswd == null ? null : customPswd.trim();
     }
 
     public String getCustomContact() {
@@ -26,15 +54,15 @@ public class CustomInfoDTO {
     }
 
     public void setCustomContact(String customContact) {
-        this.customContact = customContact;
+        this.customContact = customContact == null ? null : customContact.trim();
     }
 
-    public BigDecimal getTotalServerCharge() {
-        return totalServerCharge;
+    public BigDecimal getBalance() {
+        return balance;
     }
 
-    public void setTotalServerCharge(BigDecimal totalServerCharge) {
-        this.totalServerCharge = totalServerCharge;
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
 
     public String getProvince() {
@@ -42,6 +70,31 @@ public class CustomInfoDTO {
     }
 
     public void setProvince(String province) {
-        this.province = province;
+        this.province = province == null ? null : province.trim();
+    }
+
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public String getCustomType() {
+        return customType;
+    }
+
+    public void setCustomType(String customType) {
+        this.customType = customType == null ? null : customType.trim();
+    }
+
+    public String getHasPaid() {
+        return hasPaid;
+    }
+
+    public void setHasPaid(String hasPaid) {
+        this.hasPaid = hasPaid == null ? null : hasPaid.trim();
     }
 }

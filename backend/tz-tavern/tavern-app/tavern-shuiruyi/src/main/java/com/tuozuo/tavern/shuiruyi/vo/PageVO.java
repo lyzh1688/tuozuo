@@ -8,9 +8,9 @@ import javax.validation.constraints.NotNull;
  */
 public class PageVO {
     @NotNull(message = "pageNo is not null")
-    private int pageNo;
+    int pageNo;
     @NotNull(message = "pageSize is not null")
-    private int pageSize;
+    int pageSize;
 
     public int getPageNo() {
         return pageNo;

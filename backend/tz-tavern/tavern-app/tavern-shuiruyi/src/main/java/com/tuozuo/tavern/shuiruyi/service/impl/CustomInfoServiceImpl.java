@@ -9,7 +9,10 @@ import com.tuozuo.tavern.shuiruyi.service.CustomInfoService;
 import com.tuozuo.tavern.shuiruyi.utils.UUIDUtil;
 import com.tuozuo.tavern.shuiruyi.vo.CustomInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,6 +22,11 @@ import java.util.List;
  */
 @Service
 public class CustomInfoServiceImpl implements CustomInfoService {
+    @Value("${custom.trade.file.url.path:http://119.3.19.171/custom/trade/file/}")
+    private String tradeFileUrlPath;
+    @Value("${custom.trade.file.path:/mnt/file/trade/file/}")
+    private String tradeFilePath;
+
     @Autowired
     private CustomInfoDao customInfoDao;
 
@@ -29,7 +37,7 @@ public class CustomInfoServiceImpl implements CustomInfoService {
 
     @Override
     public IPage<CustomTradeFlow> queryCustomTradeFlowList(String customId, int pageNo, int pageSize) {
-        return null;
+        return this.customInfoDao.selectCustomTradeFlowList(customId, pageNo, pageSize);
     }
 
     @Override
@@ -53,6 +61,22 @@ public class CustomInfoServiceImpl implements CustomInfoService {
         customInfo.setCustomId(customId);
         setCustomInfo(vo, customInfo);
         this.customInfoDao.update(customInfo);
+    }
+
+    @Override
+    public IPage<CustomInfo> queryCustomInfoList(String customName, String hasPaid, int pageNo, int pageSize) {
+        return this.customInfoDao.selectCustomInfoList(customName, hasPaid, pageNo, pageSize);
+    }
+
+    @Transactional
+    @Override
+    public void investAndPayment(String customId, String customType, String event, String amount, MultipartFile tradeSnapshot) {
+        //1、扣款或者充值，余额变动
+        //2、流水记录,凭证上传
+
+
+
+
     }
 
     private void setCustomInfo(CustomInfoVO vo, CustomInfo customInfo) {
