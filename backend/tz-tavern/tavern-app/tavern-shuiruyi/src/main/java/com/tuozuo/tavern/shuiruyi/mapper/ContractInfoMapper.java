@@ -1,8 +1,10 @@
 package com.tuozuo.tavern.shuiruyi.mapper;
 
 import com.tuozuo.tavern.shuiruyi.model.ContractInfo;
-import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+@Mapper
 public interface ContractInfoMapper {
     int deleteByPrimaryKey(String contractId);
 

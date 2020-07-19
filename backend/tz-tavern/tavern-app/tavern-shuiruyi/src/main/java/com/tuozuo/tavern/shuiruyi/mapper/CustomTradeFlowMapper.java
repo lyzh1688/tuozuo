@@ -1,16 +1,9 @@
 package com.tuozuo.tavern.shuiruyi.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.tuozuo.tavern.shuiruyi.model.CustomTradeFlow;
-import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
 
-public interface CustomTradeFlowMapper {
-    int deleteByPrimaryKey(String tradeFlowId);
-
-    int insert(CustomTradeFlow record);
-
-    CustomTradeFlow selectByPrimaryKey(String tradeFlowId);
-
-    List<CustomTradeFlow> selectAll();
-
-    int updateByPrimaryKey(CustomTradeFlow record);
+@Mapper
+public interface CustomTradeFlowMapper extends BaseMapper<CustomTradeFlow> {
 }

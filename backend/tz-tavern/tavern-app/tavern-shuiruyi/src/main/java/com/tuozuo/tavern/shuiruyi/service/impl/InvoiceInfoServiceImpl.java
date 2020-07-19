@@ -20,16 +20,13 @@ public class InvoiceInfoServiceImpl implements InvoiceInfoService {
     private InvoiceInfoDao invoiceInfoDao;
 
     @Override
-    public InvoiceStatisticDTO queryInvoiceStatistics(InvoiceStatisticVO vo, String customId) {
-        IPage<InvoiceStatistic> page = this.invoiceInfoDao.selectStatistics(vo.getBeginMonth(),
+    public IPage<InvoiceStatistic> queryInvoiceStatistics(InvoiceStatisticVO vo, String customId) {
+        return this.invoiceInfoDao.selectStatistics(vo.getBeginMonth(),
                 vo.getEndMonth(),
                 vo.getCompanyId(),
                 customId,
                 vo.getPageNo(),
                 vo.getPageSize());
-        InvoiceStatisticDTO invoiceStatisticDTO = new InvoiceStatisticDTO();
-        invoiceStatisticDTO.setStatistics(page.getRecords());
-        invoiceStatisticDTO.setTotal((int) page.getTotal());
-        return invoiceStatisticDTO;
+
     }
 }

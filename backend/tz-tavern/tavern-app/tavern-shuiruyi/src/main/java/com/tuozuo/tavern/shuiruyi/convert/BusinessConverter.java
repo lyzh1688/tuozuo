@@ -1,9 +1,7 @@
 package com.tuozuo.tavern.shuiruyi.convert;
 
 import com.tuozuo.tavern.shuiruyi.dto.*;
-import com.tuozuo.tavern.shuiruyi.model.BusinessDict;
-import com.tuozuo.tavern.shuiruyi.model.CompanyDetailInfo;
-import com.tuozuo.tavern.shuiruyi.model.CompanyInfo;
+import com.tuozuo.tavern.shuiruyi.model.*;
 import com.tuozuo.tavern.shuiruyi.utils.DateUtils;
 
 import java.util.Objects;
@@ -15,13 +13,16 @@ import java.util.Objects;
 public class BusinessConverter {
 
     public static BusinessDictDTO companyInfoToDTO(CompanyInfo companyInfo) {
-        if (Objects.isNull(companyInfo)) {
-            return null;
-        }
         BusinessDictDTO businessDictDTO = new BusinessDictDTO();
         businessDictDTO.setId(companyInfo.getCompanyId());
         businessDictDTO.setName(companyInfo.getCompanyName());
         return null;
+    }
+    public static BusinessDictDTO customInfoToDTO(CustomInfo customInfo) {
+        BusinessDictDTO businessDictDTO = new BusinessDictDTO();
+        businessDictDTO.setId(customInfo.getCustomId());
+        businessDictDTO.setName(customInfo.getCustomName());
+        return businessDictDTO;
     }
 
     public static CompanyDetailDTO companyDetailToDTO(CompanyDetailInfo companyDetailInfo) {
@@ -71,6 +72,25 @@ public class BusinessConverter {
         businessDictDTO.setId(businessDict.getBusinessId());
         businessDictDTO.setName(businessDict.getBusinessName());
         return businessDictDTO;
+    }
+
+    public static CustomInfoDTO customDetailToDTO(CustomDetailInfo customDetailInfo) {
+        CustomInfoDTO customInfoDTO = new CustomInfoDTO();
+        customInfoDTO.setCustomName(customDetailInfo.getCustomName());
+        customInfoDTO.setCustomContact(customDetailInfo.getCustomContact());
+        customInfoDTO.setProvince(customDetailInfo.getProvince());
+        customInfoDTO.setTotalServerCharge(customDetailInfo.getTotalServerCharge());
+        return customInfoDTO;
+    }
+
+    public static CustomTradeFlowDTO customTradeFlowToDTO(CustomTradeFlow customTradeFlow) {
+        CustomTradeFlowDTO customTradeFlowDTO = new CustomTradeFlowDTO();
+        customTradeFlowDTO.setBalance(customTradeFlow.getBalance());
+        customTradeFlowDTO.setEvent(customTradeFlow.getEvent());
+        customTradeFlowDTO.setRemark(customTradeFlow.getRemark());
+        customTradeFlowDTO.setTradeDate(DateUtils.formatDate(customTradeFlow.getTradeDate()));
+        customTradeFlowDTO.setTradeSnapshot(customTradeFlow.getTradeSnapshot());
+        return customTradeFlowDTO;
     }
 
 }

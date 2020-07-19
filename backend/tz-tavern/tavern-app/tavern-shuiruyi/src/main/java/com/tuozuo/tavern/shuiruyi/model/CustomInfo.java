@@ -1,26 +1,32 @@
 package com.tuozuo.tavern.shuiruyi.model;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class CustomInfo {
-    private String customId;
+@TableName("custom_info")
+public class CustomInfo extends Model<CustomInfo> {
+    @TableId
+     String customId;
 
-    private String customName;
+     String customName;
 
-    private String customPswd;
+     String customPswd;
 
-    private String customContact;
+     String customContact;
 
-    private BigDecimal balance;
+     BigDecimal balance;
 
-    private String province;
+     String province;
 
-    private Date updateDate;
+     Date updateDate;
 
-    private String customType;
+     String customType;
 
-    private String hasPaid;
+     String hasPaid;
 
     public String getCustomId() {
         return customId;

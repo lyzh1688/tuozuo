@@ -1,16 +1,15 @@
 package com.tuozuo.tavern.shuiruyi.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.tuozuo.tavern.shuiruyi.model.CustomDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.CustomInfo;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
+@Mapper
+public interface CustomInfoMapper extends BaseMapper<CustomInfo> {
 
-public interface CustomInfoMapper {
-    int deleteByPrimaryKey(String customId);
+    CustomDetailInfo selectDetailInfo(@Param("customId") String customId);
 
-    int insert(CustomInfo record);
-
-    CustomInfo selectByPrimaryKey(String customId);
-
-    List<CustomInfo> selectAll();
-
-    int updateByPrimaryKey(CustomInfo record);
 }

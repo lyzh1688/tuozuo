@@ -12,36 +12,23 @@
     <result column="custom_type" jdbcType="VARCHAR" property="customType" />
     <result column="has_paid" jdbcType="VARCHAR" property="hasPaid" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from custom_info
-    where custom_id = #{customId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.tuozuo.tavern.shuiruyi.model.CustomInfo">
-    insert into custom_info (custom_id, custom_name, custom_pswd, 
-      custom_contact, balance, province, 
-      update_date, custom_type, has_paid
-      )
-    values (#{customId,jdbcType=VARCHAR}, #{customName,jdbcType=VARCHAR}, #{customPswd,jdbcType=VARCHAR}, 
-      #{customContact,jdbcType=VARCHAR}, #{balance,jdbcType=DECIMAL}, #{province,jdbcType=VARCHAR}, 
-      #{updateDate,jdbcType=DATE}, #{customType,jdbcType=VARCHAR}, #{hasPaid,jdbcType=VARCHAR}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.shuiruyi.model.CustomInfo">
-    update custom_info
-    set custom_name = #{customName,jdbcType=VARCHAR},
-      custom_pswd = #{customPswd,jdbcType=VARCHAR},
-      custom_contact = #{customContact,jdbcType=VARCHAR},
-      balance = #{balance,jdbcType=DECIMAL},
-      province = #{province,jdbcType=VARCHAR},
-      update_date = #{updateDate,jdbcType=DATE},
-      custom_type = #{customType,jdbcType=VARCHAR},
-      has_paid = #{hasPaid,jdbcType=VARCHAR}
-    where custom_id = #{customId,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select custom_id, custom_name, custom_pswd, custom_contact, balance, province, update_date, 
-    custom_type, has_paid
-    from custom_info
+  <resultMap id="BaseDetailResultMap" type="com.tuozuo.tavern.shuiruyi.model.CustomDetailInfo">
+    <id column="custom_id" jdbcType="VARCHAR" property="customId" />
+    <result column="custom_name" jdbcType="VARCHAR" property="customName" />
+    <result column="custom_pswd" jdbcType="VARCHAR" property="customPswd" />
+    <result column="custom_contact" jdbcType="VARCHAR" property="customContact" />
+    <result column="balance" jdbcType="DECIMAL" property="balance" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="update_date" jdbcType="DATE" property="updateDate" />
+    <result column="custom_type" jdbcType="VARCHAR" property="customType" />
+    <result column="has_paid" jdbcType="VARCHAR" property="hasPaid" />
+    <result column="total_fee" jdbcType="DECIMAL" property="totalServerCharge" />
+  </resultMap>
+  <select id="selectDetailInfo" resultMap="BaseDetailResultMap">
+    select t.custom_id, t.custom_name, t.custom_pswd, t.custom_contact, t.balance, t.province, t.update_date,
+    t.custom_type, t.has_paid,t1.total_fee
+    from custom_info t left join custom_statistic_snapshot t1
+    on t.custom_id = t1.custom_id
     where custom_id = #{customId,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
