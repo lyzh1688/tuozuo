@@ -10,7 +10,6 @@ import com.tuozuo.tavern.shuiruyi.model.CustomTradeFlow;
 import com.tuozuo.tavern.shuiruyi.service.CustomInfoService;
 import com.tuozuo.tavern.shuiruyi.vo.CustomInfoVO;
 import com.tuozuo.tavern.shuiruyi.vo.CustomListVO;
-import com.tuozuo.tavern.shuiruyi.vo.PageVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ public class CustomInfoEndpoint {
     /**
      * 客户详情信息
      */
-    @GetMapping("/{customId}")
+    @GetMapping("/detail/{customId}")
     public TavernResponse queryCustomDetail(@PathVariable("customId") String customId) {
         try {
             CustomDetailInfo customDetailInfo = this.customInfoService.queryCustomInfo(customId);
@@ -54,9 +53,10 @@ public class CustomInfoEndpoint {
      */
     @GetMapping("/tradeflow/{customId}")
     public TavernResponse queryCustomTradeFlow(@PathVariable("customId") String customId,
-                                               @RequestBody @Valid PageVO vo) {
+                                               @RequestParam(value = "pageNo") int pageNo,
+                                               @RequestParam(value = "pageSize") int pageSize) {
         try {
-            IPage<CustomTradeFlow> page = this.customInfoService.queryCustomTradeFlowList(customId, vo.getPageNo(), vo.getPageSize());
+            IPage<CustomTradeFlow> page = this.customInfoService.queryCustomTradeFlowList(customId, pageNo, pageSize);
             List<CustomTradeFlowDTO> customTradeFlowDTO = page.getRecords().stream()
                     .map(BusinessConverter::customTradeFlowToDTO)
                     .collect(Collectors.toList());
@@ -124,9 +124,12 @@ public class CustomInfoEndpoint {
      * 我的客户列表
      */
     @GetMapping("/list")
-    public TavernResponse queryCustomList(@RequestBody @Valid CustomListVO vo) {
+    public TavernResponse queryCustomList(@RequestParam(name = "customName", defaultValue = "") String customName,
+                                          @RequestParam(name = "hasPaid", defaultValue = "") String hasPaid,
+                                          @RequestParam(value = "pageNo") int pageNo,
+                                          @RequestParam(value = "pageSize") int pageSize) {
         try {
-            IPage<CustomInfo> page = this.customInfoService.queryCustomInfoList(vo.getCustomName(), vo.getHasPaid(), vo.getPageNo(), vo.getPageSize());
+            IPage<CustomInfo> page = this.customInfoService.queryCustomInfoList(customName, hasPaid, pageNo, pageSize);
             List<CustomInfoDTO> customInfoDTOList = page.getRecords()
                     .stream()
                     .map(BusinessConverter::customInfoToDTO)
@@ -144,13 +147,14 @@ public class CustomInfoEndpoint {
     /**
      * 充值扣款
      */
-    @PutMapping("/trade/{customId}")
+    @PostMapping("/trade/{customId}")
     public TavernResponse investAndPayment(@PathVariable("customId") String customId,
                                            @RequestParam("customType") String customType,
                                            @RequestParam("event") String event,
-                                           @RequestParam("amount") String amount,
+                                           @RequestParam("amount") double amount,
                                            @RequestParam("tradeSnapshot") MultipartFile tradeSnapshot) {
         try {
+            this.customInfoService.investAndPayment(customId, customType, event, amount, tradeSnapshot);
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[充值扣款] failed", e);

@@ -11,7 +11,16 @@ public class CustomInfoDetailDTO {
     private String customName;
     private String customContact;
     private BigDecimal totalServerCharge;
+    private BigDecimal balance;
     private String province;
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
 
     public String getCustomName() {
         return customName;

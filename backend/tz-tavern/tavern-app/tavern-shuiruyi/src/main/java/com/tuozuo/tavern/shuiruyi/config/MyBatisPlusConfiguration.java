@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
  * Code Monkey: 何彪 <br>
  * Dev Time: 2019/07/02 <br>
  */
-@MapperScan("com.tuozuo.tavern.shuiruyi.mapper.*")
+
 @Configuration
 public class MyBatisPlusConfiguration {
     /**

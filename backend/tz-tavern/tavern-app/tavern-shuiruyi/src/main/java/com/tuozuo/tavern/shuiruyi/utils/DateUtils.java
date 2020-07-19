@@ -20,7 +20,7 @@ public final class DateUtils {
 	public static final DateTimeFormatter DEFAULT_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	public static final DateTimeFormatter SIMPLE_8_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 	public static final DateTimeFormatter DEFAULT_MIN_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
-	public static final SimpleDateFormat DEFAULT_DATE_FORMATTER_BY_DATE = new SimpleDateFormat("yyyy-MM-dd");
+	public static final SimpleDateFormat DEFAULT_DATE_FORMATTER_BY_DATE = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	public static final SimpleDateFormat DEFAULT_DATETIME_FORMATTER1 = new SimpleDateFormat("yyyy-MM-dd");
 
 	public DateUtils() {

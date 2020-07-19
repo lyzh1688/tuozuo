@@ -16,10 +16,10 @@
     <result column="bank_flow_file" jdbcType="VARCHAR" property="bankFlowFile" />
     <result column="auth_letter_file" jdbcType="VARCHAR" property="authLetterFile" />
     <result column="contract_id" jdbcType="VARCHAR" property="contractId" />
-    <result column="invoice_date" jdbcType="Timestamp" property="invoiceDate" />
+    <result column="invoice_date" jdbcType="TIMESTAMP" property="invoiceDate" />
   </resultMap>
   <resultMap id="BaseStatisticsResultMap" type="com.tuozuo.tavern.shuiruyi.model.InvoiceStatistic">
-    <result column="company_id" jdbcType="VARCHAR" property="invoiceCnt" />
+    <result column="company_id" jdbcType="VARCHAR" property="companyId" />
     <result column="company_name" jdbcType="VARCHAR" property="companyName" />
     <result column="invoice_cnt" jdbcType="INTEGER" property="invoiceCnt" />
     <result column="invoice_amount" jdbcType="DECIMAL" property="invoiceAmount" />
@@ -37,10 +37,10 @@
             and t.company_id = #{companyId}
         </if>
 		<if test="beginMonth != null and beginMonth != ''">
-            and t2.TRADE_DATE >= STR_TO_DATE(#{beginMonth},'%Y-%m')
+            and t.invoice_date >= STR_TO_DATE(#{beginMonth},'%Y-%m')
         </if>
 		<if test="endMonth != null and endMonth != ''">
-            and t2.TRADE_DATE <![CDATA[ <= ]]> STR_TO_DATE(#{endMonth},'%Y-%m')
+            and t.invoice_date <![CDATA[ <= ]]> STR_TO_DATE(#{endMonth},'%Y-%m')
         </if>
 		group by t.invoice_date
 		order by invoice_date

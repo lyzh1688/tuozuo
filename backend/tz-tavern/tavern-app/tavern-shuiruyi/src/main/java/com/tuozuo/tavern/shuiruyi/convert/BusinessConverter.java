@@ -17,7 +17,7 @@ public class BusinessConverter {
         BusinessDictDTO businessDictDTO = new BusinessDictDTO();
         businessDictDTO.setId(companyInfo.getCompanyId());
         businessDictDTO.setName(companyInfo.getCompanyName());
-        return null;
+        return businessDictDTO;
     }
 
     public static BusinessDictDTO customInfoToDictDTO(CustomInfo customInfo) {
@@ -82,6 +82,7 @@ public class BusinessConverter {
         customInfoDetailDTO.setCustomContact(customDetailInfo.getCustomContact());
         customInfoDetailDTO.setProvince(customDetailInfo.getProvince());
         customInfoDetailDTO.setTotalServerCharge(customDetailInfo.getTotalServerCharge());
+        customInfoDetailDTO.setBalance(customDetailInfo.getBalance());
         return customInfoDetailDTO;
     }
 
@@ -97,8 +98,8 @@ public class BusinessConverter {
 
     public static CustomInfoDTO customInfoToDTO(CustomInfo customInfo) {
         CustomInfoDTO customInfoDTO = new CustomInfoDTO();
-        BeanUtils.copyProperties(customInfo,customInfoDTO);
-        customInfoDTO.setUpdateDate(DateUtils.formatDate(customInfo.getUpdateDate()));
+        BeanUtils.copyProperties(customInfo, customInfoDTO);
+        customInfoDTO.setUpdateDate(DateUtils.formatDateTime(customInfo.getUpdateDate(),DateUtils.DEFAULT_DATETIME_FORMATTER));
         return customInfoDTO;
     }
 }

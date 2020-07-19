@@ -20,11 +20,6 @@
 
         <dependency>
             <groupId>com.tuozuo.tavern</groupId>
-            <artifactId>tavern-common</artifactId>
-            <version>${tavern.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.tuozuo.tavern</groupId>
             <artifactId>tavern-common-protocol</artifactId>
             <version>${tavern.version}</version>
         </dependency>
@@ -65,6 +60,11 @@
             <version>${commons.lang3.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.37</version>
+        </dependency>
     </dependencies>
 
     <build>

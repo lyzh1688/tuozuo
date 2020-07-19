@@ -46,8 +46,8 @@
     <result column="cfo_contact" jdbcType="VARCHAR" property="cfoContact" />
     <result column="cfo_id_pic_up" jdbcType="VARCHAR" property="cfoIdPicUp" />
     <result column="cfo_id_pic_back" jdbcType="VARCHAR" property="cfoIdPicBack" />
-    <result column="total_invoice_num" jdbcType="VARCHAR" property="totalInvoiceNum" />
-    <result column="invoiced_num" jdbcType="VARCHAR" property="invoicedNum" />
+    <result column="total_invoice_num" jdbcType="INTEGER" property="totalInvoiceNum" />
+    <result column="invoiced_num" jdbcType="INTEGER" property="invoicedNum" />
     <result column="total_invoice_amount" jdbcType="VARCHAR" property="totalInvoiceAmt" />
   </resultMap>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -61,7 +61,7 @@
     select company_id, company_status, custom_id, company_name, company_type, tax, address,
     free_delivery, include_cancel, begin_date, end_date, boss_name, boss_id, boss_contact,
     boss_id_pic_up, boss_id_pic_back, cfo_name, cfo_id, cfo_contact, cfo_id_pic_up, cfo_id_pic_back,
-	sum(total_invoice_num) total_invoice_num,sum(invoiced_num) invoiced_num,sum(invoice_amount) total_invoice_amount
+	sum(invoice_num) total_invoice_num,sum(invoiced_num) invoiced_num,sum(invoice_amount) total_invoice_amount
 	from
     (
        select t.company_id, t.company_status, t.custom_id, t.company_name, t.company_type, t.tax, t.address,

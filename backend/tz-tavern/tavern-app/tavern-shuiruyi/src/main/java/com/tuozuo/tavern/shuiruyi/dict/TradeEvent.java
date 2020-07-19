@@ -16,4 +16,6 @@ public enum TradeEvent {
     TradeEvent(String event) {
         this.event = event;
     }
+
+
 }

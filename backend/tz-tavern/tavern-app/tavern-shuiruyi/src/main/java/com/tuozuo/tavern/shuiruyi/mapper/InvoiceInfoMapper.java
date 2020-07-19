@@ -9,14 +9,15 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+
 @Mapper
 public interface InvoiceInfoMapper extends BaseMapper<InvoiceInfo> {
 
-    IPage<InvoiceStatistic> selectStatistic(@Param("beginMonth") String beginMonth,
+    IPage<InvoiceStatistic> selectStatistic(Page page,
+                                            @Param("beginMonth") String beginMonth,
                                             @Param("endMonth") String endMonth,
                                             @Param("companyId") String companyId,
-                                            @Param("customId") String customId,
-                                            Page page);
+                                            @Param("customId") String customId);
 
 
 }

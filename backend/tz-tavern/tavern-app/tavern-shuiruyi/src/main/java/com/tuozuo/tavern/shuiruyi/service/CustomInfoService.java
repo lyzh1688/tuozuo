@@ -30,7 +30,7 @@ public interface CustomInfoService {
     void investAndPayment(String customId,
                           String customType,
                           String event,
-                          String amount,
-                          MultipartFile tradeSnapshot);
+                          double amount,
+                          MultipartFile tradeSnapshot) throws Exception;
 
 }

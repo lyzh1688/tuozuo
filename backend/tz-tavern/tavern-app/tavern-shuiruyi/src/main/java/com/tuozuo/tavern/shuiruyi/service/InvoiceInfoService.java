@@ -1,9 +1,7 @@
 package com.tuozuo.tavern.shuiruyi.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.tuozuo.tavern.shuiruyi.dto.InvoiceStatisticDTO;
 import com.tuozuo.tavern.shuiruyi.model.InvoiceStatistic;
-import com.tuozuo.tavern.shuiruyi.vo.InvoiceStatisticVO;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -11,6 +9,6 @@ import com.tuozuo.tavern.shuiruyi.vo.InvoiceStatisticVO;
  */
 public interface InvoiceInfoService {
 
-    IPage<InvoiceStatistic> queryInvoiceStatistics(InvoiceStatisticVO invoiceStatisticVO, String customId);
+    IPage<InvoiceStatistic> queryInvoiceStatistics(String beginMonth, String endMonth, String companyId, String customId, int pageNo, int pageSize);
 
 }

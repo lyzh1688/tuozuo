@@ -6,7 +6,6 @@ import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.shuiruyi.dto.InvoiceStatisticDTO;
 import com.tuozuo.tavern.shuiruyi.model.InvoiceStatistic;
 import com.tuozuo.tavern.shuiruyi.service.InvoiceInfoService;
-import com.tuozuo.tavern.shuiruyi.vo.InvoiceStatisticVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +28,14 @@ public class BizControlEndpoint {
      * 开票统计
      */
     @GetMapping("/invoice/statistics")
-    public TavernResponse queryInvoiceStatistic(@RequestBody InvoiceStatisticVO vo,
-                                                @RequestHeader(TavernRequestAuthFields.USER_ID) String userId) {
+    public TavernResponse queryInvoiceStatistic(@RequestParam(value = "beginMonth", required = false) String beginMonth,
+                                                @RequestParam(value = "endMonth", required = false) String endMonth,
+                                                @RequestParam(value = "companyId", required = false) String companyId,
+                                                @RequestParam(value = "pageNo") int pageNo,
+                                                @RequestParam(value = "pageSize") int pageSize,
+                                                @RequestHeader(TavernRequestAuthFields.USER_ID) String customId) {
         try {
-            return queryTavernResponse(vo, userId);
+            return queryTavernResponse(beginMonth, endMonth, companyId, customId, pageNo, pageSize);
         } catch (Exception e) {
             LOGGER.error("[开票统计] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
@@ -43,18 +46,22 @@ public class BizControlEndpoint {
      * 缴税明细
      */
     @GetMapping("/invoice/detail")
-    public TavernResponse queryInvoiceDetail(@RequestBody InvoiceStatisticVO vo,
-                                             @RequestHeader(TavernRequestAuthFields.USER_ID) String userId) {
+    public TavernResponse queryInvoiceDetail(@RequestParam(value = "beginMonth", required = false) String beginMonth,
+                                             @RequestParam(value = "endMonth", required = false) String endMonth,
+                                             @RequestParam(value = "companyId", required = false) String companyId,
+                                             @RequestParam(value = "pageNo") int pageNo,
+                                             @RequestParam(value = "pageSize") int pageSize,
+                                             @RequestHeader(TavernRequestAuthFields.USER_ID) String customId) {
         try {
-            return queryTavernResponse(vo, userId);
+            return queryTavernResponse(beginMonth, endMonth, companyId, customId, pageNo, pageSize);
         } catch (Exception e) {
             LOGGER.error("[缴税明细] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }
 
-    private TavernResponse queryTavernResponse(InvoiceStatisticVO vo, String userId) {
-        IPage<InvoiceStatistic> page = this.invoiceInfoService.queryInvoiceStatistics(vo, userId);
+    private TavernResponse queryTavernResponse(String beginMonth, String endMonth, String companyId, String customId, int pageNo, int pageSize) {
+        IPage<InvoiceStatistic> page = this.invoiceInfoService.queryInvoiceStatistics(beginMonth, endMonth, companyId, customId, pageNo, pageSize);
         InvoiceStatisticDTO invoiceStatisticDTO = new InvoiceStatisticDTO();
         invoiceStatisticDTO.setStatistics(page.getRecords());
         invoiceStatisticDTO.setTotal((int) page.getTotal());

@@ -13,7 +13,7 @@ zuul:
       stripPrefix: false
     tavern-shuiruyi:
       path: /tuozuo/shuiruyi/v1/**
-      url: http://127.0.0.1:8070/
+      url: http://127.0.0.1:8083/
       stripPrefix: false
   host:
     connect-timeout-millis: 10000

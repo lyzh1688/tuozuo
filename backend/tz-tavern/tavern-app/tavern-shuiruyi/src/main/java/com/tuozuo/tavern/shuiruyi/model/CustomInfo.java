@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @TableName("custom_info")
@@ -22,7 +23,7 @@ public class CustomInfo extends Model<CustomInfo> {
 
      String province;
 
-     Date updateDate;
+     LocalDateTime updateDate;
 
      String customType;
 
@@ -76,11 +77,11 @@ public class CustomInfo extends Model<CustomInfo> {
         this.province = province == null ? null : province.trim();
     }
 
-    public Date getUpdateDate() {
+    public LocalDateTime getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
 

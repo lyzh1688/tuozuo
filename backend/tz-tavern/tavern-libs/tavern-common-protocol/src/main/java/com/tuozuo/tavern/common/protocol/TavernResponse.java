@@ -8,10 +8,10 @@ import static com.tuozuo.tavern.common.protocol.RetCodeDict.AUTH_FAILURE;
  */
 public class TavernResponse<T> {
 
-    int retCode;
-    String message;
+    int code;
+    String msg;
     T data;
-    public static final TavernResponse OK = new TavernResponse(0, "OK", null);
+    public static final TavernResponse OK = new TavernResponse(0, "ok", null);
     public static final TavernResponse AUTH_FAILED = new TavernResponse(AUTH_FAILURE, "token timeout", null);
 
     public static <T> TavernResponse<T> ok(T data) {
@@ -33,26 +33,26 @@ public class TavernResponse<T> {
     private TavernResponse() {
     }
 
-    public TavernResponse(int retCode, String message, T data) {
-        this.retCode = retCode;
-        this.message = message;
+    public TavernResponse(int code, String msg, T data) {
+        this.code = code;
+        this.msg = msg;
         this.data = data;
     }
 
-    public int getRetCode() {
-        return retCode;
+    public int getCode() {
+        return code;
     }
 
-    public void setRetCode(int retCode) {
-        this.retCode = retCode;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public T getData() {

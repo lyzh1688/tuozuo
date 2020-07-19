@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.shuiruyi.model;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
@@ -10,6 +11,7 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 @TableName("business_dict")
 public class BusinessDict extends Model<BusinessDict> {
 
+    @TableId
     private String businessId;
     private String businessName;
     private String businessGroup;

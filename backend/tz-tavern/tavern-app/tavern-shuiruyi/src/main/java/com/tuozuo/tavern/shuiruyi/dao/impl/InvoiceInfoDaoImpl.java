@@ -19,8 +19,8 @@ public class InvoiceInfoDaoImpl implements InvoiceInfoDao {
 
     @Override
     public IPage<InvoiceStatistic> selectStatistics(String beginMonth, String endMonth, String companyId, String customId, int pageNo, int pageSize) {
-        Page page = new Page(pageNo, pageSize);
-        return this.invoiceInfoMapper.selectStatistic(beginMonth, endMonth, companyId, customId, page);
+        Page<InvoiceStatistic> page = new Page(pageNo, pageSize);
+        return this.invoiceInfoMapper.selectStatistic(page, beginMonth, endMonth, companyId, customId);
 
     }
 }

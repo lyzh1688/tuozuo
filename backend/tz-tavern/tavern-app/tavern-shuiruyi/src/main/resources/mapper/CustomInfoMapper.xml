@@ -29,7 +29,7 @@
     t.custom_type, t.has_paid,t1.total_fee
     from custom_info t left join custom_statistic_snapshot t1
     on t.custom_id = t1.custom_id
-    where custom_id = #{customId,jdbcType=VARCHAR}
+    where t.custom_id = #{customId,jdbcType=VARCHAR}
   </select>
   <select id="selectCustomInfoList" resultMap="BaseResultMap">
     select custom_id, custom_name, custom_pswd, custom_contact, balance, province, update_date, 
@@ -40,9 +40,9 @@
         custom_name = #{customName}
       </if>
       <if test="hasPaid != null and hasPaid != ''">
-        has_paid = #{hasPaid}
+       and has_paid = #{hasPaid}
       </if>
-      order by custom_name
     </where>
+    order by custom_name
   </select>
 </mapper>

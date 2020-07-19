@@ -1,16 +1,21 @@
 package com.tuozuo.tavern.shuiruyi.model;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
+@TableName("custom_trade_flow")
 public class CustomTradeFlow {
+    @TableId
     private String tradeFlowId;
 
     private String customId;
 
     private Date tradeDate;
 
-    private String amount;
+    private BigDecimal amount;
 
     private String tradeType;
 
@@ -46,12 +51,12 @@ public class CustomTradeFlow {
         this.tradeDate = tradeDate;
     }
 
-    public String getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
-        this.amount = amount == null ? null : amount.trim();
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount == null ? null : amount;
     }
 
     public String getTradeType() {

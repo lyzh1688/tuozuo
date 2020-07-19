@@ -11,8 +11,6 @@ public class CustomInfoDTO {
 
     String customName;
 
-    String customPswd;
-
     String customContact;
 
     BigDecimal balance;
@@ -39,14 +37,6 @@ public class CustomInfoDTO {
 
     public void setCustomName(String customName) {
         this.customName = customName == null ? null : customName.trim();
-    }
-
-    public String getCustomPswd() {
-        return customPswd;
-    }
-
-    public void setCustomPswd(String customPswd) {
-        this.customPswd = customPswd == null ? null : customPswd.trim();
     }
 
     public String getCustomContact() {

@@ -15,7 +15,7 @@ public interface CustomInfoMapper extends BaseMapper<CustomInfo> {
 
     CustomDetailInfo selectDetailInfo(@Param("customId") String customId);
 
-    IPage<CustomInfo> selectCustomInfoList(@Param("customName") String customName, @Param("hasPaid") String hasPaid, Page page);
+    IPage<CustomInfo> selectCustomInfoList(Page page, @Param("customName") String customName, @Param("hasPaid") String hasPaid);
 
 
 }

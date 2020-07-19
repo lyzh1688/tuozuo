@@ -2,10 +2,8 @@ package com.tuozuo.tavern.shuiruyi.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.shuiruyi.dao.InvoiceInfoDao;
-import com.tuozuo.tavern.shuiruyi.dto.InvoiceStatisticDTO;
 import com.tuozuo.tavern.shuiruyi.model.InvoiceStatistic;
 import com.tuozuo.tavern.shuiruyi.service.InvoiceInfoService;
-import com.tuozuo.tavern.shuiruyi.vo.InvoiceStatisticVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +18,13 @@ public class InvoiceInfoServiceImpl implements InvoiceInfoService {
     private InvoiceInfoDao invoiceInfoDao;
 
     @Override
-    public IPage<InvoiceStatistic> queryInvoiceStatistics(InvoiceStatisticVO vo, String customId) {
-        return this.invoiceInfoDao.selectStatistics(vo.getBeginMonth(),
-                vo.getEndMonth(),
-                vo.getCompanyId(),
+    public IPage<InvoiceStatistic> queryInvoiceStatistics(String beginMonth, String endMonth, String companyId, String customId, int pageNo, int pageSize) {
+        return this.invoiceInfoDao.selectStatistics(beginMonth,
+                endMonth,
+                companyId,
                 customId,
-                vo.getPageNo(),
-                vo.getPageSize());
+                pageNo,
+                pageSize);
 
     }
 }
