@@ -16,13 +16,14 @@ export const asyncRouterMap = [
     meta: { title: 'home' },
     redirect: '/dashboard/workplace',
     children: [
+
       // dashboard
       {
         path: '/dashboard',
         name: 'dashboard',
         redirect: '/dashboard/workplace',
         component: RouteView,
-        meta: { title: '仪表盘', keepAlive: true, icon: bxAnaalyse },
+        meta: { title: '仪表盘', keepAlive: true, icon: bxAnaalyse, permission: ['admin'] },
         children: [
           {
             path: '/dashboard/analysis/:pageNo([1-9]\\d*)?',
@@ -38,7 +39,27 @@ export const asyncRouterMap = [
           }
         ]
       },
-
+      {
+        path: '/financialServices',
+        name: 'FinancialServices',
+        redirect: '/dashboard/workplace',
+        component: RouteView,
+        meta: { title: '财务服务', keepAlive: true, icon: 'account-book', permission: ['admin', 'shuiruyi.custom.normal'] },
+        children: [
+          {
+            path: '/financialServices/console',
+            name: 'Console',
+            component: () => import('@/views/user/Console'),
+            meta: { title: '控制台', keepAlive: false, permission: ['admin', 'shuiruyi.custom.normal'] }
+          },
+          {
+            path: '/financialServices/myInfo',
+            name: 'MyInfo',
+            component: () => import('@/views/user/MyInfo'),
+            meta: { title: '我的', keepAlive: true, permission: ['admin', 'shuiruyi.custom.normal'] }
+          }
+        ]
+      },
       // forms
       {
         path: '/form',
@@ -346,21 +367,6 @@ export const constantRouterMap = [
         path: '/login',
         name: 'login',
         component: () => import(/* webpackChunkName: "user" */ '@/views/user/Login')
-      },
-      {
-        path: 'register',
-        name: 'register',
-        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Register')
-      },
-      {
-        path: 'register-result',
-        name: 'registerResult',
-        component: () => import(/* webpackChunkName: "user" */ '@/views/user/RegisterResult')
-      },
-      {
-        path: 'recover',
-        name: 'recover',
-        component: undefined
       }
     ]
   },

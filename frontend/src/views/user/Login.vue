@@ -151,7 +151,6 @@ export default {
           getPublicKey(loginParams.username, loginParams.roleGroup)
             .then(response => {
               const result = response.result
-              console.log(result)
               if (String(result.code) === '0') {
                 loginParams.password = RsaEncrypt.rsaData(values.password, result.data.publicKey)
                 Login(loginParams)
@@ -162,7 +161,7 @@ export default {
                   })
               } else {
                 this.$notification.error({
-                  message: result.ms + ':' + result.msg,
+                  message: result.code + ':' + result.msg,
                   description: '登录失败。请稍后再试'
                 })
               }
