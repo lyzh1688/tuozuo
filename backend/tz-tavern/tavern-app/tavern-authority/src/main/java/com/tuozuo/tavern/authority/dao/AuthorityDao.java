@@ -10,4 +10,5 @@ public interface AuthorityDao {
     boolean saveRSAKey(String userId, String systemId, String roleGroup, RSAKeyPair pair);
     String getRSAPrivateKey(String userId, String systemId, String roleGroup);
     User getUser(String userId, String systemId, String roleGroup);
+    void updateFailedTimes(User user);
 }

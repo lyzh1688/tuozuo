@@ -9,6 +9,14 @@ public class TokenAuthority {
     Boolean loginSuccess;
     String loginMessage;
 
+    public TokenAuthority() {
+    }
+
+    public TokenAuthority(Boolean loginSuccess, String loginMessage) {
+        this.loginSuccess = loginSuccess;
+        this.loginMessage = loginMessage;
+    }
+
     public String getLoginMessage() {
         return loginMessage;
     }

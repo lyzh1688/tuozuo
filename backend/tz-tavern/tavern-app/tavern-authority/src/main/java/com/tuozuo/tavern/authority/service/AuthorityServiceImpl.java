@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.authority.service;
 
+import com.google.common.base.Strings;
 import com.tuozuo.tavern.authority.dao.AuthorityDao;
 import com.tuozuo.tavern.authority.model.Password;
 import com.tuozuo.tavern.authority.model.RSAPublicKey;
@@ -26,6 +27,7 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Autowired
     AuthorityDao authorityDao;
 
+
     @Override
     public RSAPublicKey getRSAPublicKeys(String userId, String systemId, String roleGroup) throws NoSuchAlgorithmException {
         RSAKeyPair pair = RSAEncrypt.genKeyPair();
@@ -40,9 +42,30 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Override
     public Optional<TokenAuthority> login(String userId, Password password, String systemId, String roleGroup) {
         String privateRSAKey = authorityDao.getRSAPrivateKey(userId, systemId, roleGroup);
+        if (Strings.isNullOrEmpty(privateRSAKey)) {
+            return Optional.of(new TokenAuthority(false, "密钥失效"));
+        }
         String inputMD5Pswd = password.getMD5Password(privateRSAKey);
+        if (Strings.isNullOrEmpty(inputMD5Pswd)) {
+            return Optional.of(new TokenAuthority(false, "密码不能为空"));
+        }
         User user = this.authorityDao.getUser(userId, systemId, roleGroup);
+        if (user == null) {
+            return Optional.of(new TokenAuthority(false, "用户不存在"));
+        }
         TokenAuthority tokenAuthority = user.login(inputMD5Pswd, property);
+        if (tokenAuthority.getLoginSuccess()) {
+            //登陆成功失败次数清零
+            user.setFailedTimes(0);
+            this.authorityDao.updateFailedTimes(user);
+        } else {
+            //登陆失败增加失败次数
+            if (user.getFailedTimes() < User.getMaxFailedTimes()) {
+                user.incFailedTimes();
+                this.authorityDao.updateFailedTimes(user);
+            }
+        }
+
         return Optional.of(tokenAuthority);
     }
 }

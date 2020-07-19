@@ -15,7 +15,6 @@
         <module>tavern-parent</module>
         <module>tavern-common-protocol</module>
         <module>tavern-auth</module>
-        <module>tavern-common</module>
     </modules>
 
 

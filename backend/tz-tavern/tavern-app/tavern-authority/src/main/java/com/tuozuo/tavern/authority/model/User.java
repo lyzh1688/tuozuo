@@ -110,6 +110,10 @@ public class User {
         this.failedTimes = failedTimes;
     }
 
+    public void incFailedTimes() {
+        this.failedTimes++;
+    }
+
     public TokenAuthority getTokenAuthority() {
         return tokenAuthority;
     }

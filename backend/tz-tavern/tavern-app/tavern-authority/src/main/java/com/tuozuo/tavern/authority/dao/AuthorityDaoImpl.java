@@ -1,6 +1,7 @@
 package com.tuozuo.tavern.authority.dao;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tuozuo.tavern.authority.mapper.AuthUserMapper;
@@ -56,6 +57,16 @@ public class AuthorityDaoImpl extends ServiceImpl<AuthUserMapper, User> implemen
                 .eq("system_id", systemId)
                 .eq("role_group", roleGroup);
         return this.getOne(wrapper);
+    }
+
+    @Override
+    public void updateFailedTimes(User user) {
+        UpdateWrapper updateWrapper = Wrappers.<User>update()
+                .eq("user_id", user.getUserId())
+                .eq("system_id", user.getSystemId())
+                .eq("role_group", user.getRoleGroup())
+                .set("failed_times",user.getFailedTimes());
+        this.update(user,updateWrapper);
     }
 
 }

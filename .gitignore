@@ -6,3 +6,5 @@ backend/tz-tavern/.idea/libraries/Maven__org_springframework_spring_webmvc_4_3_2
 backend/tz-tavern/*.iml
 *.iml
 *.iml
+*/target/*.*
+**/target/**
