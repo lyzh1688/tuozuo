@@ -1,7 +1,9 @@
 <template>
   <a-config-provider :locale="locale">
     <div id="app">
-      <router-view/>
+      <!-- <keep-alive :include="cachedPages"> -->
+      <router-view />
+      <!-- </keep-alive> -->
     </div>
   </a-config-provider>
 </template>
@@ -13,6 +15,7 @@ import { i18nRender } from '@/locales'
 export default {
   data () {
     return {
+      cacheList: []
     }
   },
   computed: {
@@ -23,6 +26,21 @@ export default {
 
       return this.$i18n.getLocaleMessage(this.$store.getters.lang).antLocale
     }
+    // cachedPages () {
+    //   return this.$store.state.tagsView.cachedPages
+    // }
   }
+  // watch: {
+  //   cachedPages: {
+  //       handler: function (val, oldval) {
+  //         console.log('cachedPages', val)
+  //         this.cacheList = []
+  //     for (const i of this.$store.getters.cachedPages) {
+  //       this.cacheList.push(i.name)
+  //     }
+  //       },
+  //       deep: true// 对象内部的属性监听，也叫深度监听
+  //     }
+  // }
 }
 </script>

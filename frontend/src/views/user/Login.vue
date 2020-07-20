@@ -92,6 +92,7 @@ import { timeFix } from '@/utils/util'
 import RsaEncrypt from '@/components/RSAHelper/RsaEncrypt'
 import { getPublicKey } from '@/api/login'
 export default {
+  name: 'Login',
   data () {
     return {
       customActiveKey: 'tab1',

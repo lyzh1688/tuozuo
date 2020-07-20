@@ -2,112 +2,104 @@
 import { UserLayout, BasicLayout, BlankLayout } from '@/layouts'
 import { bxAnaalyse } from '@/core/icons'
 
-const RouteView = {
-  name: 'RouteView',
-  render: (h) => h('router-view')
-}
+// const RouteView = {
+//   name: 'RouteView',
+//   render: (h) => h('router-view')
+// }
 
 export const asyncRouterMap = [
-
-  {
-    path: '/',
-    name: 'index',
-    component: BasicLayout,
-    meta: { title: 'home' },
+   // dashboard
+   {
+    path: '/dashboard',
+    name: 'dashboard',
     redirect: '/dashboard/workplace',
+    component: BasicLayout,
+    meta: { title: '仪表盘', keepAlive: true, icon: bxAnaalyse, permission: ['admin'] },
     children: [
-
-      // dashboard
       {
-        path: '/dashboard',
-        name: 'dashboard',
-        redirect: '/dashboard/workplace',
-        component: RouteView,
-        meta: { title: '仪表盘', keepAlive: true, icon: bxAnaalyse, permission: ['admin'] },
-        children: [
-          {
-            path: '/dashboard/analysis/:pageNo([1-9]\\d*)?',
-            name: 'Analysis',
-            component: () => import('@/views/dashboard/Analysis'),
-            meta: { title: '分析页', keepAlive: false, permission: ['admin'] }
-          },
-          {
-            path: '/dashboard/workplace',
-            name: 'Workplace',
-            component: () => import('@/views/dashboard/Workplace'),
-            meta: { title: '首页', keepAlive: true }
-          }
-        ]
+        path: '/dashboard/analysis/:pageNo([1-9]\\d*)?',
+        name: 'Analysis',
+        component: () => import('@/views/dashboard/Analysis'),
+        meta: { title: '分析页', keepAlive: false, permission: ['admin'] }
       },
       {
-        path: '/financialServices',
-        name: 'FinancialServices',
-        redirect: '/dashboard/workplace',
-        component: RouteView,
-        meta: { title: '财务服务', keepAlive: true, icon: 'account-book', permission: ['admin', 'shuiruyi.custom.normal'] },
-        children: [
-          {
-            path: '/financialServices/console',
-            name: 'Console',
-            component: () => import('@/views/user/Console'),
-            meta: { title: '控制台', keepAlive: false, permission: ['admin', 'shuiruyi.custom.normal'] }
-          },
-          {
-            path: '/financialServices/myInfo',
-            name: 'MyInfo',
-            component: () => import('@/views/user/MyInfo'),
-            meta: { title: '我的', keepAlive: true, permission: ['admin', 'shuiruyi.custom.normal'] }
-          }
-        ]
-      },
-      // forms
+        path: '/dashboard/workplace',
+        name: 'Workplace',
+        component: () => import('@/views/dashboard/Workplace'),
+        meta: { title: '首页', keepAlive: true, noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/financialServices',
+    name: 'FinancialServices',
+    redirect: '/dashboard/workplace',
+    component: BasicLayout,
+    meta: { title: '财务服务', keepAlive: true, icon: 'account-book', permission: ['admin', 'shuiruyi.custom.normal'] },
+    children: [
       {
-        path: '/form',
-        redirect: '/form/base-form',
-        component: RouteView,
-        meta: { title: '表单页', icon: 'form', permission: ['admin'] },
-        children: [
-          {
-            path: '/form/base-form',
-            name: 'BaseForm',
-            component: () => import('@/views/form/basicForm'),
-            meta: { title: '基础表单', keepAlive: true, permission: ['admin'] }
-          },
-          {
-            path: '/form/step-form',
-            name: 'StepForm',
-            component: () => import('@/views/form/stepForm/StepForm'),
-            meta: { title: '分步表单', keepAlive: true, permission: ['admin'] }
-          },
-          {
-            path: '/form/advanced-form',
-            name: 'AdvanceForm',
-            component: () => import('@/views/form/advancedForm/AdvancedForm'),
-            meta: { title: '高级表单', keepAlive: true, permission: ['admin'] }
-          }
-        ]
+        path: '/financialServices/console',
+        name: 'Console',
+        component: () => import('@/views/user/Console'),
+        meta: { title: '控制台', keepAlive: false, permission: ['admin', 'shuiruyi.custom.normal'] }
       },
+      {
+        path: '/financialServices/myInfo',
+        name: 'MyInfo',
+        component: () => import('@/views/user/MyInfo'),
+        meta: { title: '我的', keepAlive: true, permission: ['admin', 'shuiruyi.custom.normal'] }
+      }
+    ]
+  },
+   // forms
+   {
+    path: '/form',
+    redirect: '/form/base-form',
+    component: BasicLayout,
+    meta: { title: '表单页', icon: 'form', permission: ['admin'] },
+    children: [
+      {
+        path: '/form/base-form',
+        name: 'BaseForm',
+        component: () => import('@/views/form/basicForm'),
+        meta: { title: '基础表单', keepAlive: true, permission: ['admin'] }
+      },
+      {
+        path: '/form/step-form',
+        name: 'StepForm',
+        component: () => import('@/views/form/stepForm/StepForm'),
+        meta: { title: '分步表单', keepAlive: true, permission: ['admin'] }
+      },
+      {
+        path: '/form/advanced-form',
+        name: 'AdvanceForm',
+        component: () => import('@/views/form/advancedForm/AdvancedForm'),
+        meta: { title: '高级表单', keepAlive: true, permission: ['admin'] }
+      }
+    ]
+  },
 
       // list
 
       {
         path: '/list',
         name: 'list',
-        component: RouteView,
+        component: BasicLayout,
         redirect: '/list/table-list',
         meta: { title: '列表页', icon: 'table', permission: ['admin'] },
         children: [
           {
             path: '/list/table-list/:pageNo([1-9]\\d*)?',
-            name: 'TableListWrapper',
+            name: 'TableList',
             component: () => import('@/views/list/TableList'),
             meta: { title: '查询表格', keepAlive: true, permission: ['admin'] }
           },
           {
-            path: '/list/basic-list',
+            path: '/asdasd/list/basic-listasd',
             name: 'BasicList',
-            redirect: '/asdasd/list/basic-listasd',
-            meta: { title: '标准列表', keepAlive: true, permission: ['admin'] }
+            hidden: true,
+            component: () => import('@/views/list/BasicList'),
+            meta: { title: '标准列表asd', keepAlive: true, permission: ['admin'] }
           },
           {
             path: '/list/card',
@@ -144,18 +136,11 @@ export const asyncRouterMap = [
           }
         ]
       },
-      {
-        path: '/asdasd/list/basic-listasd',
-        name: 'BasicList',
-        hidden: true,
-        component: () => import('@/views/list/BasicList'),
-        meta: { title: '标准列表asd', keepAlive: true, permission: ['admin'] }
-      },
-      // profile
-      {
+       // profile
+       {
         path: '/profile',
         name: 'profile',
-        component: RouteView,
+        component: BasicLayout,
         redirect: '/profile/basic',
         meta: { title: '详情页', icon: 'profile', permission: ['admin'] },
         children: [
@@ -173,12 +158,11 @@ export const asyncRouterMap = [
           }
         ]
       },
-
-      // result
-      {
+       // result
+       {
         path: '/result',
         name: 'result',
-        component: RouteView,
+        component: BasicLayout,
         redirect: '/result/success',
         meta: { title: '结果页', icon: 'check-circle-o', permission: ['admin'] },
         children: [
@@ -196,12 +180,11 @@ export const asyncRouterMap = [
           }
         ]
       },
-
       // Exception
       {
         path: '/exception',
         name: 'exception',
-        component: RouteView,
+        component: BasicLayout,
         redirect: '/exception/403',
         meta: { title: '异常页', icon: 'warning', permission: ['admin'] },
         children: [
@@ -225,11 +208,10 @@ export const asyncRouterMap = [
           }
         ]
       },
-
-      // account
-      {
+       // account
+       {
         path: '/account',
-        component: RouteView,
+        component: BasicLayout,
         redirect: '/account/center',
         name: 'account',
         meta: { title: '个人页', icon: 'user', keepAlive: true, permission: ['admin'] },
@@ -281,7 +263,15 @@ export const asyncRouterMap = [
             ]
           }
         ]
-      }
+      },
+  {
+    path: '/',
+    name: 'index',
+    component: BasicLayout,
+    hidden: true,
+    meta: { title: 'home' },
+    redirect: '/dashboard/workplace',
+    children: [
 
       // other
       /*
@@ -366,7 +356,8 @@ export const constantRouterMap = [
       {
         path: '/login',
         name: 'login',
-        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Login')
+        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Login'),
+        meta: { noCache: true }
       }
     ]
   },

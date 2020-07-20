@@ -19,8 +19,8 @@
     <template v-slot:footerRender>
       <global-footer />
     </template>
-    <keep-alive>
-      <router-view />
+    <keep-alive :include="cacheList">
+      <router-view :key="this.$router.fullPath" />
     </keep-alive>
   </pro-layout>
 </template>
@@ -46,6 +46,7 @@ export default {
   },
   data () {
     return {
+      cacheList: [],
       // preview.pro.antdv.com only use.
       isProPreviewSite: process.env.VUE_APP_PREVIEW === 'true' && process.env.NODE_ENV !== 'development',
       // end
@@ -83,11 +84,26 @@ export default {
       // 动态主路由
       mainMenu: state => state.permission.addRouters,
       username: state => state.user.name
-    })
+    }),
+    cachedPages () {
+      return this.$store.state.tagsView.cachedPages
+    }
+  },
+  watch: {
+    cachedPages: {
+      handler: function (val, oldval) {
+        this.cacheList = []
+        for (const i of this.$store.getters.cachedPages) {
+          this.cacheList.push(i.name)
+        }
+        console.log('cacheList', this.cacheList)
+      },
+      deep: true // 对象内部的属性监听，也叫深度监听
+    }
   },
   created () {
-    const routes = this.mainMenu.find(item => item.path === '/')
-    this.menus = (routes && routes.children) || []
+    // const routes = this.mainMenu.find(item => item.path === '/')
+    this.menus = this.mainMenu
     // 处理侧栏收起状态
     this.$watch('collapsed', () => {
       this.$store.commit(SIDEBAR_TYPE, this.collapsed)

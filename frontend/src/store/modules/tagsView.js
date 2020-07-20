@@ -1,10 +1,10 @@
 const tagsView = {
   state: {
     fullPathList: [],
-      pages: [],
-      cachedPages: [],
-      activeKey: '',
-      newTabIndex: 0
+    pages: [],
+    cachedPages: [],
+    activeKey: '',
+    newTabIndex: 0
   },
   mutations: {
     SET_ACTIVE_KEY: (state, key) => {
@@ -14,20 +14,26 @@ const tagsView = {
     ADD_FULLPATH_LIST: (state, key) => {
       // console.log(state.fullPathList, key)
       const currentIndex = state.fullPathList.indexOf(key)
-      if (currentIndex < 0) { state.fullPathList.push(key) }
+      // console.log('ADD_FULLPATH_LIST', key)
+      if (currentIndex < 0) { state.fullPathList = [...state.fullPathList, key] }
     },
     ADD_PAGES: (state, key) => {
       // console.log(state.fullPathList, key)
       const currentIndex = state.fullPathList.indexOf(key.fullPath)
-      if (currentIndex < 0) { state.pages.push(key) }
-      if (!key.meta.noCache) {
-        state.cachedPages.push(key)
+      // console.log('key.meta.noCache', key.meta.noCache)
+      if (currentIndex < 0) {
+        state.pages = [...state.pages, key]
+        // console.log('key.meta.noCache', key.meta.noCache)
+        if (!key.meta.noCache || key.meta.noCache === undefined) {
+          state.cachedPages = [...state.cachedPages, key]
+        }
+        // console.log('state.cachedPages', state.cachedPages)
       }
     },
     REMOVE_FULLPATH_LIST: (state, key) => {
-      state.pages = state.pages.filter(page => page.fullPath !== key)
-      state.fullPathList = state.fullPathList.filter(path => path !== key)
-      state.cachedPages = state.cachedPages.filter(path => path !== key)
+      state.pages = [...state.pages.filter(page => page.fullPath !== key)]
+      state.fullPathList = [...state.fullPathList.filter(path => path !== key)]
+      state.cachedPages = [...state.cachedPages.filter(path => path.fullPath !== key)]
     },
     ADD_VISITED_VIEWS: (state, view) => {
       if (state.visitedViews.some(v => v.path === view.path)) return

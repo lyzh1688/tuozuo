@@ -13,37 +13,39 @@ export default {
   },
   created () {
     // bind event
-    events.$on('open', val => {
-      if (!val) {
-        throw new Error(`multi-tab: open tab ${val} err`)
-      }
-      this.$store.dispatch('setActiveKey', val)// reder输出不能双向绑定activekey所以需要同步更新
-      this.activeKey = val
-    }).$on('close', val => {
-      if (!val) {
-        this.closeThat(this.$store.getters.activeKey)
-        // this.closeThat(this.activeKey)
-        return
-      }
-      this.closeThat(val)
-    }).$on('rename', ({ key, name }) => {
-      console.log('rename', key, name)
-      try {
-        // const item = this.pages.find(item => item.path === key)
-        const item = this.$store.getters.pages.find(item => item.path === key)
-        item.meta.customTitle = name
-        this.$forceUpdate()
-      } catch (e) {
-      }
-    })
+    events
+      .$on('open', val => {
+        if (!val) {
+          throw new Error(`multi-tab: open tab ${val} err`)
+        }
+        this.$store.dispatch('setActiveKey', val) // reder输出不能双向绑定activekey所以需要同步更新
+        this.activeKey = val
+      })
+      .$on('close', val => {
+        if (!val) {
+          this.closeThat(this.$store.getters.activeKey)
+          // this.closeThat(this.activeKey)
+          return
+        }
+        this.closeThat(val)
+      })
+      .$on('rename', ({ key, name }) => {
+        console.log('rename', key, name)
+        try {
+          // const item = this.pages.find(item => item.path === key)
+          const item = this.$store.getters.pages.find(item => item.path === key)
+          item.meta.customTitle = name
+          this.$forceUpdate()
+        } catch (e) {}
+      })
 
     // this.pages.push(this.$route)
-      this.$store.dispatch('addPages', this.$route)
-       this.$store.dispatch('addFullPathList', this.$route.fullPath)
+    this.$store.dispatch('addPages', this.$route)
+    this.$store.dispatch('addFullPathList', this.$route.fullPath)
     // this.fullPathList.push(this.$route.fullPath)
     if (!this.$store.getters.fullPathList.includes(this.$store.getters.activeKey)) {
-        this.selectedLastPath()
-      }
+      this.selectedLastPath()
+    }
   },
   methods: {
     onEdit (targetKey, action) {
@@ -63,14 +65,17 @@ export default {
     },
     selectedLastPath () {
       this.activeKey = this.fullPathList[this.fullPathList.length - 1]
-       this.$store.dispatch('setActiveKey', this.$store.getters.fullPathList[this.$store.getters.fullPathList.length - 1])
+      this.$store.dispatch(
+        'setActiveKey',
+        this.$store.getters.fullPathList[this.$store.getters.fullPathList.length - 1]
+      )
     },
 
     // content menu
     closeThat (e) {
       // 判断是否为最后一个标签页，如果是最后一个，则无法被关闭
       // if (this.fullPathList.length > 1) {
-        if (this.$store.getters.fullPathList.length > 1) {
+      if (this.$store.getters.fullPathList.length > 1) {
         this.remove(e)
       } else {
         this.$message.info('这是最后一个标签了, 无法被关闭')
@@ -81,7 +86,7 @@ export default {
       const currentIndex = this.$store.getters.fullPathList.indexOf(e)
       if (currentIndex > 0) {
         // this.fullPathList.forEach((item, index) => {
-            this.$store.getters.fullPathList.forEach((item, index) => {
+        this.$store.getters.fullPathList.forEach((item, index) => {
           if (index < currentIndex) {
             this.remove(item)
           }
@@ -94,9 +99,9 @@ export default {
       // const currentIndex = this.fullPathList.indexOf(e)
       const currentIndex = this.$store.getters.fullPathList.indexOf(e)
       // if (currentIndex < (this.fullPathList.length - 1)) {
-        if (currentIndex < (this.$store.getters.fullPathList.length - 1)) {
+      if (currentIndex < this.$store.getters.fullPathList.length - 1) {
         // this.fullPathList.forEach((item, index) => {
-          this.$store.getters.fullPathList.forEach((item, index) => {
+        this.$store.getters.fullPathList.forEach((item, index) => {
           if (index > currentIndex) {
             this.remove(item)
           }
@@ -109,7 +114,7 @@ export default {
       // const currentIndex = this.fullPathList.indexOf(e)
       const currentIndex = this.$store.getters.fullPathList.indexOf(e)
       // this.fullPathList.forEach((item, index) => {
-        this.$store.getters.fullPathList.forEach((item, index) => {
+      this.$store.getters.fullPathList.forEach((item, index) => {
         if (index !== currentIndex) {
           this.remove(item)
         }
@@ -120,7 +125,15 @@ export default {
     },
     renderTabPaneMenu (e) {
       return (
-        <a-menu {...{ on: { click: ({ key, item, domEvent }) => { this.closeMenuClick(key, e) } } }}>
+        <a-menu
+          {...{
+            on: {
+              click: ({ key, item, domEvent }) => {
+                this.closeMenuClick(key, e)
+              }
+            }
+          }}
+        >
           <a-menu-item key="closeThat">关闭当前标签</a-menu-item>
           <a-menu-item key="closeRight">关闭右侧</a-menu-item>
           <a-menu-item key="closeLeft">关闭左侧</a-menu-item>
@@ -140,12 +153,12 @@ export default {
     }
   },
   watch: {
-    '$route': function (newVal) {
+    $route: function (newVal) {
       this.$store.dispatch('setActiveKey', newVal.fullPath)
       this.activeKey = newVal.fullPath
       if (this.$store.getters.fullPathList.indexOf(newVal.fullPath) < 0) {
-        this.$store.getters.fullPathList.push(newVal.fullPath)
-        this.$store.getters.pages.push(newVal)
+        this.$store.dispatch('addPages', newVal)
+        this.$store.dispatch('addFullPathList', newVal.fullPath)
       }
       // if (this.fullPathList.indexOf(newVal.fullPath) < 0) {
       //   this.fullPathList.push(newVal.fullPath)
@@ -160,16 +173,17 @@ export default {
     // const { onEdit, $data: { pages } } = this
     const { onEdit } = this
     // const panes = pages.map(page => {
-       const panes = this.$store.getters.pages.map(page => {
+    const panes = this.$store.getters.pages.map(page => {
       return (
         <a-tab-pane
           style={{ height: 0 }}
           tab={this.renderTabPane(page.meta.customTitle || page.meta.title, page.fullPath)}
-          key={page.fullPath} closable={this.$store.getters.pages.length > 1}
-        >
-        </a-tab-pane>)
+          key={page.fullPath}
+          closable={this.$store.getters.pages.length > 1}
+        ></a-tab-pane>
+      )
     })
-this.activeKey = this.$store.getters.activeKey
+    this.activeKey = this.$store.getters.activeKey
     return (
       <div class="ant-pro-multi-tab">
         <div class="ant-pro-multi-tab-wrapper">
@@ -178,7 +192,8 @@ this.activeKey = this.$store.getters.activeKey
             type={'editable-card'}
             v-model={this.activeKey}
             tabBarStyle={{ background: '#FFF', margin: 0, paddingLeft: '16px', paddingTop: '1px' }}
-            {...{ on: { edit: onEdit } }}>
+            {...{ on: { edit: onEdit } }}
+          >
             {panes}
           </a-tabs>
         </div>
