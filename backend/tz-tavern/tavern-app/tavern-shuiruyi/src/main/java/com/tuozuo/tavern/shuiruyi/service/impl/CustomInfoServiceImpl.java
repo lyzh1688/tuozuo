@@ -13,7 +13,9 @@ import com.tuozuo.tavern.shuiruyi.model.CustomTradeFlow;
 import com.tuozuo.tavern.shuiruyi.service.CustomInfoService;
 import com.tuozuo.tavern.shuiruyi.utils.FileUtils;
 import com.tuozuo.tavern.shuiruyi.utils.UUIDUtil;
+import com.tuozuo.tavern.shuiruyi.vo.CustomAddInfoVO;
 import com.tuozuo.tavern.shuiruyi.vo.CustomInfoVO;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +34,7 @@ import java.util.List;
  */
 @Service
 public class CustomInfoServiceImpl implements CustomInfoService {
+
     @Value("${custom.trade.file.url.path:http://119.3.19.171/custom/trade/file/}")
     private String tradeFileUrlPath;
     @Value("${custom.trade.file.path:/mnt/file/trade/file/}")
@@ -58,10 +61,10 @@ public class CustomInfoServiceImpl implements CustomInfoService {
     }
 
     @Override
-    public void addCustomInfo(CustomInfoVO vo) {
+    public void addCustomInfo(CustomAddInfoVO vo) {
 
         CustomInfo customInfo = new CustomInfo();
-        customInfo.setCustomId(UUIDUtil.randomUUID32());
+        customInfo.setCustomId(vo.getCustomId());
         setCustomInfo(vo, customInfo);
         this.customInfoDao.insert(customInfo);
 
@@ -92,15 +95,11 @@ public class CustomInfoServiceImpl implements CustomInfoService {
         customInfo.setBalance(new BigDecimal(newBalance));
         this.customInfoDao.update(customInfo);
 
-
         CustomTradeFlow customTradeFlow = new CustomTradeFlow();
         String tradeFlowId = UUIDUtil.randomUUID32();
         if (tradeSnapshot != null) {
             //路径为：path + customId + tradeFlowId
-            String pathLocation = StringUtils.join(tradeFilePath, customId,
-                    "/", tradeFlowId, "/");
-            String url = FileUtils.multiPartFileWriter(tradeSnapshot, pathLocation);
-            String urlLocation = StringUtils.join(tradeFileUrlPath, url);
+            String urlLocation = this.fileStore(customId, tradeFlowId, tradeSnapshot);
             customTradeFlow.setTradeSnapshot(urlLocation);
         }
         customTradeFlow.setTradeFlowId(tradeFlowId);
@@ -124,6 +123,14 @@ public class CustomInfoServiceImpl implements CustomInfoService {
         customInfo.setHasPaid(vo.getHasPaid());
         customInfo.setUpdateDate(LocalDateTime.now());
         customInfo.setBalance(BigDecimal.ZERO);
+    }
+
+    private String fileStore(String customId, String tradeFlowId, MultipartFile tradeSnapshot) throws Exception {
+        String pathLocation = StringUtils.join(tradeFilePath, customId,
+                "/", tradeFlowId);
+        FileUtils.multiPartFileWriter(tradeSnapshot, pathLocation);
+        return StringUtils.join(tradeFileUrlPath, customId,
+                "/", tradeFlowId, "/", tradeSnapshot.getOriginalFilename());
     }
 
     private double calBalance(String event, double balance, double amount) throws Exception {

@@ -1,10 +1,13 @@
 package com.tuozuo.tavern.shuiruyi.convert;
 
+import com.tuozuo.tavern.shuiruyi.dict.BusinessStatus;
 import com.tuozuo.tavern.shuiruyi.dto.*;
 import com.tuozuo.tavern.shuiruyi.model.*;
 import com.tuozuo.tavern.shuiruyi.utils.DateUtils;
+
 import org.springframework.beans.BeanUtils;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
@@ -53,7 +56,6 @@ public class BusinessConverter {
         bossInfoDTO.setBossIdPicUp(companyDetailInfo.getBossIdPicUp());
         bossInfoDTO.setBossIdPicBack(companyDetailInfo.getBossIdPicBack());
 
-
         CfoInfoDTO cfoInfoDTO = new CfoInfoDTO();
         cfoInfoDTO.setCfoId(companyDetailInfo.getCfoId());
         cfoInfoDTO.setCfoName(companyDetailInfo.getCfoName());
@@ -64,7 +66,6 @@ public class BusinessConverter {
         companyDetailDTO.setCompanyInfo(companyInfoDTO);
         companyDetailDTO.setBossInfo(bossInfoDTO);
         companyDetailDTO.setCfoInfo(cfoInfoDTO);
-
 
         return companyDetailDTO;
     }
@@ -99,7 +100,26 @@ public class BusinessConverter {
     public static CustomInfoDTO customInfoToDTO(CustomInfo customInfo) {
         CustomInfoDTO customInfoDTO = new CustomInfoDTO();
         BeanUtils.copyProperties(customInfo, customInfoDTO);
-        customInfoDTO.setUpdateDate(DateUtils.formatDateTime(customInfo.getUpdateDate(),DateUtils.DEFAULT_DATETIME_FORMATTER));
+        customInfoDTO.setUpdateDate(DateUtils.formatDateTime(customInfo.getUpdateDate(), DateUtils.DEFAULT_DATETIME_FORMATTER));
         return customInfoDTO;
+    }
+
+    public static CompanyBriefInfo companyInfoToBriefDTO(CompanyInfo companyInfo) {
+        CompanyBriefInfo companyBriefInfo = new CompanyBriefInfo();
+        /*private String companyId;
+        private String companyName;
+        private String companyStatus;
+        private String registerStatus;
+        private String beginDate;
+        private String endDate;
+        private String companyType;
+        private BigDecimal tax;*/
+        companyBriefInfo.setCompanyId(companyInfo.getCompanyId());
+        companyBriefInfo.setCompanyName(companyInfo.getCompanyName());
+        companyBriefInfo.setCompanyStatus(BusinessStatus.valueOf(companyInfo.getCompanyStatus()).getStatus());
+        companyBriefInfo.setRegisterStatus(BusinessStatus.valueOf(companyInfo.getCompanyStatus()).getStatus());
+
+
+        return null;
     }
 }

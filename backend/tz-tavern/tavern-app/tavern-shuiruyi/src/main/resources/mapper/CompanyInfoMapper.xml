@@ -51,8 +51,8 @@
     <result column="total_invoice_amount" jdbcType="VARCHAR" property="totalInvoiceAmt" />
   </resultMap>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select company_id, company_status, custom_id, company_name, company_type, tax, address, 
-    free_delivery, include_cancel, begin_date, end_date, boss_name, boss_id, boss_contact, 
+    select company_id, company_status, custom_id, company_name, company_type, tax, address,
+    free_delivery, include_cancel, begin_date, end_date, boss_name, boss_id, boss_contact,
     boss_id_pic_up, boss_id_pic_back, cfo_name, cfo_id, cfo_contact, cfo_id_pic_up, cfo_id_pic_back
     from company_info
     where company_id = #{companyId,jdbcType=VARCHAR}
@@ -83,5 +83,31 @@
           GROUP BY t.company_id
 
 		) t group by company_id
+  </select>
+
+  <select id="selectCompanyList"  resultMap="BaseResultMap">
+    select t1.company_id, t1.company_status, t1.custom_id, t1.company_name, t1.company_type, t1.tax, t1.address,
+    t1.free_delivery, t1.include_cancel, t1.begin_date, t1.end_date, t1.boss_name, t1.boss_id, t1.boss_contact,
+    t1.boss_id_pic_up, t1.boss_id_pic_back, t1.cfo_name, t1.cfo_id, t1.cfo_contact, t1.cfo_id_pic_up, t1.cfo_id_pic_back
+    from custom_info t,company_info t1 on t.custom_id = t1.custom_id
+    <where>
+
+      <if test="companyStatus != null and companyStatus != ''">
+       and t1.company_status = #{companyStatus}
+      </if>
+      <if test="customId != null and customId != ''">
+        and t1.custom_id = #{customId}
+      </if>
+      <if test="registerStatus != null and registerStatus == '1'">
+        <!--REG_AUDIT_NAME:注册核名中,REG_AUDIT_TAX:注册核税种,REG_DOND:注册完成
+        SERVICE:服务中,ARREARAGE:欠费中,TAX_CANCEL:税务注销中,BIZ_CANCEL:工商注销
+        FINISH:服务结束-->
+        and t1.company_status in('REG_AUDIT_NAME','REG_AUDIT_TAX')
+      </if>
+      <if test="registerStatus != null and registerStatus == '2'">
+        and t1.company_status in('REG_DOND','SERVICE','ARREARAGE','TAX_CANCEL','BIZ_CANCEL','FINISH')
+      </if>
+    </where>
+      order by t1.company_name
   </select>
 </mapper>

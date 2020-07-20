@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.shuiruyi.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.shuiruyi.model.CompanyDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.CompanyInfo;
 
@@ -11,8 +12,9 @@ import java.util.List;
  */
 public interface CompanyInfoService {
 
-    List<CompanyInfo> fuzzyQueryCompany(String companyName, int queryCnt, boolean isAll, String userId, String roleGroup);
+    List<CompanyInfo> fuzzyQueryCompany(String companyName, int queryCnt, boolean isAll, String customId, String roleGroup);
 
     CompanyDetailInfo queryCompanyDetail(String companyId);
 
+    IPage<CompanyInfo> queryCompanyList(String customId, String roleGroup,String companyStatus,String registerStatus,int pageNo,int pageSize);
 }

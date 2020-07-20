@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.shuiruyi.model.CustomDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.CustomInfo;
 import com.tuozuo.tavern.shuiruyi.model.CustomTradeFlow;
+import com.tuozuo.tavern.shuiruyi.vo.CustomAddInfoVO;
 import com.tuozuo.tavern.shuiruyi.vo.CustomInfoVO;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,7 +22,7 @@ public interface CustomInfoService {
 
     List<CustomInfo> fuzzyQueryCustomInfo(String customName, int queryCnt);
 
-    void addCustomInfo(CustomInfoVO vo);
+    void addCustomInfo(CustomAddInfoVO vo);
 
     void modifyCustomInfo(CustomInfoVO vo, String customId);
 

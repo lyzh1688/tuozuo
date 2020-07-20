@@ -9,17 +9,17 @@ import javax.validation.constraints.NotNull;
 public class CustomInfoVO {
 
     @NotNull(message = "customName is not null")
-    private  String customName;
+    private String customName;
     @NotNull(message = "customPswd is not null")
-    private  String customPswd;
+    private String customPswd;
     @NotNull(message = "customContact is not null")
-    private  String customContact;
+    private String customContact;
     @NotNull(message = "province is not null")
     private String province;
     @NotNull(message = "customType is not null")
     private String customType;
     @NotNull(message = "hasPaid is not null")
-    private  String hasPaid;
+    private String hasPaid;
 
     public String getCustomName() {
         return customName;

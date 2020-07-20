@@ -8,6 +8,7 @@ import com.tuozuo.tavern.shuiruyi.model.CustomDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.CustomInfo;
 import com.tuozuo.tavern.shuiruyi.model.CustomTradeFlow;
 import com.tuozuo.tavern.shuiruyi.service.CustomInfoService;
+import com.tuozuo.tavern.shuiruyi.vo.CustomAddInfoVO;
 import com.tuozuo.tavern.shuiruyi.vo.CustomInfoVO;
 import com.tuozuo.tavern.shuiruyi.vo.CustomListVO;
 import org.slf4j.Logger;
@@ -94,7 +95,7 @@ public class CustomInfoEndpoint {
      * 创建用户
      */
     @PostMapping()
-    public TavernResponse addCustomInfo(@RequestBody @Valid CustomInfoVO vo) {
+    public TavernResponse addCustomInfo(@RequestBody @Valid CustomAddInfoVO vo) {
         try {
             this.customInfoService.addCustomInfo(vo);
             return TavernResponse.OK;

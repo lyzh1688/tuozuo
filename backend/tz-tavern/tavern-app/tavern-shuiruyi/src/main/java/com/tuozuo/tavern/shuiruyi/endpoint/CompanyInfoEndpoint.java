@@ -1,13 +1,17 @@
 package com.tuozuo.tavern.shuiruyi.endpoint;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.shuiruyi.convert.BusinessConverter;
 import com.tuozuo.tavern.shuiruyi.dto.BusinessDictDTO;
+import com.tuozuo.tavern.shuiruyi.dto.CompanyBriefInfo;
 import com.tuozuo.tavern.shuiruyi.dto.CompanyDetailDTO;
+import com.tuozuo.tavern.shuiruyi.dto.CompanyInfoListDTO;
 import com.tuozuo.tavern.shuiruyi.model.CompanyDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.CompanyInfo;
 import com.tuozuo.tavern.shuiruyi.service.CompanyInfoService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +38,10 @@ public class CompanyInfoEndpoint {
      */
     @GetMapping()
     public TavernResponse queryCompanyDict(@RequestParam(name = "companyName", defaultValue = "") String companyName,
-                                           @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt,
-                                           @RequestParam(name = "showAll", required = false) boolean showAll,
-                                           @RequestHeader(TavernRequestAuthFields.USER_ID) String userId,
-                                           @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
+            @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt,
+            @RequestParam(name = "showAll", required = false) boolean showAll,
+            @RequestHeader(TavernRequestAuthFields.USER_ID) String userId,
+            @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
         try {
             List<CompanyInfo> companyInfoList = this.companyInfoService.fuzzyQueryCompany(companyName, queryCnt, showAll, userId, roleGroup);
             List<BusinessDictDTO> businessDictList = companyInfoList.stream()
@@ -66,4 +70,28 @@ public class CompanyInfoEndpoint {
         }
     }
 
+    /**
+     * 个独公司列表
+     */
+    @GetMapping()
+    public TavernResponse queryCompanyDict(@RequestParam(name = "companyStatus", defaultValue = "") String companyStatus,
+            @RequestParam(name = "registerStatus", defaultValue = "") String registerStatus,
+            @RequestParam(name = "pageNo") int pageNo,
+            @RequestParam(name = "pageSize") int pageSize,
+            @RequestHeader(TavernRequestAuthFields.USER_ID) String customId,
+            @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
+        try {
+            IPage<CompanyInfo> page = this.companyInfoService.queryCompanyList(customId, roleGroup, companyStatus, registerStatus, pageNo, pageSize);
+            CompanyInfoListDTO companyInfoListDTO = new CompanyInfoListDTO();
+
+            List<CompanyBriefInfo> companyBriefInfoList = page.getRecords().stream()
+                    .map(BusinessConverter::companyInfoToDTO)
+                    .collect(Collectors.toList());
+
+            return TavernResponse.ok(businessDictList);
+        } catch (Exception e) {
+            LOGGER.error("[我的个独公司模糊查询] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
 }

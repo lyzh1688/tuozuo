@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.shuiruyi.dao;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.shuiruyi.model.CompanyDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.CompanyInfo;
 
@@ -16,10 +17,11 @@ public interface CompanyInfoDao {
 
     List<CompanyInfo> selectAllCompanyList(String companyName);
 
-    List<CompanyInfo> selectAllCustomCompanyList(String companyName, String userId);
+    List<CompanyInfo> selectAllCustomCompanyList(String companyName, String customId);
 
-    List<CompanyInfo> selectCustomCompanyList(String companyName, int queryCnt, String userId);
+    List<CompanyInfo> selectCustomCompanyList(String companyName, int queryCnt, String customId);
 
     Optional<CompanyDetailInfo> selectDetailInfo(String companyId);
 
+    IPage<CompanyInfo> selectCompanyList(String customId,String companyStatus,String registerStatus,int pageNo,int pageSize);
 }
