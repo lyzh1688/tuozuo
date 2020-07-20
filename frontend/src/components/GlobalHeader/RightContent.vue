@@ -19,6 +19,10 @@ export default {
       type: String,
       default: 'ant-pro-global-header-index-action'
     },
+    prefixClsTab: {
+      type: String,
+      default: 'ant-pro-global-header-index-muti-tab'
+    },
     isMobile: {
       type: Boolean,
       default: () => false

@@ -10,7 +10,11 @@ const getters = {
   roles: state => state.user.roles,
   userInfo: state => state.user.info,
   addRouters: state => state.permission.addRouters,
-  multiTab: state => state.app.multiTab
+  multiTab: state => state.app.multiTab,
+  activeKey: state => state.tagsView.activeKey,
+  pages: state => state.tagsView.pages,
+  cachedPages: state => state.tagsView.cachedPages,
+  fullPathList: state => state.tagsView.fullPathList
 }
 
 export default getters

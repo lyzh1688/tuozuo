@@ -17,56 +17,71 @@ export default {
       if (!val) {
         throw new Error(`multi-tab: open tab ${val} err`)
       }
+      this.$store.dispatch('setActiveKey', val)// reder输出不能双向绑定activekey所以需要同步更新
       this.activeKey = val
     }).$on('close', val => {
       if (!val) {
-        this.closeThat(this.activeKey)
+        this.closeThat(this.$store.getters.activeKey)
+        // this.closeThat(this.activeKey)
         return
       }
       this.closeThat(val)
     }).$on('rename', ({ key, name }) => {
       console.log('rename', key, name)
       try {
-        const item = this.pages.find(item => item.path === key)
+        // const item = this.pages.find(item => item.path === key)
+        const item = this.$store.getters.pages.find(item => item.path === key)
         item.meta.customTitle = name
         this.$forceUpdate()
       } catch (e) {
       }
     })
 
-    this.pages.push(this.$route)
-    this.fullPathList.push(this.$route.fullPath)
-    this.selectedLastPath()
+    // this.pages.push(this.$route)
+      this.$store.dispatch('addPages', this.$route)
+       this.$store.dispatch('addFullPathList', this.$route.fullPath)
+    // this.fullPathList.push(this.$route.fullPath)
+    if (!this.$store.getters.fullPathList.includes(this.$store.getters.activeKey)) {
+        this.selectedLastPath()
+      }
   },
   methods: {
     onEdit (targetKey, action) {
       this[action](targetKey)
     },
     remove (targetKey) {
-      this.pages = this.pages.filter(page => page.fullPath !== targetKey)
-      this.fullPathList = this.fullPathList.filter(path => path !== targetKey)
+      // this.pages = this.pages.filter(page => page.fullPath !== targetKey)
+      // this.fullPathList = this.fullPathList.filter(path => path !== targetKey)
+      this.$store.dispatch('remove', targetKey)
       // 判断当前标签是否关闭，若关闭则跳转到最后一个还存在的标签页
-      if (!this.fullPathList.includes(this.activeKey)) {
+      // if (!this.fullPathList.includes(this.activeKey)) {
+      //   this.selectedLastPath()
+      // }
+      if (!this.$store.getters.fullPathList.includes(this.$store.getters.activeKey)) {
         this.selectedLastPath()
       }
     },
     selectedLastPath () {
       this.activeKey = this.fullPathList[this.fullPathList.length - 1]
+       this.$store.dispatch('setActiveKey', this.$store.getters.fullPathList[this.$store.getters.fullPathList.length - 1])
     },
 
     // content menu
     closeThat (e) {
       // 判断是否为最后一个标签页，如果是最后一个，则无法被关闭
-      if (this.fullPathList.length > 1) {
+      // if (this.fullPathList.length > 1) {
+        if (this.$store.getters.fullPathList.length > 1) {
         this.remove(e)
       } else {
         this.$message.info('这是最后一个标签了, 无法被关闭')
       }
     },
     closeLeft (e) {
-      const currentIndex = this.fullPathList.indexOf(e)
+      // const currentIndex = this.fullPathList.indexOf(e)
+      const currentIndex = this.$store.getters.fullPathList.indexOf(e)
       if (currentIndex > 0) {
-        this.fullPathList.forEach((item, index) => {
+        // this.fullPathList.forEach((item, index) => {
+            this.$store.getters.fullPathList.forEach((item, index) => {
           if (index < currentIndex) {
             this.remove(item)
           }
@@ -76,9 +91,12 @@ export default {
       }
     },
     closeRight (e) {
-      const currentIndex = this.fullPathList.indexOf(e)
-      if (currentIndex < (this.fullPathList.length - 1)) {
-        this.fullPathList.forEach((item, index) => {
+      // const currentIndex = this.fullPathList.indexOf(e)
+      const currentIndex = this.$store.getters.fullPathList.indexOf(e)
+      // if (currentIndex < (this.fullPathList.length - 1)) {
+        if (currentIndex < (this.$store.getters.fullPathList.length - 1)) {
+        // this.fullPathList.forEach((item, index) => {
+          this.$store.getters.fullPathList.forEach((item, index) => {
           if (index > currentIndex) {
             this.remove(item)
           }
@@ -88,8 +106,10 @@ export default {
       }
     },
     closeAll (e) {
-      const currentIndex = this.fullPathList.indexOf(e)
-      this.fullPathList.forEach((item, index) => {
+      // const currentIndex = this.fullPathList.indexOf(e)
+      const currentIndex = this.$store.getters.fullPathList.indexOf(e)
+      // this.fullPathList.forEach((item, index) => {
+        this.$store.getters.fullPathList.forEach((item, index) => {
         if (index !== currentIndex) {
           this.remove(item)
         }
@@ -121,28 +141,35 @@ export default {
   },
   watch: {
     '$route': function (newVal) {
+      this.$store.dispatch('setActiveKey', newVal.fullPath)
       this.activeKey = newVal.fullPath
-      if (this.fullPathList.indexOf(newVal.fullPath) < 0) {
-        this.fullPathList.push(newVal.fullPath)
-        this.pages.push(newVal)
+      if (this.$store.getters.fullPathList.indexOf(newVal.fullPath) < 0) {
+        this.$store.getters.fullPathList.push(newVal.fullPath)
+        this.$store.getters.pages.push(newVal)
       }
+      // if (this.fullPathList.indexOf(newVal.fullPath) < 0) {
+      //   this.fullPathList.push(newVal.fullPath)
+      //   this.pages.push(newVal)
+      // }
     },
     activeKey: function (newPathKey) {
       this.$router.push({ path: newPathKey })
     }
   },
   render () {
-    const { onEdit, $data: { pages } } = this
-    const panes = pages.map(page => {
+    // const { onEdit, $data: { pages } } = this
+    const { onEdit } = this
+    // const panes = pages.map(page => {
+       const panes = this.$store.getters.pages.map(page => {
       return (
         <a-tab-pane
           style={{ height: 0 }}
           tab={this.renderTabPane(page.meta.customTitle || page.meta.title, page.fullPath)}
-          key={page.fullPath} closable={pages.length > 1}
+          key={page.fullPath} closable={this.$store.getters.pages.length > 1}
         >
         </a-tab-pane>)
     })
-
+this.activeKey = this.$store.getters.activeKey
     return (
       <div class="ant-pro-multi-tab">
         <div class="ant-pro-multi-tab-wrapper">
