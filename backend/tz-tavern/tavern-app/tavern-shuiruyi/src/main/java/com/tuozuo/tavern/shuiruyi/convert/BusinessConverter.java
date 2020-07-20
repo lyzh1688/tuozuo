@@ -1,8 +1,10 @@
 package com.tuozuo.tavern.shuiruyi.convert;
 
 import com.tuozuo.tavern.shuiruyi.dict.BusinessStatus;
+import com.tuozuo.tavern.shuiruyi.dict.CompanyType;
 import com.tuozuo.tavern.shuiruyi.dto.*;
 import com.tuozuo.tavern.shuiruyi.model.*;
+import com.tuozuo.tavern.shuiruyi.utils.BusinessStatusUtil;
 import com.tuozuo.tavern.shuiruyi.utils.DateUtils;
 
 import org.springframework.beans.BeanUtils;
@@ -106,20 +108,14 @@ public class BusinessConverter {
 
     public static CompanyBriefInfo companyInfoToBriefDTO(CompanyInfo companyInfo) {
         CompanyBriefInfo companyBriefInfo = new CompanyBriefInfo();
-        /*private String companyId;
-        private String companyName;
-        private String companyStatus;
-        private String registerStatus;
-        private String beginDate;
-        private String endDate;
-        private String companyType;
-        private BigDecimal tax;*/
         companyBriefInfo.setCompanyId(companyInfo.getCompanyId());
         companyBriefInfo.setCompanyName(companyInfo.getCompanyName());
-        companyBriefInfo.setCompanyStatus(BusinessStatus.valueOf(companyInfo.getCompanyStatus()).getStatus());
-        companyBriefInfo.setRegisterStatus(BusinessStatus.valueOf(companyInfo.getCompanyStatus()).getStatus());
-
-
-        return null;
+        companyBriefInfo.setCompanyStatus(BusinessStatus.getBusinessStatus(companyInfo.getCompanyStatus()).getStatus());
+        companyBriefInfo.setRegisterStatus(BusinessStatusUtil.registeredMap.containsKey(companyInfo.getCompanyStatus()) ? "1" : "0");
+        companyBriefInfo.setBeginDate(DateUtils.formatDateTime(companyInfo.getBeginDate(), DateUtils.DEFAULT_DATETIME_FORMATTER));
+        companyBriefInfo.setEndDate(DateUtils.formatDateTime(companyInfo.getEndDate(), DateUtils.DEFAULT_DATETIME_FORMATTER));
+        companyBriefInfo.setCompanyType(CompanyType.getCompanyType(companyInfo.getCompanyType()).getName());
+        companyBriefInfo.setTax(companyInfo.getTax());
+        return companyBriefInfo;
     }
 }

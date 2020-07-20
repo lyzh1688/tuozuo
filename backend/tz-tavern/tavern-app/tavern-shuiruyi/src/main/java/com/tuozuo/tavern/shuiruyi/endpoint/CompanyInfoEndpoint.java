@@ -38,10 +38,10 @@ public class CompanyInfoEndpoint {
      */
     @GetMapping()
     public TavernResponse queryCompanyDict(@RequestParam(name = "companyName", defaultValue = "") String companyName,
-            @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt,
-            @RequestParam(name = "showAll", required = false) boolean showAll,
-            @RequestHeader(TavernRequestAuthFields.USER_ID) String userId,
-            @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
+                                           @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt,
+                                           @RequestParam(name = "showAll", required = false) boolean showAll,
+                                           @RequestHeader(TavernRequestAuthFields.USER_ID) String userId,
+                                           @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
         try {
             List<CompanyInfo> companyInfoList = this.companyInfoService.fuzzyQueryCompany(companyName, queryCnt, showAll, userId, roleGroup);
             List<BusinessDictDTO> businessDictList = companyInfoList.stream()
@@ -73,24 +73,26 @@ public class CompanyInfoEndpoint {
     /**
      * 个独公司列表
      */
-    @GetMapping()
+    @GetMapping("/list")
     public TavernResponse queryCompanyDict(@RequestParam(name = "companyStatus", defaultValue = "") String companyStatus,
-            @RequestParam(name = "registerStatus", defaultValue = "") String registerStatus,
-            @RequestParam(name = "pageNo") int pageNo,
-            @RequestParam(name = "pageSize") int pageSize,
-            @RequestHeader(TavernRequestAuthFields.USER_ID) String customId,
-            @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
+                                           @RequestParam(name = "registerStatus", defaultValue = "") String registerStatus,
+                                           @RequestParam(name = "pageNo") int pageNo,
+                                           @RequestParam(name = "pageSize") int pageSize,
+                                           @RequestHeader(TavernRequestAuthFields.USER_ID) String customId,
+                                           @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
         try {
             IPage<CompanyInfo> page = this.companyInfoService.queryCompanyList(customId, roleGroup, companyStatus, registerStatus, pageNo, pageSize);
             CompanyInfoListDTO companyInfoListDTO = new CompanyInfoListDTO();
 
             List<CompanyBriefInfo> companyBriefInfoList = page.getRecords().stream()
-                    .map(BusinessConverter::companyInfoToDTO)
+                    .map(BusinessConverter::companyInfoToBriefDTO)
                     .collect(Collectors.toList());
+            companyInfoListDTO.setCompanies(companyBriefInfoList);
+            companyInfoListDTO.setTotal((int) page.getTotal());
 
-            return TavernResponse.ok(businessDictList);
+            return TavernResponse.ok(companyInfoListDTO);
         } catch (Exception e) {
-            LOGGER.error("[我的个独公司模糊查询] failed", e);
+            LOGGER.error("[个独公司列表] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }

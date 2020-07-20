@@ -89,7 +89,7 @@
     select t1.company_id, t1.company_status, t1.custom_id, t1.company_name, t1.company_type, t1.tax, t1.address,
     t1.free_delivery, t1.include_cancel, t1.begin_date, t1.end_date, t1.boss_name, t1.boss_id, t1.boss_contact,
     t1.boss_id_pic_up, t1.boss_id_pic_back, t1.cfo_name, t1.cfo_id, t1.cfo_contact, t1.cfo_id_pic_up, t1.cfo_id_pic_back
-    from custom_info t,company_info t1 on t.custom_id = t1.custom_id
+    from custom_info t left  join company_info t1 on t.custom_id = t1.custom_id
     <where>
 
       <if test="companyStatus != null and companyStatus != ''">
@@ -99,9 +99,6 @@
         and t1.custom_id = #{customId}
       </if>
       <if test="registerStatus != null and registerStatus == '1'">
-        <!--REG_AUDIT_NAME:注册核名中,REG_AUDIT_TAX:注册核税种,REG_DOND:注册完成
-        SERVICE:服务中,ARREARAGE:欠费中,TAX_CANCEL:税务注销中,BIZ_CANCEL:工商注销
-        FINISH:服务结束-->
         and t1.company_status in('REG_AUDIT_NAME','REG_AUDIT_TAX')
       </if>
       <if test="registerStatus != null and registerStatus == '2'">

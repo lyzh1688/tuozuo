@@ -26,9 +26,19 @@ public enum BusinessStatus {
     private String status;
 
     BusinessStatus(String status) {
+        this.status = status;
     }
 
     public String getStatus() {
         return status;
     }
+
+   public static BusinessStatus getBusinessStatus(String status){
+       for (BusinessStatus t : BusinessStatus.values()) {
+           if (status.equals(t.name())) {
+               return t;
+           }
+       }
+       return null;
+   }
 }
