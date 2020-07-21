@@ -1,5 +1,6 @@
 import storage from 'store'
 import { login, logout } from '@/api/login'
+import { success, errorMessage } from '@/utils/helper/responseHelper'
 import { ACCESS_TOKEN, USER_NAME, AUTHORITY } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
 
@@ -39,12 +40,22 @@ const user = {
         const username = userInfo.username
         login(userInfo).then(response => {
           const result = response.result
-          storage.set(ACCESS_TOKEN, result.data.accessToken, 7 * 24 * 60 * 60 * 1000)
+          if (success(result)) {
+            storage.set(ACCESS_TOKEN, result.data.accessToken, 7 * 24 * 60 * 60 * 1000)
           storage.set(USER_NAME, username, 7 * 24 * 60 * 60 * 1000)
           storage.set(AUTHORITY, result.data.authority, 7 * 24 * 60 * 60 * 1000)
           commit('SET_TOKEN', result.accessToken)
           commit('SET_ROLES', [])
           resolve(result)
+          } else {
+            this.$notification.error({
+              message: errorMessage(result),
+              description: '登录失败。请稍后再试'
+            })
+            commit('SET_TOKEN', '')
+          commit('SET_ROLES', [])
+          reject(result)
+          }
         }).catch(error => {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])

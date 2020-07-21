@@ -40,6 +40,7 @@
 <script>
 import { STable } from '@/components'
 import { getCustomInfo, getTradeflow, dictQuery } from '@/api/company'
+import { success, errorMessage } from '@/utils/helper/responseHelper'
 import { mapState } from 'vuex'
 import UserInfo from './components/Info'
 const columns = [
@@ -109,9 +110,9 @@ export default {
         console.log('loadData request parameters:', requestParameters)
         return getTradeflow(this.username, requestParameters.pageNo, requestParameters.pageSize)
           .then(Response => {
-            const result = Response.result
-            console.log('getTradeflow', result)
-            if (String(result.code) === '0') {
+            const result = Response
+            // console.log('getTradeflow', result)
+            if (success(result)) {
               const ans = []
               for (const i in result.data.tradeflow) {
                 ans.push({ ...result.data.tradeflow[i], key: i })
@@ -124,7 +125,7 @@ export default {
               }
             } else {
               this.$notification.error({
-                message: result.code + ':' + result.msg,
+                message: errorMessage(result),
                 description: '查询客户信息失败，请稍后再试'
               })
             }
@@ -153,13 +154,13 @@ export default {
       this.infoLoading = true
       getCustomInfo(this.username)
         .then(Response => {
-          const result = Response.result
-          console.log('getCustomInfo', result)
-          if (String(result.code) === '0') {
+          const result = Response
+          // console.log('getCustomInfo', result)
+          if (success(result)) {
             this.customInfo = result.data
           } else {
             this.$notification.error({
-              message: result.code + ':' + result.msg,
+              message: errorMessage(result),
               description: '查询客户信息失败，请稍后再试'
             })
           }
@@ -178,16 +179,16 @@ export default {
     getEventDict () {
       dictQuery('event')
         .then(Response => {
-          const result = Response.result
-          console.log('dictQuery', result)
-          if (String(result.code) === '0') {
+          const result = Response
+          // console.log('dictQuery', result)
+          if (success(result)) {
             this.eventMap = {}
             for (const i of result.data) {
               this.eventMap[i.id] = i.name
             }
           } else {
             this.$notification.error({
-              message: result.code + ':' + result.msg,
+              message: errorMessage(result),
               description: '事件字典失败'
             })
           }

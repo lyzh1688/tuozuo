@@ -50,6 +50,7 @@
 </template>
 <script>
 import { fuzzyQueryCompany, getCompanyInfo } from '@/api/company'
+import { success, errorMessage } from '@/utils/helper/responseHelper'
 import { mapState } from 'vuex'
 import UserInfo from './components/Info'
 export default {
@@ -76,16 +77,15 @@ export default {
       this.companyListLoading = true
       fuzzyQueryCompany('', 20, true)
         .then(Response => {
-          const result = Response.result
-          console.log('getCompanyList', result)
-          if (String(result.code) === '0') {
+          const result = Response
+          if (success(result)) {
             this.companyList = result.data
             if (this.companyList.length > 0) {
               this.fetchCompanyInfo(this.companyList[0].id)
             }
           } else {
             this.$notification.error({
-              message: result.code + ':' + result.msg,
+              message: errorMessage(result),
               description: '查询个独公司列表失败'
             })
           }
@@ -106,13 +106,13 @@ export default {
       this.infoLoading = true
       getCompanyInfo(companyId)
         .then(Response => {
-          const result = Response.result
+          const result = Response
           console.log('getCompanyInfo', result)
-          if (String(result.code) === '0') {
+          if (success(result)) {
             this.companyInfo = result.data.companyInfo
           } else {
             this.$notification.error({
-              message: result.code + ':' + result.msg,
+              message: errorMessage(result),
               description: '查询公司信息失败'
             })
           }

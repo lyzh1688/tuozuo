@@ -1,18 +1,18 @@
 import request from '@/utils/request'
 const CompanyApi = {
-  customInfo: '/v1/custom/detail/',
-  customList: '/v1/custom/list', //
-  addCustom: '/v1/custom', // post
-  fuzzyQueryCustom: '/v1/custom', //
-  fuzzyQueryCompany: '/v1/company', //
-  updateCustom: '/v1/custom/', // put
-  tradeflow: '/v1/custom/tradeflow/',
-  companyInfo: '/v1/company/detail/',
-  companyList: '/v1/company/list',
-  addCompany: '/v1/company', // post
-  updateCompany: '/v1/custom/', // put
-  tradeOpration: '/v1/custom/trade', // put
-  dictQuery: '/v1/dict/'// bizStatus,customType,registerStatus,event
+  customInfo: process.env.SYSTEM_URL + '/v1/custom/detail/',
+  customList: process.env.SYSTEM_URL + '/v1/custom/list', //
+  addCustom: process.env.SYSTEM_URL + '/v1/custom', // post
+  fuzzyQueryCustom: process.env.SYSTEM_URL + '/v1/custom', //
+  fuzzyQueryCompany: process.env.SYSTEM_URL + '/v1/company', //
+  updateCustom: process.env.SYSTEM_URL + '/v1/custom/', // put
+  tradeflow: process.env.SYSTEM_URL + '/v1/custom/tradeflow/',
+  companyInfo: process.env.SYSTEM_URL + '/v1/company/detail/',
+  companyList: process.env.SYSTEM_URL + '/v1/company/list',
+  addCompany: process.env.SYSTEM_URL + '/v1/company', // post
+  updateCompany: process.env.SYSTEM_URL + '/v1/custom/', // put
+  tradeOpration: process.env.SYSTEM_URL + '/v1/custom/trade', // put
+  dictQuery: process.env.SYSTEM_URL + '/v1/dict/'// bizStatus,customType,registerStatus,event
 }
 /*
 companyName	否	String	公司名称
