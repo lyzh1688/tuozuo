@@ -23,5 +23,9 @@ public interface CompanyInfoDao {
 
     Optional<CompanyDetailInfo> selectDetailInfo(String companyId);
 
-    IPage<CompanyInfo> selectCompanyList(String customId,String companyStatus,String registerStatus,int pageNo,int pageSize);
+    IPage<CompanyInfo> selectCompanyList(String customId, String companyStatus, String registerStatus, int pageNo, int pageSize);
+
+    void insert(CompanyInfo companyInfo);
+
+    void update(CompanyInfo companyInfo);
 }

@@ -11,14 +11,18 @@ import com.tuozuo.tavern.shuiruyi.dto.CompanyInfoListDTO;
 import com.tuozuo.tavern.shuiruyi.model.CompanyDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.CompanyInfo;
 import com.tuozuo.tavern.shuiruyi.service.CompanyInfoService;
+import com.tuozuo.tavern.shuiruyi.vo.CompanyDetailVO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -38,10 +42,10 @@ public class CompanyInfoEndpoint {
      */
     @GetMapping()
     public TavernResponse queryCompanyDict(@RequestParam(name = "companyName", defaultValue = "") String companyName,
-                                           @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt,
-                                           @RequestParam(name = "showAll", required = false) boolean showAll,
-                                           @RequestHeader(TavernRequestAuthFields.USER_ID) String userId,
-                                           @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
+            @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt,
+            @RequestParam(name = "showAll", required = false) boolean showAll,
+            @RequestHeader(TavernRequestAuthFields.USER_ID) String userId,
+            @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
         try {
             List<CompanyInfo> companyInfoList = this.companyInfoService.fuzzyQueryCompany(companyName, queryCnt, showAll, userId, roleGroup);
             List<BusinessDictDTO> businessDictList = companyInfoList.stream()
@@ -75,11 +79,11 @@ public class CompanyInfoEndpoint {
      */
     @GetMapping("/list")
     public TavernResponse queryCompanyDict(@RequestParam(name = "companyStatus", defaultValue = "") String companyStatus,
-                                           @RequestParam(name = "registerStatus", defaultValue = "") String registerStatus,
-                                           @RequestParam(name = "pageNo") int pageNo,
-                                           @RequestParam(name = "pageSize") int pageSize,
-                                           @RequestHeader(TavernRequestAuthFields.USER_ID) String customId,
-                                           @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
+            @RequestParam(name = "registerStatus", defaultValue = "") String registerStatus,
+            @RequestParam(name = "pageNo") int pageNo,
+            @RequestParam(name = "pageSize") int pageSize,
+            @RequestHeader(TavernRequestAuthFields.USER_ID) String customId,
+            @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
         try {
             IPage<CompanyInfo> page = this.companyInfoService.queryCompanyList(customId, roleGroup, companyStatus, registerStatus, pageNo, pageSize);
             CompanyInfoListDTO companyInfoListDTO = new CompanyInfoListDTO();
@@ -93,6 +97,35 @@ public class CompanyInfoEndpoint {
             return TavernResponse.ok(companyInfoListDTO);
         } catch (Exception e) {
             LOGGER.error("[个独公司列表] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 创建公司
+     */
+    @PostMapping("/company")
+    public TavernResponse addCompanyInfo(@ModelAttribute @Valid CompanyDetailVO vo) {
+        try {
+            this.companyInfoService.modifyCompanyInfo(vo, null);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[创建公司] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 修改公司
+     */
+    @PostMapping("/company/{companyId}")
+    public TavernResponse modifyCompanyInfo(@PathVariable("companyId") String companyId,
+            @ModelAttribute @Valid CompanyDetailVO vo) {
+        try {
+            this.companyInfoService.modifyCompanyInfo(vo, companyId);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[修改公司] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }

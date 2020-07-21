@@ -3,6 +3,7 @@ package com.tuozuo.tavern.shuiruyi.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.shuiruyi.model.CompanyDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.CompanyInfo;
+import com.tuozuo.tavern.shuiruyi.vo.CompanyDetailVO;
 
 import java.util.List;
 
@@ -16,5 +17,8 @@ public interface CompanyInfoService {
 
     CompanyDetailInfo queryCompanyDetail(String companyId);
 
-    IPage<CompanyInfo> queryCompanyList(String customId, String roleGroup,String companyStatus,String registerStatus,int pageNo,int pageSize);
+    IPage<CompanyInfo> queryCompanyList(String customId, String roleGroup, String companyStatus, String registerStatus, int pageNo, int pageSize);
+
+    void modifyCompanyInfo(CompanyDetailVO vo, String companyId) throws Exception;
+
 }

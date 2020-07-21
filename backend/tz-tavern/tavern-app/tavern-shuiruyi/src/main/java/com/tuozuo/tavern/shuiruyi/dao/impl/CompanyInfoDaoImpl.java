@@ -70,4 +70,14 @@ public class CompanyInfoDaoImpl implements CompanyInfoDao {
         Page<CompanyInfo> page = new Page<>(pageNo, pageSize);
         return this.companyInfoMapper.selectCompanyList(page, customId, companyStatus, registerStatus);
     }
+
+    @Override
+    public void insert(CompanyInfo companyInfo) {
+        this.companyInfoMapper.insert(companyInfo);
+    }
+
+    @Override
+    public void update(CompanyInfo companyInfo) {
+        this.companyInfoMapper.updateById(companyInfo);
+    }
 }
