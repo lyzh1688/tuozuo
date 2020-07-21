@@ -34,9 +34,13 @@ public class AuthorityDaoImpl extends ServiceImpl<AuthUserMapper, User> implemen
         boolean ret = redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
             public Boolean doInRedis(RedisConnection redisConnection) throws DataAccessException {
+                byte[] oldKey = redisConnection.get(key.getBytes());
+                 if (null != oldKey) {
+                    redisConnection.del(key.getBytes());
+                }
                 redisConnection.set(key.getBytes(),
                         pair.getPrivateKeyString().getBytes(),
-                        Expiration.from(30, TimeUnit.SECONDS),
+                        Expiration.from(3, TimeUnit.MINUTES),
                         RedisStringCommands.SetOption.SET_IF_ABSENT);
                 return true;
             }
@@ -65,8 +69,8 @@ public class AuthorityDaoImpl extends ServiceImpl<AuthUserMapper, User> implemen
                 .eq("user_id", user.getUserId())
                 .eq("system_id", user.getSystemId())
                 .eq("role_group", user.getRoleGroup())
-                .set("failed_times",user.getFailedTimes());
-        this.update(user,updateWrapper);
+                .set("failed_times", user.getFailedTimes());
+        this.update(user, updateWrapper);
     }
 
 }
