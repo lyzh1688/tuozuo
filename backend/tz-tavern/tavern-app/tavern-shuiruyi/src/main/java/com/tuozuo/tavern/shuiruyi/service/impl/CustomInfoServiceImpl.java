@@ -35,7 +35,7 @@ import java.util.List;
 @Service
 public class CustomInfoServiceImpl implements CustomInfoService {
 
-    @Value("${shuiruyi.file.url.path:http://119.3.19.171/shuiruyi/file/}")
+    @Value("${shuiruyi.file.url.path:http://119.3.19.171/shuiruyi/file/trade/file/}")
     private String tradeFileUrlPath;
     @Value("${shuiruyi.custom.trade.file.path:/mnt/file/trade/file/}")
     private String tradeFilePath;
