@@ -28,7 +28,7 @@ public class FileUtils {
             if (!locationFile.exists()) {
                 locationFile.mkdirs();
             }
-            String fileName = file.getOriginalFilename();
+            String fileName = new String(file.getOriginalFilename().getBytes(),"utf-8");
             byte[] bytes = file.getBytes();
             buffStream = new BufferedOutputStream(new FileOutputStream(new File(StringUtils.join(location, "/", fileName))));
             buffStream.write(bytes);

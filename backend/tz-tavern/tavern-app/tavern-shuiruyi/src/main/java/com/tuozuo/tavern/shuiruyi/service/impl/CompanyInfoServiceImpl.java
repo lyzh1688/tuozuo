@@ -3,7 +3,10 @@ package com.tuozuo.tavern.shuiruyi.service.impl;
 import java.util.List;
 import java.util.Objects;
 
+import com.tuozuo.tavern.shuiruyi.vo.CompanyDetailVO;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,7 +22,6 @@ import com.tuozuo.tavern.shuiruyi.model.CompanyInfo;
 import com.tuozuo.tavern.shuiruyi.service.CompanyInfoService;
 import com.tuozuo.tavern.shuiruyi.utils.FileUtils;
 import com.tuozuo.tavern.shuiruyi.utils.UUIDUtil;
-import com.tuozuo.tavern.shuiruyi.vo.CompanyDetailVO;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -28,10 +30,12 @@ import com.tuozuo.tavern.shuiruyi.vo.CompanyDetailVO;
 @Service
 public class CompanyInfoServiceImpl implements CompanyInfoService {
 
-    @Value("${shuiruyi.file.url.path:http://119.3.19.171/shuiruyi/file/company/file}")
+    @Value("${shuiruyi.file.url.path:http://119.3.19.171/shuiruyi/file/company/file/}")
     private String fileUrlPath;
     @Value("${shuiruyi.company.file.path:/mnt/file/company/file/}")
     private String filePath;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompanyInfoServiceImpl.class);
 
     @Autowired
     private CompanyInfoDao companyInfoDao;
@@ -72,22 +76,35 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     }
 
     @Override
+    public void addCompanyInfo(CompanyDetailVO vo) throws Exception {
+        CompanyInfo companyInfo = BusinessConverter.voToCompanyInfo(vo);
+        companyInfo.setCompanyId(UUIDUtil.randomUUID32());
+        this.setCompanyInfo(vo, companyInfo);
+        this.companyInfoDao.insert(companyInfo);
+    }
+
+    @Override
     public void modifyCompanyInfo(CompanyDetailVO vo, String companyId) throws Exception {
         CompanyInfo companyInfo = BusinessConverter.voToCompanyInfo(vo);
-        if (Objects.isNull(companyId)) {
-            companyInfo.setCompanyId(UUIDUtil.randomUUID32());
-        } else {
-            companyInfo.setCompanyId(companyId);
-        }
-        String bossIdPicUpFileUrl = this.storeCompanyFile(companyInfo.getCompanyId(), CompanyFileType.BOSS, vo.getBossInfo().getBossIdPicUp());
-        String bossIdPicBackFileUrl = this.storeCompanyFile(companyInfo.getCompanyId(), CompanyFileType.BOSS, vo.getBossInfo().getBossIdPicBack());
-        String cfoIdPicUpFileUrl = this.storeCompanyFile(companyInfo.getCompanyId(), CompanyFileType.CFO, vo.getCfoInfo().getCfoIdPicUp());
-        String cfoIdPicBackFileUrl = this.storeCompanyFile(companyInfo.getCompanyId(), CompanyFileType.CFO, vo.getCfoInfo().getCfoIdPicBack());
+        companyInfo.setCompanyId(companyId);
+        this.setCompanyInfo(vo, companyInfo);
+        this.companyInfoDao.update(companyInfo);
+
+    }
+
+    private void setCompanyInfo(CompanyDetailVO vo, CompanyInfo companyInfo) throws Exception {
+        String bossIdPicUpFileUrl = this.storeCompanyFile(companyInfo.getCompanyId(), CompanyFileType.BOSS, vo.getBossIdPicUp());
+        String bossIdPicBackFileUrl = this.storeCompanyFile(companyInfo.getCompanyId(), CompanyFileType.BOSS, vo.getBossIdPicBack());
+        String cfoIdPicUpFileUrl = this.storeCompanyFile(companyInfo.getCompanyId(), CompanyFileType.CFO, vo.getCfoIdPicUp());
+        String cfoIdPicBackFileUrl = this.storeCompanyFile(companyInfo.getCompanyId(), CompanyFileType.CFO, vo.getCfoIdPicBack());
+        LOGGER.info("bossIdPicUpFileUrl: {}",bossIdPicUpFileUrl);
+        LOGGER.info("bossIdPicBackFileUrl: {}",bossIdPicBackFileUrl);
+        LOGGER.info("cfoIdPicUpFileUrl: {}",cfoIdPicUpFileUrl);
+        LOGGER.info("cfoIdPicBackFileUrl: {}",cfoIdPicBackFileUrl);
         companyInfo.setBossIdPicUp(bossIdPicUpFileUrl);
         companyInfo.setBossIdPicBack(bossIdPicBackFileUrl);
         companyInfo.setCfoIdPicUp(cfoIdPicUpFileUrl);
         companyInfo.setCfoIdPicBack(cfoIdPicBackFileUrl);
-        this.companyInfoDao.insert(companyInfo);
 
     }
 

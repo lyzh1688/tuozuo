@@ -11,8 +11,8 @@ import com.tuozuo.tavern.shuiruyi.dto.CompanyInfoListDTO;
 import com.tuozuo.tavern.shuiruyi.model.CompanyDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.CompanyInfo;
 import com.tuozuo.tavern.shuiruyi.service.CompanyInfoService;
-import com.tuozuo.tavern.shuiruyi.vo.CompanyDetailVO;
 
+import com.tuozuo.tavern.shuiruyi.vo.CompanyDetailVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +42,10 @@ public class CompanyInfoEndpoint {
      */
     @GetMapping()
     public TavernResponse queryCompanyDict(@RequestParam(name = "companyName", defaultValue = "") String companyName,
-            @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt,
-            @RequestParam(name = "showAll", required = false) boolean showAll,
-            @RequestHeader(TavernRequestAuthFields.USER_ID) String userId,
-            @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
+                                           @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt,
+                                           @RequestParam(name = "showAll", required = false) boolean showAll,
+                                           @RequestHeader(TavernRequestAuthFields.USER_ID) String userId,
+                                           @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
         try {
             List<CompanyInfo> companyInfoList = this.companyInfoService.fuzzyQueryCompany(companyName, queryCnt, showAll, userId, roleGroup);
             List<BusinessDictDTO> businessDictList = companyInfoList.stream()
@@ -79,11 +79,11 @@ public class CompanyInfoEndpoint {
      */
     @GetMapping("/list")
     public TavernResponse queryCompanyDict(@RequestParam(name = "companyStatus", defaultValue = "") String companyStatus,
-            @RequestParam(name = "registerStatus", defaultValue = "") String registerStatus,
-            @RequestParam(name = "pageNo") int pageNo,
-            @RequestParam(name = "pageSize") int pageSize,
-            @RequestHeader(TavernRequestAuthFields.USER_ID) String customId,
-            @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
+                                           @RequestParam(name = "registerStatus", defaultValue = "") String registerStatus,
+                                           @RequestParam(name = "pageNo") int pageNo,
+                                           @RequestParam(name = "pageSize") int pageSize,
+                                           @RequestHeader(TavernRequestAuthFields.USER_ID) String customId,
+                                           @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
         try {
             IPage<CompanyInfo> page = this.companyInfoService.queryCompanyList(customId, roleGroup, companyStatus, registerStatus, pageNo, pageSize);
             CompanyInfoListDTO companyInfoListDTO = new CompanyInfoListDTO();
@@ -104,10 +104,17 @@ public class CompanyInfoEndpoint {
     /**
      * 创建公司
      */
-    @PostMapping("/company")
-    public TavernResponse addCompanyInfo(@ModelAttribute @Valid CompanyDetailVO vo) {
+    @PostMapping("")
+    public TavernResponse addCompanyInfo(@ModelAttribute @Valid CompanyDetailVO vo,
+                                         @RequestHeader(TavernRequestAuthFields.USER_ID) String customId,
+                                         @RequestParam(name = "bossIdPicUp") MultipartFile bossIdPicUp,
+                                         @RequestParam(name = "bossIdPicBack") MultipartFile bossIdPicBack,
+                                         @RequestParam(name = "cfoIdPicUp") MultipartFile cfoIdPicUp,
+                                         @RequestParam(name = "cfoIdPicBack") MultipartFile cfoIdPicBack
+    ) {
         try {
-            this.companyInfoService.modifyCompanyInfo(vo, null);
+            this.setCompanyDetailInfo(vo, customId, bossIdPicUp, bossIdPicBack, cfoIdPicUp, cfoIdPicBack);
+            companyInfoService.addCompanyInfo(vo);
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[创建公司] failed", e);
@@ -118,15 +125,34 @@ public class CompanyInfoEndpoint {
     /**
      * 修改公司
      */
-    @PostMapping("/company/{companyId}")
+    @PostMapping("/{companyId}")
     public TavernResponse modifyCompanyInfo(@PathVariable("companyId") String companyId,
-            @ModelAttribute @Valid CompanyDetailVO vo) {
+                                            @ModelAttribute @Valid CompanyDetailVO vo,
+                                            @RequestHeader(TavernRequestAuthFields.USER_ID) String customId,
+                                            @RequestParam(name = "bossIdPicUp") MultipartFile bossIdPicUp,
+                                            @RequestParam(name = "bossIdPicBack") MultipartFile bossIdPicBack,
+                                            @RequestParam(name = "cfoIdPicUp") MultipartFile cfoIdPicUp,
+                                            @RequestParam(name = "cfoIdPicBack") MultipartFile cfoIdPicBack) {
         try {
+            this.setCompanyDetailInfo(vo, customId, bossIdPicUp, bossIdPicBack, cfoIdPicUp, cfoIdPicBack);
             this.companyInfoService.modifyCompanyInfo(vo, companyId);
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[修改公司] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
+    }
+
+    private void setCompanyDetailInfo(CompanyDetailVO vo,
+                                      String customId,
+                                      MultipartFile bossIdPicUp,
+                                      MultipartFile bossIdPicBack,
+                                      MultipartFile cfoIdPicUp,
+                                      MultipartFile cfoIdPicBack) {
+        vo.setCustomId(customId);
+        vo.setBossIdPicUp(bossIdPicUp);
+        vo.setBossIdPicBack(bossIdPicBack);
+        vo.setCfoIdPicUp(cfoIdPicUp);
+        vo.setCfoIdPicBack(cfoIdPicBack);
     }
 }

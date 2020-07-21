@@ -19,6 +19,8 @@ public interface CompanyInfoService {
 
     IPage<CompanyInfo> queryCompanyList(String customId, String roleGroup, String companyStatus, String registerStatus, int pageNo, int pageSize);
 
+    void addCompanyInfo(CompanyDetailVO vo) throws Exception;
+
     void modifyCompanyInfo(CompanyDetailVO vo, String companyId) throws Exception;
 
 }

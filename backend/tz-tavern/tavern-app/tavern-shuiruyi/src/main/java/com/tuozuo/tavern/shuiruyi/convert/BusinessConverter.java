@@ -6,12 +6,10 @@ import com.tuozuo.tavern.shuiruyi.dto.*;
 import com.tuozuo.tavern.shuiruyi.model.*;
 import com.tuozuo.tavern.shuiruyi.utils.BusinessStatusUtil;
 import com.tuozuo.tavern.shuiruyi.utils.DateUtils;
-import com.tuozuo.tavern.shuiruyi.utils.UUIDUtil;
-import com.tuozuo.tavern.shuiruyi.vo.CompanyDetailVO;
 
+import com.tuozuo.tavern.shuiruyi.vo.CompanyDetailVO;
 import org.springframework.beans.BeanUtils;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
@@ -123,17 +121,18 @@ public class BusinessConverter {
 
     public static CompanyInfo voToCompanyInfo(CompanyDetailVO vo) {
         CompanyInfo companyInfo = new CompanyInfo();
-        companyInfo.setCompanyName(vo.getCompanyInfo().getCompanyName());
-        companyInfo.setCompanyType(vo.getCompanyInfo().getCompanyType());
-        companyInfo.setAddress(vo.getCompanyInfo().getAddress());
-        companyInfo.setTax(vo.getCompanyInfo().getTax());
-        companyInfo.setBossName(vo.getBossInfo().getBossName());
-        companyInfo.setBossId(vo.getBossInfo().getBossId());
-        companyInfo.setBossName(vo.getBossInfo().getBossName());
-        companyInfo.setBossContact(vo.getBossInfo().getBossContact());
-        companyInfo.setCfoId(vo.getCfoInfo().getCfoId());
-        companyInfo.setCfoContact(vo.getCfoInfo().getCfoContact());
-        companyInfo.setCfoName(vo.getCfoInfo().getCfoName());
+        companyInfo.setCustomId(vo.getCustomId());
+        companyInfo.setCompanyName(vo.getCompanyName());
+        companyInfo.setCompanyType(vo.getCompanyType());
+        companyInfo.setAddress(vo.getAddress());
+        companyInfo.setTax(vo.getTax());
+        companyInfo.setBossName(vo.getBossName());
+        companyInfo.setBossId(vo.getBossId());
+        companyInfo.setBossName(vo.getBossName());
+        companyInfo.setBossContact(vo.getBossContact());
+        companyInfo.setCfoId(vo.getCfoId());
+        companyInfo.setCfoContact(vo.getCfoContact());
+        companyInfo.setCfoName(vo.getCfoName());
         return companyInfo;
     }
 }
