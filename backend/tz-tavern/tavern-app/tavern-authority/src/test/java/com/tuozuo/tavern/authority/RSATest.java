@@ -1,8 +1,11 @@
 package com.tuozuo.tavern.authority;
 
+import com.tuozuo.tavern.authority.model.Password;
+import com.tuozuo.tavern.authority.model.User;
 import com.tuozuo.tavern.libs.auth.encrypt.RSAEncrypt;
 import com.tuozuo.tavern.libs.auth.encrypt.RSAKeyPair;
 import org.junit.Test;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.util.DigestUtils;
 
 import java.security.NoSuchAlgorithmException;
@@ -13,7 +16,7 @@ import java.security.NoSuchAlgorithmException;
 public class RSATest {
     @Test
     public void encript() throws Exception {
-        String password = "liuyz";
+        String password = "y2iaciej";
         String md5 = DigestUtils.md5DigestAsHex(password.getBytes());
         System.out.println(md5);
         System.out.println("+++++++++++++++++++++++++");
@@ -26,4 +29,11 @@ public class RSATest {
 
     }
 
+    @Test
+    public void decode(){
+        String str = "y2iaciej";
+        String ret = Base64.encodeBase64URLSafeString(str.getBytes());
+        String ori = new String(Base64.decodeBase64(ret));
+        System.out.println(ori);
+    }
 }
