@@ -2,16 +2,12 @@
   <page-header-wrapper>
     <a-card :bordered="false">
       <a-skeleton :loading="infoLoading" active title>
-        <a-row>
+        <a-row >
           <a-col :sm="8" :xs="24">
             <userInfo title="客户姓名" :value="handleDefault(customInfo.customName)" :bordered="true" />
           </a-col>
           <a-col :sm="8" :xs="24">
-            <userInfo
-              title="联系方式"
-              :value="handleDefault(customInfo.customContact)"
-              :bordered="true"
-            />
+            <userInfo title="联系方式" :value="handleDefault(customInfo.customContact)" :bordered="true" />
           </a-col>
           <a-col :sm="8" :xs="24">
             <userInfo title="所在城市" :value="handleDefault(customInfo.province)" />
@@ -36,14 +32,14 @@
         showPagination="auto"
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
-        <span slot="event" slot-scope="text">{{ eventMap[text] }}</span>
+        <span slot="event" slot-scope="text">{{ customTypeMap[text] }}</span>
       </s-table>
     </a-card>
   </page-header-wrapper>
 </template>
 <script>
 import { STable } from '@/components'
-import { getCustomInfo, getTradeflow, dictQuery } from '@/api/company'
+import { getCustomInfo, getCustomList, dictQuery } from '@/api/company'
 import { success, errorMessage } from '@/utils/helper/responseHelper'
 import { mapState } from 'vuex'
 import UserInfo from './components/Info'
@@ -53,29 +49,24 @@ const columns = [
     scopedSlots: { customRender: 'no' }
   },
   {
-    title: '日期',
-    dataIndex: 'tradeDate',
-    scopedSlots: { customRender: 'tradeDate' }
+    title: '姓名',
+    dataIndex: 'customName',
+    scopedSlots: { customRender: 'customName' }
   },
   {
-    title: '事件',
-    dataIndex: 'event',
-    scopedSlots: { customRender: 'event' }
+    title: '业务状态',
+    dataIndex: 'hasPaid',
+    scopedSlots: { customRender: 'hasPaid' }
   },
   {
-    title: '金额',
-    dataIndex: 'amount',
-    customRender: record => record + '元'
+    title: '客户类型',
+    dataIndex: 'customType',
+    scopedSlots: { customRender: 'customType' }
   },
   {
-    title: '余额',
-    dataIndex: 'balance',
-    customRender: record => record + '元'
-  },
-  {
-    title: '备注',
-    dataIndex: 'remark',
-    scopedSlots: { customRender: 'remark' }
+    title: '最后更新时间',
+    dataIndex: 'updateDate',
+    scopedSlots: { customRender: 'updateDate' }
   }
 ]
 // const statusMap = {
@@ -97,13 +88,7 @@ const columns = [
 //   }
 // }
 export default {
-  name: 'MyInfo',
-  props: {
-    customId: {
-      type: String,
-      default: ''
-    }
-  },
+  name: 'CustomList',
   components: {
     STable,
     UserInfo
@@ -111,15 +96,15 @@ export default {
   data () {
     this.columns = columns
     return {
-      currentCustomId: this.username,
       customInfo: {},
       infoLoading: false,
       queryParam: {},
-      eventMap: {},
+      customTypeMap: {},
+      bizStatus: '',
       loadData: parameter => {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
         console.log('loadData request parameters:', requestParameters)
-        return getTradeflow(this.currentCustomId, requestParameters.pageNo, requestParameters.pageSize)
+        return getCustomList(this.customId, requestParameters.pageNo, requestParameters.pageSize)
           .then(Response => {
             const result = Response
             // console.log('getTradeflow', result)
@@ -163,7 +148,7 @@ export default {
     },
     getCustomInfo () {
       this.infoLoading = true
-      getCustomInfo(this.currentCustomId)
+      getCustomInfo(this.customId)
         .then(Response => {
           const result = Response
           // console.log('getCustomInfo', result)
@@ -187,20 +172,20 @@ export default {
           })
         })
     },
-    getEventDict () {
-      dictQuery('event')
+    getDict () {
+      dictQuery('customType')
         .then(Response => {
           const result = Response
           // console.log('dictQuery', result)
           if (success(result)) {
-            this.eventMap = {}
+            this.customTypeMap = {}
             for (const i of result.data) {
-              this.eventMap[i.id] = i.name
+              this.customTypeMap[i.id] = i.name
             }
           } else {
             this.$notification.error({
               message: errorMessage(result),
-              description: '事件字典失败'
+              description: '查询字典失败'
             })
           }
           setTimeout(() => {
@@ -210,7 +195,7 @@ export default {
         .catch(error => {
           this.infoLoading = false
           this.$notification.error({
-            message: '事件字典失败',
+            message: '查询字典失败',
             description: error
           })
         })
@@ -228,16 +213,8 @@ export default {
     }
   },
   created () {
-    this.currentCustomId = this.username
     this.getCustomInfo()
     this.getEventDict()
-  },
-  watch: {
-    customId: function (newVal, oldVal) {
-      if (newVal !== '') {
-        this.currentCustomId = newVal // newVal即是chartData
-      }
-    }
   }
 }
 </script>

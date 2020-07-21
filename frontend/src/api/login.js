@@ -32,7 +32,16 @@ export function login (parameter) {
   return request({
     url: userApi.Login,
     method: 'post',
-    data: parameter
+    data: parameter,
+    transformRequest: [function (data) {
+      // Do whatever you want to transform the data
+      let ret = ''
+      for (const it in data) {
+        ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+      }
+      return ret
+    }],
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
   })
 }
 export function getPublicKey (userId, roleGroup) {

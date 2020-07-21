@@ -154,14 +154,7 @@ export default {
             .then(response => {
               const result = response
               if (success(result)) {
-                try {
-                // console.log('base64', result.data.publicKey)
-                // console.log('base64', window.atob(result.data.publicKey))
-                // console.log('base64', base64.decode(base64.encode('+/OZIYP/o3DMnZSD4YrELiz4k5TfAgMBAAECgYBAaHiknXb4O4Mh8RhrWkum0uYac9FwH+jqO9gtpFCxRFV1lpDKWq90gnG3GfsCoedChoNWu/KCQoO5+gkKGNbKzc/u1l1UJgbVAmF9j/R2EGkxl7N+A/BamE2en1BcBJQSjZfqYcHOaXmQAWJrOSPA7Yen9yIPpdHC8lipFFQn0QJBAMhYPkToe7WIsFZyAoxS5myFILw4SF3myz6XJEJKTEJhecM1ErUmys3LppgM6Vn2wtzhdIfnsyE5XgTt+JWotb0CQQC5VrkDO31C4ew/4XqeOBLFZyzJJS7In0nIP9UYIqU+clEyBx0CalfaimEKVsl2T03pWIAfiR2/v4yurm6BhNjLAkAc+68edueWroycJOg7dq7BGk1PDXFirEXQ6zqioG8B12ovFFl9fXwvY3vZWVzU1/7+x1r9Ykam0s7INckVlY+dAkBtK1sBP2pSGhd5rUv3pFnSMyrbNG6xN7pTHN5dQBMLjHStPillQdSL4tS0LVivupjO6RVW/gIq7x5jylVHL0QvAkAo4HqCZ+ONwOUn0oV5oTUfNs9VQDuMWQFMUaTh+Ye6O11T0FUEhAysNhPg+ULVsx08NBW0kt7HWoNUqPi+JTH4')))
-                } catch (e) {
-                   console.log(e)
-                }
-                loginParams.password = RsaEncrypt.rsaData(values.password, window.atob(result.data.publicKey))
+                loginParams.password = RsaEncrypt.rsaData(values.password, result.data.publicKey)
                 console.log(loginParams.password)
                 Login(loginParams)
                   .then(res => this.loginSuccess(res))
@@ -208,8 +201,14 @@ export default {
         })
       })
       */
-     const toPath = this.$store.getters.activeKey == null || this.$store.getters.activeKey === '' ? '/' : this.$store.getters.activeKey
+     let toPath = this.$store.getters.activeKey == null || this.$store.getters.activeKey === '' ? '/' : this.$store.getters.activeKey
       console.log('toPath', toPath, this.$store.getters.activeKey)
+      // 处理切换用户登录
+      if (res.isRefresh) {
+        console.log('res.isRefresh', res.isRefresh)
+        this.$store.dispatch('setAppExculdeList', ['UserLayout'])
+        toPath = '/'
+      }
       this.$router.push({ path: toPath })
       // 延迟 1 秒显示欢迎信息
       setTimeout(() => {
@@ -224,7 +223,7 @@ export default {
       this.isLoginError = true
       this.$notification['error']({
         message: '错误',
-        description: ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
+        description: (((err.response || {}).data || {}).message || errorMessage(err)) || '请求出现错误，请稍后再试',
         duration: 4
       })
     }

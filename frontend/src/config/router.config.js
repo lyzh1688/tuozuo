@@ -8,28 +8,7 @@ import { bxAnaalyse } from '@/core/icons'
 // }
 
 export const asyncRouterMap = [
-   // dashboard
-   {
-    path: '/dashboard',
-    name: 'dashboard',
-    redirect: '/dashboard/workplace',
-    component: BasicLayout,
-    meta: { title: '仪表盘', keepAlive: true, icon: bxAnaalyse, permission: ['admin'] },
-    children: [
-      {
-        path: '/dashboard/analysis/:pageNo([1-9]\\d*)?',
-        name: 'Analysis',
-        component: () => import('@/views/dashboard/Analysis'),
-        meta: { title: '分析页', keepAlive: false, permission: ['admin'] }
-      },
-      {
-        path: '/dashboard/workplace',
-        name: 'Workplace',
-        component: () => import('@/views/dashboard/Workplace'),
-        meta: { title: '首页', keepAlive: true, noCache: true }
-      }
-    ]
-  },
+
   {
     path: '/financialServices',
     name: 'FinancialServices',
@@ -48,6 +27,28 @@ export const asyncRouterMap = [
         name: 'MyInfo',
         component: () => import('@/views/user/MyInfo'),
         meta: { title: '我的', keepAlive: true, permission: ['admin', 'shuiruyi.custom.normal'] }
+      }
+    ]
+  },
+  {
+    path: '/customService',
+    name: 'CustomService',
+    redirect: '/customService/customList',
+    component: BasicLayout,
+    meta: { title: '客户管理', keepAlive: true, icon: 'account-book', permission: ['admin', 'shuiruyi.staff.normal'] },
+    children: [
+      {
+        path: '/customService/customList',
+        name: 'CustomList',
+        component: () => import('@/views/user/Console'),
+        meta: { title: '客户列表', keepAlive: false, permission: ['admin', 'shuiruyi.staff.normal'] }
+      },
+      {
+        path: '/customService/customInfo',
+        name: 'CustomInfo',
+        // hidden: true,
+        component: () => import('@/views/user/CustomInfo'),
+        meta: { title: '客户详情', keepAlive: true, permission: ['admin', 'shuiruyi.staff.normal'] }
       }
     ]
   },
@@ -347,6 +348,28 @@ export const asyncRouterMap = [
  * @type { *[] }
  */
 export const constantRouterMap = [
+    // dashboard
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      redirect: '/dashboard/workplace',
+      component: BasicLayout,
+      meta: { title: '仪表盘', keepAlive: true, icon: bxAnaalyse },
+      children: [
+        {
+          path: '/dashboard/analysis/:pageNo([1-9]\\d*)?',
+          name: 'Analysis',
+          component: () => import('@/views/dashboard/Analysis'),
+          meta: { title: '分析页', keepAlive: false, permission: ['admin'] }
+        },
+        {
+          path: '/dashboard/workplace',
+          name: 'Workplace',
+          component: () => import('@/views/dashboard/Workplace'),
+          meta: { title: '首页', keepAlive: true, noCache: true }
+        }
+      ]
+    },
   {
     path: '/user',
     component: UserLayout,

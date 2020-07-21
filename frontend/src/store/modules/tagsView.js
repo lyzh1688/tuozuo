@@ -5,9 +5,14 @@ const tagsView = {
     cachedPages: [],
     activeKey: '',
     notInTablist: ['/login'],
-    newTabIndex: 0
+    newTabIndex: 0,
+    appExcludList: ['UserLayout']
   },
   mutations: {
+    SET_APP_EXCLUDE_LIST: (state, key) => {
+      console.log('SET_APP_EXCLUDE_LIST', key)
+      state.appExcludList = key
+    },
     SET_ACTIVE_KEY: (state, key) => {
       // console.log('setActiveKey2', key)
       let flag = true
@@ -19,6 +24,17 @@ const tagsView = {
       if (flag) {
         state.activeKey = key
       }
+    },
+    RESET: (state) => {
+      state = {
+        fullPathList: [],
+        pages: [],
+        cachedPages: [],
+        activeKey: '',
+        notInTablist: ['/login'],
+        newTabIndex: 0
+      }
+      console.log(state)
     },
     ADD_FULLPATH_LIST: (state, key) => {
       // console.log(state.fullPathList, key)
@@ -111,6 +127,12 @@ const tagsView = {
     }
   },
   actions: {
+    setAppExculdeList ({ commit }, view) {
+      commit('SET_APP_EXCLUDE_LIST', view)
+    },
+    resetTabViews ({ commit }) {
+      commit('RESET')
+    },
     setActiveKey ({ commit }, view) {
       commit('SET_ACTIVE_KEY', view)
     },

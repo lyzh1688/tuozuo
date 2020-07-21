@@ -1,9 +1,8 @@
 import storage from 'store'
 import { login, logout } from '@/api/login'
-import { success, errorMessage } from '@/utils/helper/responseHelper'
+import { success } from '@/utils/helper/responseHelper'
 import { ACCESS_TOKEN, USER_NAME, AUTHORITY } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
-
 const user = {
   state: {
     token: '',
@@ -35,26 +34,28 @@ const user = {
 
   actions: {
     // 登录
-    Login ({ commit }, userInfo) {
+    Login ({ commit, dispatch }, userInfo) {
       return new Promise((resolve, reject) => {
         const username = userInfo.username
         login(userInfo).then(response => {
-          const result = response.result
+          const result = response
+          result['isRefresh'] = false
+          const lastUser = storage.get(USER_NAME)
           if (success(result)) {
             storage.set(ACCESS_TOKEN, result.data.accessToken, 7 * 24 * 60 * 60 * 1000)
-          storage.set(USER_NAME, username, 7 * 24 * 60 * 60 * 1000)
-          storage.set(AUTHORITY, result.data.authority, 7 * 24 * 60 * 60 * 1000)
-          commit('SET_TOKEN', result.accessToken)
-          commit('SET_ROLES', [])
-          resolve(result)
+            storage.set(USER_NAME, username, 7 * 24 * 60 * 60 * 1000)
+            storage.set(AUTHORITY, result.data.authority, 7 * 24 * 60 * 60 * 1000)
+            commit('SET_TOKEN', result.accessToken)
+            commit('SET_ROLES', [])
+            if (lastUser !== username) {
+              dispatch('setAppExculdeList', ['UserLayout', 'BasicLayout'])
+              result['isRefresh'] = true
+            }
+            resolve(result)
           } else {
-            this.$notification.error({
-              message: errorMessage(result),
-              description: '登录失败。请稍后再试'
-            })
             commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
-          reject(result)
+            commit('SET_ROLES', [])
+            reject(result)
           }
         }).catch(error => {
           commit('SET_TOKEN', '')
@@ -93,28 +94,28 @@ const user = {
         // }).catch(error => {
         //   reject(error)
         // })
-          if (storage.get(AUTHORITY) != null) {
-            const role = {
+        if (storage.get(AUTHORITY) != null) {
+          const role = {
+            permissionList: [storage.get(AUTHORITY)]
+          }
+          commit('SET_ROLES', role)
+          commit('SET_INFO', {
+            name: storage.get(USER_NAME)
+          })
+        } else {
+          reject(new Error('getInfo: roles must be a non-null array !'))
+        }
+
+        commit('SET_NAME', { name: storage.get(USER_NAME), welcome: welcome() })
+        commit('SET_AVATAR', '')
+
+        resolve({
+          result: {
+            role: {
               permissionList: [storage.get(AUTHORITY)]
             }
-            commit('SET_ROLES', role)
-            commit('SET_INFO', {
-              name: storage.get(USER_NAME)
-            })
-          } else {
-            reject(new Error('getInfo: roles must be a non-null array !'))
           }
-
-          commit('SET_NAME', { name: storage.get(USER_NAME), welcome: welcome() })
-          commit('SET_AVATAR', '')
-
-          resolve({
-            result: {
-              role: {
-                permissionList: [storage.get(AUTHORITY)]
-              }
-            }
-          })
+        })
       })
     },
 

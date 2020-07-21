@@ -14,7 +14,8 @@ const getters = {
   activeKey: state => state.tagsView.activeKey,
   pages: state => state.tagsView.pages,
   cachedPages: state => state.tagsView.cachedPages,
-  fullPathList: state => state.tagsView.fullPathList
+  fullPathList: state => state.tagsView.fullPathList,
+  appExcludList: state => state.tagsView.appExcludList
 }
 
 export default getters
