@@ -42,9 +42,9 @@ public class RSAEncrypt {
         KeyPair keyPair = keyPairGen.generateKeyPair();
         RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();   // 得到私钥
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();  // 得到公钥
-        String publicKeyString = Base64.encodeBase64URLSafeString(publicKey.getEncoded());
+        String publicKeyString = Base64.encodeBase64String(publicKey.getEncoded());
         // 得到私钥字符串se
-        String privateKeyString = Base64.encodeBase64URLSafeString((privateKey.getEncoded()));
+        String privateKeyString = Base64.encodeBase64String((privateKey.getEncoded()));
         return new RSAKeyPair(publicKeyString, privateKeyString);
         // 将公钥和私钥保存到Map
     }
@@ -64,7 +64,7 @@ public class RSAEncrypt {
         //RSA加密
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.ENCRYPT_MODE, pubKey);
-        String outStr = Base64.encodeBase64URLSafeString(cipher.doFinal(str.getBytes("UTF-8")));
+        String outStr = Base64.encodeBase64String(cipher.doFinal(str.getBytes("UTF-8")));
         return outStr;
     }
 

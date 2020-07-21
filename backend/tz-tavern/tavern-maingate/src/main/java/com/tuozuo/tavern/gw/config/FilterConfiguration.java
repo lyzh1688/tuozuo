@@ -34,8 +34,9 @@ public class FilterConfiguration {
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         config.setMaxAge(18000L);
-        config.addExposedHeader("Authorization");
-        config.setExposedHeaders(Collections.singletonList("Authorization"));
+//        config.addExposedHeader("Authorization");
+        config.addExposedHeader("access-token");
+        config.setExposedHeaders(Collections.singletonList("access-token"));
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
