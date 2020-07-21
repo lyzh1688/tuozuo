@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 const systemId = 'shuiruyi'
 const userApi = {
-  Login: '/login',
-  Logout: '/logout',
-  PublicKey: '/key',
+  Login: '/auth/v1/login',
+  Logout: '/auth/v1/logout',
+  PublicKey: '/auth/v1/publicKey',
   ForgePassword: '/auth/forge-password',
   Register: '/auth/register',
   twoStepCode: '/auth/2step-code',

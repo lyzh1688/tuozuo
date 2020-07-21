@@ -1,18 +1,18 @@
 import request from '@/utils/request'
 const CompanyApi = {
-  customInfo: '/custom/detail/',
-  customList: '/custom/list', //
-  addCustom: '/custom', // post
-  fuzzyQueryCustom: '/custom', //
-  fuzzyQueryCompany: '/company', //
-  updateCustom: '/custom/', // put
-  tradeflow: '/custom/tradeflow/',
-  companyInfo: '/company/detail/',
-  companyList: '/company/list',
-  addCompany: '/company', // post
-  updateCompany: '/custom/', // put
-  tradeOpration: '/custom/trade', // put
-  dictQuery: '/dict/'// bizStatus,customType,registerStatus,event
+  customInfo: '/v1/custom/detail/',
+  customList: '/v1/custom/list', //
+  addCustom: '/v1/custom', // post
+  fuzzyQueryCustom: '/v1/custom', //
+  fuzzyQueryCompany: '/v1/company', //
+  updateCustom: '/v1/custom/', // put
+  tradeflow: '/v1/custom/tradeflow/',
+  companyInfo: '/v1/company/detail/',
+  companyList: '/v1/company/list',
+  addCompany: '/v1/company', // post
+  updateCompany: '/v1/custom/', // put
+  tradeOpration: '/v1/custom/trade', // put
+  dictQuery: '/v1/dict/'// bizStatus,customType,registerStatus,event
 }
 /*
 companyName	否	String	公司名称

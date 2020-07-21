@@ -206,12 +206,12 @@ const bfzqCompanyInfo = (options) => {
             }
     }, '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
-Mock.mock(/\/custom\/detail\/ergou/, 'get', ergouCustomInfo)
-Mock.mock(/\/custom\/detail\/admin/, 'get', adminCustomInfo)
+Mock.mock(/\/v1\/custom\/detail\/ergou/, 'get', ergouCustomInfo)
+Mock.mock(/\/v1\/custom\/detail\/admin/, 'get', adminCustomInfo)
 
-Mock.mock(/\/custom\/tradeflow\/admin/, 'get', adminTradeFlow)
-Mock.mock(/\/dict\/event/, 'get', eventDict)
-Mock.mock(/\/company\/detail\/dfzq/, 'get', dfzqCompanyInfo)
-Mock.mock(/\/company\/detail\/xfzq/, 'get', xfzqCompanyInfo)
-Mock.mock(/\/company\/detail\/bfzq/, 'get', bfzqCompanyInfo)
-Mock.mock(/\/company/, 'get', fuzzyQueryCompany)
+Mock.mock(/\/v1\/custom\/tradeflow\/admin/, 'get', adminTradeFlow)
+Mock.mock(/\/v1\/dict\/event/, 'get', eventDict)
+Mock.mock(/\/v1\/company\/detail\/dfzq/, 'get', dfzqCompanyInfo)
+Mock.mock(/\/v1\/company\/detail\/xfzq/, 'get', xfzqCompanyInfo)
+Mock.mock(/\/v1\/company\/detail\/bfzq/, 'get', bfzqCompanyInfo)
+Mock.mock(/\/v1\/company/, 'get', fuzzyQueryCompany)

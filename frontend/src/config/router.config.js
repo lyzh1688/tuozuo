@@ -352,12 +352,13 @@ export const constantRouterMap = [
     component: UserLayout,
     redirect: '/login',
     hidden: true,
+    meta: { title: 'userLayout' },
     children: [
       {
         path: '/login',
         name: 'login',
         component: () => import(/* webpackChunkName: "user" */ '@/views/user/Login'),
-        meta: { noCache: true }
+        meta: { title: '登陆', hidden: true, noCache: true }
       }
     ]
   },

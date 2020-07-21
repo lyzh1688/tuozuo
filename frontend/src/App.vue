@@ -1,9 +1,9 @@
 <template>
   <a-config-provider :locale="locale">
     <div id="app">
-      <!-- <keep-alive :include="cachedPages"> -->
-      <router-view />
-      <!-- </keep-alive> -->
+      <keep-alive exclude="UserLayout">
+        <router-view />
+      </keep-alive>
     </div>
   </a-config-provider>
 </template>

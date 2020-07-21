@@ -4,24 +4,45 @@ const tagsView = {
     pages: [],
     cachedPages: [],
     activeKey: '',
+    notInTablist: ['/login'],
     newTabIndex: 0
   },
   mutations: {
     SET_ACTIVE_KEY: (state, key) => {
       // console.log('setActiveKey2', key)
-      state.activeKey = key
+      let flag = true
+      for (const i of state.notInTablist) {
+        if (key.includes(i)) {
+          flag = false
+        }
+      }
+      if (flag) {
+        state.activeKey = key
+      }
     },
     ADD_FULLPATH_LIST: (state, key) => {
       // console.log(state.fullPathList, key)
       const currentIndex = state.fullPathList.indexOf(key)
+      let flag = true
+      for (const i of state.notInTablist) {
+        if (key.includes(i)) {
+          flag = false
+        }
+      }
       // console.log('ADD_FULLPATH_LIST', key)
-      if (currentIndex < 0) { state.fullPathList = [...state.fullPathList, key] }
+      if (currentIndex < 0 && flag) { state.fullPathList = [...state.fullPathList, key] }
     },
     ADD_PAGES: (state, key) => {
       // console.log(state.fullPathList, key)
       const currentIndex = state.fullPathList.indexOf(key.fullPath)
+      let flag = true
+      for (const i of state.notInTablist) {
+        if (key.fullPath.includes(i)) {
+          flag = false
+        }
+      }
       // console.log('key.meta.noCache', key.meta.noCache)
-      if (currentIndex < 0) {
+      if (currentIndex < 0 && flag) {
         state.pages = [...state.pages, key]
         // console.log('key.meta.noCache', key.meta.noCache)
         if (!key.meta.noCache || key.meta.noCache === undefined) {

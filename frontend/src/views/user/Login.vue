@@ -200,7 +200,7 @@ export default {
       })
       */
      const toPath = this.$store.getters.activeKey == null || this.$store.getters.activeKey === '' ? '/' : this.$store.getters.activeKey
-      // console.log('toPath', toPath, this.$store.getters.activeKey)
+      console.log('toPath', toPath, this.$store.getters.activeKey)
       this.$router.push({ path: toPath })
       // 延迟 1 秒显示欢迎信息
       setTimeout(() => {

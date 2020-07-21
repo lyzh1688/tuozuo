@@ -12,7 +12,9 @@
           您身边的高效税务帮手
         </div>
       </div>
-      <router-view />
+      <keep-alive include="">
+        <router-view />
+      </keep-alive>
       <div class="footer">
         <div class="links">
           <a href="_self">帮助</a>

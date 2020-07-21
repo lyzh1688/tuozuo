@@ -90,8 +90,8 @@ const twofactor = () => {
   return builder({ stepCode: Mock.mock('@integer(0, 1)') })
 }
 
-Mock.mock(/\/login/, 'post', login)
-Mock.mock(/\/logout/, 'post', logout)
-Mock.mock(/\/key/, 'get', getPublicKey)
-Mock.mock(/\/account\/sms/, 'post', smsCaptcha)
-Mock.mock(/\/auth\/2step-code/, 'post', twofactor)
+Mock.mock(/\/auth\/v1\/login/, 'post', login)
+Mock.mock(/\/auth\/v1\/logout/, 'post', logout)
+Mock.mock(/\/auth\/v1\/publicKey/, 'get', getPublicKey)
+Mock.mock(/\/auth\/v1\/account\/sms/, 'post', smsCaptcha)
+Mock.mock(/\/auth\/v1\/auth\/2step-code/, 'post', twofactor)
