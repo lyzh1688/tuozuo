@@ -4,7 +4,8 @@ import storage from 'store'
 import notification from 'ant-design-vue/es/notification'
 import { VueAxios } from './axios'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
-
+import { errorMessage, needLogin } from './helper/responseHelper'
+import router from '@/router'
 // 创建 axios 实例
 const request = axios.create({
   // API 请求的默认前缀
@@ -54,6 +55,15 @@ request.interceptors.request.use(config => {
 
 // response interceptor
 request.interceptors.response.use((response) => {
+  if (needLogin(response.data)) {
+    notification.error({
+      message: '权限验证失败',
+        description: errorMessage(response.data) }
+    )
+    setTimeout(() => {
+      store.dispatch('Logout').then(router.push('/login'))
+    }, 1000)
+  }
   return response.data
 }, errorHandler)
 

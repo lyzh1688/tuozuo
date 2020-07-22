@@ -96,7 +96,7 @@ export default {
         for (const i of this.$store.getters.cachedPages) {
           this.cacheList.push(i.name)
         }
-        console.log('cacheList', this.cacheList)
+        // console.log('cacheList', this.cacheList)
       },
       deep: true // 对象内部的属性监听，也叫深度监听
     }

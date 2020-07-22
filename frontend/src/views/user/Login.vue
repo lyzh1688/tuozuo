@@ -146,7 +146,7 @@ export default {
 
       validateFields(validateFieldsKey, { force: true }, (err, values) => {
         if (!err) {
-          console.log('login form', values)
+          // console.log('login form', values)
           const loginParams = { ...values }
           // delete loginParams.username
           // loginParams[!state.loginType ? 'email' : 'username'] = values.username
@@ -202,7 +202,7 @@ export default {
       })
       */
      const toPath = this.$store.getters.activeKey == null || this.$store.getters.activeKey === '' ? '/' : this.$store.getters.activeKey
-      console.log('toPath', toPath, this.$store.getters.activeKey)
+      // console.log('toPath', toPath, this.$store.getters.activeKey)
       // 处理切换用户登录
       // if (res.isRefresh) {
       //   console.log('res.isRefresh', res.isRefresh)

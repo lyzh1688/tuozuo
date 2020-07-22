@@ -4,3 +4,6 @@ export function success (response) {
 export function errorMessage (response) {
     return response.code + ':' + response.msg
 }
+export function needLogin (response) {
+    return String(response.code) === '1999'
+}
