@@ -1,6 +1,12 @@
 package com.tuozuo.tavern.libs.auth.session;
 
+import com.sun.org.apache.regexp.internal.RE;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.RedisStringCommands;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.types.Expiration;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,6 +31,26 @@ public class RedisSessionManager implements SessionManager {
             }
         } else {
             throw new RuntimeException("session is not instance of RedisSession");
+        }
+    }
+
+    @Override
+    public void createOrRefreshSession(Session session) {
+        if(session instanceof RedisSession){
+            RedisSession redisSession = (RedisSession) session;
+            Boolean ret = (Boolean) redisTemplate.execute(new RedisCallback<Boolean>() {
+                @Override
+                public Boolean doInRedis(RedisConnection redisConnection) throws DataAccessException {
+                    redisConnection.set(redisSession.getSessionKey().getBytes(),
+                            redisSession.getToken().getBytes(),
+                            Expiration.from(30, TimeUnit.MINUTES),
+                            RedisStringCommands.SetOption.SET_IF_ABSENT);
+                    return true;
+                }
+            });
+        }
+        else {
+
         }
     }
 

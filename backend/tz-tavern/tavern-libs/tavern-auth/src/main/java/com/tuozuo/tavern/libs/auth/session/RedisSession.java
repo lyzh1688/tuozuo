@@ -7,6 +7,10 @@ import io.jsonwebtoken.Claims;
  */
 public class RedisSession extends Session {
 
+    public RedisSession(String userId, String systemId, String roleId, String token) {
+        super(userId, systemId, roleId,token);
+    }
+
     public RedisSession(String token, Claims claims, long timeout) {
         super(token, claims, timeout);
     }

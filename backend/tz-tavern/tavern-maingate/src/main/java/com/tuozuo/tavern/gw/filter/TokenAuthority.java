@@ -26,7 +26,7 @@ public class TokenAuthority extends ZuulFilter {
 
     Logger LOGGER = LoggerFactory.getLogger(TokenAuthority.class);
 
-    public static ObjectMapper objectMapper;
+    public static ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private JwtAuthenticationProperty config;

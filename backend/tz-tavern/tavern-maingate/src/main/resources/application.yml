@@ -4,7 +4,12 @@ server:
 spring:
   application:
     name: tavern-maingate
-
+# Redis数据库索引（默认为0）
+  redis:
+    database: 0
+    host: 119.3.19.171
+    port: 6380
+    password: tuozuo
 zuul:
   routes:
     tavern-authority:
@@ -20,4 +25,4 @@ zuul:
     socket-timeout-millis: 60000
   servlet-path: /
 
-tavern.security.jwt.secret: tavern
+#tavern.security.jwt.secret: tavern

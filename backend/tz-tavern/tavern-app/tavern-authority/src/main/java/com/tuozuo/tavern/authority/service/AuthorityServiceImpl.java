@@ -9,6 +9,8 @@ import com.tuozuo.tavern.authority.model.User;
 import com.tuozuo.tavern.libs.auth.encrypt.RSAEncrypt;
 import com.tuozuo.tavern.libs.auth.encrypt.RSAKeyPair;
 import com.tuozuo.tavern.libs.auth.jwt.JwtAuthenticationProperty;
+import com.tuozuo.tavern.libs.auth.session.RedisSession;
+import com.tuozuo.tavern.libs.auth.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,8 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Autowired
     AuthorityDao authorityDao;
 
+    @Autowired
+    SessionManager sessionManager;
 
     @Override
     public RSAPublicKey getRSAPublicKeys(String userId, String systemId, String roleGroup) throws NoSuchAlgorithmException {
@@ -58,6 +62,8 @@ public class AuthorityServiceImpl implements AuthorityService {
             //登陆成功失败次数清零
             user.setFailedTimes(0);
             this.authorityDao.updateFailedTimes(user);
+            RedisSession session = new RedisSession(user.getUserId(),user.getSystemId(),user.getRoleGroup(),tokenAuthority.getAccessToken());
+            sessionManager.createOrRefreshSession(session);
         } else {
             //登陆失败增加失败次数
             if (user.getFailedTimes() < User.getMaxFailedTimes()) {

@@ -15,8 +15,27 @@ public abstract class Session {
     String token;
     long timeout;
 
+
+    public Session(String userId, String systemId, String roleId, String token) {
+        this.userId = userId;
+        this.systemId = systemId;
+        this.roleId = roleId;
+        //去掉头
+        if (token.split(" ").length > 1) {
+            this.token = token.split(" ")[1];
+        } else {
+            this.token = token;
+        }
+
+    }
+
     public Session(String token, Claims claims, long timeout) {
-        this.token = token;
+        //去掉头
+        if (token.split(" ").length > 1) {
+            this.token = token.split(" ")[1];
+        } else {
+            this.token = token;
+        }
         this.userId = claims.get(AuthTokenFactor.Factor.USER_ID, String.class);
         this.roleId = claims.get(AuthTokenFactor.Factor.ROLE_GROUP, String.class);
         this.systemId = claims.get(AuthTokenFactor.Factor.SYSTEM_ID, String.class);
