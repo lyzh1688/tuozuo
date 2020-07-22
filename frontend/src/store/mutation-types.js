@@ -1,5 +1,6 @@
 export const ACCESS_TOKEN = 'Access-Token'
 export const USER_NAME = 'Username'
+export const LAST_USER = 'Lastuser'
 export const AUTHORITY = 'Authority'
 
 export const SIDEBAR_TYPE = 'sidebar_type'

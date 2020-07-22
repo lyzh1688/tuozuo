@@ -15,7 +15,8 @@ const getters = {
   pages: state => state.tagsView.pages,
   cachedPages: state => state.tagsView.cachedPages,
   fullPathList: state => state.tagsView.fullPathList,
-  appExcludList: state => state.tagsView.appExcludList
+  appExcludList: state => state.tagsView.appExcludList,
+  lastUser: state => state.user.lastUser
 }
 
 export default getters

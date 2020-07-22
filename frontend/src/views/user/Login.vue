@@ -201,14 +201,14 @@ export default {
         })
       })
       */
-     let toPath = this.$store.getters.activeKey == null || this.$store.getters.activeKey === '' ? '/' : this.$store.getters.activeKey
+     const toPath = this.$store.getters.activeKey == null || this.$store.getters.activeKey === '' ? '/' : this.$store.getters.activeKey
       console.log('toPath', toPath, this.$store.getters.activeKey)
       // 处理切换用户登录
-      if (res.isRefresh) {
-        console.log('res.isRefresh', res.isRefresh)
-        this.$store.dispatch('setAppExculdeList', ['UserLayout'])
-        toPath = '/'
-      }
+      // if (res.isRefresh) {
+      //   console.log('res.isRefresh', res.isRefresh)
+      //   this.$store.dispatch('setAppExculdeList', ['UserLayout'])
+      //   toPath = '/'
+      // }
       this.$router.push({ path: toPath })
       // 延迟 1 秒显示欢迎信息
       setTimeout(() => {

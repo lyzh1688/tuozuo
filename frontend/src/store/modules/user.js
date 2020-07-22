@@ -1,10 +1,11 @@
 import storage from 'store'
 import { login, logout } from '@/api/login'
 import { success } from '@/utils/helper/responseHelper'
-import { ACCESS_TOKEN, USER_NAME, AUTHORITY } from '@/store/mutation-types'
+import { ACCESS_TOKEN, USER_NAME, AUTHORITY, LAST_USER } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
 const user = {
   state: {
+    lastUser: '',
     token: '',
     name: '',
     welcome: '',
@@ -20,6 +21,10 @@ const user = {
     SET_NAME: (state, { name, welcome }) => {
       state.name = name
       state.welcome = welcome
+    },
+    SET_LAST_USER: (state, name) => {
+      state.lastUser = name
+      storage.set(LAST_USER, name, 7 * 24 * 60 * 60 * 1000)
     },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
@@ -39,8 +44,9 @@ const user = {
         const username = userInfo.username
         login(userInfo).then(response => {
           const result = response
-          result['isRefresh'] = false
+          // result['isRefresh'] = false
           const lastUser = storage.get(USER_NAME)
+          commit('SET_LAST_USER', storage.get(USER_NAME))
           if (success(result)) {
             storage.set(ACCESS_TOKEN, result.data.accessToken, 7 * 24 * 60 * 60 * 1000)
             storage.set(USER_NAME, username, 7 * 24 * 60 * 60 * 1000)
@@ -48,8 +54,10 @@ const user = {
             commit('SET_TOKEN', result.accessToken)
             commit('SET_ROLES', [])
             if (lastUser !== username) {
-              dispatch('setAppExculdeList', ['UserLayout', 'BasicLayout'])
-              result['isRefresh'] = true
+              // dispatch('setAppExculdeList', ['UserLayout', 'BasicLayout'])
+              commit('TAB_RESET')
+              commit('SET_ACTIVE_KEY', '/')
+              // result['isRefresh'] = true
             }
             resolve(result)
           } else {
@@ -64,7 +72,12 @@ const user = {
         })
       })
     },
-
+    UpadtelastUser ({ commit, dispatch }, userInfo) {
+      return new Promise((resolve, reject) => {
+        commit('SET_LAST_USER', userInfo)
+        resolve()
+      })
+    },
     // 获取用户信息
     GetInfo ({ commit }) {
       return new Promise((resolve, reject) => {
@@ -105,7 +118,7 @@ const user = {
         } else {
           reject(new Error('getInfo: roles must be a non-null array !'))
         }
-
+        commit('SET_LAST_USER', storage.get(LAST_USER))
         commit('SET_NAME', { name: storage.get(USER_NAME), welcome: welcome() })
         commit('SET_AVATAR', '')
 

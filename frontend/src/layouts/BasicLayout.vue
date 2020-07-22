@@ -1,4 +1,4 @@
-<template>
+<template >
   <pro-layout
     :title="title"
     :menus="menus"
@@ -100,6 +100,12 @@ export default {
       },
       deep: true // 对象内部的属性监听，也叫深度监听
     }
+    // username: function (val, oldval) {
+    //   console.log('username changed!!!!!!!!!!!!!')
+    //   // this.$router.push('/')
+    //   // location.reload()
+    //   //  this.$router.go(0)
+    // }
   },
   created () {
     // const routes = this.mainMenu.find(item => item.path === '/')

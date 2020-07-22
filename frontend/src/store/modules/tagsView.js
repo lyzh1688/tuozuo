@@ -25,7 +25,7 @@ const tagsView = {
         state.activeKey = key
       }
     },
-    RESET: (state) => {
+    TAB_RESET: (state) => {
       state = {
         fullPathList: [],
         pages: [],
@@ -131,7 +131,7 @@ const tagsView = {
       commit('SET_APP_EXCLUDE_LIST', view)
     },
     resetTabViews ({ commit }) {
-      commit('RESET')
+      commit('TAB_RESET')
     },
     setActiveKey ({ commit }, view) {
       commit('SET_ACTIVE_KEY', view)
