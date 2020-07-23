@@ -34,4 +34,6 @@ public interface CustomInfoService {
                           double amount,
                           MultipartFile tradeSnapshot) throws Exception;
 
+    void countCustomStatistic();
+
 }

@@ -91,6 +91,7 @@ public class BusinessConverter {
 
     public static CustomTradeFlowDTO customTradeFlowToDTO(CustomTradeFlow customTradeFlow) {
         CustomTradeFlowDTO customTradeFlowDTO = new CustomTradeFlowDTO();
+        customTradeFlowDTO.setAmount(customTradeFlow.getAmount());
         customTradeFlowDTO.setBalance(customTradeFlow.getBalance());
         customTradeFlowDTO.setEvent(customTradeFlow.getEvent());
         customTradeFlowDTO.setRemark(customTradeFlow.getRemark());

@@ -10,7 +10,6 @@ import com.tuozuo.tavern.shuiruyi.model.CustomTradeFlow;
 import com.tuozuo.tavern.shuiruyi.service.CustomInfoService;
 import com.tuozuo.tavern.shuiruyi.vo.CustomAddInfoVO;
 import com.tuozuo.tavern.shuiruyi.vo.CustomInfoVO;
-import com.tuozuo.tavern.shuiruyi.vo.CustomListVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +40,12 @@ public class CustomInfoEndpoint {
     public TavernResponse queryCustomDetail(@PathVariable("customId") String customId) {
         try {
             CustomDetailInfo customDetailInfo = this.customInfoService.queryCustomInfo(customId);
-            CustomInfoDetailDTO customInfoDetailDTO = BusinessConverter.customDetailToDTO(customDetailInfo);
-            return TavernResponse.ok(customInfoDetailDTO);
+            if(customDetailInfo != null){
+                CustomInfoDetailDTO customInfoDetailDTO = BusinessConverter.customDetailToDTO(customDetailInfo);
+                return TavernResponse.ok(customInfoDetailDTO);
+            }else {
+                return TavernResponse.bizFailure("该客户不存在");
+            }
         } catch (Exception e) {
             LOGGER.error("[客户详情信息] failed", e);
             return TavernResponse.bizFailure(e.getMessage());

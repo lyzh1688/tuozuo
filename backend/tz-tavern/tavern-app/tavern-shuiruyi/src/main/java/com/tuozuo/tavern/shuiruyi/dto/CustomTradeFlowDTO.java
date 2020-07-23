@@ -11,8 +11,17 @@ public class CustomTradeFlowDTO {
    private String tradeDate;
    private String event;
    private BigDecimal balance;
+   private BigDecimal amount;
    private String tradeSnapshot;
    private String remark;
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
 
     public String getTradeDate() {
         return tradeDate;

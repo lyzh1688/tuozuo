@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tuozuo.tavern.shuiruyi.dao.CustomInfoDao;
 import com.tuozuo.tavern.shuiruyi.mapper.CustomInfoMapper;
+import com.tuozuo.tavern.shuiruyi.mapper.CustomStatisticSnapshotMapper;
 import com.tuozuo.tavern.shuiruyi.mapper.CustomTradeFlowMapper;
 import com.tuozuo.tavern.shuiruyi.model.CustomDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.CustomInfo;
@@ -24,6 +25,8 @@ public class CustomInfoDaoImpl implements CustomInfoDao {
     private CustomInfoMapper customInfoMapper;
     @Autowired
     private CustomTradeFlowMapper customTradeFlowMapper;
+    @Autowired
+    private CustomStatisticSnapshotMapper customStatisticSnapshotMapper;
 
 
     @Override
@@ -34,7 +37,7 @@ public class CustomInfoDaoImpl implements CustomInfoDao {
     @Override
     public IPage<CustomTradeFlow> selectCustomTradeFlowList(String customId, int pageNo, int pageSize) {
         Page<CustomTradeFlow> page = new Page<>(pageNo, pageSize);
-        return this.customTradeFlowMapper.selectPage(page, Wrappers.<CustomTradeFlow>query().lambda().eq(CustomTradeFlow::getCustomId, customId));
+        return this.customTradeFlowMapper.selectPage(page, Wrappers.<CustomTradeFlow>query().lambda().eq(CustomTradeFlow::getCustomId, customId).orderByDesc(CustomTradeFlow::getTradeDate));
     }
 
     @Override
@@ -58,6 +61,11 @@ public class CustomInfoDaoImpl implements CustomInfoDao {
     @Override
     public IPage<CustomInfo> selectCustomInfoList(String customName, String hasPaid, int pageNo, int pageSize) {
         Page<CustomInfo> page = new Page<>(pageNo, pageSize);
-        return this.customInfoMapper.selectCustomInfoList(page,customName, hasPaid);
+        return this.customInfoMapper.selectCustomInfoList(page, customName, hasPaid);
+    }
+
+    @Override
+    public void countCustomStatistic() {
+        this.customStatisticSnapshotMapper.countStatistic();
     }
 }

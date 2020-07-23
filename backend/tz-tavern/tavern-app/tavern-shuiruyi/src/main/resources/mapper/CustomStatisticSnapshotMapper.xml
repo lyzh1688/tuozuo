@@ -1,36 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuozuo.tavern.shuiruyi.mapper.CustomStatisticSnapshotMapper">
-  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.shuiruyi.model.CustomStatisticSnapshot">
-    <id column="custom_id" jdbcType="VARCHAR" property="customId" />
-    <result column="total_fee" jdbcType="DECIMAL" property="totalFee" />
-    <result column="total_deposit" jdbcType="DECIMAL" property="totalDeposit" />
-    <result column="update_date" jdbcType="DATE" property="updateDate" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from custom_statistic_snapshot
-    where custom_id = #{customId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.tuozuo.tavern.shuiruyi.model.CustomStatisticSnapshot">
-    insert into custom_statistic_snapshot (custom_id, total_fee, total_deposit, 
-      update_date)
-    values (#{customId,jdbcType=VARCHAR}, #{totalFee,jdbcType=DECIMAL}, #{totalDeposit,jdbcType=DECIMAL}, 
-      #{updateDate,jdbcType=DATE})
+    <resultMap id="BaseResultMap" type="com.tuozuo.tavern.shuiruyi.model.CustomStatisticSnapshot">
+        <id column="custom_id" jdbcType="VARCHAR" property="customId"/>
+        <result column="total_fee" jdbcType="DECIMAL" property="totalFee"/>
+        <result column="total_deposit" jdbcType="DECIMAL" property="totalDeposit"/>
+        <result column="update_date" jdbcType="DATE" property="updateDate"/>
+    </resultMap>
+    <insert id="countStatistic">
+    insert into custom_statistic_snapshot(total_fee,total_deposit,custom_id,update_date)
+    select sum(total_fee) total_fee,sum(total_deposit) total_deposit,custom_id,now() from(
+    select sum(amount) total_fee,sum(amount)total_deposit,custom_id from custom_trade_flow t where t.`event` = 'INVEST' group by custom_id
+    UNION
+    select sum(amount) total_fee,0 total_deposit,custom_id from custom_trade_flow t where t.`event` = 'CUT_PAYMENT' group by custom_id
+    )t group by custom_id on DUPLICATE KEY UPDATE total_fee = VALUES(total_fee),total_deposit=VALUES(total_deposit),update_date = now()
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.shuiruyi.model.CustomStatisticSnapshot">
-    update custom_statistic_snapshot
-    set total_fee = #{totalFee,jdbcType=DECIMAL},
-      total_deposit = #{totalDeposit,jdbcType=DECIMAL},
-      update_date = #{updateDate,jdbcType=DATE}
-    where custom_id = #{customId,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select custom_id, total_fee, total_deposit, update_date
-    from custom_statistic_snapshot
-    where custom_id = #{customId,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select custom_id, total_fee, total_deposit, update_date
-    from custom_statistic_snapshot
-  </select>
 </mapper>

@@ -24,4 +24,6 @@ public interface CustomInfoDao {
     void update(CustomInfo customInfo);
 
     IPage<CustomInfo> selectCustomInfoList(String customName, String hasPaid, int pageNo, int pageSize);
+
+    void countCustomStatistic();
 }

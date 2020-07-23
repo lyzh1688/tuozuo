@@ -114,6 +114,11 @@ public class CustomInfoServiceImpl implements CustomInfoService {
 
     }
 
+    @Override
+    public void countCustomStatistic() {
+
+    }
+
     private void setCustomInfo(CustomInfoVO vo, CustomInfo customInfo) {
         customInfo.setCustomName(vo.getCustomName());
         customInfo.setCustomPswd(vo.getCustomPswd());
