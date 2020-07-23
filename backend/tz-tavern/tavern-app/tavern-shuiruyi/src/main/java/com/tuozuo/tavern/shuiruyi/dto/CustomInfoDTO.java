@@ -13,6 +13,8 @@ public class CustomInfoDTO {
 
     String customContact;
 
+    String customPswd;
+
     BigDecimal balance;
 
     String province;
@@ -22,6 +24,14 @@ public class CustomInfoDTO {
     String customType;
 
     String hasPaid;
+
+    public String getCustomPswd() {
+        return customPswd;
+    }
+
+    public void setCustomPswd(String customPswd) {
+        this.customPswd = customPswd;
+    }
 
     public String getCustomId() {
         return customId;
