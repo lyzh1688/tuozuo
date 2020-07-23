@@ -35,11 +35,16 @@ export default {
     menu: {
       type: Boolean,
       default: true
+    },
+    showMyInfo: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
     handleToCenter () {
-      this.$router.push({ path: '/financialServices/myInfo' })
+      console.log(this.$store.state.user.myInfoPath)
+      this.$router.push({ path: this.$store.state.user.myInfoPath })
     },
     handleToSettings () {
       this.$router.push({ path: '/account/settings' })

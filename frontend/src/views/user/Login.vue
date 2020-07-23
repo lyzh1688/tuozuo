@@ -18,7 +18,7 @@
             type="error"
             showIcon
             style="margin-bottom: 24px;"
-            message="账户或密码错误（admin/ant.design )"
+            message="账户,密码或用户组错误"
           />
           <a-form-item>
             <a-input
@@ -27,7 +27,7 @@
               placeholder="账户"
               v-decorator="[
                 'username',
-                {rules: [{ required: true, message: '请输入帐户名或邮箱地址' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
+                {rules: [{ required: true, message: '请输入帐户名' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
               ]"
             >
               <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }" />
@@ -89,7 +89,7 @@
 <script>
 import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
-import { success, errorMessage } from '@/utils/helper/responseHelper'
+import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 import RsaEncrypt from '@/components/RSAHelper/RsaEncrypt'
 import { getPublicKey } from '@/api/login'
 export default {
@@ -155,7 +155,7 @@ export default {
               const result = response
               if (success(result)) {
                 loginParams.password = RsaEncrypt.rsaData(values.password, result.data.publicKey)
-                console.log(loginParams.password)
+                // console.log(loginParams.password)
                 Login(loginParams)
                   .then(res => this.loginSuccess(res))
                   .catch(err => this.requestFailed(err))
@@ -221,11 +221,13 @@ export default {
     },
     requestFailed (err) {
       this.isLoginError = true
+      if (!needLogin(err)) {
       this.$notification['error']({
         message: '错误',
         description: (((err.response || {}).data || {}).message || errorMessage(err)) || '请求出现错误，请稍后再试',
         duration: 4
       })
+      }
     }
   }
 }

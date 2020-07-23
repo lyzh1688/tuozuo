@@ -7,15 +7,15 @@ export default {
   name: 'CustomInfo',
   data: function () {
     return {
-      customId: '111'
+      customId: ''
     }
   },
   components: {
     MyInfo
   },
   created () {
-      if (this.$router.query.customId !== undefined) {
-          this.customId = this.$router.query.customId
+      if (this.$route.params.customId !== undefined) {
+          this.customId = this.$route.params.customId
       }
   }
 }

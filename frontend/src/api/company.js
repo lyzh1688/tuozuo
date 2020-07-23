@@ -25,6 +25,16 @@ export function fuzzyQueryCompany (companyName, queryCnt, showAll) {
     method: 'GET'
   })
 }
+/*
+customName	否	String	客户名称
+queryCnt	否	String	查询条数，默认20
+*/
+export function fuzzyQueryCustom (customName, queryCnt) {
+  return request({
+    url: CompanyApi.fuzzyQueryCustom + '?customName=' + customName + '&queryCnt=' + queryCnt,
+    method: 'GET'
+  })
+}
 export function dictQuery (dictionName) {
   return request({
     url: CompanyApi.dictQuery + dictionName,
@@ -43,9 +53,9 @@ bizStatus	否	String	业务状态
 pageNo	是	number	当前页码
 pageSize	是	number	页数
 */
-export function getCustomList (customName, bizStatus, pageNo, pageSize) {
+export function getCustomList (customName, hasPaid, pageNo, pageSize) {
   return request({
-    url: CompanyApi.customList + '?customName=' + customName + '&bizStatus=' + bizStatus + '&pageNo=' + pageNo + '&pageSize=' + pageSize,
+    url: CompanyApi.customList + '?customName=' + customName + '&hasPaid=' + hasPaid + '&pageNo=' + pageNo + '&pageSize=' + pageSize,
     method: 'GET'
   })
 }

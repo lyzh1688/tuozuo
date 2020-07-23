@@ -60,9 +60,10 @@ request.interceptors.response.use((response) => {
       message: '权限验证失败',
         description: errorMessage(response.data) }
     )
+    store.dispatch('Logout').then(
     setTimeout(() => {
-      store.dispatch('Logout').then(router.push('/login'))
-    }, 1000)
+      router.push('/login')
+    }, 1000))
   }
   return response.data
 }, errorHandler)

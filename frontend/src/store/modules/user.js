@@ -11,7 +11,8 @@ const user = {
     welcome: '',
     avatar: '',
     roles: [],
-    info: {}
+    info: {},
+    myInfoPath: '/'
   },
 
   mutations: {
@@ -34,6 +35,9 @@ const user = {
     },
     SET_INFO: (state, info) => {
       state.info = info
+    },
+    SET_MY_INFO_PATH: (state, path) => {
+      state.myInfoPath = path
     }
   },
 
@@ -110,6 +114,12 @@ const user = {
         if (storage.get(AUTHORITY) != null) {
           const role = {
             permissionList: [storage.get(AUTHORITY)]
+          }
+          const pathmap = JSON.parse(process.env.VUE_APP_MY_INFO_MAP)
+          for (const i in pathmap) {
+            if (storage.get(AUTHORITY).includes(i)) {
+              commit('SET_MY_INFO_PATH', pathmap[i])
+            }
           }
           commit('SET_ROLES', role)
           commit('SET_INFO', {

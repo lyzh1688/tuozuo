@@ -40,7 +40,7 @@ export const asyncRouterMap = [
       {
         path: '/customService/customList',
         name: 'CustomList',
-        component: () => import('@/views/user/Console'),
+        component: () => import('@/views/user/CustomList'),
         meta: { title: '客户列表', keepAlive: false, permission: ['admin', 'shuiruyi.staff.normal'] }
       },
       {

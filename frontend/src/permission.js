@@ -18,6 +18,9 @@ router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${i18nRender(to.meta.title)} - ${domTitle}`))
   /* has token */
+  if (to.fullPath === from.fullPath && from.fullPath === '/login') {
+    next(false)
+  }
   if (storage.get(ACCESS_TOKEN)) {
     // check login user.roles is null
     if (store.getters.roles.length === 0) {
