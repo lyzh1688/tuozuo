@@ -1,22 +1,24 @@
 <template>
-  <Myinfo :customId="customId" />
+  <myinfo :customId="customId" />
 </template>
 <script>
-import MyInfo from './MyInfo'
+import myinfo from './MyInfo'
 export default {
   name: 'CustomInfo',
+  components: {
+    myinfo
+  },
   data: function () {
     return {
       customId: ''
     }
   },
-  components: {
-    MyInfo
-  },
-  created () {
-      if (this.$route.params.customId !== undefined) {
-          this.customId = this.$route.params.customId
-      }
+  activated () {
+    console.log(this.$route.params.customId)
+    if (this.$route.params.customId !== undefined) {
+      this.customId = ''
+      this.customId = this.$route.params.customId
+    }
   }
 }
 </script>

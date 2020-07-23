@@ -159,7 +159,7 @@ export default {
   },
   methods: {
     handleDefault (value) {
-      return value === undefined ? '暂无数据' : String(value)
+      return value === undefined || value === null ? '暂无数据' : String(value)
     },
     getCustomInfo () {
       this.infoLoading = true
@@ -236,6 +236,8 @@ export default {
     customId: function (newVal, oldVal) {
       if (newVal !== '') {
         this.currentCustomId = newVal // newVal即是chartData
+        this.getCustomInfo()
+          this.$refs.table.refresh(true)
       }
     }
   }

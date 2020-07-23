@@ -18,23 +18,21 @@
                   @search="handleCustomSearch"
                   @change="handleCustomChange"
                 >
-                  <a-select-option v-for="d in fuzzyCustomList" :key="d.text">
-                    {{ d.text }}
-                  </a-select-option>
+                  <a-select-option v-for="d in fuzzyCustomList" :key="d.text">{{ d.text }}</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
             <a-col :md="8" :sm="8">
               <a-form-item label="是否完成支付">
-                <a-select v-model="queryParam.hasPaid" placeholder="请选择" default-value="">
+                <a-select v-model="queryParam.hasPaid" placeholder="请选择" default-value>
                   <a-select-option value="1">已支付</a-select-option>
                   <a-select-option value="0">未支付</a-select-option>
-                  <a-select-option value="">不限制</a-select-option>
+                  <a-select-option value>不限制</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="8">
-              <a-form-item >
+              <a-form-item>
                 <a-button type="primary" size="small" @click="$refs.table.refresh(true)">查询</a-button>
                 <a-button
                   size="small"
@@ -44,12 +42,13 @@
                     customName: '',
                     pageNo: 1,
                     pageSize: 20
-                  }}">重置</a-button>
+                  }}"
+                >重置</a-button>
               </a-form-item>
             </a-col>
             <a-col :md="12" :sm="24">
-              <a-form-item >
-                <a-button size="small" @click="handleAdd">新增客户</a-button>
+              <a-form-item>
+                <a-button :loading="confirmLoading" size="small" @click="handleAdd">新增客户</a-button>
               </a-form-item>
             </a-col>
           </a-row>
@@ -68,14 +67,14 @@
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="customType" slot-scope="text">{{ customTypeMap[text] }}</span>
-        <span slot="ops" slot-scope="record">
-          <a-button size="small" @click="handleupdate(record)">修改</a-button>
-          <a-button size="small" @click="handleops(record)">余额变动</a-button>
+        <span slot="ops" slot-scope="text, record">
+          <a-button size="small" @click="handleUpdate(record)" :loading="confirmLoading">修改</a-button>
+          <a-button size="small" @click="handleops(record)" :loading="confirmLoading">余额变动</a-button>
         </span>
         <a slot="customName" slot-scope="text,record" @click="toCustomInfo(record)">{{ text }}</a>
       </s-table>
     </a-card>
-    <CustomInfoForm
+    <custominfoform
       ref="CustomInfoForm"
       :visible="customOpsVisible"
       :loading="confirmLoading"
@@ -84,14 +83,23 @@
       @cancel="handleCancel"
       @ok="handleOk"
     />
+    <fundoperation
+      ref="fundoperation"
+      :visible="fundOpsVisible"
+      :loading="confirmLoading"
+      :model="fundMdl"
+      @cancel="handleCancel"
+      @ok="handleFundOpsOk"
+    />
   </page-header-wrapper>
 </template>
 <script>
 import { STable } from '@/components'
-import { getCustomList, dictQuery, fuzzyQueryCustom } from '@/api/company'
-import { success, errorMessage } from '@/utils/helper/responseHelper'
+import { getCustomList, dictQuery, fuzzyQueryCustom, addCustom, updateCustom, tradeOpration } from '@/api/company'
+import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 import { mapState } from 'vuex'
-import CustomInfoForm from './forms/CustomInfoForm'
+import custominfoform from './forms/CustomInfoForm'
+import fundoperation from './forms/FundOperation'
 import md5 from 'md5'
 const columns = [
   {
@@ -106,15 +114,15 @@ const columns = [
   {
     title: '是否完成支付',
     dataIndex: 'hasPaid',
-     customRender: (text) => {
-       if (text === '0') {
-         return '否'
-       }
-       if (text === '1') {
-         return '是'
-       }
-       return ''
-     }
+    customRender: text => {
+      if (text === '0') {
+        return '否'
+      }
+      if (text === '1') {
+        return '是'
+      }
+      return ''
+    }
   },
   {
     title: '客户类型',
@@ -161,24 +169,23 @@ function fetch (value, callback) {
   currentValue = value
 
   function fake () {
-    fuzzyQueryCustom(value, 20)
-      .then(d => {
-        if (currentValue === value) {
-          const result = d.data
-          const data = []
-          result.forEach(r => {
-            data.push({
-              value: r['id'],
-              text: r['name']
-            })
+    fuzzyQueryCustom(value, 20).then(d => {
+      if (currentValue === value) {
+        const result = d.data
+        const data = []
+        result.forEach(r => {
+          data.push({
+            value: r['id'],
+            text: r['name']
           })
-           data.push({
-              value: '',
-              text: ''
-            })
-          callback(data)
-        }
-      })
+        })
+        data.push({
+          value: '',
+          text: ''
+        })
+        callback(data)
+      }
+    })
   }
 
   timeout = setTimeout(fake, 300)
@@ -187,29 +194,38 @@ export default {
   name: 'CustomList',
   components: {
     STable,
-    CustomInfoForm
+    custominfoform,
+    fundoperation
   },
   data () {
     this.columns = columns
     return {
+      fundOpsVisible: false,
+      fundMdl: null,
       customMdl: null,
       customOpsVisible: false,
       confirmLoading: false,
       customInfo: {},
       fuzzyCustomList: [],
       infoLoading: false,
+      isupdate: false,
       customTypeMap: {},
       customTypList: [],
       queryParam: {
- hasPaid: '',
-      customName: '',
-      pageNo: 1,
-      pageSize: 20
+        hasPaid: '',
+        customName: '',
+        pageNo: 1,
+        pageSize: 20
       },
       loadData: parameter => {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
         console.log('loadData request parameters:', requestParameters)
-        return getCustomList(requestParameters.customName, requestParameters.hasPaid, requestParameters.pageNo, requestParameters.pageSize)
+        return getCustomList(
+          requestParameters.customName,
+          requestParameters.hasPaid,
+          requestParameters.pageNo,
+          requestParameters.pageSize
+        )
           .then(Response => {
             const result = Response
             // console.log('getTradeflow', result)
@@ -245,30 +261,142 @@ export default {
     }
   },
   methods: {
-    handleOk () {
-      const form = this.$refs.CustomInfoForm.form
-      this.confirmLoading = true
+    handleops (record) {
+      this.fundOpsVisible = true
+      this.fundMdl = { ...record }
+    },
+    handleFundOpsOk () {
+      const form = this.$refs.fundoperation.form
       form.validateFields((errors, values) => {
         if (!errors) {
-          values['province'] = values['province'] + '-' + values['area'] + '-' + values['ctiy']
+          this.confirmLoading = true
+          tradeOpration(values)
+            .then(response => {
+              const result = response
+              if (success(result)) {
+                this.$notification.success({
+                  message: '余额修改成功'
+                })
+                const form = this.$refs.fundoperation.form
+                form.resetFields() // 清理表单数据（可不做）
+                this.$refs.table.refresh(true)
+                this.fundOpsVisible = false
+                this.confirmLoading = false
+              } else {
+                this.confirmLoading = false
+                this.$notification.error({
+                  message: errorMessage(result),
+                  description: '余额修改成功'
+                })
+              }
+            })
+            .catch(error => {
+              this.$notification.error({
+                message: '余额修改成功失败。请稍后再试',
+                description: error
+              })
+              this.confirmLoading = false
+            })
+        }
+      })
+    },
+    handleOk () {
+      const form = this.$refs.CustomInfoForm.form
+      form.validateFields((errors, values) => {
+        if (!errors) {
+          this.confirmLoading = true
+          values['province'] = values['province'] + '-' + values['area'] + '-' + values['city']
           values['customPswd'] = md5(values['customPswd'])
           delete values.ctiy
           delete values.area
-          console.log(values)
-          this.customOpsVisible = false
-              this.confirmLoading = false
+          if (this.isupdate) {
+            updateCustom(values, values.customId)
+              .then(response => {
+                const result = response
+                if (success(result)) {
+                  this.$notification.success({
+                    message: '修改成功'
+                  })
+                  const form = this.$refs.CustomInfoForm.form
+                  form.resetFields() // 清理表单数据（可不做）
+                  this.$refs.table.refresh(true)
+                  this.customOpsVisible = false
+                  this.confirmLoading = false
+                } else {
+                  this.confirmLoading = false
+                  this.$notification.error({
+                    message: errorMessage(result),
+                    description: '修改失败'
+                  })
+                }
+              })
+              .catch(error => {
+                this.$notification.error({
+                  message: '修改失败。请稍后再试',
+                  description: error
+                })
+                this.confirmLoading = false
+              })
+          } else {
+            addCustom(values)
+              .then(response => {
+                const result = response
+                if (success(result)) {
+                  this.$notification.success({
+                    message: '新增成功'
+                  })
+                  const form = this.$refs.CustomInfoForm.form
+                  form.resetFields() // 清理表单数据（可不做）
+                  this.$refs.table.refresh(true)
+                  this.customOpsVisible = false
+                  this.confirmLoading = false
+                } else {
+                  this.confirmLoading = false
+                  this.$notification.error({
+                    message: errorMessage(result),
+                    description: '新增失败。请稍后再试'
+                  })
+                }
+                if (needLogin(result)) {
+                  this.customOpsVisible = false
+                  this.confirmLoading = false
+                }
+              })
+              .catch(error => {
+                this.$notification.error({
+                  message: '新增失败。请稍后再试',
+                  description: error
+                })
+                this.confirmLoading = false
+              })
+          }
         }
-    })
+      })
     },
     handleCancel () {
       this.customOpsVisible = false
+      this.fundOpsVisible = false
 
       // const form = this.$refs.createModal.form
       // form.resetFields() // 清理表单数据（可不做）
     },
     handleAdd () {
-      this.customMdl = null
+      this.isupdate = false
       this.customOpsVisible = true
+    },
+    handleUpdate (record) {
+      this.isupdate = true
+      this.customOpsVisible = true
+      this.customMdl = { ...record }
+      const province = this.customMdl.province.split('-')
+      if (province.length === 3) {
+        this.customMdl.province = province[0]
+        this.customMdl['area'] = province[1]
+        this.customMdl['city'] = province[2]
+      } else {
+        this.customMdl.province = ''
+      }
+      console.log(this.customMdl, record)
     },
     toCustomInfo (value) {
       this.$router.push({ name: 'CustomInfo', params: { customId: value.customId } })

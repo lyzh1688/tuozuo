@@ -46,7 +46,7 @@ export const asyncRouterMap = [
       {
         path: '/customService/customInfo',
         name: 'CustomInfo',
-        // hidden: true,
+        hidden: true,
         component: () => import('@/views/user/CustomInfo'),
         meta: { title: '客户详情', keepAlive: true, permission: ['admin', 'shuiruyi.staff.normal'] }
       }

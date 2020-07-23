@@ -11,7 +11,7 @@ const CompanyApi = {
   companyList: process.env.VUE_APP_SYSTEM_URL + '/v1/company/list',
   addCompany: process.env.VUE_APP_SYSTEM_URL + '/v1/company', // post
   updateCompany: process.env.VUE_APP_SYSTEM_URL + '/v1/custom/', // put
-  tradeOpration: process.env.VUE_APP_SYSTEM_URL + '/v1/custom/trade', // put
+  tradeOpration: process.env.VUE_APP_SYSTEM_URL + '/v1/custom/trade/', // put
   dictQuery: process.env.VUE_APP_SYSTEM_URL + '/v1/dict/'// bizStatus,customType,registerStatus,event
 }
 /*
@@ -93,9 +93,12 @@ tradeSnapshot	否	MultiPartFile	凭证上传
 */
 export function tradeOpration (params) {
   return request({
-    url: CompanyApi.tradeOpration,
-    method: 'PUT',
-    data: params
+    url: CompanyApi.tradeOpration + params.customId,
+    method: 'POST',
+    data: params,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
   })
 }
 /*
