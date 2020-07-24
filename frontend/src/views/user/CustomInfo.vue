@@ -1,8 +1,12 @@
 <template>
-  <myinfo :customId="customId" />
+  <myinfo :customId="customId" :refresh="refresh">
+    <template v-slot:freshButton>
+      <a-button type="primary" size="small" @click="refresh=!refresh">刷新</a-button>
+    </template>
+  </myinfo>
 </template>
 <script>
-import myinfo from './MyInfo'
+import myinfo from './components/MyInfoComponent'
 export default {
   name: 'CustomInfo',
   components: {
@@ -10,14 +14,14 @@ export default {
   },
   data: function () {
     return {
-      customId: ''
+      customId: '',
+      refresh: false
     }
   },
   activated () {
-    console.log(this.$route.params.customId)
+    this.refresh = !this.refresh
     if (this.$route.params.customId !== undefined) {
-      this.customId = ''
-      this.customId = this.$route.params.customId
+      this.customId = String(this.$route.params.customId)
     }
   }
 }

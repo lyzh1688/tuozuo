@@ -141,6 +141,9 @@ export default {
     }
   },
   created () {
+    // this.fetchCompanyList()
+  },
+  activated () {
     this.fetchCompanyList()
   }
 }

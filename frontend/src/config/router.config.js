@@ -52,6 +52,36 @@ export const asyncRouterMap = [
       }
     ]
   },
+  {
+    path: '/customcompanyControl',
+    name: 'customcompanyControl',
+    redirect: '/customcompanyControl/CompanyList',
+    component: BasicLayout,
+    meta: { title: '公司管理', keepAlive: true, icon: 'account-book', permission: ['admin', 'shuiruyi.custom.normal'] },
+    children: [
+      {
+        path: '/customcompanyControl/MycompanyList',
+        name: 'MycompanyList',
+        component: () => import('@/views/company/MycompanyList'),
+        meta: { title: '公司列表', keepAlive: false, permission: ['admin', 'shuiruyi.custom.normal'] }
+      }
+    ]
+  },
+  {
+    path: '/staffcompanyControl',
+    name: 'staffcompanyControl',
+    redirect: '/staffcompanyControl/customList',
+    component: BasicLayout,
+    meta: { title: '公司管理', keepAlive: true, icon: 'account-book', permission: ['admin', 'shuiruyi.staff.normal'] },
+    children: [
+      {
+        path: '/staffcompanyControl/CompanyList',
+        name: 'CompanyList',
+        component: () => import('@/views/company/CompanyList'),
+        meta: { title: '公司列表', keepAlive: false, permission: ['admin', 'shuiruyi.staff.normal'] }
+      }
+    ]
+  },
    // forms
    {
     path: '/form',

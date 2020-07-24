@@ -11,7 +11,6 @@
     :i18nRender="i18nRender"
     v-bind="settings"
   >
-    <setting-drawer :settings="settings" @change="handleSettingChange" />
     <template v-slot:rightContentRender>
       <MultiTab/>
       <right-content :username="username" :top-menu="settings.layout === 'topmenu'" :is-mobile="isMobile" :theme="settings.theme" />

@@ -96,6 +96,10 @@ export default {
     customTypemap: {
       type: Array,
       default: () => []
+    },
+    clearUpload: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -168,6 +172,13 @@ export default {
             description: error
           })
         })
+    }
+  },
+  watch: {
+    clearUpload: function (newVal, oldVal) {
+      if (newVal !== '') {
+      this.fileList = []
+      }
     }
   }
 }

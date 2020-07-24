@@ -92,12 +92,16 @@ amount	是	number	金额
 tradeSnapshot	否	MultiPartFile	凭证上传
 */
 export function tradeOpration (params) {
+  const formData = new FormData()
+for (const i in params) {
+  formData.append(i, params[i])
+}
   return request({
     url: CompanyApi.tradeOpration + params.customId,
     method: 'POST',
-    data: params,
+    data: formData,
     headers: {
-      'Content-Type': 'multipart/form-data'
+      'Content-Type': 'multipart/form-data;charset=UTF-8'
     }
   })
 }
@@ -114,6 +118,34 @@ export function addCustom (params) {
     url: CompanyApi.addCustom,
     method: 'POST',
     data: params
+  })
+}
+export function addCompany (params) {
+  const formData = new FormData()
+  for (const i in params) {
+    formData.append(i, params[i])
+  }
+  return request({
+    url: CompanyApi.addCompany,
+    method: 'POST',
+    data: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data;charset=UTF-8'
+    }
+  })
+}
+export function updateCompany (params) {
+  const formData = new FormData()
+  for (const i in params) {
+    formData.append(i, params[i])
+  }
+  return request({
+    url: CompanyApi.updateCompany,
+    method: 'PUT',
+    data: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data;charset=UTF-8'
+    }
   })
 }
 /*

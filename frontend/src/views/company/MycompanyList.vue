@@ -1,61 +1,27 @@
 <template>
   <page-header-wrapper>
-    <a-card :bordered="false">
-      <a-skeleton :loading="infoLoading" active title>
-        <a-form layout="inline">
-          <a-row :gutter="48">
-            <a-col :md="10" :sm="8">
-              <a-form-item label="客户名称">
-                <a-select
-                  show-search
-                  :value="queryParam.customName"
-                  placeholder="input search text"
-                  style="width: 200px"
-                  :default-active-first-option="false"
-                  :show-arrow="false"
-                  :filter-option="false"
-                  :not-found-content="null"
-                  @search="handleCustomSearch"
-                  @change="handleCustomChange"
-                >
-                  <a-select-option v-for="d in fuzzyCustomList" :key="d.text">{{ d.text }}</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col :md="8" :sm="8">
-              <a-form-item label="是否完成支付">
-                <a-select v-model="queryParam.hasPaid" placeholder="请选择" default-value>
-                  <a-select-option value="1">已支付</a-select-option>
-                  <a-select-option value="0">未支付</a-select-option>
-                  <a-select-option value>不限制</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col :md="6" :sm="8">
-              <a-form-item>
-                <a-button type="primary" size="small" @click="$refs.table.refresh(true)">查询</a-button>
-                <a-button
-                  size="small"
-                  type="primary"
-                  @click="()=>{queryParam= {
-                    hasPaid: '',
-                    customName: '',
-                    pageNo: 1,
-                    pageSize: 20
-                  }}"
-                >重置</a-button>
-              </a-form-item>
-            </a-col>
-            <a-col :md="12" :sm="24">
-              <a-form-item>
-                <a-button :loading="confirmLoading" size="small" @click="handleAdd">新增客户</a-button>
-              </a-form-item>
-            </a-col>
-          </a-row>
-        </a-form>
-      </a-skeleton>
-    </a-card>
-    <a-card style="margin-top: 24px" :bordered="false" title="客户列表">
+    <a-card :bordered="false" title="我的公司列表">
+      <a-form layout="inline">
+        <a-row>
+          <a-col :md="12" :sm="24">
+            <a-form-item>
+              <a-button
+                type="primary"
+                size="small"
+                @click="()=>{$refs.table.refresh(true)}">查询</a-button>
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row>
+          <a-col :md="12" :sm="24">
+            <a-form-item>
+              <a-button
+                size="small"
+                @click="()=>{$refs.table.refresh(true)}">创建公司申请</a-button>
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
       <s-table
         ref="table"
         size="default"
@@ -68,39 +34,18 @@
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="customType" slot-scope="text">{{ customTypeMap[text] }}</span>
         <span slot="ops" slot-scope="text, record">
-          <a-button size="small" @click="handleUpdate(record)" :loading="confirmLoading">修改</a-button>
-          <a-button size="small" @click="handleops(record)" :loading="confirmLoading">余额变动</a-button>
+          <a-button size="small" @click="handleUpdate(record)" :disabled="record.registerStatus==='2'" :loading="confirmLoading">修改</a-button>
         </span>
         <a slot="customName" slot-scope="text,record" @click="toCustomInfo(record)">{{ text }}</a>
       </s-table>
     </a-card>
-    <custominfoform
-      ref="CustomInfoForm"
-      :visible="customOpsVisible"
-      :loading="confirmLoading"
-      :model="customMdl"
-      :customTypemap="customTypList"
-      @cancel="handleCancel"
-      @ok="handleOk"
-    />
-    <fundoperation
-      ref="fundoperation"
-      :clearUpload="clearUpload"
-      :visible="fundOpsVisible"
-      :loading="confirmLoading"
-      :model="fundMdl"
-      @cancel="handleCancel"
-      @ok="handleFundOpsOk"
-    />
   </page-header-wrapper>
 </template>
 <script>
 import { STable } from '@/components'
-import { getCustomList, dictQuery, fuzzyQueryCustom, addCustom, updateCustom, tradeOpration } from '@/api/company'
+import { getCompanyList, dictQuery, addCompany, updateCompany } from '@/api/company'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 import { mapState } from 'vuex'
-import custominfoform from './forms/CustomInfoForm'
-import fundoperation from './forms/FundOperation'
 import md5 from 'md5'
 const columns = [
   {
@@ -108,32 +53,35 @@ const columns = [
     scopedSlots: { customRender: 'no' }
   },
   {
-    title: '客户名称',
-    dataIndex: 'customName',
-    scopedSlots: { customRender: 'customName' }
+    title: '公司名称',
+    dataIndex: 'companyName',
+    scopedSlots: { customRender: 'companyName' }
+  },
+
+  {
+    title: '业务状态',
+    dataIndex: 'companyStatus',
+    scopedSlots: { customRender: 'companyStatus' }
   },
   {
-    title: '是否完成支付',
-    dataIndex: 'hasPaid',
-    customRender: text => {
-      if (text === '0') {
-        return '否'
-      }
-      if (text === '1') {
-        return '是'
-      }
-      return ''
-    }
+    title: '开始服务时间',
+    dataIndex: 'beginDate',
+    scopedSlots: { customRender: 'beginDate' }
   },
   {
-    title: '客户类型',
-    dataIndex: 'customType',
-    scopedSlots: { customRender: 'customType' }
+    title: '结束服务时间',
+    dataIndex: 'endDate',
+    scopedSlots: { customRender: 'endDate' }
   },
-  {
-    title: '最后更新时间',
-    dataIndex: 'updateDate',
-    scopedSlots: { customRender: 'updateDate' }
+   {
+    title: '公司类型',
+    dataIndex: 'companyType',
+    scopedSlots: { customRender: 'companyType' }
+  },
+   {
+    title: '综合税率',
+    dataIndex: 'tax',
+    scopedSlots: { customRender: 'tax' }
   },
   {
     title: '操作',
@@ -159,72 +107,42 @@ const columns = [
 //     text: '异常'
 //   }
 // }
-let timeout
-let currentValue
-
-function fetch (value, callback) {
-  if (timeout) {
-    clearTimeout(timeout)
-    timeout = null
-  }
-  currentValue = value
-
-  function fake () {
-    fuzzyQueryCustom(value, 20).then(d => {
-      if (currentValue === value) {
-        const result = d.data
-        const data = []
-        result.forEach(r => {
-          data.push({
-            value: r['id'],
-            text: r['name']
-          })
-        })
-        data.push({
-          value: '',
-          text: ''
-        })
-        callback(data)
-      }
-    })
-  }
-
-  timeout = setTimeout(fake, 300)
-}
 export default {
-  name: 'CustomList',
+  name: 'MycompanyList',
   components: {
-    STable,
-    custominfoform,
-    fundoperation
+    STable
   },
   data () {
     this.columns = columns
     return {
       clearUpload: false,
-      fundOpsVisible: false,
-      fundMdl: null,
       customMdl: null,
       customOpsVisible: false,
       confirmLoading: false,
       customInfo: {},
+      bizStatus: [],
+      bizStatusMap: {},
       fuzzyCustomList: [],
       infoLoading: false,
       isupdate: false,
       customTypeMap: {},
       customTypList: [],
-      queryParam: {
-        hasPaid: '',
-        customName: '',
+      queryParam1: {
+        companyStatus: '',
+        pageNo: 1,
+        pageSize: 20
+      },
+      queryParam2: {
+        companyStatus: '',
         pageNo: 1,
         pageSize: 20
       },
       loadData: parameter => {
-        const requestParameters = Object.assign({}, parameter, this.queryParam)
+        const requestParameters = Object.assign({}, parameter, this.queryParam1)
         console.log('loadData request parameters:', requestParameters)
-        return getCustomList(
-          requestParameters.customName,
-          requestParameters.hasPaid,
+        return getCompanyList(
+          requestParameters.companyStatus,
+          '3',
           requestParameters.pageNo,
           requestParameters.pageSize
         )
@@ -232,7 +150,7 @@ export default {
             const result = Response
             // console.log('getTradeflow', result)
             if (success(result)) {
-              const ans = result.data.customers
+              const ans = result.data.companies
               return {
                 pageSize: requestParameters.pageSize,
                 pageNo: requestParameters.pageNo,
@@ -242,7 +160,7 @@ export default {
             } else {
               this.$notification.error({
                 message: errorMessage(result),
-                description: '查询客户信息失败，请稍后再试'
+                description: '查询公司列表失败，请稍后再试'
               })
             }
             setTimeout(() => {
@@ -255,7 +173,7 @@ export default {
               this.tradeflowLoading = false
             }, 600)
             this.$notification.error({
-              message: '查询客户信息失败，请稍后再试',
+              message: '查询公司列表失败，请稍后再试',
               description: error
             })
           })
@@ -267,43 +185,6 @@ export default {
       this.fundOpsVisible = true
       this.fundMdl = { ...record }
     },
-    handleFundOpsOk () {
-      const form = this.$refs.fundoperation.form
-      form.validateFields((errors, values) => {
-        if (!errors) {
-          this.confirmLoading = true
-       values.tradeSnapshot = values.tradeSnapshot.file.originFileObj
-          tradeOpration(values)
-            .then(response => {
-              const result = response
-              if (success(result)) {
-                this.$notification.success({
-                  message: '余额修改成功'
-                })
-                const form = this.$refs.fundoperation.form
-                form.resetFields() // 清理表单数据（可不做）
-                this.clearUpload = !this.clearUpload
-                this.$refs.table.refresh(true)
-                this.fundOpsVisible = false
-                this.confirmLoading = false
-              } else {
-                this.confirmLoading = false
-                this.$notification.error({
-                  message: errorMessage(result),
-                  description: '余额修改成功'
-                })
-              }
-            })
-            .catch(error => {
-              this.$notification.error({
-                message: '余额修改成功失败。请稍后再试',
-                description: error
-              })
-              this.confirmLoading = false
-            })
-        }
-      })
-    },
     handleOk () {
       const form = this.$refs.CustomInfoForm.form
       form.validateFields((errors, values) => {
@@ -314,7 +195,7 @@ export default {
           delete values.ctiy
           delete values.area
           if (this.isupdate) {
-            updateCustom(values, values.customId)
+            updateCompany(values, values.customId)
               .then(response => {
                 const result = response
                 if (success(result)) {
@@ -342,7 +223,7 @@ export default {
                 this.confirmLoading = false
               })
           } else {
-            addCustom(values)
+            addCompany(values)
               .then(response => {
                 const result = response
                 if (success(result)) {
@@ -416,16 +297,17 @@ export default {
     handleDefault (value) {
       return value === undefined ? '暂无数据' : String(value)
     },
-    getDict () {
-      dictQuery('customType')
+    getDictBizStatus () {
+      dictQuery('bizStatus')
         .then(Response => {
           const result = Response
           // console.log('dictQuery', result)
           if (success(result)) {
-            this.customTypList = result.data
-            this.customTypeMap = {}
+            this.bizStatus = result.data
+            this.bizStatus.push({ id: '', name: '不限制' })
+            this.bizStatusMap = {}
             for (const i of result.data) {
-              this.customTypeMap[i.id] = i.name
+              this.bizStatusMap[i.id] = i.name
             }
           } else {
             this.$notification.error({
@@ -462,7 +344,7 @@ export default {
   // },
   activated () {
     this.$refs.table.refresh(true)
-    this.getDict()
+    this.getDictBizStatus()
   }
 }
 </script>
