@@ -23,6 +23,9 @@
     <result column="cfo_contact" jdbcType="VARCHAR" property="cfoContact" />
     <result column="cfo_id_pic_up" jdbcType="VARCHAR" property="cfoIdPicUp" />
     <result column="cfo_id_pic_back" jdbcType="VARCHAR" property="cfoIdPicBack" />
+    <result column="register_area" jdbcType="VARCHAR" property="registerArea" />
+    <result column="trade_flow" jdbcType="VARCHAR" property="tradeFlow" />
+    <result column="rebate_tax_rate" jdbcType="DECIMAL" property="rebateTaxRate" />
   </resultMap>
   <resultMap id="BaseResultDetailMap" type="com.tuozuo.tavern.shuiruyi.model.CompanyDetailInfo">
     <id column="company_id" jdbcType="VARCHAR" property="companyId" />
@@ -49,27 +52,25 @@
     <result column="total_invoice_num" jdbcType="INTEGER" property="totalInvoiceNum" />
     <result column="invoiced_num" jdbcType="INTEGER" property="invoicedNum" />
     <result column="total_invoice_amount" jdbcType="VARCHAR" property="totalInvoiceAmt" />
+    <result column="register_area" jdbcType="VARCHAR" property="registerArea" />
+    <result column="trade_flow" jdbcType="VARCHAR" property="tradeFlow" />
+    <result column="rebate_tax_rate" jdbcType="DECIMAL" property="rebateTaxRate" />
   </resultMap>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select company_id, company_status, custom_id, company_name, company_type, tax, address,
-    free_delivery, include_cancel, begin_date, end_date, boss_name, boss_id, boss_contact,
-    boss_id_pic_up, boss_id_pic_back, cfo_name, cfo_id, cfo_contact, cfo_id_pic_up, cfo_id_pic_back
-    from company_info
-    where company_id = #{companyId,jdbcType=VARCHAR}
-  </select>
   <select id="selectDetailInfo" resultMap="BaseResultDetailMap">
     select company_id, company_status, custom_id, company_name, company_type, tax, address,
     free_delivery, include_cancel, begin_date, end_date, boss_name, boss_id, boss_contact,
     boss_id_pic_up, boss_id_pic_back, cfo_name, cfo_id, cfo_contact, cfo_id_pic_up, cfo_id_pic_back,
+    register_area,trade_flow,rebate_tax_rate,
 	sum(invoice_num) total_invoice_num,sum(invoiced_num) invoiced_num,sum(invoice_amount) total_invoice_amount
 	from
     (
        select t.company_id, t.company_status, t.custom_id, t.company_name, t.company_type, t.tax, t.address,
           t.free_delivery, t.include_cancel, t.begin_date, t.end_date, t.boss_name, t.boss_id, t.boss_contact,
           t.boss_id_pic_up, t.boss_id_pic_back, t.cfo_name, t.cfo_id, t.cfo_contact, t.cfo_id_pic_up, t.cfo_id_pic_back,
+          t.register_area,t.trade_flow,t.rebate_tax_rate,
            count(t1.invoice_id) invoice_num,count(t1.invoice_id) invoiced_num,sum(invoice_amount) invoice_amount
-          from company_info t LEFT JOIN invoice_info t1 on t.company_id = t1.company_id
-              where t1.invoice_status = 3 and t.company_id = #{companyId}
+          from company_info t LEFT JOIN (select * from invoice_info where invoice_status = 3 ) t1 on t.company_id = t1.company_id
+              where  t.company_id = #{companyId}
               GROUP BY t.company_id
 
               union all
@@ -77,9 +78,10 @@
               select t.company_id, t.company_status, t.custom_id, t.company_name, t.company_type, t.tax, t.address,
           t.free_delivery, t.include_cancel, t.begin_date, t.end_date, t.boss_name, t.boss_id, t.boss_contact,
           t.boss_id_pic_up, t.boss_id_pic_back, t.cfo_name, t.cfo_id, t.cfo_contact, t.cfo_id_pic_up, t.cfo_id_pic_back,
+           t.register_area,t.trade_flow,t.rebate_tax_rate,
           count(t1.invoice_id) invoice_num,0 invoiced_num,sum(invoice_amount) invoice_amount
-          from company_info t LEFT JOIN invoice_info t1 on t.company_id = t1.company_id
-          where t1.invoice_status != 3 and t.company_id = #{companyId}
+          from company_info t LEFT JOIN (select * from invoice_info where invoice_status = !3 ) t1 on t.company_id = t1.company_id
+          where  t.company_id = #{companyId}
           GROUP BY t.company_id
 
 		) t group by company_id
@@ -89,7 +91,7 @@
     select t1.company_id, t1.company_status, t1.custom_id, t1.company_name, t1.company_type, t1.tax, t1.address,
     t1.free_delivery, t1.include_cancel, t1.begin_date, t1.end_date, t1.boss_name, t1.boss_id, t1.boss_contact,
     t1.boss_id_pic_up, t1.boss_id_pic_back, t1.cfo_name, t1.cfo_id, t1.cfo_contact, t1.cfo_id_pic_up, t1.cfo_id_pic_back
-    from custom_info t left  join company_info t1 on t.custom_id = t1.custom_id
+    from custom_info t inner  join company_info t1 on t.custom_id = t1.custom_id
     <where>
 
       <if test="companyStatus != null and companyStatus != ''">

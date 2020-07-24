@@ -45,11 +45,14 @@ public class BusinessConverter {
         companyInfoDTO.setCompanyType(companyDetailInfo.getCompanyType());
         companyInfoDTO.setTotalInvoiceNum(companyDetailInfo.getTotalInvoiceNum());
         companyInfoDTO.setInvoicedNum(companyDetailInfo.getInvoicedNum());
-        companyInfoDTO.setTotalInvoiceAmt(companyDetailInfo.getTotalInvoiceAmt());
+        companyInfoDTO.setTotalInvoiceAmt(companyDetailInfo.getTotalInvoiceAmt() == null ? 0 : companyDetailInfo.getTotalInvoiceAmt().doubleValue());
         companyInfoDTO.setFreeDeliveryCnt(companyDetailInfo.getFreeDelivery());
-        companyInfoDTO.setIncludeCancel(companyDetailInfo.getIncludeCancel());
+        companyInfoDTO.setIncludeCancel(companyDetailInfo.getIncludeCancel() == null ? "0" : "1");
         companyInfoDTO.setBeginDate(DateUtils.formatDateTime(companyDetailInfo.getBeginDate(), DateUtils.DEFAULT_DATETIME_FORMATTER));
         companyInfoDTO.setEndDate(DateUtils.formatDateTime(companyDetailInfo.getEndDate(), DateUtils.DEFAULT_DATETIME_FORMATTER));
+        companyInfoDTO.setTradeFlow(companyDetailInfo.getTradeFlow());
+        companyInfoDTO.setRegisterArea(companyDetailInfo.getRegisterArea());
+        companyInfoDTO.setRebateTaxRate(companyDetailInfo.getRebateTaxRate());
 
         BossInfoDTO bossInfoDTO = new BossInfoDTO();
         bossInfoDTO.setBossId(companyDetailInfo.getBossId());

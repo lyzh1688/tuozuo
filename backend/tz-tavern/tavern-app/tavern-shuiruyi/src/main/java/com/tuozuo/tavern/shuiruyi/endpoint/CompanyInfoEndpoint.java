@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -41,7 +42,7 @@ public class CompanyInfoEndpoint {
      * 个独公司模糊查询
      */
     @GetMapping()
-    public TavernResponse queryCompanyDict(@RequestParam(name = "companyName", defaultValue = "") String companyName,
+    public TavernResponse queryCompanyDict(@RequestParam(name = "companyName", required = false,defaultValue = "") String companyName,
                                            @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt,
                                            @RequestParam(name = "showAll", required = false) boolean showAll,
                                            @RequestHeader(TavernRequestAuthFields.USER_ID) String userId,
@@ -66,6 +67,9 @@ public class CompanyInfoEndpoint {
     public TavernResponse queryCompanyDetail(@PathVariable("companyId") String companyId) {
         try {
             CompanyDetailInfo companyDetailInfo = this.companyInfoService.queryCompanyDetail(companyId);
+            if(Objects.isNull(companyDetailInfo)){
+                return TavernResponse.bizFailure("个独公司不存在");
+            }
             CompanyDetailDTO companyDetailDTO = BusinessConverter.companyDetailToDTO(companyDetailInfo);
             return TavernResponse.ok(companyDetailDTO);
         } catch (Exception e) {

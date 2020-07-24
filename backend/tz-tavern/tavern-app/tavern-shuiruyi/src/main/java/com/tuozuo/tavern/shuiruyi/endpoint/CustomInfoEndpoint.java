@@ -40,10 +40,10 @@ public class CustomInfoEndpoint {
     public TavernResponse queryCustomDetail(@PathVariable("customId") String customId) {
         try {
             CustomDetailInfo customDetailInfo = this.customInfoService.queryCustomInfo(customId);
-            if(customDetailInfo != null){
+            if (customDetailInfo != null) {
                 CustomInfoDetailDTO customInfoDetailDTO = BusinessConverter.customDetailToDTO(customDetailInfo);
                 return TavernResponse.ok(customInfoDetailDTO);
-            }else {
+            } else {
                 return TavernResponse.bizFailure("该客户不存在");
             }
         } catch (Exception e) {
@@ -79,8 +79,8 @@ public class CustomInfoEndpoint {
      * 客户的模糊搜索
      */
     @GetMapping()
-    public TavernResponse queryCompanyDict(@RequestParam(name = "customName", defaultValue = "") String customName,
-                                           @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt) {
+    public TavernResponse queryCompanyDict(@RequestParam(name = "customName", required = false, defaultValue = "") String customName,
+                                           @RequestParam(name = "queryCnt", required = false, defaultValue = "20") int queryCnt) {
         try {
             List<CustomInfo> customInfoList = this.customInfoService.fuzzyQueryCustomInfo(customName, queryCnt);
             List<BusinessDictDTO> businessDictList = customInfoList.stream()
@@ -128,8 +128,8 @@ public class CustomInfoEndpoint {
      * 我的客户列表
      */
     @GetMapping("/list")
-    public TavernResponse queryCustomList(@RequestParam(name = "customName", defaultValue = "") String customName,
-                                          @RequestParam(name = "hasPaid", defaultValue = "") String hasPaid,
+    public TavernResponse queryCustomList(@RequestParam(name = "customName", required = false, defaultValue = "") String customName,
+                                          @RequestParam(name = "hasPaid", required = false, defaultValue = "") String hasPaid,
                                           @RequestParam(value = "pageNo") int pageNo,
                                           @RequestParam(value = "pageSize") int pageSize) {
         try {

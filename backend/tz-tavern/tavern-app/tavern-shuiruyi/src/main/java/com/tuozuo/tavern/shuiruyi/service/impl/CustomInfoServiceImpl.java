@@ -116,7 +116,7 @@ public class CustomInfoServiceImpl implements CustomInfoService {
 
     @Override
     public void countCustomStatistic() {
-
+        this.customInfoDao.countCustomStatistic();
     }
 
     private void setCustomInfo(CustomInfoVO vo, CustomInfo customInfo) {

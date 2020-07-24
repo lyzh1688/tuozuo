@@ -14,12 +14,14 @@ public class CompanyInfoDTO {
     private String companyType;
     private int totalInvoiceNum;
     private int invoicedNum;
-    private BigDecimal totalInvoiceAmt;
+    private double totalInvoiceAmt;
     private int freeDeliveryCnt;
     private String includeCancel;
     private String beginDate;
     private String endDate;
-
+    private String tradeFlow;
+    private String registerArea;
+    private BigDecimal rebateTaxRate;
 
     public String getCompanyName() {
         return companyName;
@@ -77,11 +79,11 @@ public class CompanyInfoDTO {
         this.invoicedNum = invoicedNum;
     }
 
-    public BigDecimal getTotalInvoiceAmt() {
+    public double getTotalInvoiceAmt() {
         return totalInvoiceAmt;
     }
 
-    public void setTotalInvoiceAmt(BigDecimal totalInvoiceAmt) {
+    public void setTotalInvoiceAmt(double totalInvoiceAmt) {
         this.totalInvoiceAmt = totalInvoiceAmt;
     }
 
@@ -115,5 +117,29 @@ public class CompanyInfoDTO {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public String getTradeFlow() {
+        return tradeFlow;
+    }
+
+    public void setTradeFlow(String tradeFlow) {
+        this.tradeFlow = tradeFlow;
+    }
+
+    public String getRegisterArea() {
+        return registerArea;
+    }
+
+    public void setRegisterArea(String registerArea) {
+        this.registerArea = registerArea;
+    }
+
+    public BigDecimal getRebateTaxRate() {
+        return rebateTaxRate;
+    }
+
+    public void setRebateTaxRate(BigDecimal rebateTaxRate) {
+        this.rebateTaxRate = rebateTaxRate;
     }
 }
