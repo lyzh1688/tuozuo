@@ -8,11 +8,20 @@ import java.math.BigDecimal;
  */
 public class CustomInfoDetailDTO {
 
+    private String customType;
     private String customName;
     private String customContact;
     private BigDecimal totalServerCharge;
     private BigDecimal balance;
     private String province;
+
+    public String getCustomType() {
+        return customType;
+    }
+
+    public void setCustomType(String customType) {
+        this.customType = customType;
+    }
 
     public BigDecimal getBalance() {
         return balance;

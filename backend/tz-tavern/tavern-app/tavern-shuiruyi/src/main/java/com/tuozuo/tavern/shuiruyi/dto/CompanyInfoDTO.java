@@ -7,6 +7,7 @@ import java.math.BigDecimal;
  * Dev Time: 2019/08/10 <br>
  */
 public class CompanyInfoDTO {
+    private String customId;
     private String companyName;
     private String companyStatus;
     private BigDecimal tax;
@@ -22,6 +23,14 @@ public class CompanyInfoDTO {
     private String tradeFlow;
     private String registerArea;
     private BigDecimal rebateTaxRate;
+
+    public String getCustomId() {
+        return customId;
+    }
+
+    public void setCustomId(String customId) {
+        this.customId = customId;
+    }
 
     public String getCompanyName() {
         return companyName;

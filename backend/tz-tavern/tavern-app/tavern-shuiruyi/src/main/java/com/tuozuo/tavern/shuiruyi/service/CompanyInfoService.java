@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.shuiruyi.model.CompanyDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.CompanyInfo;
 import com.tuozuo.tavern.shuiruyi.vo.CompanyDetailVO;
+import com.tuozuo.tavern.shuiruyi.vo.CompanyModifyVO;
 
 import java.util.List;
 
@@ -22,5 +23,7 @@ public interface CompanyInfoService {
     void addCompanyInfo(CompanyDetailVO vo) throws Exception;
 
     void modifyCompanyInfo(CompanyDetailVO vo, String companyId) throws Exception;
+
+    void modifyCompanyInfo(CompanyModifyVO vo);
 
 }

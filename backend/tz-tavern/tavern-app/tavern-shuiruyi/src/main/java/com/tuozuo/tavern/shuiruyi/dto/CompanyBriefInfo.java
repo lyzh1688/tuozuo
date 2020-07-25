@@ -16,6 +16,7 @@ import java.math.BigDecimal;
  */
 public class CompanyBriefInfo {
 
+    private String customId;
     private String companyId;
     private String companyName;
     private String companyStatus;
@@ -24,6 +25,14 @@ public class CompanyBriefInfo {
     private String endDate;
     private String companyType;
     private BigDecimal tax;
+
+    public String getCustomId() {
+        return customId;
+    }
+
+    public void setCustomId(String customId) {
+        this.customId = customId;
+    }
 
     public String getCompanyId() {
         return companyId;

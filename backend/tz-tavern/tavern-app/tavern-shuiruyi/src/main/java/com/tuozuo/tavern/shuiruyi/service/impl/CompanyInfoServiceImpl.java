@@ -3,6 +3,7 @@ package com.tuozuo.tavern.shuiruyi.service.impl;
 import java.util.List;
 
 import com.tuozuo.tavern.shuiruyi.vo.CompanyDetailVO;
+import com.tuozuo.tavern.shuiruyi.vo.CompanyModifyVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,26 +92,32 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
 
     }
 
+    @Override
+    public void modifyCompanyInfo(CompanyModifyVO vo) {
+        CompanyInfo companyInfo = BusinessConverter.voToCompanyInfo(vo);
+        this.companyInfoDao.update(companyInfo);
+    }
+
     private void setCompanyInfoFiles(CompanyDetailVO vo, CompanyInfo companyInfo) throws Exception {
-        if( vo.getBossIdPicUp() != null){
+        if (vo.getBossIdPicUp() != null) {
             String bossIdPicUpFileUrl = this.storeCompanyFile(companyInfo.getCompanyId(), CompanyFileType.BOSS, vo.getBossIdPicUp());
-            LOGGER.info("bossIdPicUpFileUrl: {}",bossIdPicUpFileUrl);
+            LOGGER.info("bossIdPicUpFileUrl: {}", bossIdPicUpFileUrl);
             companyInfo.setBossIdPicUp(bossIdPicUpFileUrl);
         }
-        if( vo.getBossIdPicBack() != null){
+        if (vo.getBossIdPicBack() != null) {
             String bossIdPicBackFileUrl = this.storeCompanyFile(companyInfo.getCompanyId(), CompanyFileType.BOSS, vo.getBossIdPicBack());
-            LOGGER.info("bossIdPicBackFileUrl: {}",bossIdPicBackFileUrl);
+            LOGGER.info("bossIdPicBackFileUrl: {}", bossIdPicBackFileUrl);
             companyInfo.setBossIdPicBack(bossIdPicBackFileUrl);
 
         }
-        if( vo.getCfoIdPicUp() != null){
+        if (vo.getCfoIdPicUp() != null) {
             String cfoIdPicUpFileUrl = this.storeCompanyFile(companyInfo.getCompanyId(), CompanyFileType.CFO, vo.getCfoIdPicUp());
-            LOGGER.info("cfoIdPicUpFileUrl: {}",cfoIdPicUpFileUrl);
+            LOGGER.info("cfoIdPicUpFileUrl: {}", cfoIdPicUpFileUrl);
             companyInfo.setCfoIdPicUp(cfoIdPicUpFileUrl);
         }
-        if( vo.getCfoIdPicBack() != null){
+        if (vo.getCfoIdPicBack() != null) {
             String cfoIdPicBackFileUrl = this.storeCompanyFile(companyInfo.getCompanyId(), CompanyFileType.CFO, vo.getCfoIdPicBack());
-            LOGGER.info("cfoIdPicBackFileUrl: {}",cfoIdPicBackFileUrl);
+            LOGGER.info("cfoIdPicBackFileUrl: {}", cfoIdPicBackFileUrl);
             companyInfo.setCfoIdPicBack(cfoIdPicBackFileUrl);
         }
 

@@ -12,6 +12,7 @@ import com.tuozuo.tavern.shuiruyi.model.CompanyDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.CompanyInfo;
 import com.tuozuo.tavern.shuiruyi.service.CompanyInfoService;
 import com.tuozuo.tavern.shuiruyi.vo.CompanyDetailVO;
+import com.tuozuo.tavern.shuiruyi.vo.CompanyModifyVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class CompanyInfoEndpoint {
      */
     @GetMapping()
     public TavernResponse queryCompanyDict(@RequestParam(name = "companyName", required = false, defaultValue = "") String companyName,
-                                           @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt,
+                                           @RequestParam(name = "queryCnt", required = false, defaultValue = "20") int queryCnt,
                                            @RequestParam(name = "showAll", required = false) boolean showAll,
                                            @RequestHeader(TavernRequestAuthFields.USER_ID) String userId,
                                            @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
@@ -152,6 +153,22 @@ public class CompanyInfoEndpoint {
             }
             this.setCompanyDetailInfo(vo, customId, bossIdPicUp, bossIdPicBack, cfoIdPicUp, cfoIdPicBack);
             this.companyInfoService.modifyCompanyInfo(vo, companyId);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[修改公司] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 管理员修改公司
+     */
+    @PutMapping(value = "/management/{companyId}")
+    public TavernResponse manageCompanyInfo(@PathVariable("companyId") String companyId,
+                                            @RequestBody @Valid CompanyModifyVO vo) {
+        try {
+            vo.setCompanyId(companyId);
+            this.companyInfoService.modifyCompanyInfo(vo);
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[修改公司] failed", e);

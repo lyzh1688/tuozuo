@@ -8,8 +8,11 @@ import com.tuozuo.tavern.shuiruyi.utils.BusinessStatusUtil;
 import com.tuozuo.tavern.shuiruyi.utils.DateUtils;
 
 import com.tuozuo.tavern.shuiruyi.vo.CompanyDetailVO;
+import com.tuozuo.tavern.shuiruyi.vo.CompanyModifyVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
@@ -38,6 +41,7 @@ public class BusinessConverter {
         }
         CompanyDetailDTO companyDetailDTO = new CompanyDetailDTO();
         CompanyInfoDTO companyInfoDTO = new CompanyInfoDTO();
+        companyInfoDTO.setCustomId(companyDetailInfo.getCustomId());
         companyInfoDTO.setCompanyName(companyDetailInfo.getCompanyName());
         companyInfoDTO.setCompanyStatus(companyDetailInfo.getCompanyStatus());
         companyInfoDTO.setTax(companyDetailInfo.getTax());
@@ -48,8 +52,12 @@ public class BusinessConverter {
         companyInfoDTO.setTotalInvoiceAmt(companyDetailInfo.getTotalInvoiceAmt() == null ? 0 : companyDetailInfo.getTotalInvoiceAmt().doubleValue());
         companyInfoDTO.setFreeDeliveryCnt(companyDetailInfo.getFreeDelivery());
         companyInfoDTO.setIncludeCancel(companyDetailInfo.getIncludeCancel() == null ? "0" : "1");
-        companyInfoDTO.setBeginDate(DateUtils.formatDateTime(companyDetailInfo.getBeginDate(), DateUtils.DEFAULT_DATETIME_FORMATTER));
-        companyInfoDTO.setEndDate(DateUtils.formatDateTime(companyDetailInfo.getEndDate(), DateUtils.DEFAULT_DATETIME_FORMATTER));
+        if(companyDetailInfo.getBeginDate() != null){
+            companyInfoDTO.setBeginDate(DateUtils.formatDate(companyDetailInfo.getBeginDate().toLocalDate(), DateUtils.DEFAULT_DATE_FORMATTER));
+        }
+        if(companyDetailInfo.getEndDate() != null){
+            companyInfoDTO.setEndDate(DateUtils.formatDate(companyDetailInfo.getEndDate().toLocalDate(), DateUtils.DEFAULT_DATE_FORMATTER));
+        }
         companyInfoDTO.setTradeFlow(companyDetailInfo.getTradeFlow());
         companyInfoDTO.setRegisterArea(companyDetailInfo.getRegisterArea());
         companyInfoDTO.setRebateTaxRate(companyDetailInfo.getRebateTaxRate());
@@ -84,6 +92,7 @@ public class BusinessConverter {
 
     public static CustomInfoDetailDTO customDetailToDTO(CustomDetailInfo customDetailInfo) {
         CustomInfoDetailDTO customInfoDetailDTO = new CustomInfoDetailDTO();
+        customInfoDetailDTO.setCustomType(customDetailInfo.getCustomType());
         customInfoDetailDTO.setCustomName(customDetailInfo.getCustomName());
         customInfoDetailDTO.setCustomContact(customDetailInfo.getCustomContact());
         customInfoDetailDTO.setProvince(customDetailInfo.getProvince());
@@ -98,7 +107,9 @@ public class BusinessConverter {
         customTradeFlowDTO.setBalance(customTradeFlow.getBalance());
         customTradeFlowDTO.setEvent(customTradeFlow.getEvent());
         customTradeFlowDTO.setRemark(customTradeFlow.getRemark());
-        customTradeFlowDTO.setTradeDate(DateUtils.formatDate(customTradeFlow.getTradeDate()));
+        if(customTradeFlow.getTradeDate() != null){
+            customTradeFlowDTO.setTradeDate(DateUtils.formatDate(customTradeFlow.getTradeDate()));
+        }
         customTradeFlowDTO.setTradeSnapshot(customTradeFlow.getTradeSnapshot());
         return customTradeFlowDTO;
     }
@@ -112,12 +123,17 @@ public class BusinessConverter {
 
     public static CompanyBriefInfo companyInfoToBriefDTO(CompanyInfo companyInfo) {
         CompanyBriefInfo companyBriefInfo = new CompanyBriefInfo();
+        companyBriefInfo.setCustomId(companyInfo.getCustomId());
         companyBriefInfo.setCompanyId(companyInfo.getCompanyId());
         companyBriefInfo.setCompanyName(companyInfo.getCompanyName());
         companyBriefInfo.setCompanyStatus(BusinessStatus.getBusinessStatus(companyInfo.getCompanyStatus()).getStatus());
         companyBriefInfo.setRegisterStatus(BusinessStatusUtil.registeredMap.containsKey(companyInfo.getCompanyStatus()) ? "2" : "1");
-        companyBriefInfo.setBeginDate(DateUtils.formatDateTime(companyInfo.getBeginDate(), DateUtils.DEFAULT_DATETIME_FORMATTER));
-        companyBriefInfo.setEndDate(DateUtils.formatDateTime(companyInfo.getEndDate(), DateUtils.DEFAULT_DATETIME_FORMATTER));
+        if(companyInfo.getBeginDate() != null){
+            companyBriefInfo.setBeginDate(DateUtils.formatDate(companyInfo.getBeginDate().toLocalDate(), DateUtils.DEFAULT_DATE_FORMATTER));
+        }
+        if(companyInfo.getEndDate() != null){
+            companyBriefInfo.setEndDate(DateUtils.formatDate(companyInfo.getEndDate().toLocalDate(), DateUtils.DEFAULT_DATE_FORMATTER));
+        }
         companyBriefInfo.setCompanyType(CompanyType.getCompanyType(companyInfo.getCompanyType()).getName());
         companyBriefInfo.setTax(companyInfo.getTax());
         return companyBriefInfo;
@@ -137,6 +153,27 @@ public class BusinessConverter {
         companyInfo.setCfoId(vo.getCfoId());
         companyInfo.setCfoContact(vo.getCfoContact());
         companyInfo.setCfoName(vo.getCfoName());
+        return companyInfo;
+    }
+
+    public static CompanyInfo voToCompanyInfo(CompanyModifyVO vo) {
+
+        CompanyInfo companyInfo = new CompanyInfo();
+        companyInfo.setCompanyId(vo.getCompanyId());
+        companyInfo.setFreeDelivery(vo.getFreeDeliveryCnt());
+        companyInfo.setCompanyStatus(vo.getCompanyStatus());
+        companyInfo.setIncludeCancel(vo.getIncludeCancel());
+        if (StringUtils.isNoneEmpty(vo.getBeginDate())) {
+            companyInfo.setBeginDate(DateUtils.parseDateTime(StringUtils.join(vo.getBeginDate(), " 00:00:00"), DateUtils.DEFAULT_DATETIME_FORMATTER));
+        }
+        if (StringUtils.isNoneEmpty(vo.getEndDate())) {
+            companyInfo.setEndDate(DateUtils.parseDateTime(StringUtils.join(vo.getEndDate(), " 00:00:00"), DateUtils.DEFAULT_DATETIME_FORMATTER));
+        }
+
+        companyInfo.setTradeFlow(vo.getTradeFlow());
+        companyInfo.setRegisterArea(vo.getRegisterArea());
+        companyInfo.setRebateTaxRate(new BigDecimal(vo.getRebateTaxRate()));
+
         return companyInfo;
     }
 }
