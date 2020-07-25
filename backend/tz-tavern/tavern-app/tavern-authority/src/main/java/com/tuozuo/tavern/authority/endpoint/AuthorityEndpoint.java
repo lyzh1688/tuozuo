@@ -3,15 +3,13 @@ package com.tuozuo.tavern.authority.endpoint;
 import com.tuozuo.tavern.authority.model.Password;
 import com.tuozuo.tavern.authority.model.RSAPublicKey;
 import com.tuozuo.tavern.authority.model.TokenAuthority;
+import com.tuozuo.tavern.authority.model.User;
 import com.tuozuo.tavern.authority.service.AuthorityService;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
@@ -65,5 +63,17 @@ public class AuthorityEndpoint {
     public TavernResponse<TokenAuthority> logout() {
         TokenAuthority tokenAuthority = new TokenAuthority();
         return TavernResponse.OK;
+    }
+
+
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
+    TavernResponse<Void> createUser(@RequestBody User user) {
+        boolean ret = this.authorityService.createUser(user);
+        if(ret){
+            return TavernResponse.OK;
+        }
+        else {
+            return TavernResponse.bizFailure("创建用户失败");
+        }
     }
 }

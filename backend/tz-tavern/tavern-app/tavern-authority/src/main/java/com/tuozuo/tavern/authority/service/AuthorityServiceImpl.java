@@ -74,4 +74,9 @@ public class AuthorityServiceImpl implements AuthorityService {
 
         return Optional.of(tokenAuthority);
     }
+
+    @Override
+    public boolean createUser(User user) {
+        return this.authorityDao.createUser(user);
+    }
 }
