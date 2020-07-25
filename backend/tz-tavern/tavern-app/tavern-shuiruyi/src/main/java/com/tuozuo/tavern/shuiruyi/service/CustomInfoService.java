@@ -28,7 +28,7 @@ public interface CustomInfoService {
 
     IPage<CustomInfo> queryCustomInfoList(String customName, String hasPaid, int pageNo, int pageSize);
 
-    void investAndPayment(String customId,
+    String investAndPayment(String customId,
                           String customType,
                           String event,
                           double amount,

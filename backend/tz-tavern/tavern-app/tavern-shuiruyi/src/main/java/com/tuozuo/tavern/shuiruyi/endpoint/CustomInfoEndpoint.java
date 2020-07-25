@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.shuiruyi.endpoint;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.shuiruyi.convert.BusinessConverter;
@@ -158,8 +159,10 @@ public class CustomInfoEndpoint {
                                            @RequestParam("amount") double amount,
                                            @RequestParam("tradeSnapshot") MultipartFile tradeSnapshot) {
         try {
-            this.customInfoService.investAndPayment(customId, customType, event, amount, tradeSnapshot);
-            return TavernResponse.OK;
+            String tradeFlowId = this.customInfoService.investAndPayment(customId, customType, event, amount, tradeSnapshot);
+            JSONObject response = new JSONObject();
+            response.put("tradeFlowId", tradeFlowId);
+            return TavernResponse.ok(response);
         } catch (Exception e) {
             LOGGER.error("[充值扣款] failed", e);
             return TavernResponse.bizFailure(e.getMessage());

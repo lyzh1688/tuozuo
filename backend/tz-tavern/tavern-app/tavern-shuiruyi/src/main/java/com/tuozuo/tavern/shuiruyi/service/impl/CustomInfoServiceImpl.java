@@ -85,7 +85,7 @@ public class CustomInfoServiceImpl implements CustomInfoService {
 
     @Transactional
     @Override
-    public void investAndPayment(String customId, String customType, String event, double amount, MultipartFile tradeSnapshot) throws Exception {
+    public String investAndPayment(String customId, String customType, String event, double amount, MultipartFile tradeSnapshot) throws Exception {
         //1、扣款或者充值，余额变动
         //2、流水记录,凭证上传
         CustomInfo customInfo = this.customInfoDao.selectCustomInfo(customId);
@@ -111,7 +111,7 @@ public class CustomInfoServiceImpl implements CustomInfoService {
         customTradeFlow.setEvent(event);
         customTradeFlow.setRemark(customInfoString);
         this.customTradeFlowDao.insert(customTradeFlow);
-
+        return tradeFlowId;
     }
 
     @Override

@@ -100,11 +100,11 @@
       <if test="customId != null and customId != ''">
         and t1.custom_id = #{customId}
       </if>
-      <if test="registerStatus != null and registerStatus == '1'">
-        and t1.company_status in('REG_AUDIT_NAME','REG_AUDIT_TAX')
+      <if test='registerStatus != null and registerStatus == "1"'>
+        and (t1.company_status = 'REG_AUDIT_NAME' or t1.company_status = 'REG_AUDIT_TAX')
       </if>
-      <if test="registerStatus != null and registerStatus == '2'">
-        and t1.company_status in('REG_DOND','SERVICE','ARREARAGE','TAX_CANCEL','BIZ_CANCEL','FINISH')
+      <if test='registerStatus != null and registerStatus == "2"'>
+        and (t1.company_status = 'REG_DOND' or t1.company_status ='SERVICE' or t1.company_status = 'ARREARAGE' or t1.company_status = 'TAX_CANCEL' or t1.company_status = 'BIZ_CANCEL' or t1.company_status = 'FINISH')
       </if>
     </where>
       order by t1.company_name

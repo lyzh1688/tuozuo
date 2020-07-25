@@ -115,7 +115,7 @@ public class BusinessConverter {
         companyBriefInfo.setCompanyId(companyInfo.getCompanyId());
         companyBriefInfo.setCompanyName(companyInfo.getCompanyName());
         companyBriefInfo.setCompanyStatus(BusinessStatus.getBusinessStatus(companyInfo.getCompanyStatus()).getStatus());
-        companyBriefInfo.setRegisterStatus(BusinessStatusUtil.registeredMap.containsKey(companyInfo.getCompanyStatus()) ? "1" : "0");
+        companyBriefInfo.setRegisterStatus(BusinessStatusUtil.registeredMap.containsKey(companyInfo.getCompanyStatus()) ? "2" : "1");
         companyBriefInfo.setBeginDate(DateUtils.formatDateTime(companyInfo.getBeginDate(), DateUtils.DEFAULT_DATETIME_FORMATTER));
         companyBriefInfo.setEndDate(DateUtils.formatDateTime(companyInfo.getEndDate(), DateUtils.DEFAULT_DATETIME_FORMATTER));
         companyBriefInfo.setCompanyType(CompanyType.getCompanyType(companyInfo.getCompanyType()).getName());
