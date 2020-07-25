@@ -62,7 +62,7 @@ public class AuthorityServiceImpl implements AuthorityService {
             //登陆成功失败次数清零
             user.setFailedTimes(0);
             this.authorityDao.updateFailedTimes(user);
-            RedisSession session = new RedisSession(user.getUserId(),user.getSystemId(),user.getRoleGroup(),tokenAuthority.getAccessToken());
+            RedisSession session = new RedisSession(user.getUserId(), user.getSystemId(), user.getRoleGroup(), tokenAuthority.getAccessToken());
             sessionManager.createOrRefreshSession(session);
         } else {
             //登陆失败增加失败次数
@@ -77,6 +77,10 @@ public class AuthorityServiceImpl implements AuthorityService {
 
     @Override
     public boolean createUser(User user) {
-        return this.authorityDao.createUser(user);
+        try {
+            return this.authorityDao.createUser(user);
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
