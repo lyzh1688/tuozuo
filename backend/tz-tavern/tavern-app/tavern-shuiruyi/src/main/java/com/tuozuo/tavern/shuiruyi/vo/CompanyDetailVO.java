@@ -157,4 +157,25 @@ public class CompanyDetailVO {
     public void setCustomId(String customId) {
         this.customId = customId;
     }
+
+    @Override
+    public String toString() {
+        return "CompanyDetailVO{" +
+                "companyName='" + companyName + '\'' +
+                ", tax=" + tax +
+                ", address='" + address + '\'' +
+                ", companyType='" + companyType + '\'' +
+                ", bossName='" + bossName + '\'' +
+                ", bossId='" + bossId + '\'' +
+                ", bossContact='" + bossContact + '\'' +
+                ", bossIdPicUp=" + bossIdPicUp +
+                ", bossIdPicBack=" + bossIdPicBack +
+                ", cfoName='" + cfoName + '\'' +
+                ", cfoId='" + cfoId + '\'' +
+                ", cfoContact='" + cfoContact + '\'' +
+                ", cfoIdPicUp=" + cfoIdPicUp +
+                ", cfoIdPicBack=" + cfoIdPicBack +
+                ", customId='" + customId + '\'' +
+                '}';
+    }
 }

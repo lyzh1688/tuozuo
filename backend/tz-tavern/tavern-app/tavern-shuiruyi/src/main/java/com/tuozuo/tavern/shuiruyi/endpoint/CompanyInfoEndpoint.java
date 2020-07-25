@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.shuiruyi.convert.BusinessConverter;
+import com.tuozuo.tavern.shuiruyi.dict.CompanyFileType;
 import com.tuozuo.tavern.shuiruyi.dto.BusinessDictDTO;
 import com.tuozuo.tavern.shuiruyi.dto.CompanyBriefInfo;
 import com.tuozuo.tavern.shuiruyi.dto.CompanyDetailDTO;
@@ -129,15 +130,29 @@ public class CompanyInfoEndpoint {
     /**
      * 修改公司
      */
-    @PostMapping("/{companyId}")
+    @PutMapping("/{companyId}")
     public TavernResponse modifyCompanyInfo(@PathVariable("companyId") String companyId,
                                             @ModelAttribute @Valid CompanyDetailVO vo,
                                             @RequestHeader(TavernRequestAuthFields.USER_ID) String customId,
-                                            @RequestParam(name = "bossIdPicUp") MultipartFile bossIdPicUp,
-                                            @RequestParam(name = "bossIdPicBack") MultipartFile bossIdPicBack,
-                                            @RequestParam(name = "cfoIdPicUp") MultipartFile cfoIdPicUp,
-                                            @RequestParam(name = "cfoIdPicBack") MultipartFile cfoIdPicBack) {
+                                            @RequestParam(name = "bossIdPicUp",required = false) MultipartFile bossIdPicUp,
+                                            @RequestParam(name = "bossIdPicBack",required = false) MultipartFile bossIdPicBack,
+                                            @RequestParam(name = "cfoIdPicUp",required = false) MultipartFile cfoIdPicUp,
+                                            @RequestParam(name = "cfoIdPicBack",required = false) MultipartFile cfoIdPicBack) {
         try {
+            LOGGER.info("modifyCompanyInfo: companyId: {},CompanyDetailVO: {},customId: {}",companyId,vo.toString(),companyId);
+            if( bossIdPicUp != null){
+                LOGGER.info("bossIdPicUp: {}",bossIdPicUp.getOriginalFilename());
+            }
+            if(bossIdPicBack != null){
+                LOGGER.info("bossIdPicBack: {}",bossIdPicBack.getOriginalFilename());
+
+            }
+            if(cfoIdPicUp != null){
+                LOGGER.info("cfoIdPicUp: {}",cfoIdPicUp.getOriginalFilename());
+            }
+            if(cfoIdPicBack != null){
+                LOGGER.info("cfoIdPicBack: {}",cfoIdPicBack.getOriginalFilename());
+            }
             this.setCompanyDetailInfo(vo, customId, bossIdPicUp, bossIdPicBack, cfoIdPicUp, cfoIdPicBack);
             this.companyInfoService.modifyCompanyInfo(vo, companyId);
             return TavernResponse.OK;

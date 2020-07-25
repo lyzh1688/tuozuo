@@ -1,7 +1,6 @@
 package com.tuozuo.tavern.shuiruyi.service.impl;
 
 import java.util.List;
-import java.util.Objects;
 
 import com.tuozuo.tavern.shuiruyi.vo.CompanyDetailVO;
 import org.apache.commons.lang3.StringUtils;
@@ -79,7 +78,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     public void addCompanyInfo(CompanyDetailVO vo) throws Exception {
         CompanyInfo companyInfo = BusinessConverter.voToCompanyInfo(vo);
         companyInfo.setCompanyId(UUIDUtil.randomUUID32());
-        this.setCompanyInfo(vo, companyInfo);
+        this.setCompanyInfoFiles(vo, companyInfo);
         this.companyInfoDao.insert(companyInfo);
     }
 
@@ -87,24 +86,33 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     public void modifyCompanyInfo(CompanyDetailVO vo, String companyId) throws Exception {
         CompanyInfo companyInfo = BusinessConverter.voToCompanyInfo(vo);
         companyInfo.setCompanyId(companyId);
-        this.setCompanyInfo(vo, companyInfo);
+        this.setCompanyInfoFiles(vo, companyInfo);
         this.companyInfoDao.update(companyInfo);
 
     }
 
-    private void setCompanyInfo(CompanyDetailVO vo, CompanyInfo companyInfo) throws Exception {
-        String bossIdPicUpFileUrl = this.storeCompanyFile(companyInfo.getCompanyId(), CompanyFileType.BOSS, vo.getBossIdPicUp());
-        String bossIdPicBackFileUrl = this.storeCompanyFile(companyInfo.getCompanyId(), CompanyFileType.BOSS, vo.getBossIdPicBack());
-        String cfoIdPicUpFileUrl = this.storeCompanyFile(companyInfo.getCompanyId(), CompanyFileType.CFO, vo.getCfoIdPicUp());
-        String cfoIdPicBackFileUrl = this.storeCompanyFile(companyInfo.getCompanyId(), CompanyFileType.CFO, vo.getCfoIdPicBack());
-        LOGGER.info("bossIdPicUpFileUrl: {}",bossIdPicUpFileUrl);
-        LOGGER.info("bossIdPicBackFileUrl: {}",bossIdPicBackFileUrl);
-        LOGGER.info("cfoIdPicUpFileUrl: {}",cfoIdPicUpFileUrl);
-        LOGGER.info("cfoIdPicBackFileUrl: {}",cfoIdPicBackFileUrl);
-        companyInfo.setBossIdPicUp(bossIdPicUpFileUrl);
-        companyInfo.setBossIdPicBack(bossIdPicBackFileUrl);
-        companyInfo.setCfoIdPicUp(cfoIdPicUpFileUrl);
-        companyInfo.setCfoIdPicBack(cfoIdPicBackFileUrl);
+    private void setCompanyInfoFiles(CompanyDetailVO vo, CompanyInfo companyInfo) throws Exception {
+        if( vo.getBossIdPicUp() != null){
+            String bossIdPicUpFileUrl = this.storeCompanyFile(companyInfo.getCompanyId(), CompanyFileType.BOSS, vo.getBossIdPicUp());
+            LOGGER.info("bossIdPicUpFileUrl: {}",bossIdPicUpFileUrl);
+            companyInfo.setBossIdPicUp(bossIdPicUpFileUrl);
+        }
+        if( vo.getBossIdPicBack() != null){
+            String bossIdPicBackFileUrl = this.storeCompanyFile(companyInfo.getCompanyId(), CompanyFileType.BOSS, vo.getBossIdPicBack());
+            LOGGER.info("bossIdPicBackFileUrl: {}",bossIdPicBackFileUrl);
+            companyInfo.setBossIdPicBack(bossIdPicBackFileUrl);
+
+        }
+        if( vo.getCfoIdPicUp() != null){
+            String cfoIdPicUpFileUrl = this.storeCompanyFile(companyInfo.getCompanyId(), CompanyFileType.CFO, vo.getCfoIdPicUp());
+            LOGGER.info("cfoIdPicUpFileUrl: {}",cfoIdPicUpFileUrl);
+            companyInfo.setCfoIdPicUp(cfoIdPicUpFileUrl);
+        }
+        if( vo.getCfoIdPicBack() != null){
+            String cfoIdPicBackFileUrl = this.storeCompanyFile(companyInfo.getCompanyId(), CompanyFileType.CFO, vo.getCfoIdPicBack());
+            LOGGER.info("cfoIdPicBackFileUrl: {}",cfoIdPicBackFileUrl);
+            companyInfo.setCfoIdPicBack(cfoIdPicBackFileUrl);
+        }
 
     }
 
