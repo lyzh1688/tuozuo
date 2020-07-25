@@ -11,12 +11,14 @@ Router.prototype.push = function push (location, onResolve, onReject) {
 Vue.use(Router)
 
 const createRouter = () => new Router({
+  base: '/shuiruyi_ui/', // 需要和打包路径一致，否则nginx刷新找不到。。。
   mode: 'history',
   routes: constantRouterMap
 })
  const router = createRouter()
  export function resetAndRoutes (params) {
   router.matcher = new Router({
+    base: '/shuiruyi_ui/',
     mode: 'history',
     routes: constantRouterMap
   }).matcher

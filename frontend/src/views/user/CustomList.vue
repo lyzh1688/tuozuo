@@ -88,6 +88,7 @@
       :clearUpload="clearUpload"
       :visible="fundOpsVisible"
       :loading="confirmLoading"
+      :customTypeList="customTypList"
       :model="fundMdl"
       @cancel="handleCancel"
       @ok="handleFundOpsOk"
@@ -203,8 +204,8 @@ export default {
     return {
       clearUpload: false,
       fundOpsVisible: false,
-      fundMdl: null,
-      customMdl: null,
+      fundMdl: {},
+      customMdl: {},
       customOpsVisible: false,
       confirmLoading: false,
       customInfo: {},
@@ -293,6 +294,10 @@ export default {
                   description: '余额修改成功'
                 })
               }
+               if (needLogin(result)) {
+                  this.fundOpsVisible = false
+                  this.confirmLoading = false
+                }
             })
             .catch(error => {
               this.$notification.error({
@@ -332,6 +337,10 @@ export default {
                     message: errorMessage(result),
                     description: '修改失败'
                   })
+                }
+                 if (needLogin(result)) {
+                  this.customOpsVisible = false
+                  this.confirmLoading = false
                 }
               })
               .catch(error => {
@@ -385,6 +394,7 @@ export default {
       // form.resetFields() // 清理表单数据（可不做）
     },
     handleAdd () {
+      this.customMdl['customId'] = ''
       this.isupdate = false
       this.customOpsVisible = true
     },

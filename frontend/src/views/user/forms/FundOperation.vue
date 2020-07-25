@@ -28,10 +28,16 @@
           />
         </a-form-item>
         <a-form-item label="客户类型">
-          <a-input
+          <a-select
             disabled
-            v-decorator="['customType', {rules: [{required: true}], validateTrigger: 'blur'} ]"
-          />
+            v-decorator="['customType', {rules: [{required: true, message: '请选择用户类型！'}], validateTrigger: 'blur'}]"
+            placeholder="请选择"
+          >
+            <a-select-option
+              v-for="customtypeItem in customTypeList"
+              :key="customtypeItem.id"
+            >{{ customtypeItem.name }}</a-select-option>
+          </a-select>
         </a-form-item>
         <a-form-item label="操作类型">
           <a-select
@@ -93,7 +99,7 @@ export default {
       type: Object,
       default: () => null
     },
-    customTypemap: {
+    customTypeList: {
       type: Array,
       default: () => []
     },
@@ -176,9 +182,7 @@ export default {
   },
   watch: {
     clearUpload: function (newVal, oldVal) {
-      if (newVal !== '') {
       this.fileList = []
-      }
     }
   }
 }

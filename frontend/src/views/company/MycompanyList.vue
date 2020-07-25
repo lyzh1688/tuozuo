@@ -5,19 +5,14 @@
         <a-row>
           <a-col :md="12" :sm="24">
             <a-form-item>
-              <a-button
-                type="primary"
-                size="small"
-                @click="()=>{$refs.table.refresh(true)}">查询</a-button>
+              <a-button type="primary" size="small" @click="()=>{$refs.table.refresh(true)}">查询</a-button>
             </a-form-item>
           </a-col>
         </a-row>
         <a-row>
           <a-col :md="12" :sm="24">
             <a-form-item>
-              <a-button
-                size="small"
-                @click="()=>{$refs.table.refresh(true)}">创建公司申请</a-button>
+              <a-button size="small" @click="handleAdd">创建公司申请</a-button>
             </a-form-item>
           </a-col>
         </a-row>
@@ -25,7 +20,7 @@
       <s-table
         ref="table"
         size="default"
-        rowKey="customId"
+        rowKey="companyId"
         :pageSize="20"
         :columns="columns"
         :data="loadData"
@@ -34,19 +29,145 @@
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="customType" slot-scope="text">{{ customTypeMap[text] }}</span>
         <span slot="ops" slot-scope="text, record">
-          <a-button size="small" @click="handleUpdate(record)" :disabled="record.registerStatus==='2'" :loading="confirmLoading">修改</a-button>
+          <a-button
+            size="small"
+            @click="handleUpdate(record)"
+            :disabled="record.registerStatus==='2'"
+            :loading="confirmLoading"
+          >修改</a-button>
+          <a-button
+            size="small"
+            @click="fetchCompanyDetail(record)"
+            :loading="confirmLoading"
+          >详情</a-button>
         </span>
         <a slot="customName" slot-scope="text,record" @click="toCustomInfo(record)">{{ text }}</a>
       </s-table>
+      <companyInfoform
+        ref="companyInfoform"
+        :clearUpload="clearUpload"
+        :visible="companyVisible"
+        :loading="confirmLoading"
+        :model="companyMdl"
+        :isUpdate="isupdate"
+        :isShowOnly="isShowOnly"
+        @cancel="handleCancel"
+        @ok="handleOk"
+      >
+        <template v-slot:company-extra v-if="isShowOnly">
+          <a-row>
+            <a-col :span="12">
+              <a-form-item label="总开票" key="总开票">
+                <a-input
+                  :disabled="isShowOnly"
+                  v-decorator="['totalInvoiceNum', {rules: [{required: true, message: '请输入总开票！'}], validateTrigger: 'blur'}]"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="已开票" key="已开票">
+                <a-input
+                  :disabled="isShowOnly"
+                  v-decorator="['invoicedNum', {rules: [{required: true, message: '请输入已开票！'}], validateTrigger: 'blur'}]"
+                />
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row>
+            <a-col :span="12">
+              <a-form-item label="税金总额" key="税金总额">
+                <a-input
+                  :disabled="isShowOnly"
+                  v-decorator="['totalInvoiceAmt', {rules: [{required: true, message: '请输入税金总额！'}], validateTrigger: 'blur'}]"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="免费快递余额" key="免费快递余额">
+                <a-input
+                  :disabled="isShowOnly"
+                  v-decorator="['freeDeliveryCnt', {rules: [{required: true, message: '请输入剩余免费快递次数！'}], validateTrigger: 'blur'}]"
+                />
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row>
+            <a-col :span="12">
+              <a-form-item label="业务状态" key="业务状态">
+                <a-select
+                  :disabled="isShowOnly"
+                  style="width:200px;"
+                  v-decorator="['companyStatus', {rules: [{required: true, message: '请输入业务状态！'}], validateTrigger: 'blur'}]"
+                  placeholder="请选择"
+                >
+                  <a-select-option
+                    v-for=" typeItem in bizStatus"
+                    :key="typeItem.id"
+                  >{{ typeItem.name }}</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="包含注销服务" key="包含注销服务">
+
+                <a-select
+                  :disabled="isShowOnly"
+                  v-decorator="['includeCancel', {rules: [{required: true, message: '请输入是否包含注销服务！'}], validateTrigger: 'blur'}]"
+                  placeholder="请选择"
+                >
+                  <a-select-option value="1">是</a-select-option>
+                  <a-select-option value="0">否</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row>
+            <a-col :span="12">
+              <a-form-item label="服务开始" key="服务开始">
+                <a-input
+                  :disabled="isShowOnly"
+                  v-decorator="['beginDate', { rules: [{required: true, message: '请输入服务开始！'}],validateTrigger: 'blur'}]"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="服务结束" key="服务结束">
+                <a-input
+                  :disabled="isShowOnly"
+                  v-decorator="['endDate', {rules: [{required: true, message: '请输入服务结束！'}], validateTrigger: 'blur'}]"
+                />
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row>
+            <a-col :span="12">
+              <a-form-item label="注册园区" key="注册园区">
+                <a-input
+                  :disabled="isShowOnly"
+                  v-decorator="['registerArea', {rules: [{required: true, message: '请输入注册园区！'}], validateTrigger: 'blur'}]"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="返税比例" key="返税比例">
+                <a-input
+                  :disabled="isShowOnly"
+                  v-decorator="['rebateTaxRate', {rules: [{required: true, message: '请输入返税比例！'}], validateTrigger: 'blur'}]"
+                />
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </template>
+      </companyInfoform>
     </a-card>
   </page-header-wrapper>
 </template>
 <script>
 import { STable } from '@/components'
-import { getCompanyList, dictQuery, addCompany, updateCompany } from '@/api/company'
+import { getCompanyList, dictQuery, addCompany, updateCompany, getCompanyInfo } from '@/api/company'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 import { mapState } from 'vuex'
-import md5 from 'md5'
+import companyInfoform from './forms/CommonCompanyInfo'
 const columns = [
   {
     title: '编号',
@@ -73,12 +194,12 @@ const columns = [
     dataIndex: 'endDate',
     scopedSlots: { customRender: 'endDate' }
   },
-   {
+  {
     title: '公司类型',
     dataIndex: 'companyType',
     scopedSlots: { customRender: 'companyType' }
   },
-   {
+  {
     title: '综合税率',
     dataIndex: 'tax',
     scopedSlots: { customRender: 'tax' }
@@ -110,16 +231,17 @@ const columns = [
 export default {
   name: 'MycompanyList',
   components: {
-    STable
+    STable,
+    companyInfoform
   },
   data () {
     this.columns = columns
     return {
       clearUpload: false,
-      customMdl: null,
-      customOpsVisible: false,
+      isShowOnly: false,
+      companyMdl: {},
+      companyVisible: false,
       confirmLoading: false,
-      customInfo: {},
       bizStatus: [],
       bizStatusMap: {},
       fuzzyCustomList: [],
@@ -181,17 +303,46 @@ export default {
     }
   },
   methods: {
-    handleops (record) {
-      this.fundOpsVisible = true
-      this.fundMdl = { ...record }
+    fetchCompanyDetail (record) {
+      this.isShowOnly = true
+      this.confirmLoading = true
+      getCompanyInfo(record.companyId)
+        .then(response => {
+          const result = response
+          if (success(result)) {
+            this.companyMdl = { ...result.data.bossInfo, ...result.data.cfoInfo, ...result.data.companyInfo, companyId: record.companyId }
+            console.log('this.companyMdl ', this.companyMdl)
+            this.companyVisible = true
+            this.confirmLoading = false
+          } else {
+            this.confirmLoading = false
+            this.$notification.error({
+              message: errorMessage(result),
+              description: '获取公司详情失败'
+            })
+          }
+        })
+        .catch(error => {
+          this.$notification.error({
+            message: '获取公司详情失败',
+            description: error
+          })
+          this.confirmLoading = false
+        })
     },
     handleOk () {
-      const form = this.$refs.CustomInfoForm.form
+      if (this.isShowOnly) {
+        const form = this.$refs.companyInfoform.form
+                  this.clearUpload = !this.clearUpload
+                  form.resetFields() // 清理表单数据（可不做）
+                  this.$refs.table.refresh(true)
+                  this.companyVisible = false
+                  return
+      }
+      const form = this.$refs.companyInfoform.form
       form.validateFields((errors, values) => {
         if (!errors) {
           this.confirmLoading = true
-          values['province'] = values['province'] + '-' + values['area'] + '-' + values['city']
-          values['customPswd'] = md5(values['customPswd'])
           delete values.ctiy
           delete values.area
           if (this.isupdate) {
@@ -202,10 +353,11 @@ export default {
                   this.$notification.success({
                     message: '修改成功'
                   })
-                  const form = this.$refs.CustomInfoForm.form
+                  const form = this.$refs.companyInfoform.form
+                  this.clearUpload = !this.clearUpload
                   form.resetFields() // 清理表单数据（可不做）
                   this.$refs.table.refresh(true)
-                  this.customOpsVisible = false
+                  this.companyVisible = false
                   this.confirmLoading = false
                 } else {
                   this.confirmLoading = false
@@ -213,6 +365,10 @@ export default {
                     message: errorMessage(result),
                     description: '修改失败'
                   })
+                }
+                 if (needLogin(result)) {
+                  this.companyVisible = false
+                  this.confirmLoading = false
                 }
               })
               .catch(error => {
@@ -230,10 +386,11 @@ export default {
                   this.$notification.success({
                     message: '新增成功'
                   })
-                  const form = this.$refs.CustomInfoForm.form
+                  const form = this.$refs.companyInfoform.form
+                  this.clearUpload = !this.clearUpload
                   form.resetFields() // 清理表单数据（可不做）
                   this.$refs.table.refresh(true)
-                  this.customOpsVisible = false
+                  this.companyVisible = false
                   this.confirmLoading = false
                 } else {
                   this.confirmLoading = false
@@ -243,7 +400,7 @@ export default {
                   })
                 }
                 if (needLogin(result)) {
-                  this.customOpsVisible = false
+                  this.companyVisible = false
                   this.confirmLoading = false
                 }
               })
@@ -260,42 +417,25 @@ export default {
     },
     handleCancel () {
       this.customOpsVisible = false
-      this.fundOpsVisible = false
+      this.companyVisible = false
 
       // const form = this.$refs.createModal.form
       // form.resetFields() // 清理表单数据（可不做）
     },
     handleAdd () {
+      this.companyMdl['companyId'] = ''
+      this.companyMdl['bossIdPicUp'] = null
+      this.companyMdl['bossIdPicBack'] = null
+      this.companyMdl['cfoIdPicUp'] = null
+      this.companyMdl['cfoIdPicBack'] = null
       this.isupdate = false
-      this.customOpsVisible = true
+      this.companyVisible = true
     },
-    handleUpdate (record) {
+    async handleUpdate (record) {
+      await this.fetchCompanyDetail(record)
       this.isupdate = true
-      this.customOpsVisible = true
-      this.customMdl = { ...record }
-      const province = this.customMdl.province.split('-')
-      if (province.length === 3) {
-        this.customMdl.province = province[0]
-        this.customMdl['area'] = province[1]
-        this.customMdl['city'] = province[2]
-      } else {
-        this.customMdl.province = ''
-      }
-      console.log(this.customMdl, record)
-    },
-    toCustomInfo (value) {
-      this.$router.push({ name: 'CustomInfo', params: { customId: value.customId } })
-    },
-    handleCustomSearch (value) {
-      fetch(value, data => (this.fuzzyCustomList = data))
-    },
-    handleCustomChange (value) {
-      // console.log(value)
-      this.queryParam.customName = value
-      fetch(value, data => (this.fuzzyCustomList = data))
-    },
-    handleDefault (value) {
-      return value === undefined ? '暂无数据' : String(value)
+      this.companyVisible = true
+      this.isShowOnly = false
     },
     getDictBizStatus () {
       dictQuery('bizStatus')
@@ -331,13 +471,7 @@ export default {
   computed: {
     ...mapState({
       username: state => state.user.name
-    }),
-    rowSelection () {
-      return {
-        selectedRowKeys: this.selectedRowKeys,
-        onChange: this.onSelectChange
-      }
-    }
+    })
   },
   // created () {
   //   this.getDict()

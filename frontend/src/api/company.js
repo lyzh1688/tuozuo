@@ -10,10 +10,12 @@ const CompanyApi = {
   companyInfo: process.env.VUE_APP_SYSTEM_URL + '/v1/company/detail/',
   companyList: process.env.VUE_APP_SYSTEM_URL + '/v1/company/list',
   addCompany: process.env.VUE_APP_SYSTEM_URL + '/v1/company', // post
-  updateCompany: process.env.VUE_APP_SYSTEM_URL + '/v1/custom/', // put
+  updateCompany: process.env.VUE_APP_SYSTEM_URL + '/v1/company/', // put
   tradeOpration: process.env.VUE_APP_SYSTEM_URL + '/v1/custom/trade/', // put
-  dictQuery: process.env.VUE_APP_SYSTEM_URL + '/v1/dict/'// bizStatus,customType,registerStatus,event
+  dictQuery: process.env.VUE_APP_SYSTEM_URL + '/v1/dict/', // bizStatus,customType,registerStatus,event
+  managementCompany: process.env.VUE_APP_SYSTEM_URL + '/v1/company/management/' // put
 }
+
 /*
 companyName	否	String	公司名称
 queryCnt	否	String	查询条数，默认20
@@ -123,7 +125,11 @@ export function addCustom (params) {
 export function addCompany (params) {
   const formData = new FormData()
   for (const i in params) {
-    formData.append(i, params[i])
+    if (i.includes('Up') || i.includes('Back')) {
+      formData.append(i, params[i].file.originFileObj)
+    } else {
+      formData.append(i, params[i])
+    }
   }
   return request({
     url: CompanyApi.addCompany,
@@ -134,13 +140,31 @@ export function addCompany (params) {
     }
   })
 }
+export function manageCompany (params) {
+  return request({
+    url: CompanyApi.managementCompany + params.companyId,
+    method: 'PUT',
+    data: params
+  })
+}
 export function updateCompany (params) {
   const formData = new FormData()
-  for (const i in params) {
+for (const i in params) {
+  if (i === 'companytiD') {
+    continue
+  }
+  if (i.includes('Up') || i.includes('Back')) {
+    if (typeof params[i] === 'string') {
+      // formData.append(i, null)
+    } else {
+      formData.append(i, params[i].file.originFileObj)
+    }
+  } else {
     formData.append(i, params[i])
   }
+}
   return request({
-    url: CompanyApi.updateCompany,
+    url: CompanyApi.updateCompany + params.companyId,
     method: 'PUT',
     data: formData,
     headers: {

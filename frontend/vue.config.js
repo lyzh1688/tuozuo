@@ -31,6 +31,12 @@ const assetsCDN = {
 
 // vue.config.js
 const vueConfig = {
+  publicPath: '/',
+  // 构建时输出目录 默认dist
+  outputDir: 'shuiruyi_ui',
+  // 放置静态资源目录
+  assetsDir: 'static',
+  // indexPath: "index.html", html输出路
   configureWebpack: {
     // webpack plugins
     plugins: [

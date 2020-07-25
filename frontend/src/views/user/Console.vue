@@ -71,7 +71,7 @@ export default {
   },
   methods: {
     handleDefault (value) {
-      return value === undefined ? '暂无数据' : String(value)
+      return value === undefined || value === null ? '暂无数据' : String(value)
     },
     fetchCompanyList () {
       this.companyListLoading = true
