@@ -5,6 +5,7 @@ import com.tuozuo.tavern.shuiruyi.model.ContractInfo;
 import com.tuozuo.tavern.shuiruyi.model.ContractTemplate;
 import com.tuozuo.tavern.shuiruyi.service.ContractInfoService;
 import com.tuozuo.tavern.shuiruyi.vo.ContractInfoVO;
+import com.tuozuo.tavern.shuiruyi.vo.ContractModifyVO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,5 +29,15 @@ public class ContractInfoServiceImpl implements ContractInfoService {
     @Override
     public List<ContractTemplate> queryContractTemplateList() {
         return null;
+    }
+
+    @Override
+    public List<ContractInfo> fuzzyQueryContractInfo(String contractStatus, String contractName, int queryCnt, String roleGroup, String customId) {
+        return null;
+    }
+
+    @Override
+    public void modifyContractInfo(ContractModifyVO contractModifyVO) {
+        
     }
 }

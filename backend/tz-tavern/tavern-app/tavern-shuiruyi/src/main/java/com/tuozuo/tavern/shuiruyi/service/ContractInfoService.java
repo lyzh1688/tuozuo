@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.shuiruyi.model.ContractInfo;
 import com.tuozuo.tavern.shuiruyi.model.ContractTemplate;
 import com.tuozuo.tavern.shuiruyi.vo.ContractInfoVO;
+import com.tuozuo.tavern.shuiruyi.vo.ContractModifyVO;
 
 import java.util.List;
 
@@ -19,4 +20,7 @@ public interface ContractInfoService {
 
     List<ContractTemplate> queryContractTemplateList();
 
+    List<ContractInfo> fuzzyQueryContractInfo(String contractStatus,String contractName,int queryCnt,String roleGroup,String customId);
+
+    void modifyContractInfo(ContractModifyVO contractModifyVO);
 }
