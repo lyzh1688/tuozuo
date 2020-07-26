@@ -288,7 +288,7 @@ export default {
       form.validateFields((errors, values) => {
         if (!errors) {
           this.confirmLoading = true
-          values.tradeSnapshot = values.tradeSnapshot.file.originFileObj
+          values.tradeFile = values.tradeFile.file.originFileObj
           tradeOpration(values)
             .then(response => {
               const result = response

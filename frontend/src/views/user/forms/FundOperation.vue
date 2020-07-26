@@ -62,7 +62,7 @@
             name="tradeSnapshot"
             :file-list="fileList"
             list-type="picture-card"
-            v-decorator="['tradeSnapshot', {rules: [{required: true, message: '请上传凭证！'}], validateTrigger: 'blur'} ]"
+            v-decorator="['tradeFile', {rules: [{required: true, message: '请上传凭证！'}], validateTrigger: 'blur'} ]"
             :showUploadList="{ showPreviewIcon: false, showRemoveIcon: true }"
             @change="handleChange"
           >
@@ -88,7 +88,7 @@ import pick from 'lodash.pick'
 import { dictQuery } from '@/api/company'
 import { success, errorMessage } from '@/utils/helper/responseHelper'
 // 表单字段
-const fields = ['customId', 'customName', 'province', 'customType', 'event', 'amount', 'city', 'remark', 'tradeSnapshot']
+const fields = ['customId', 'customName', 'province', 'customType', 'event', 'amount', 'city', 'remark', 'tradeFile']
 
 export default {
   props: {
