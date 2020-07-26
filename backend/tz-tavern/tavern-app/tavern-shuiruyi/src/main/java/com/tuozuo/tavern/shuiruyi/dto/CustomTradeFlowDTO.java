@@ -12,7 +12,7 @@ public class CustomTradeFlowDTO {
    private String event;
    private BigDecimal balance;
    private BigDecimal amount;
-   private String tradeSnapshot;
+   private String tradeFile;
    private String remark;
 
     public BigDecimal getAmount() {
@@ -47,12 +47,12 @@ public class CustomTradeFlowDTO {
         this.balance = balance;
     }
 
-    public String getTradeSnapshot() {
-        return tradeSnapshot;
+    public String getTradeFile() {
+        return tradeFile;
     }
 
-    public void setTradeSnapshot(String tradeSnapshot) {
-        this.tradeSnapshot = tradeSnapshot;
+    public void setTradeFile(String tradeFile) {
+        this.tradeFile = tradeFile;
     }
 
     public String getRemark() {

@@ -9,44 +9,8 @@
     <result column="trade_type" jdbcType="VARCHAR" property="tradeType" />
     <result column="balance" jdbcType="DECIMAL" property="balance" />
     <result column="trade_snapshot" jdbcType="VARCHAR" property="tradeSnapshot" />
+    <result column="trade_file" jdbcType="VARCHAR" property="tradeFile" />
     <result column="event" jdbcType="VARCHAR" property="event" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from custom_trade_flow
-    where trade_flow_id = #{tradeFlowId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.tuozuo.tavern.shuiruyi.model.CustomTradeFlow">
-    insert into custom_trade_flow (trade_flow_id, custom_id, trade_date, 
-      amount, trade_type, balance, 
-      trade_snapshot, event, remark
-      )
-    values (#{tradeFlowId,jdbcType=VARCHAR}, #{customId,jdbcType=VARCHAR}, #{tradeDate,jdbcType=DATE}, 
-      #{amount,jdbcType=VARCHAR}, #{tradeType,jdbcType=VARCHAR}, #{balance,jdbcType=DECIMAL}, 
-      #{tradeSnapshot,jdbcType=VARCHAR}, #{event,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.shuiruyi.model.CustomTradeFlow">
-    update custom_trade_flow
-    set custom_id = #{customId,jdbcType=VARCHAR},
-      trade_date = #{tradeDate,jdbcType=DATE},
-      amount = #{amount,jdbcType=VARCHAR},
-      trade_type = #{tradeType,jdbcType=VARCHAR},
-      balance = #{balance,jdbcType=DECIMAL},
-      trade_snapshot = #{tradeSnapshot,jdbcType=VARCHAR},
-      event = #{event,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR}
-    where trade_flow_id = #{tradeFlowId,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select trade_flow_id, custom_id, trade_date, amount, trade_type, balance, trade_snapshot, 
-    event, remark
-    from custom_trade_flow
-    where trade_flow_id = #{tradeFlowId,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select trade_flow_id, custom_id, trade_date, amount, trade_type, balance, trade_snapshot, 
-    event, remark
-    from custom_trade_flow
-  </select>
 </mapper>

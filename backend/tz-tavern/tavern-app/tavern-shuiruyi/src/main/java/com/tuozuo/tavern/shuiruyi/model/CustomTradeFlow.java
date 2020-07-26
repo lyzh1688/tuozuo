@@ -23,9 +23,19 @@ public class CustomTradeFlow {
 
     private String tradeSnapshot;
 
+    private String tradeFile;
+
     private String event;
 
     private String remark;
+
+    public String getTradeFile() {
+        return tradeFile;
+    }
+
+    public void setTradeFile(String tradeFile) {
+        this.tradeFile = tradeFile;
+    }
 
     public String getTradeFlowId() {
         return tradeFlowId;

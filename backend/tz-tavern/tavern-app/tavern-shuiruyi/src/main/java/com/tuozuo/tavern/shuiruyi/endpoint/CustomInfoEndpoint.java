@@ -157,10 +157,11 @@ public class CustomInfoEndpoint {
     public TavernResponse investAndPayment(@PathVariable("customId") String customId,
                                            @RequestParam("customType") String customType,
                                            @RequestParam("event") String event,
+                                           @RequestParam("remark") String remark,
                                            @RequestParam("amount") double amount,
-                                           @RequestParam("tradeSnapshot") MultipartFile tradeSnapshot) {
+                                           @RequestParam("tradeFile") MultipartFile tradFile) {
         try {
-            String tradeFlowId = this.customInfoService.investAndPayment(customId, customType, event, amount, tradeSnapshot);
+            String tradeFlowId = this.customInfoService.investAndPayment(customId, customType, event, amount, tradFile,remark);
             JSONObject response = new JSONObject();
             response.put("tradeFlowId", tradeFlowId);
             return TavernResponse.ok(response);

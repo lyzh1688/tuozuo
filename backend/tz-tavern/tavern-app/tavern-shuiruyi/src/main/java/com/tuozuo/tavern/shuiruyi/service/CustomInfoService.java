@@ -29,10 +29,11 @@ public interface CustomInfoService {
     IPage<CustomInfo> queryCustomInfoList(String customName, String hasPaid, int pageNo, int pageSize);
 
     String investAndPayment(String customId,
-                          String customType,
-                          String event,
-                          double amount,
-                          MultipartFile tradeSnapshot) throws Exception;
+                            String customType,
+                            String event,
+                            double amount,
+                            MultipartFile tradeFile,
+                            String remark) throws Exception;
 
     void countCustomStatistic();
 

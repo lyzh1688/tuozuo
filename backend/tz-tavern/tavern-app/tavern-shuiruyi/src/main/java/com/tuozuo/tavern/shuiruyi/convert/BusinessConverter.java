@@ -112,7 +112,8 @@ public class BusinessConverter {
         if (customTradeFlow.getTradeDate() != null) {
             customTradeFlowDTO.setTradeDate(DateUtils.formatDate(customTradeFlow.getTradeDate()));
         }
-        customTradeFlowDTO.setTradeSnapshot(customTradeFlow.getTradeSnapshot());
+        customTradeFlowDTO.setTradeFile(customTradeFlow.getTradeFile());
+
         return customTradeFlowDTO;
     }
 

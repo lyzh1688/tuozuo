@@ -79,7 +79,7 @@ public class InvoiceInfoEndpoint {
      * 开票修改
      */
     @PutMapping("/{invoiceId}")
-    public TavernResponse modifyCustomInfo(@PathVariable("invoiceId") String invoiceId,
+    public TavernResponse modifyInvoiceInfo(@PathVariable("invoiceId") String invoiceId,
                                            @RequestBody @Valid InvoiceModifyVO vo,
                                            @RequestParam(value = "authLetterFile", required = false) MultipartFile authLetterFile,
                                            @RequestParam(value = "bankFlowFile", required = false) MultipartFile bankFlowFile
@@ -98,8 +98,8 @@ public class InvoiceInfoEndpoint {
     /**
      * 发票审核
      */
-    @PutMapping(value = "/{invoiceId}")
-    public TavernResponse modifyCompanyInfo(@RequestBody @Valid InvoiceAuditVO vo) {
+    @PutMapping(value = "/audit/{invoiceId}")
+    public TavernResponse auditInvoiceInfo(@RequestBody @Valid InvoiceAuditVO vo) {
         try {
             return TavernResponse.OK;
         } catch (Exception e) {

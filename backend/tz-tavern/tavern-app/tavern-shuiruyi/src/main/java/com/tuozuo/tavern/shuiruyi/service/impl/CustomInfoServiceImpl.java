@@ -95,7 +95,7 @@ public class CustomInfoServiceImpl implements CustomInfoService {
 
     @Transactional
     @Override
-    public String investAndPayment(String customId, String customType, String event, double amount, MultipartFile tradeSnapshot) throws Exception {
+    public String investAndPayment(String customId, String customType, String event, double amount, MultipartFile tradeFile, String remark) throws Exception {
         //1、扣款或者充值，余额变动
         //2、流水记录,凭证上传
         CustomInfo customInfo = this.customInfoDao.selectCustomInfo(customId);
@@ -107,10 +107,10 @@ public class CustomInfoServiceImpl implements CustomInfoService {
 
         CustomTradeFlow customTradeFlow = new CustomTradeFlow();
         String tradeFlowId = UUIDUtil.randomUUID32();
-        if (tradeSnapshot != null) {
+        if (tradeFile != null) {
             //路径为：path + customId + tradeFlowId
-            String urlLocation = this.fileStore(customId, tradeFlowId, tradeSnapshot);
-            customTradeFlow.setTradeSnapshot(urlLocation);
+            String urlLocation = this.fileStore(customId, tradeFlowId, tradeFile);
+            customTradeFlow.setTradeFile(urlLocation);
         }
         customTradeFlow.setTradeFlowId(tradeFlowId);
         customTradeFlow.setCustomId(customId);
@@ -119,7 +119,9 @@ public class CustomInfoServiceImpl implements CustomInfoService {
         customTradeFlow.setTradeType(TradeEvent.valueOf(event).getEvent());
         customTradeFlow.setBalance(new BigDecimal(newBalance));
         customTradeFlow.setEvent(event);
-        customTradeFlow.setRemark(customInfoString);
+        customTradeFlow.setTradeSnapshot(customInfoString);
+        customTradeFlow.setRemark(remark);
+
         this.customTradeFlowDao.insert(customTradeFlow);
         return tradeFlowId;
     }
