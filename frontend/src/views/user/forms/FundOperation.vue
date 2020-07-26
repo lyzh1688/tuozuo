@@ -52,6 +52,11 @@
             v-decorator="['amount', {rules: [{required: true, message: '请输入金额！'}], validateTrigger: 'blur'} ]"
           />
         </a-form-item>
+        <a-form-item label="备注">
+          <a-textarea
+            v-decorator="['remark', {rules: [{required: true, message: '请输入备注！'}], validateTrigger: 'blur'} ]"
+          />
+        </a-form-item>
         <a-form-item label="凭证文件">
           <a-upload
             name="tradeSnapshot"
@@ -83,7 +88,7 @@ import pick from 'lodash.pick'
 import { dictQuery } from '@/api/company'
 import { success, errorMessage } from '@/utils/helper/responseHelper'
 // 表单字段
-const fields = ['customId', 'customName', 'province', 'customType', 'event', 'amount', 'city', 'tradeSnapshot']
+const fields = ['customId', 'customName', 'province', 'customType', 'event', 'amount', 'city', 'remark', 'tradeSnapshot']
 
 export default {
   props: {

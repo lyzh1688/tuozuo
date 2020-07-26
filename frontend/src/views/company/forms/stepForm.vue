@@ -22,7 +22,7 @@
             <a-input v-decorator="['companyId', { validateTrigger: 'blur'}]" />
           </a-form-item>
           <a-form-item label="关联流水">
-            <a-input v-model="tradeFlow" v-decorator="['tradeFlow', { validateTrigger: 'blur'}]" />
+            <a-input v-show="false" v-model="tradeFlow" v-decorator="['tradeFlow', { validateTrigger: 'blur'}]" />
             <a-button size="small" @click="handleops(record)" :loading="confirmLoading">余额变动</a-button>
           </a-form-item>
           <a-row>

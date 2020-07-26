@@ -20,8 +20,7 @@
               <a-button
                 type="primary"
                 size="small"
-                @click="()=>{$refs.table.refresh(true)
-                             $refs.table2.refresh(true)}"
+                @click="()=>{$refs.table.refresh(true)}"
               >查询</a-button>
             </a-form-item>
           </a-col>
@@ -56,6 +55,17 @@
                   :key="bizStatusItem.id"
                 >{{ bizStatusItem.name }}</a-select-option>
               </a-select>
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row>
+          <a-col :md="12" :sm="24">
+            <a-form-item>
+              <a-button
+                type="primary"
+                size="small"
+                @click="()=>{$refs.table2.refresh(true)}"
+              >查询</a-button>
             </a-form-item>
           </a-col>
         </a-row>

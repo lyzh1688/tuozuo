@@ -1,13 +1,21 @@
 <template>
   <page-header-wrapper>
-    <a-card style="margin-top: 24px" :bordered="false">
+    <a-card style="margin-top: 24px" :bordered="false" class="card-container">
       <a-skeleton :loading="companyListLoading" active title>
         <a-tabs
           :default-active-key="companyList.length>0?companyList[0].id:''"
           tab-position="left"
           @tabClick="fetchCompanyInfo"
         >
-          <a-tab-pane v-for="item in companyList" :key="item.id" :tab="item.name">
+          <a-tab-pane
+            class="tab-pane-self"
+            v-for="item in companyList"
+            :key="item.id" >
+            <template v-slot:tab>
+              <span style="text-align:left;display:block;">
+                {{ item.name }}
+              </span>
+            </template>
             <a-skeleton :loading="infoLoading" active title>
               <a-row >
                 <a-col :sm="12" :xs="24">
@@ -146,5 +154,6 @@ export default {
   activated () {
     this.fetchCompanyList()
   }
+
 }
 </script>
