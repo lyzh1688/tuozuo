@@ -60,10 +60,17 @@ public class AuthorityEndpoint {
         return TavernResponse.bizFailure("内部服务错误");
     }
 
-    @RequestMapping("/logout")
-    public TavernResponse<TokenAuthority> logout() {
-        TokenAuthority tokenAuthority = new TokenAuthority();
-        return TavernResponse.OK;
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public TavernResponse<TokenAuthority> logout(@RequestBody User user,
+                                                 @RequestHeader(value = "access-token") String accessToken
+                                                 ) {
+        boolean ret = this.authorityService.logout(user.getUserId(),user.getSystemId(),user.getRoleGroup(),accessToken);
+        if(ret){
+            return TavernResponse.OK;
+        }
+        else {
+            return TavernResponse.bizFailure("创建用户失败");
+        }
     }
 
 

@@ -16,5 +16,7 @@ public interface AuthorityService {
 
     Optional<TokenAuthority> login(String userId, Password password, String systemId, String roleGroup);
 
+    boolean logout(String userId, String systemId, String roleGroup, String accessToken);
+
     boolean createUser(User user);
 }

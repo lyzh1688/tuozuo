@@ -1,6 +1,5 @@
 package com.tuozuo.tavern.libs.auth.session;
 
-import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisStringCommands;
@@ -36,7 +35,7 @@ public class RedisSessionManager implements SessionManager {
 
     @Override
     public void createOrRefreshSession(Session session) {
-        if(session instanceof RedisSession){
+        if (session instanceof RedisSession) {
             RedisSession redisSession = (RedisSession) session;
             Boolean ret = (Boolean) redisTemplate.execute(new RedisCallback<Boolean>() {
                 @Override
@@ -48,9 +47,19 @@ public class RedisSessionManager implements SessionManager {
                     return true;
                 }
             });
-        }
-        else {
+        } else {
 
+        }
+    }
+
+    @Override
+    public boolean dispose(Session session) {
+        if (session instanceof RedisSession) {
+            RedisSession redisSession = (RedisSession) session;
+            redisTemplate.delete(redisSession.getSessionKey());
+            return true;
+        } else {
+            return false;
         }
     }
 

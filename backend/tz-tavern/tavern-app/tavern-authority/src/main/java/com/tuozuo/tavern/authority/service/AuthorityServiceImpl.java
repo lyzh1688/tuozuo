@@ -76,6 +76,17 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
+    public boolean logout(String userId, String systemId, String roleGroup, String accessToken) {
+        try {
+            RedisSession session = new RedisSession(userId, systemId, roleGroup, accessToken);
+            return this.sessionManager.dispose(session);
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
+
+    @Override
     public boolean createUser(User user) {
         try {
             return this.authorityDao.createUser(user);

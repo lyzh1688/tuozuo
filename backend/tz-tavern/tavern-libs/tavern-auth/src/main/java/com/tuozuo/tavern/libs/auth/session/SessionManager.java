@@ -6,4 +6,5 @@ package com.tuozuo.tavern.libs.auth.session;
 public interface SessionManager {
     boolean valid(Session session);
     void createOrRefreshSession(Session session);
+    boolean dispose(Session session);
 }
