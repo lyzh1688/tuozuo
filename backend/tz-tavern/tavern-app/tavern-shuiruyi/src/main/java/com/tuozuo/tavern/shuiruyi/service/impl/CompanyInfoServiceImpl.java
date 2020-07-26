@@ -34,6 +34,8 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     private String fileUrlPath;
     @Value("${shuiruyi.company.file.path:/mnt/file/company/file/}")
     private String filePath;
+    @Value("${free.delivery.cnt:12}")
+    private int freeDeliveryCnt;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyInfoServiceImpl.class);
 
@@ -80,6 +82,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         CompanyInfo companyInfo = BusinessConverter.voToCompanyInfo(vo);
         companyInfo.setCompanyId(UUIDUtil.randomUUID32());
         this.setCompanyInfoFiles(vo, companyInfo);
+        companyInfo.setFreeDelivery(freeDeliveryCnt);
         this.companyInfoDao.insert(companyInfo);
     }
 
