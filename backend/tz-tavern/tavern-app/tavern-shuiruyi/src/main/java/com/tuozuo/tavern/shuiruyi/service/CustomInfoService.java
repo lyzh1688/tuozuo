@@ -22,7 +22,7 @@ public interface CustomInfoService {
 
     List<CustomInfo> fuzzyQueryCustomInfo(String customName, int queryCnt);
 
-    void addCustomInfo(CustomAddInfoVO vo);
+    void addCustomInfo(CustomAddInfoVO vo) throws Exception;
 
     void modifyCustomInfo(CustomInfoVO vo, String customId);
 

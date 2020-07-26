@@ -1,18 +1,20 @@
 package com.tuozuo.tavern.shuiruyi.model;
 
-public class ContractTemplate {
-    private String contractTemplteId;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+
+public class ContractTemplate extends Model<ContractTemplate> {
+    private String contractTemplateId;
 
     private String contractTemplateName;
 
     private String templateFile;
 
-    public String getContractTemplteId() {
-        return contractTemplteId;
+    public String getContractTemplateId() {
+        return contractTemplateId;
     }
 
-    public void setContractTemplteId(String contractTemplteId) {
-        this.contractTemplteId = contractTemplteId == null ? null : contractTemplteId.trim();
+    public void setContractTemplateId(String contractTemplateId) {
+        this.contractTemplateId = contractTemplateId;
     }
 
     public String getContractTemplateName() {
@@ -20,7 +22,7 @@ public class ContractTemplate {
     }
 
     public void setContractTemplateName(String contractTemplateName) {
-        this.contractTemplateName = contractTemplateName == null ? null : contractTemplateName.trim();
+        this.contractTemplateName = contractTemplateName;
     }
 
     public String getTemplateFile() {
@@ -28,6 +30,6 @@ public class ContractTemplate {
     }
 
     public void setTemplateFile(String templateFile) {
-        this.templateFile = templateFile == null ? null : templateFile.trim();
+        this.templateFile = templateFile;
     }
 }

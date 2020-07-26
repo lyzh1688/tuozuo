@@ -23,6 +23,11 @@
             <artifactId>tavern-common-protocol</artifactId>
             <version>${tavern.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.tuozuo.tavern</groupId>
+            <artifactId>tavern-authority-spi</artifactId>
+            <version>${tavern.version}</version>
+        </dependency>
         <!--mybatis-->
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -64,6 +69,11 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.37</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tuozuo.tavern</groupId>
+            <artifactId>tavern-rpc-libs</artifactId>
+            <version>${tavern.version}</version>
         </dependency>
     </dependencies>
 

@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.tuozuo.tavern.common.protocol.TavernResponse;
+import com.tuozuo.tavern.shuiruyi.convert.BusinessConverter;
 import com.tuozuo.tavern.shuiruyi.dao.CustomInfoDao;
 import com.tuozuo.tavern.shuiruyi.dao.CustomTradeFlowDao;
 import com.tuozuo.tavern.shuiruyi.dict.TradeEvent;
@@ -16,6 +18,8 @@ import com.tuozuo.tavern.shuiruyi.utils.UUIDUtil;
 import com.tuozuo.tavern.shuiruyi.vo.CustomAddInfoVO;
 import com.tuozuo.tavern.shuiruyi.vo.CustomInfoVO;
 
+import com.tuuozuo.tavern.authority.spi.AuthorityService;
+import com.tuuozuo.tavern.authority.spi.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +43,8 @@ public class CustomInfoServiceImpl implements CustomInfoService {
     private String tradeFileUrlPath;
     @Value("${shuiruyi.custom.trade.file.path:/mnt/file/trade/file/}")
     private String tradeFilePath;
+    @Autowired
+    private AuthorityService authorityService;
 
     @Autowired
     private CustomInfoDao customInfoDao;
@@ -61,8 +67,12 @@ public class CustomInfoServiceImpl implements CustomInfoService {
     }
 
     @Override
-    public void addCustomInfo(CustomAddInfoVO vo) {
-
+    public void addCustomInfo(CustomAddInfoVO vo) throws Exception {
+        UserVO userVO = BusinessConverter.userToVO(vo);
+        TavernResponse response = this.authorityService.createUser(userVO);
+        if (response.getCode() != 0) {
+            throw new Exception("客户创建失败");
+        }
         CustomInfo customInfo = new CustomInfo();
         customInfo.setCustomId(vo.getCustomId());
         setCustomInfo(vo, customInfo);

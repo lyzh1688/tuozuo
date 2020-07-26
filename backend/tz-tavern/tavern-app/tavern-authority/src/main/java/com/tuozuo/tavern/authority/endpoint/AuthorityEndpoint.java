@@ -6,6 +6,7 @@ import com.tuozuo.tavern.authority.model.TokenAuthority;
 import com.tuozuo.tavern.authority.model.User;
 import com.tuozuo.tavern.authority.service.AuthorityService;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
+import com.tuuozuo.tavern.authority.spi.vo.UserVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,13 +68,22 @@ public class AuthorityEndpoint {
 
 
     @RequestMapping(value = "/user", method = RequestMethod.POST)
-    TavernResponse<Void> createUser(@RequestBody User user) {
+    TavernResponse<Void> createUser(@RequestBody UserVO userVO) {
+        User user = this.voToUser(userVO);
         boolean ret = this.authorityService.createUser(user);
-        if(ret){
+        if (ret) {
             return TavernResponse.OK;
-        }
-        else {
+        } else {
             return TavernResponse.bizFailure("创建用户失败");
         }
+    }
+
+    private User voToUser(UserVO userVO) {
+        User user = new User();
+        user.setUserId(userVO.getUserId());
+        user.setSystemId(userVO.getSystemId());
+        user.setRoleGroup(userVO.getRoleGroup());
+        user.setUserPswd(userVO.getUserPswd());
+        return user;
     }
 }

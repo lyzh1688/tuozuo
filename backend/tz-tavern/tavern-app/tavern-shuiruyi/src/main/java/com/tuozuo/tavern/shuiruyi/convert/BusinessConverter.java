@@ -1,14 +1,16 @@
 package com.tuozuo.tavern.shuiruyi.convert;
 
+import com.tuozuo.tavern.common.protocol.SystemID;
 import com.tuozuo.tavern.shuiruyi.dict.BusinessStatus;
 import com.tuozuo.tavern.shuiruyi.dict.CompanyType;
 import com.tuozuo.tavern.shuiruyi.dto.*;
 import com.tuozuo.tavern.shuiruyi.model.*;
 import com.tuozuo.tavern.shuiruyi.utils.BusinessStatusUtil;
 import com.tuozuo.tavern.shuiruyi.utils.DateUtils;
-
 import com.tuozuo.tavern.shuiruyi.vo.CompanyDetailVO;
 import com.tuozuo.tavern.shuiruyi.vo.CompanyModifyVO;
+import com.tuozuo.tavern.shuiruyi.vo.CustomAddInfoVO;
+import com.tuuozuo.tavern.authority.spi.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 
@@ -52,10 +54,10 @@ public class BusinessConverter {
         companyInfoDTO.setTotalInvoiceAmt(companyDetailInfo.getTotalInvoiceAmt() == null ? 0 : companyDetailInfo.getTotalInvoiceAmt().doubleValue());
         companyInfoDTO.setFreeDeliveryCnt(companyDetailInfo.getFreeDelivery());
         companyInfoDTO.setIncludeCancel(companyDetailInfo.getIncludeCancel() == null ? "0" : "1");
-        if(companyDetailInfo.getBeginDate() != null){
+        if (companyDetailInfo.getBeginDate() != null) {
             companyInfoDTO.setBeginDate(DateUtils.formatDate(companyDetailInfo.getBeginDate().toLocalDate(), DateUtils.DEFAULT_DATE_FORMATTER));
         }
-        if(companyDetailInfo.getEndDate() != null){
+        if (companyDetailInfo.getEndDate() != null) {
             companyInfoDTO.setEndDate(DateUtils.formatDate(companyDetailInfo.getEndDate().toLocalDate(), DateUtils.DEFAULT_DATE_FORMATTER));
         }
         companyInfoDTO.setTradeFlow(companyDetailInfo.getTradeFlow());
@@ -107,7 +109,7 @@ public class BusinessConverter {
         customTradeFlowDTO.setBalance(customTradeFlow.getBalance());
         customTradeFlowDTO.setEvent(customTradeFlow.getEvent());
         customTradeFlowDTO.setRemark(customTradeFlow.getRemark());
-        if(customTradeFlow.getTradeDate() != null){
+        if (customTradeFlow.getTradeDate() != null) {
             customTradeFlowDTO.setTradeDate(DateUtils.formatDate(customTradeFlow.getTradeDate()));
         }
         customTradeFlowDTO.setTradeSnapshot(customTradeFlow.getTradeSnapshot());
@@ -128,10 +130,10 @@ public class BusinessConverter {
         companyBriefInfo.setCompanyName(companyInfo.getCompanyName());
         companyBriefInfo.setCompanyStatus(BusinessStatus.getBusinessStatus(companyInfo.getCompanyStatus()).getStatus());
         companyBriefInfo.setRegisterStatus(BusinessStatusUtil.registeredMap.containsKey(companyInfo.getCompanyStatus()) ? "2" : "1");
-        if(companyInfo.getBeginDate() != null){
+        if (companyInfo.getBeginDate() != null) {
             companyBriefInfo.setBeginDate(DateUtils.formatDate(companyInfo.getBeginDate().toLocalDate(), DateUtils.DEFAULT_DATE_FORMATTER));
         }
-        if(companyInfo.getEndDate() != null){
+        if (companyInfo.getEndDate() != null) {
             companyBriefInfo.setEndDate(DateUtils.formatDate(companyInfo.getEndDate().toLocalDate(), DateUtils.DEFAULT_DATE_FORMATTER));
         }
         companyBriefInfo.setCompanyType(CompanyType.getCompanyType(companyInfo.getCompanyType()).getName());
@@ -175,5 +177,14 @@ public class BusinessConverter {
         companyInfo.setRebateTaxRate(new BigDecimal(vo.getRebateTaxRate()));
 
         return companyInfo;
+    }
+
+    public static UserVO userToVO(CustomAddInfoVO vo) {
+        UserVO user = new UserVO();
+        user.setUserId(vo.getCustomId());
+        user.setSystemId(SystemID.SYS_ID);
+        user.setRoleGroup(vo.getCustomType());
+        user.setUserPswd(vo.getCustomPswd());
+        return user;
     }
 }

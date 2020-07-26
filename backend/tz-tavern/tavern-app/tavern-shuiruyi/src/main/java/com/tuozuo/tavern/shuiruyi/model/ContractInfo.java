@@ -1,8 +1,14 @@
 package com.tuozuo.tavern.shuiruyi.model;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+
 import java.math.BigDecimal;
 
-public class ContractInfo {
+@TableName("contract_info")
+public class ContractInfo extends Model<ContractInfo> {
+    @TableId
     private String contractId;
 
     private String companyId;

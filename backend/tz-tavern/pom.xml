@@ -12,6 +12,7 @@
         <module>tavern-libs</module>
         <module>tavern-maingate</module>
         <module>tavern-app</module>
+        <module>tavern-protocol</module>
     </modules>
 
 

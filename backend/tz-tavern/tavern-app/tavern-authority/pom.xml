@@ -56,6 +56,11 @@
             <artifactId>tavern-auth</artifactId>
             <version>${tavern.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.tuozuo.tavern</groupId>
+            <artifactId>tavern-authority-spi</artifactId>
+            <version>${tavern.version}</version>
+        </dependency>
         <!--数据库-->
         <!--<dependency>-->
             <!--<groupId>com.zaxxer</groupId>-->
