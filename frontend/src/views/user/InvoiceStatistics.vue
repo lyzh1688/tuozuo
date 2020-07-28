@@ -60,7 +60,7 @@
         </a-form>
       </a-skeleton>
     </a-card>
-    <a-card style="margin-top: 24px" :bordered="false" title="服务费用明细">
+    <a-card style="margin-top: 24px" :bordered="false" >
       <s-table
         ref="table"
         size="default"

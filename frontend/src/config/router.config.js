@@ -72,7 +72,7 @@ export const asyncRouterMap = [
   {
     path: '/customcompanyControl',
     name: 'customcompanyControl',
-    redirect: '/customcompanyControl/CompanyList',
+    redirect: '/customcompanyControl/MycompanyList',
     component: BasicLayout,
     meta: { title: '公司管理', keepAlive: true, icon: 'account-book', permission: ['admin', 'shuiruyi.custom.normal'] },
     children: [
@@ -86,9 +86,25 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/customContractControl',
+    name: 'customContractControl',
+    redirect: '/customContractControl/CustomContractList',
+    component: BasicLayout,
+    meta: { title: '合同管理', keepAlive: true, icon: 'account-book', permission: ['admin', 'shuiruyi.custom.normal'] },
+    children: [
+      {
+        path: '/customContractControl/CustomContractList',
+        name: 'CustomContractList',
+        component: resolve => require(['@/views/contract/CustomContractList'], resolve),
+        // component: () => import('@/views/company/MycompanyList'),
+        meta: { title: '合同列表', keepAlive: false, permission: ['admin', 'shuiruyi.custom.normal'] }
+      }
+    ]
+  },
+  {
     path: '/staffcompanyControl',
     name: 'staffcompanyControl',
-    redirect: '/staffcompanyControl/customList',
+    redirect: '/staffcompanyControl/CompanyList',
     component: BasicLayout,
     meta: { title: '公司管理', keepAlive: true, icon: 'account-book', permission: ['admin', 'shuiruyi.staff.normal'] },
     children: [
