@@ -13,9 +13,40 @@ const CompanyApi = {
   updateCompany: process.env.VUE_APP_SYSTEM_URL + '/v1/company/', // put
   tradeOpration: process.env.VUE_APP_SYSTEM_URL + '/v1/custom/trade/', // put
   dictQuery: process.env.VUE_APP_SYSTEM_URL + '/v1/dict/', // bizStatus,customType,registerStatus,event
-  managementCompany: process.env.VUE_APP_SYSTEM_URL + '/v1/company/management/' // put
+  managementCompany: process.env.VUE_APP_SYSTEM_URL + '/v1/company/management/', // put
+  invoiceList: process.env.VUE_APP_SYSTEM_URL + '/v1/bizControl/invoice/detail',
+  invoiceStatistics: process.env.VUE_APP_SYSTEM_URL + '/v1/bizControl/invoice/statistics'
 }
+/*
+统计个独公司的开票信息
 
+beginMonth	否	string	开始月份	格式 yyyy-mm
+endMonth	否	string	结束月份	格式 yyyy-mm
+companyId	否	string	公司Id
+pageNo	是	number	当前页码
+pageSize	是	number	页数
+*/
+export function getInvoiceStatistics (beginMonth, endMonth, companyId, pageNo, pageSize) {
+  return request({
+    url: CompanyApi.invoiceStatistics + '?beginMonth=' + beginMonth + '&endMonth=' + endMonth + '&companyId=' + companyId + '&pageNo=' + pageNo + '&pageSize=' + pageSize,
+    method: 'GET'
+  })
+}
+/*
+
+统计个独公司的缴税明细
+beginMonth	否	string	开始月份	格式 yyyy-mm
+endMonth	否	string	结束月份	格式 yyyy-mm
+companyId	否	string	公司Id
+pageNo	是	number	当前页码
+pageSize	是	number	页数
+*/
+export function getInvoiceList (beginMonth, endMonth, shocompanyIdwAll, pageNo, pageSize) {
+  return request({
+    url: CompanyApi.invoiceList + '?beginMonth=' + beginMonth + '&endMonth=' + endMonth + '&shocompanyIdwAll=' + shocompanyIdwAll + '&pageNo=' + pageNo + '&pageSize=' + pageSize,
+    method: 'GET'
+  })
+}
 /*
 companyName	否	String	公司名称
 queryCnt	否	String	查询条数，默认20

@@ -28,6 +28,20 @@ export const asyncRouterMap = [
         component: resolve => require(['@/views/user/MyInfo'], resolve),
         // component: () => import('@/views/user/MyInfo'),
         meta: { title: '我的', keepAlive: true, permission: ['admin', 'shuiruyi.custom.normal'] }
+      },
+      {
+        path: '/financialServices/InvoiceStatistics',
+        name: 'InvoiceStatistics',
+        component: resolve => require(['@/views/user/InvoiceStatistics'], resolve),
+        // component: () => import('@/views/user/MyInfo'),
+        meta: { title: '开票统计', keepAlive: true, permission: ['admin', 'shuiruyi.custom.normal'] }
+      },
+      {
+        path: '/financialServices/InvoiceList',
+        name: 'InvoiceList',
+        component: resolve => require(['@/views/user/InvoiceList'], resolve),
+        // component: () => import('@/views/user/MyInfo'),
+        meta: { title: '缴税统计', keepAlive: true, permission: ['admin', 'shuiruyi.custom.normal'] }
       }
     ]
   },
