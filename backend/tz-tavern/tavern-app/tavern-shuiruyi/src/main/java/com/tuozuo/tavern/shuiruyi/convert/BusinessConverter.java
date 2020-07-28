@@ -3,6 +3,7 @@ package com.tuozuo.tavern.shuiruyi.convert;
 import com.tuozuo.tavern.common.protocol.SystemID;
 import com.tuozuo.tavern.shuiruyi.dict.BusinessStatus;
 import com.tuozuo.tavern.shuiruyi.dict.CompanyType;
+import com.tuozuo.tavern.shuiruyi.dict.ContractStatus;
 import com.tuozuo.tavern.shuiruyi.dict.InvoiceStatus;
 import com.tuozuo.tavern.shuiruyi.dto.*;
 import com.tuozuo.tavern.shuiruyi.model.*;
@@ -231,5 +232,28 @@ public class BusinessConverter {
         invoiceInfoDTO.setInvoiceContent(invoiceDetailInfo.getInvoiceContent());
 
         return invoiceInfoDTO;
+    }
+
+    public static ContractItemDTO modelToContractItemDTO(ContractDetailInfo contractDetailInfo) {
+
+        ContractItemDTO itemDTO = new ContractItemDTO();
+        itemDTO.setContractId(contractDetailInfo.getContractId());
+        itemDTO.setCompanyPartyAName(contractDetailInfo.getCompanyPartyAName());
+        itemDTO.setCompanyPartyBName(contractDetailInfo.getCompanyPartyBName());
+        itemDTO.setContractName(contractDetailInfo.getContractName());
+        itemDTO.setContractAmount(contractDetailInfo.getContractAmount() == null ? BigDecimal.ZERO.doubleValue() : contractDetailInfo.getContractAmount().doubleValue());
+        itemDTO.setInvoiceAmount(contractDetailInfo.getInvoiceAmount() == null ? BigDecimal.ZERO.doubleValue() : contractDetailInfo.getInvoiceAmount().doubleValue());
+        itemDTO.setContractStatus(ContractStatus.getInvoiceStatus(contractDetailInfo.getContractStatus()).getName());
+        itemDTO.setContractFile(contractDetailInfo.getContractFile());
+        itemDTO.setRemark(contractDetailInfo.getRemark());
+        return itemDTO;
+    }
+
+    public static ContractTemplateDTO modelToContractTemplateDTO(ContractTemplate contractTemplate){
+        ContractTemplateDTO contractTemplateDTO = new ContractTemplateDTO();
+        contractTemplateDTO.setTemplateFile(contractTemplate.getTemplateFile());
+        contractTemplateDTO.setTemplateId(contractTemplate.getContractTemplateId());
+        contractTemplateDTO.setTemplateName(contractTemplate.getContractTemplateName());
+        return contractTemplateDTO;
     }
 }

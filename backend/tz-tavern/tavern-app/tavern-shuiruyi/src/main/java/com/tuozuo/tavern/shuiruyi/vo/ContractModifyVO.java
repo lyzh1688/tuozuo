@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
  * Dev Time: 2020/7/26 <br>
  */
 public class ContractModifyVO {
+    private String companyId;
     private String contractId;
     private String companyPartyAName;
     private String companyPartyBName;
@@ -16,6 +17,14 @@ public class ContractModifyVO {
     private MultipartFile contractFile;
     private String contractStatus;
     private String remark;
+
+    public String getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
 
     public String getContractId() {
         return contractId;

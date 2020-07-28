@@ -11,13 +11,25 @@ import javax.validation.constraints.NotNull;
 public class ContractInfoVO {
     @NotNull(message = "contractName is not null")
     private String contractName;
+    @NotNull(message = "companyId is not null")
+    private String companyId;
     @NotNull(message = "companyPartyAName is not null")
     private String companyPartyAName;
+    @NotNull(message = "companyPartyBName is not null")
+    private String companyPartyBName;
     @NotNull(message = "invoicePattern is not null")
     private String invoicePattern;
     @NotNull(message = "contractAmount is not null")
     private double contractAmount;
     private MultipartFile contractFile;
+
+    public String getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
 
     public String getContractName() {
         return contractName;
@@ -57,5 +69,13 @@ public class ContractInfoVO {
 
     public void setContractFile(MultipartFile contractFile) {
         this.contractFile = contractFile;
+    }
+
+    public String getCompanyPartyBName() {
+        return companyPartyBName;
+    }
+
+    public void setCompanyPartyBName(String companyPartyBName) {
+        this.companyPartyBName = companyPartyBName;
     }
 }

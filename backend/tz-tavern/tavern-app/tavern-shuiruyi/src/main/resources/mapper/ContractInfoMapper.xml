@@ -12,43 +12,61 @@
     <result column="contract_file" jdbcType="VARCHAR" property="contractFile" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="contract_status" jdbcType="VARCHAR" property="contractStatus" />
+    <result column="contract_date" jdbcType="TIMESTAMP" property="contractDate" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from contract_info
-    where contract_id = #{contractId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.tuozuo.tavern.shuiruyi.model.ContractInfo">
-    insert into contract_info (contract_id, company_id, company_party_A_name, 
-      company_party_B_name, contract_name, contract_amount, 
-      invoice_pattern, contract_file, remark, 
-      contract_status)
-    values (#{contractId,jdbcType=VARCHAR}, #{companyId,jdbcType=VARCHAR}, #{companyPartyAName,jdbcType=VARCHAR}, 
-      #{companyPartyBName,jdbcType=VARCHAR}, #{contractName,jdbcType=VARCHAR}, #{contractAmount,jdbcType=DECIMAL}, 
-      #{invoicePattern,jdbcType=VARCHAR}, #{contractFile,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{contractStatus,jdbcType=VARCHAR})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.shuiruyi.model.ContractInfo">
-    update contract_info
-    set company_id = #{companyId,jdbcType=VARCHAR},
-      company_party_A_name = #{companyPartyAName,jdbcType=VARCHAR},
-      company_party_B_name = #{companyPartyBName,jdbcType=VARCHAR},
-      contract_name = #{contractName,jdbcType=VARCHAR},
-      contract_amount = #{contractAmount,jdbcType=DECIMAL},
-      invoice_pattern = #{invoicePattern,jdbcType=VARCHAR},
-      contract_file = #{contractFile,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR},
-      contract_status = #{contractStatus,jdbcType=VARCHAR}
-    where contract_id = #{contractId,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select contract_id, company_id, company_party_A_name, company_party_B_name, contract_name, 
-    contract_amount, invoice_pattern, contract_file, remark, contract_status
-    from contract_info
-    where contract_id = #{contractId,jdbcType=VARCHAR}
+  <resultMap id="BaseDetailResultMap" type="com.tuozuo.tavern.shuiruyi.model.ContractDetailInfo">
+    <result column="invoice_amount" jdbcType="VARCHAR" property="invoiceAmount" />
+    <result column="contract_id" jdbcType="VARCHAR" property="contractId" />
+    <result column="company_id" jdbcType="VARCHAR" property="companyId" />
+    <result column="company_party_A_name" jdbcType="VARCHAR" property="companyPartyAName" />
+    <result column="company_party_B_name" jdbcType="VARCHAR" property="companyPartyBName" />
+    <result column="contract_name" jdbcType="VARCHAR" property="contractName" />
+    <result column="contract_amount" jdbcType="DECIMAL" property="contractAmount" />
+    <result column="invoice_pattern" jdbcType="VARCHAR" property="invoicePattern" />
+    <result column="contract_file" jdbcType="VARCHAR" property="contractFile" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="contract_status" jdbcType="VARCHAR" property="contractStatus" />
+    <result column="contract_date" jdbcType="TIMESTAMP" property="contractDate" />
+  </resultMap>
+  <select id="selectList" resultMap="BaseDetailResultMap">
+    select t3.invoice_amount,t4.contract_id, t4.company_id, t4.company_party_A_name,
+    t4.company_party_B_name, t4.contract_name,
+    t4.contract_amount, t4.invoice_pattern, t4.contract_file, t4.remark, t4.contract_status,
+    t4.contract_date
+  from custom_info t1,company_info t2,invoice_info t3,contract_info t4
+  <where>
+    t1.custom_id = t2.custom_id
+    and t2.company_id = t3.company_id
+    and t3.contract_id = t4.contract_id
+    <if test="customId != null and customId != ''">
+      and t1.custom_id = #{customId}
+    </if>
+    <if test="companyId != null and companyId != ''">
+      and t2.company_id = #{companyId}
+    </if>
+  </where>
+  order by invoice_date desc
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select contract_id, company_id, company_party_A_name, company_party_B_name, contract_name, 
-    contract_amount, invoice_pattern, contract_file, remark, contract_status
-    from contract_info
+  <select id="fuzzyQuery" resultMap="BaseResultMap">
+    select t4.contract_id, t4.company_id, t4.company_party_A_name,
+    t4.company_party_B_name, t4.contract_name,
+    t4.contract_amount, t4.invoice_pattern, t4.contract_file, t4.remark, t4.contract_status,
+    t4.contract_date
+  from custom_info t1,company_info t2,invoice_info t3,contract_info t4
+  <where>
+    t1.custom_id = t2.custom_id
+    and t2.company_id = t3.company_id
+    and t3.contract_id = t4.contract_id
+    <if test="customId != null and customId != ''">
+      and t1.custom_id = #{customId}
+    </if>
+    <if test="contractName != null and contractName != ''">
+      and t1.contract_name like concat('%', #{contractName}, '%')
+    </if>
+    <if test="contractStatus != null and contractStatus != ''">
+      and t2.contract_status = #{contractStatus}
+    </if>
+  </where>
+  order by invoice_date desc limit #{queryCnt}
   </select>
 </mapper>

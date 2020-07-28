@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @TableName("contract_info")
 public class ContractInfo extends Model<ContractInfo> {
@@ -28,6 +29,16 @@ public class ContractInfo extends Model<ContractInfo> {
     private String remark;
 
     private String contractStatus;
+
+    private LocalDateTime contractDate;
+
+    public LocalDateTime getContractDate() {
+        return contractDate;
+    }
+
+    public void setContractDate(LocalDateTime contractDate) {
+        this.contractDate = contractDate;
+    }
 
     public String getContractId() {
         return contractId;

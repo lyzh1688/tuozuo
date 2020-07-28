@@ -1,6 +1,7 @@
 package com.tuozuo.tavern.shuiruyi.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.tuozuo.tavern.shuiruyi.model.ContractDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.ContractInfo;
 import com.tuozuo.tavern.shuiruyi.model.ContractTemplate;
 import com.tuozuo.tavern.shuiruyi.vo.ContractInfoVO;
@@ -14,13 +15,13 @@ import java.util.List;
  */
 public interface ContractInfoService {
 
-    IPage<ContractInfo> queryContractList(String companyId, int pageNo, int pageSize);
+    IPage<ContractDetailInfo> queryContractList(String companyId, int pageNo, int pageSize, String customId, String customGroup);
 
-    void addContractInfo(ContractInfoVO vo);
+    void addContractInfo(ContractInfoVO vo) throws Exception;
 
     List<ContractTemplate> queryContractTemplateList();
 
-    List<ContractInfo> fuzzyQueryContractInfo(String contractStatus,String contractName,int queryCnt,String roleGroup,String customId);
+    List<ContractInfo> fuzzyQueryContractInfo(String contractStatus, String contractName, int queryCnt, String roleGroup, String customId);
 
-    void modifyContractInfo(ContractModifyVO contractModifyVO);
+    void modifyContractInfo(ContractModifyVO contractModifyVO) throws Exception;
 }
