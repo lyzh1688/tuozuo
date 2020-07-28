@@ -18,6 +18,27 @@
     <result column="contract_id" jdbcType="VARCHAR" property="contractId" />
     <result column="invoice_date" jdbcType="TIMESTAMP" property="invoiceDate" />
   </resultMap>
+  <resultMap id="BaseDetailResultMap" type="com.tuozuo.tavern.shuiruyi.model.InvoiceDetailInfo">
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="company_party_A_name" jdbcType="VARCHAR" property="companyPartyAName" />
+    <result column="company_party_B_name" jdbcType="VARCHAR" property="companyPartyBName" />
+    <result column="contract_name" jdbcType="VARCHAR" property="contractName" />
+    <result column="invoice_id" jdbcType="VARCHAR" property="invoiceId" />
+    <result column="company_id" jdbcType="VARCHAR" property="companyId" />
+    <result column="invoice_type" jdbcType="VARCHAR" property="invoiceType" />
+    <result column="invoice_amount" jdbcType="DECIMAL" property="invoiceAmount" />
+    <result column="recv_amount" jdbcType="DECIMAL" property="recvAmount" />
+    <result column="tax" jdbcType="DECIMAL" property="tax" />
+    <result column="invoice_status" jdbcType="VARCHAR" property="invoiceStatus" />
+    <result column="recv_date" jdbcType="DATE" property="recvDate" />
+    <result column="invoice_content" jdbcType="VARCHAR" property="invoiceContent" />
+    <result column="delivery_id" jdbcType="VARCHAR" property="deliveryId" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="bank_flow_file" jdbcType="VARCHAR" property="bankFlowFile" />
+    <result column="auth_letter_file" jdbcType="VARCHAR" property="authLetterFile" />
+    <result column="contract_id" jdbcType="VARCHAR" property="contractId" />
+    <result column="invoice_date" jdbcType="TIMESTAMP" property="invoiceDate" />
+  </resultMap>
   <resultMap id="BaseStatisticsResultMap" type="com.tuozuo.tavern.shuiruyi.model.InvoiceStatistic">
     <result column="company_id" jdbcType="VARCHAR" property="companyId" />
     <result column="company_name" jdbcType="VARCHAR" property="companyName" />
@@ -45,10 +66,46 @@
 		group by t.invoice_date
 		order by invoice_date
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select invoice_id, company_id, invoice_type, invoice_amount, recv_amount, tax, invoice_status, 
-    recv_date, invoice_content, delivery_id, remark, bank_flow_file, auth_letter_file, 
-    contract_id,invoice_date
-    from invoice_info
+  <select id="selectList" resultMap="BaseDetailResultMap">
+    select t4.company_party_A_name,t4.company_party_B_name,t4.contract_name,
+    t3.invoice_id, t3.company_id, t3.invoice_type, t3.invoice_amount, t3.recv_amount,
+      t3.tax, t3.invoice_status,
+      t3.recv_date, t3.invoice_content, t3.delivery_id, t3.remark, t3.bank_flow_file, t3.auth_letter_file,
+      t3.contract_id,t3.invoice_date
+    from custom_info t1,company_info t2,invoice_info t3,contract_info t4
+    <where>
+        t1.custom_id = t2.custom_id
+        and t2.company_id = t3.company_id
+        and t3.contract_id = t4.contract_id
+        <if test="customId != null and customId != ''">
+            and t1.custom_id = #{customId}
+        </if>
+        <if test="companyId != null and companyId != ''">
+            and t2.company_id = #{companyId}
+        </if>
+        <if test="invoiceStatus != null and invoiceStatus != ''">
+            and t3.invoice_status = #{invoiceStatus}
+        </if>
+    </where>
+      order by invoice_date desc
+
   </select>
+    <select id="select" resultMap="BaseDetailResultMap">
+        select t4.company_party_A_name,t4.company_party_B_name,t4.contract_name,t2.company_name,
+        t3.invoice_id, t3.company_id, t3.invoice_type, t3.invoice_amount, t3.recv_amount,
+        t3.tax, t3.invoice_status,
+        t3.recv_date, t3.invoice_content, t3.delivery_id, t3.remark, t3.bank_flow_file, t3.auth_letter_file,
+        t3.contract_id,t3.invoice_date
+        from custom_info t1,company_info t2,invoice_info t3,contract_info t4
+        <where>
+            t1.custom_id = t2.custom_id
+            and t2.company_id = t3.company_id
+            and t3.contract_id = t4.contract_id
+            <if test="invoiceId != null and invoiceId != ''">
+                and t3.invoice_id = #{invoiceId}
+            </if>
+        </where>
+
+
+    </select>
 </mapper>

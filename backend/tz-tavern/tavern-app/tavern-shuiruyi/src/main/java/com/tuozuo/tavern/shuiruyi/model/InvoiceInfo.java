@@ -6,8 +6,9 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
-@TableName("invoice_dict")
+@TableName("invoice_info")
 public class InvoiceInfo extends Model<InvoiceInfo> {
     @TableId
     private String invoiceId;
@@ -38,7 +39,7 @@ public class InvoiceInfo extends Model<InvoiceInfo> {
 
     private String contractId;
 
-    private LocalDate invoiceDate;
+    private LocalDateTime invoiceDate;
 
     public String getInvoiceId() {
         return invoiceId;
@@ -152,11 +153,11 @@ public class InvoiceInfo extends Model<InvoiceInfo> {
         this.contractId = contractId == null ? null : contractId.trim();
     }
 
-    public LocalDate getInvoiceDate() {
+    public LocalDateTime getInvoiceDate() {
         return invoiceDate;
     }
 
-    public void setInvoiceDate(LocalDate invoiceDate) {
+    public void setInvoiceDate(LocalDateTime invoiceDate) {
         this.invoiceDate = invoiceDate;
     }
 }

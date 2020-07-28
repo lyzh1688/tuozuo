@@ -7,11 +7,20 @@ package com.tuozuo.tavern.shuiruyi.dto;
 public class InvoiceItemDTO {
     private String invoiceId;
     private String companyPartyAName;
+    private String companyPartyBName;
     private String contractName;
     private double invoiceAmount;
     private String deliveryId;
     private String invoiceStatus;
     private String remark;
+
+    public String getCompanyPartyBName() {
+        return companyPartyBName;
+    }
+
+    public void setCompanyPartyBName(String companyPartyBName) {
+        this.companyPartyBName = companyPartyBName;
+    }
 
     public String getInvoiceId() {
         return invoiceId;

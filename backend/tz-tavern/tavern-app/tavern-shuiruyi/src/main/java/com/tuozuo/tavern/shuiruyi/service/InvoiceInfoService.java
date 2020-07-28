@@ -1,11 +1,11 @@
 package com.tuozuo.tavern.shuiruyi.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.tuozuo.tavern.shuiruyi.model.InvoiceDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.InvoiceInfo;
 import com.tuozuo.tavern.shuiruyi.model.InvoiceStatistic;
 import com.tuozuo.tavern.shuiruyi.vo.InvoiceAuditVO;
 import com.tuozuo.tavern.shuiruyi.vo.InvoiceInfoVO;
-import com.tuozuo.tavern.shuiruyi.vo.InvoiceModifyVO;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -15,18 +15,20 @@ public interface InvoiceInfoService {
 
     IPage<InvoiceStatistic> queryInvoiceStatistics(String beginMonth, String endMonth, String companyId, String customId, int pageNo, int pageSize);
 
-    IPage<InvoiceInfo> queryInvoiceInfoList(String companyId,
-                                            String contractId,
-                                            String invoiceStatus,
-                                            int pageNo,
-                                            int pageSize);
+    IPage<InvoiceDetailInfo> queryInvoiceInfoList(String companyId,
+                                                  String contractId,
+                                                  String invoiceStatus,
+                                                  int pageNo,
+                                                  int pageSize,
+                                                  String customId,
+                                                  String customGroup);
 
-    void createInvoice(InvoiceInfoVO invoiceInfoVO);
+    void createInvoice(InvoiceInfoVO invoiceInfoVO) throws Exception;
 
-    InvoiceInfo queryInvoiceInfo(String invoiceId);
+    InvoiceDetailInfo queryInvoiceInfo(String invoiceId);
 
-    void modifyInvoiceInfo(InvoiceModifyVO vo);
+    void modifyInvoiceInfo(InvoiceInfoVO vo) throws Exception;
 
-    void auditInvoiceInfo(InvoiceAuditVO vo);
+    void auditInvoiceInfo(String invoiceId, String invoiceStatus, String deliveryId, String remark);
 
 }

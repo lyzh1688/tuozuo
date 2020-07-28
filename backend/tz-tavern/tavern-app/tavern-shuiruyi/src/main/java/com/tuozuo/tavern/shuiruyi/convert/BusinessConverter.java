@@ -3,6 +3,7 @@ package com.tuozuo.tavern.shuiruyi.convert;
 import com.tuozuo.tavern.common.protocol.SystemID;
 import com.tuozuo.tavern.shuiruyi.dict.BusinessStatus;
 import com.tuozuo.tavern.shuiruyi.dict.CompanyType;
+import com.tuozuo.tavern.shuiruyi.dict.InvoiceStatus;
 import com.tuozuo.tavern.shuiruyi.dto.*;
 import com.tuozuo.tavern.shuiruyi.model.*;
 import com.tuozuo.tavern.shuiruyi.utils.BusinessStatusUtil;
@@ -10,6 +11,7 @@ import com.tuozuo.tavern.shuiruyi.utils.DateUtils;
 import com.tuozuo.tavern.shuiruyi.vo.CompanyDetailVO;
 import com.tuozuo.tavern.shuiruyi.vo.CompanyModifyVO;
 import com.tuozuo.tavern.shuiruyi.vo.CustomAddInfoVO;
+import com.tuozuo.tavern.shuiruyi.vo.InvoiceInfoVO;
 import com.tuuozuo.tavern.authority.spi.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -187,5 +189,47 @@ public class BusinessConverter {
         user.setRoleGroup(vo.getCustomType());
         user.setUserPswd(vo.getCustomPswd());
         return user;
+    }
+
+    public static InvoiceItemDTO modelToInvoiceItemDTO(InvoiceDetailInfo invoiceDetailInfo) {
+        InvoiceItemDTO item = new InvoiceItemDTO();
+        item.setInvoiceId(invoiceDetailInfo.getInvoiceId());
+        item.setCompanyPartyAName(invoiceDetailInfo.getCompanyPartyAName());
+        item.setCompanyPartyBName(invoiceDetailInfo.getCompanyPartyBName());
+        item.setContractName(invoiceDetailInfo.getContractName());
+        item.setInvoiceAmount(invoiceDetailInfo.getInvoiceAmount() == null ? BigDecimal.ZERO.doubleValue() : invoiceDetailInfo.getInvoiceAmount().doubleValue());
+        item.setDeliveryId(invoiceDetailInfo.getDeliveryId());
+        item.setInvoiceStatus(InvoiceStatus.getInvoiceStatus(invoiceDetailInfo.getInvoiceStatus()).getName());
+        item.setRemark(invoiceDetailInfo.getRemark());
+        return item;
+    }
+
+    public static InvoiceInfo voToInvoiceInfo(InvoiceInfoVO vo) {
+        InvoiceInfo invoiceInfo = new InvoiceInfo();
+        invoiceInfo.setCompanyId(vo.getCompanyId());
+        invoiceInfo.setContractId(vo.getContractId());
+        invoiceInfo.setInvoiceType(vo.getInvoiceType());
+        invoiceInfo.setInvoiceAmount(new BigDecimal(vo.getInvoiceAmount()));
+        invoiceInfo.setRecvAmount(new BigDecimal(vo.getRecvAmount()));
+        return invoiceInfo;
+    }
+
+    public static InvoiceInfoDTO modelToInvoiceInfo(InvoiceDetailInfo invoiceDetailInfo) {
+
+        if (invoiceDetailInfo == null) {
+            return null;
+        }
+
+        InvoiceInfoDTO invoiceInfoDTO = new InvoiceInfoDTO();
+        invoiceInfoDTO.setCompanyName(invoiceDetailInfo.getCompanyName());
+        invoiceInfoDTO.setContractName(invoiceDetailInfo.getContractName());
+        invoiceInfoDTO.setInvoiceType(invoiceDetailInfo.getInvoiceType());
+        invoiceInfoDTO.setInvoiceAmount(invoiceDetailInfo.getInvoiceAmount() == null ? BigDecimal.ZERO.doubleValue() : invoiceDetailInfo.getInvoiceAmount().doubleValue());
+        invoiceInfoDTO.setRecvAmount(invoiceDetailInfo.getRecvAmount() == null ? BigDecimal.ZERO.doubleValue() : invoiceDetailInfo.getRecvAmount().doubleValue());
+        invoiceInfoDTO.setAuthLetterFile(invoiceDetailInfo.getAuthLetterFile());
+        invoiceInfoDTO.setBankFlowFile(invoiceDetailInfo.getBankFlowFile());
+        invoiceInfoDTO.setInvoiceContent(invoiceDetailInfo.getInvoiceContent());
+
+        return invoiceInfoDTO;
     }
 }

@@ -2,26 +2,28 @@ package com.tuozuo.tavern.shuiruyi.vo;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * Code Monkey: 何彪 <br>
  * Dev Time: 2020/7/26 <br>
  */
 public class InvoiceInfoVO {
 
-    @NotNull(message = "companyId is not null")
+    private String invoiceId;
     private String companyId;
-    @NotNull(message = "contractId is not null")
     private String contractId;
-    @NotNull(message = "invoiceType is not null")
     private String invoiceType;
-    @NotNull(message = "invoiceAmount is not null")
     private double invoiceAmount;
-    @NotNull(message = "recvAmount is not null")
     private double recvAmount;
     private MultipartFile authLetterFile;
     private MultipartFile bankFlowFile;
+
+    public String getInvoiceId() {
+        return invoiceId;
+    }
+
+    public void setInvoiceId(String invoiceId) {
+        this.invoiceId = invoiceId;
+    }
 
     public String getCompanyId() {
         return companyId;
