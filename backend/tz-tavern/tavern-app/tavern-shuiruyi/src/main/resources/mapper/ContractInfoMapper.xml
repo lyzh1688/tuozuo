@@ -33,11 +33,10 @@
     t4.company_party_B_name, t4.contract_name,
     t4.contract_amount, t4.invoice_pattern, t4.contract_file, t4.remark, t4.contract_status,
     t4.contract_date
-  from custom_info t1,company_info t2,invoice_info t3,contract_info t4
+  from custom_info t1 inner join company_info t2 on t1.custom_id = t2.custom_id
+    inner join contract_info t4 on t2.company_id = t4.company_id
+    left join invoice_info t3 on t4.contract_id = t3.contract_id
   <where>
-    t1.custom_id = t2.custom_id
-    and t2.company_id = t3.company_id
-    and t3.contract_id = t4.contract_id
     <if test="customId != null and customId != ''">
       and t1.custom_id = #{customId}
     </if>
@@ -52,7 +51,9 @@
     t4.company_party_B_name, t4.contract_name,
     t4.contract_amount, t4.invoice_pattern, t4.contract_file, t4.remark, t4.contract_status,
     t4.contract_date
-  from custom_info t1,company_info t2,invoice_info t3,contract_info t4
+    from custom_info t1 inner join company_info t2 on t1.custom_id = t2.custom_id
+    inner join contract_info t4 on t2.company_id = t4.company_id
+    left join invoice_info t3 on t4.contract_id = t3.contract_id
   <where>
     t1.custom_id = t2.custom_id
     and t2.company_id = t3.company_id
