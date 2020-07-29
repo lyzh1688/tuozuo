@@ -20,7 +20,7 @@ export const asyncRouterMap = [
         path: '/financialServices/console',
         name: 'Console',
         component: resolve => require(['@/views/user/Console'], resolve),
-        meta: { title: '控制台', keepAlive: false, permission: ['admin', 'shuiruyi.custom.normal'] }
+        meta: { title: '控制台', keepAlive: true, permission: ['admin', 'shuiruyi.custom.normal'] }
       },
       {
         path: '/financialServices/myInfo',
@@ -57,7 +57,7 @@ export const asyncRouterMap = [
         name: 'CustomList',
         component: resolve => require(['@/views/user/CustomList'], resolve),
         // component: () => import('@/views/user/CustomList'),
-        meta: { title: '客户列表', keepAlive: false, permission: ['admin', 'shuiruyi.staff.normal'] }
+        meta: { title: '客户列表', keepAlive: true, permission: ['admin', 'shuiruyi.staff.normal'] }
       },
       {
         path: '/customService/customInfo',
@@ -81,7 +81,7 @@ export const asyncRouterMap = [
         name: 'MycompanyList',
         component: resolve => require(['@/views/company/MycompanyList'], resolve),
         // component: () => import('@/views/company/MycompanyList'),
-        meta: { title: '公司列表', keepAlive: false, permission: ['admin', 'shuiruyi.custom.normal'] }
+        meta: { title: '公司列表', keepAlive: true, permission: ['admin', 'shuiruyi.custom.normal'] }
       }
     ]
   },
@@ -97,7 +97,14 @@ export const asyncRouterMap = [
         name: 'CustomContractList',
         component: resolve => require(['@/views/contract/CustomContractList'], resolve),
         // component: () => import('@/views/company/MycompanyList'),
-        meta: { title: '合同列表', keepAlive: false, permission: ['admin', 'shuiruyi.custom.normal'] }
+        meta: { title: '合同列表', keepAlive: true, permission: ['admin', 'shuiruyi.custom.normal'] }
+      },
+      {
+        path: '/customContractControl/TemplateList',
+        name: 'TemplateList',
+        component: resolve => require(['@/views/contract/TemplateList'], resolve),
+        // component: () => import('@/views/company/MycompanyList'),
+        meta: { title: '模板列表', keepAlive: false, permission: ['admin', 'shuiruyi.custom.normal'] }
       }
     ]
   },
@@ -113,7 +120,7 @@ export const asyncRouterMap = [
         name: 'CompanyList',
         component: resolve => require(['@/views/company/CompanyList'], resolve),
         // component: () => import('@/views/company/CompanyList'),
-        meta: { title: '公司列表', keepAlive: false, permission: ['admin', 'shuiruyi.staff.normal'] }
+        meta: { title: '公司列表', keepAlive: true, permission: ['admin', 'shuiruyi.staff.normal'] }
       }
     ]
   },

@@ -62,7 +62,7 @@
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="contractStatus" slot-scope="text">{{ contractStatus[text] }}</span>
         <span slot="ops" slot-scope="text, record">
-          <a-button size="small" @click="handleUpdate(record)" :loading="confirmLoading">修改</a-button>
+          <a-button :disabled="record.contractStatus!='0'&&record.contractStatus!='2'" size="small" @click="handleUpdate(record)" :loading="confirmLoading">修改</a-button>
           <a-button size="small" @click="handleDetail(record)" :loading="confirmLoading">详情</a-button>
         </span>
       </s-table>
@@ -125,6 +125,11 @@ const columns = [
     title: '备注',
     dataIndex: 'remark',
     scopedSlots: { customRender: 'remark' }
+  },
+  {
+    title: '操作',
+    dataIndex: 'ops',
+    scopedSlots: { customRender: 'ops' }
   }
 ]
 // const statusMap = {
@@ -249,6 +254,9 @@ export default {
       const form = this.$refs.contractForm.form
       form.validateFields((errors, values) => {
         if (!errors) {
+            const tmpkey = values.companyPartyBName.split(':')
+            values['companyId'] = tmpkey[0]
+            values.companyPartyBName = tmpkey[1]
           this.confirmLoading = true
           if (this.isupdate) {
             updateContract(values, values.customId)
@@ -320,7 +328,8 @@ export default {
         }
       })
     },
-    fetchCompanyDetail (record) {
+    handleDetail (record) {
+         this.contractMdl = { ...record }
       this.isShowOnly = true
       this.contractVisible = true
     },
@@ -337,7 +346,7 @@ export default {
       this.contractVisible = true
     },
    handleUpdate (record) {
-      this.contractMdl = [...record]
+      this.contractMdl = { ...record }
       this.isupdate = true
       this.contractVisible = true
       this.isShowOnly = false
@@ -386,9 +395,7 @@ export default {
     // this.getCustomInfo()
   },
   activated () {
-    if (this.innerUpdate) {
       this.$refs.table.refresh(true)
-    }
   },
   watch: {
     customId: function (newVal, oldVal) {

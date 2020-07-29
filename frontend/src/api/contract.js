@@ -39,8 +39,13 @@ export function getContractTemplateList () {
 export function addContract (params) {
     const formData = new FormData()
     for (const i in params) {
+      if (i.includes('File')) {
+        formData.append(i, params[i].file.originFileObj)
+      } else {
         formData.append(i, params[i])
+      }
     }
+    console.log(formData, params)
     return request({
         url: ContractApi.addContract,
         method: 'POST',

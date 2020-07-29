@@ -89,7 +89,7 @@
             <a-col :span="12">
               <a-form-item label="联系电话" key="联系电话">
                 <a-input-number
-                  min="0"
+                  :min="0"
                   :disabled="isShowOnly"
                   style="width:200px;"
                   v-decorator="['bossContact', {rules: [{required: true, message: '请输入联系电话！'}], validateTrigger: 'blur'}]"
@@ -167,7 +167,7 @@
             <a-col :span="12">
               <a-form-item label="联系电话" key="联系电话">
                 <a-input-number
-                  min="0"
+                  :min="0"
                   :disabled="isShowOnly"
                   style="width:200px;"
                   v-decorator="['cfoContact', {rules: [{required: true, message: '请输入联系电话！'}], validateTrigger: 'blur'}]"

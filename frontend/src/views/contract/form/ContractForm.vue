@@ -18,16 +18,27 @@
                 v-decorator="['contractId', { validateTrigger: 'blur'}]"
               />
             </a-form-item>
-            <a-form-item label="邮寄地址" key="甲方名称">
+            <a-form-item label="合同名称" key="合同名称">
+              <a-input
+                :disabled="isShowOnly"
+                v-decorator="['contractName', {rules: [{required: true, message: '请输入合同名称！'}], validateTrigger: 'blur'}]"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="甲方名称" key="甲方名称">
               <a-input
                 :disabled="isShowOnly"
                 v-decorator="['companyPartyAName', {rules: [{required: true, message: '请输入甲方名称！'}], validateTrigger: 'blur'}]"
               />
             </a-form-item>
           </a-col>
+        </a-row>
+        <a-row>
           <a-col :span="12">
             <a-form-item label="乙方名称" key="乙方名称">
               <a-select
+                :disabled="isShowOnly"
                 show-search
                 v-decorator="['companyPartyBName', {rules: [{required: true, message: '请选择乙方名称！'}], validateTrigger: 'blur'}]"
                 placeholder="input search text"
@@ -39,12 +50,10 @@
                 @search="handleCustomSearch"
                 @change="handleCustomChange"
               >
-                <a-select-option v-for="d in fuzzyCompanyList" :key="d.text">{{ d.text }}</a-select-option>
+                <a-select-option v-for="d in fuzzyCompanyList" :key="d.value+':'+d.text">{{ d.text }}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
-        </a-row>
-        <a-row>
           <a-col :span="12">
             <a-form-item label="开票金额类型" key="开票金额类型">
               <a-select
@@ -60,19 +69,19 @@
               </a-select>
             </a-form-item>
           </a-col>
+
+        </a-row>
+        <a-row>
           <a-col :span="12">
-            <a-form-item label="合同总金额" key="合同总金额">
+            <a-form-item label="合同总金额(元)" key="合同总金额">
               <a-input-number
-                min="0"
+                :min="0"
                 style="width:200px;"
-                :formatter="value => `${value}元`"
                 :disabled="isShowOnly"
                 v-decorator="['contractAmount', {rules: [{required: true, message: '请输入公司名称！'}], validateTrigger: 'blur'}]"
               />
             </a-form-item>
           </a-col>
-        </a-row>
-        <a-row>
           <a-col :span="12">
             <a-form-item label="合同文件" key="合同文件">
               <a-button
@@ -96,6 +105,7 @@
             </a-form-item>
           </a-col>
         </a-row>
+        <slot name="extraInfo"></slot>
       </a-form>
     </a-spin>
   </a-modal>
