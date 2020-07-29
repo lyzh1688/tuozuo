@@ -6,6 +6,7 @@ package com.tuozuo.tavern.shuiruyi.dto;
  */
 public class ContractItemDTO {
     private String contractId;
+    private String companyId;
     private String companyPartyAName;
     private String companyPartyBName;
     private String contractName;
@@ -15,6 +16,14 @@ public class ContractItemDTO {
     private String contractStatus;
     private String contractFile;
     private String remark;
+
+    public String getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
 
     public String getInvoicePattern() {
         return invoicePattern;

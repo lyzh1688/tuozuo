@@ -235,6 +235,7 @@ public class BusinessConverter {
 
         ContractItemDTO itemDTO = new ContractItemDTO();
         itemDTO.setContractId(contractDetailInfo.getContractId());
+        itemDTO.setCompanyId(contractDetailInfo.getCompanyId());
         itemDTO.setCompanyPartyAName(contractDetailInfo.getCompanyPartyAName());
         itemDTO.setCompanyPartyBName(contractDetailInfo.getCompanyPartyBName());
         itemDTO.setContractName(contractDetailInfo.getContractName());
@@ -251,6 +252,7 @@ public class BusinessConverter {
 
         ContractItemDTO itemDTO = new ContractItemDTO();
         itemDTO.setContractId(contractDetailInfo.getContractId());
+        itemDTO.setCompanyId(contractDetailInfo.getCompanyId());
         itemDTO.setCompanyPartyAName(contractDetailInfo.getCompanyPartyAName());
         itemDTO.setCompanyPartyBName(contractDetailInfo.getCompanyPartyBName());
         itemDTO.setContractName(contractDetailInfo.getContractName());
