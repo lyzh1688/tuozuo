@@ -4,10 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.shuiruyi.convert.BusinessConverter;
-import com.tuozuo.tavern.shuiruyi.dto.BusinessDictDTO;
-import com.tuozuo.tavern.shuiruyi.dto.ContractItemDTO;
-import com.tuozuo.tavern.shuiruyi.dto.ContractListDTO;
-import com.tuozuo.tavern.shuiruyi.dto.ContractTemplateDTO;
+import com.tuozuo.tavern.shuiruyi.dto.*;
+import com.tuozuo.tavern.shuiruyi.model.CompanyDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.ContractDetailInfo;
 import com.tuozuo.tavern.shuiruyi.service.ContractInfoService;
 import com.tuozuo.tavern.shuiruyi.vo.ContractAuditVO;
@@ -21,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -60,6 +59,23 @@ public class ContractInfoEndpoint {
         }
     }
 
+    /**
+     * 合同详情
+     */
+    @GetMapping("/detail/{contractId}")
+    public TavernResponse queryCompanyDetail(@PathVariable("contractId") String contractId) {
+        try {
+            ContractDetailInfo contractDetailInfo = this.contractInfoService.queryContractDetail(contractId);
+            if(contractDetailInfo == null){
+                throw new Exception("该合同不存在");
+            }
+            ContractItemDTO itemDTO = BusinessConverter.modelToContractDetailDTO(contractDetailInfo);
+            return TavernResponse.ok(itemDTO);
+        } catch (Exception e) {
+            LOGGER.error("[合同详情] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
 
     /**
      * 创建合同

@@ -1,10 +1,7 @@
 package com.tuozuo.tavern.shuiruyi.convert;
 
 import com.tuozuo.tavern.common.protocol.SystemID;
-import com.tuozuo.tavern.shuiruyi.dict.BusinessStatus;
-import com.tuozuo.tavern.shuiruyi.dict.CompanyType;
-import com.tuozuo.tavern.shuiruyi.dict.ContractStatus;
-import com.tuozuo.tavern.shuiruyi.dict.InvoiceStatus;
+import com.tuozuo.tavern.shuiruyi.dict.*;
 import com.tuozuo.tavern.shuiruyi.dto.*;
 import com.tuozuo.tavern.shuiruyi.model.*;
 import com.tuozuo.tavern.shuiruyi.utils.BusinessStatusUtil;
@@ -244,12 +241,29 @@ public class BusinessConverter {
         itemDTO.setContractAmount(contractDetailInfo.getContractAmount() == null ? BigDecimal.ZERO.doubleValue() : contractDetailInfo.getContractAmount().doubleValue());
         itemDTO.setInvoiceAmount(contractDetailInfo.getInvoiceAmount() == null ? BigDecimal.ZERO.doubleValue() : contractDetailInfo.getInvoiceAmount().doubleValue());
         itemDTO.setContractStatus(ContractStatus.getInvoiceStatus(contractDetailInfo.getContractStatus()).getName());
+        itemDTO.setInvoicePattern(InvoicePattern.getInvoicePattern(contractDetailInfo.getInvoicePattern()).getName());
         itemDTO.setContractFile(contractDetailInfo.getContractFile());
         itemDTO.setRemark(contractDetailInfo.getRemark());
         return itemDTO;
     }
 
-    public static ContractTemplateDTO modelToContractTemplateDTO(ContractTemplate contractTemplate){
+    public static ContractItemDTO modelToContractDetailDTO(ContractDetailInfo contractDetailInfo) {
+
+        ContractItemDTO itemDTO = new ContractItemDTO();
+        itemDTO.setContractId(contractDetailInfo.getContractId());
+        itemDTO.setCompanyPartyAName(contractDetailInfo.getCompanyPartyAName());
+        itemDTO.setCompanyPartyBName(contractDetailInfo.getCompanyPartyBName());
+        itemDTO.setContractName(contractDetailInfo.getContractName());
+        itemDTO.setContractAmount(contractDetailInfo.getContractAmount() == null ? BigDecimal.ZERO.doubleValue() : contractDetailInfo.getContractAmount().doubleValue());
+        itemDTO.setInvoiceAmount(contractDetailInfo.getInvoiceAmount() == null ? BigDecimal.ZERO.doubleValue() : contractDetailInfo.getInvoiceAmount().doubleValue());
+        itemDTO.setContractStatus(contractDetailInfo.getContractStatus());
+        itemDTO.setInvoicePattern(contractDetailInfo.getInvoicePattern());
+        itemDTO.setContractFile(contractDetailInfo.getContractFile());
+        itemDTO.setRemark(contractDetailInfo.getRemark());
+        return itemDTO;
+    }
+
+    public static ContractTemplateDTO modelToContractTemplateDTO(ContractTemplate contractTemplate) {
         ContractTemplateDTO contractTemplateDTO = new ContractTemplateDTO();
         contractTemplateDTO.setTemplateFile(contractTemplate.getTemplateFile());
         contractTemplateDTO.setTemplateId(contractTemplate.getContractTemplateId());

@@ -26,4 +26,6 @@ public interface ContractInfoService {
     void modifyContractInfo(ContractModifyVO contractModifyVO) throws Exception;
 
     void auditContractInfo(String contractId,String contractStatus,String remark);
+
+    ContractDetailInfo queryContractDetail(String contractId);
 }

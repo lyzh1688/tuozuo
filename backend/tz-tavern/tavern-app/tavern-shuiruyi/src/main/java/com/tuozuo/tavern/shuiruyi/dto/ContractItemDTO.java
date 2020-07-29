@@ -11,9 +11,18 @@ public class ContractItemDTO {
     private String contractName;
     private double contractAmount;
     private double invoiceAmount;
+    private String invoicePattern;
     private String contractStatus;
     private String contractFile;
     private String remark;
+
+    public String getInvoicePattern() {
+        return invoicePattern;
+    }
+
+    public void setInvoicePattern(String invoicePattern) {
+        this.invoicePattern = invoicePattern;
+    }
 
     public String getContractId() {
         return contractId;

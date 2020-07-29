@@ -22,4 +22,6 @@ public interface ContractInfoDao {
     List<ContractTemplate> selectTemplateList();
 
     List<ContractInfo> fuzzyQueryContractInfo(String contractStatus, String contractName, int queryCnt, String customId);
+
+    ContractDetailInfo queryContractDetail(String contractId);
 }

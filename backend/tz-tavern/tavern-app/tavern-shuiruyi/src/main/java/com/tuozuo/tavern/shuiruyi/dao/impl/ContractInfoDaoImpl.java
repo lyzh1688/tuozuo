@@ -51,4 +51,9 @@ public class ContractInfoDaoImpl implements ContractInfoDao {
     public List<ContractInfo> fuzzyQueryContractInfo(String contractStatus, String contractName, int queryCnt, String customId) {
         return this.contractInfoMapper.fuzzyQuery(contractStatus, contractName, queryCnt, customId);
     }
+
+    @Override
+    public ContractDetailInfo queryContractDetail(String contractId) {
+        return this.contractInfoMapper.select(contractId);
+    }
 }

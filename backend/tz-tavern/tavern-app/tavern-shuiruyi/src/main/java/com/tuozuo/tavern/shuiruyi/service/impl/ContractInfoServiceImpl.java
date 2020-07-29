@@ -104,6 +104,11 @@ public class ContractInfoServiceImpl implements ContractInfoService {
         this.contractInfoDao.update(contractInfo);
     }
 
+    @Override
+    public ContractDetailInfo queryContractDetail(String contractId) {
+        return this.contractInfoDao.queryContractDetail(contractId);
+    }
+
 
     //path + contractId + file
     private String storeContractFile(String contractId, MultipartFile file) throws Exception {

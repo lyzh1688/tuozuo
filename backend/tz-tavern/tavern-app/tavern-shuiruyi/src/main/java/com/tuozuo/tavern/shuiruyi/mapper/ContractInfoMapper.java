@@ -19,4 +19,6 @@ public interface ContractInfoMapper extends BaseMapper<ContractInfo> {
                                   @Param("contractName") String contractName,
                                   @Param("queryCnt") int queryCnt,
                                   @Param("customId") String customId);
+
+    ContractDetailInfo select(@Param("contractId")String contractId);
 }
