@@ -24,4 +24,6 @@ public interface ContractInfoService {
     List<ContractInfo> fuzzyQueryContractInfo(String contractStatus, String contractName, int queryCnt, String roleGroup, String customId);
 
     void modifyContractInfo(ContractModifyVO contractModifyVO) throws Exception;
+
+    void auditContractInfo(String contractId,String contractStatus,String remark);
 }

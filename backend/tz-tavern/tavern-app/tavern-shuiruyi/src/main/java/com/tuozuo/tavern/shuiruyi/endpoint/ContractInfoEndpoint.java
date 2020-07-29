@@ -10,6 +10,7 @@ import com.tuozuo.tavern.shuiruyi.dto.ContractListDTO;
 import com.tuozuo.tavern.shuiruyi.dto.ContractTemplateDTO;
 import com.tuozuo.tavern.shuiruyi.model.ContractDetailInfo;
 import com.tuozuo.tavern.shuiruyi.service.ContractInfoService;
+import com.tuozuo.tavern.shuiruyi.vo.ContractAuditVO;
 import com.tuozuo.tavern.shuiruyi.vo.ContractInfoVO;
 import com.tuozuo.tavern.shuiruyi.vo.ContractModifyVO;
 import org.slf4j.Logger;
@@ -120,7 +121,7 @@ public class ContractInfoEndpoint {
     }
 
     /**
-     * 合同审核修改
+     * 合同修改
      */
     @PutMapping(value = "/{contractId}")
     public TavernResponse modifyCompanyInfo(@PathVariable("contractId") String contractId,
@@ -136,6 +137,21 @@ public class ContractInfoEndpoint {
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[合同审核修改] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 合同审核
+     */
+    @PutMapping(value = "/audit/{contractId}")
+    public TavernResponse modifyCompanyInfo(@PathVariable("contractId") String contractId,
+                                            @RequestBody ContractAuditVO vo) {
+        try {
+            this.contractInfoService.auditContractInfo(contractId, vo.getContractStatus(), vo.getRemark());
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[合同审核] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }

@@ -95,6 +95,15 @@ public class ContractInfoServiceImpl implements ContractInfoService {
         this.contractInfoDao.update(contractInfo);
     }
 
+    @Override
+    public void auditContractInfo(String contractId, String contractStatus, String remark) {
+        ContractInfo contractInfo = new ContractInfo();
+        contractInfo.setContractId(contractId);
+        contractInfo.setContractStatus(contractStatus);
+        contractInfo.setRemark(remark);
+        this.contractInfoDao.update(contractInfo);
+    }
+
 
     //path + contractId + file
     private String storeContractFile(String contractId, MultipartFile file) throws Exception {

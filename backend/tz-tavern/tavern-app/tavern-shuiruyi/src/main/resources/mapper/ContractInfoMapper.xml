@@ -44,7 +44,7 @@
       and t2.company_id = #{companyId}
     </if>
   </where>
-  order by invoice_date desc
+  order by  t4.contract_date desc
   </select>
   <select id="fuzzyQuery" resultMap="BaseResultMap">
     select t4.contract_id, t4.company_id, t4.company_party_A_name,
@@ -68,6 +68,6 @@
       and t2.contract_status = #{contractStatus}
     </if>
   </where>
-  order by invoice_date desc limit #{queryCnt}
+    order by  t4.contract_date desc desc limit #{queryCnt}
   </select>
 </mapper>
