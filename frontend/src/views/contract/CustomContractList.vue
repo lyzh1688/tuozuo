@@ -60,9 +60,13 @@
         showPagination="auto"
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
-        <span slot="contractStatus" slot-scope="text">{{ contractStatus[text] }}</span>
         <span slot="ops" slot-scope="text, record">
-          <a-button :disabled="record.contractStatus!='0'&&record.contractStatus!='2'" size="small" @click="handleUpdate(record)" :loading="confirmLoading">修改</a-button>
+          <a-button
+            :disabled="record.contractStatus!='未审核'&&record.contractStatus!='审核失败'"
+            size="small"
+            @click="handleUpdate(record)"
+            :loading="confirmLoading"
+          >修改</a-button>
           <a-button size="small" @click="handleDetail(record)" :loading="confirmLoading">详情</a-button>
         </span>
       </s-table>
@@ -82,7 +86,7 @@
 </template>
 <script>
 import { STable } from '@/components'
-import { getContractList, addContract, updateContract } from '@/api/contract'
+import { getContractList, addContract, updateContract, getContracDetail } from '@/api/contract'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 import { dictQuery, fuzzyQueryCompany } from '../../api/company'
 import contractForm from './form/ContractForm'
@@ -242,6 +246,35 @@ export default {
     }
   },
   methods: {
+    fetchContracDetail (record) {
+      this.isShowOnly = true
+      this.confirmLoading = true
+      getContracDetail(record.contractId)
+        .then((response) => {
+          const result = response
+          if (success(result)) {
+            this.contractMdl = {
+              ...result.data,
+              contractId: record.contractId
+            }
+            console.log('this.companyMdl ', this.companyMdl)
+            this.confirmLoading = false
+          } else {
+            this.confirmLoading = false
+            this.$notification.error({
+              message: errorMessage(result),
+              description: '获取公司详情失败'
+            })
+          }
+        })
+        .catch((error) => {
+          this.$notification.error({
+            message: '获取公司详情失败',
+            description: error
+          })
+          this.confirmLoading = false
+        })
+    },
     handleOk () {
       if (this.isShowOnly) {
         const form = this.$refs.contractForm.form
@@ -254,9 +287,11 @@ export default {
       const form = this.$refs.contractForm.form
       form.validateFields((errors, values) => {
         if (!errors) {
-            const tmpkey = values.companyPartyBName.split(':')
+          const tmpkey = values.companyPartyBName.split(':')
+          if (tmpkey[1] !== undefined && tmpkey[1] != null) {
             values['companyId'] = tmpkey[0]
             values.companyPartyBName = tmpkey[1]
+          }
           this.confirmLoading = true
           if (this.isupdate) {
             updateContract(values, values.customId)
@@ -328,10 +363,9 @@ export default {
         }
       })
     },
-    handleDetail (record) {
-         this.contractMdl = { ...record }
-      this.isShowOnly = true
+    async handleDetail (record) {
       this.contractVisible = true
+      await this.fetchContracDetail(record)
     },
     handleCancel () {
       this.contractVisible = false
@@ -340,13 +374,17 @@ export default {
       // form.resetFields() // 清理表单数据（可不做）
     },
     handleAdd () {
-      this.contractMdl['contractId'] = ''
-      this.contractMdl['contractFile'] = null
+        const tmp = { ...this.contractMdl }
+      tmp['contractId'] = ''
+      tmp['companyPartyBName'] = ''
+      tmp['contractFile'] = null
+      this.contractMdl = { ...tmp }
       this.isupdate = false
       this.contractVisible = true
     },
-   handleUpdate (record) {
-      this.contractMdl = { ...record }
+    async handleUpdate (record) {
+      await this.fetchContracDetail(record)
+
       this.isupdate = true
       this.contractVisible = true
       this.isShowOnly = false
@@ -395,7 +433,7 @@ export default {
     // this.getCustomInfo()
   },
   activated () {
-      this.$refs.table.refresh(true)
+    this.$refs.table.refresh(true)
   },
   watch: {
     customId: function (newVal, oldVal) {

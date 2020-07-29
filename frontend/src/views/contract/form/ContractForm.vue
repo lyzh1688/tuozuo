@@ -155,7 +155,9 @@ const fields = [
   'companyPartyBName',
   'invoicePattern',
   'contractAmount',
-  'contractFile'
+  'contractFile',
+  'contractStatus',
+  'remark'
 ]
 
 export default {
@@ -181,6 +183,10 @@ export default {
       default: false
     },
     isUpdate: {
+      type: Boolean,
+      default: false
+    },
+    clearUpload: {
       type: Boolean,
       default: false
     }
@@ -261,10 +267,7 @@ export default {
   },
   watch: {
     clearUpload: function (newVal, oldVal) {
-      this.bossIdPicUpList = []
-      this.bossIdPicBackList = []
-      this.cfoIdPicBackList = []
-      this.cfoIdPicUpList = []
+      this.contractFileList = []
     }
   }
 }

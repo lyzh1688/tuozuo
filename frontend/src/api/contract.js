@@ -5,7 +5,19 @@ const ContractApi = {
     contractTemplateList: process.env.VUE_APP_SYSTEM_URL + '/v1/contract/template',
     fuzzyQueryContract: process.env.VUE_APP_SYSTEM_URL + '/v1/contract/contracts',
     updateContract: process.env.VUE_APP_SYSTEM_URL + '/v1/contract/', // put
-    confirmContrac: process.env.VUE_APP_SYSTEM_URL + '/v1/contract/' // put
+    confirmContrac: process.env.VUE_APP_SYSTEM_URL + 'v1/contract/audit/', // put
+    contracDetail: process.env.VUE_APP_SYSTEM_URL + '/v1/contract/detail/' // put
+}
+/**
+ companyId	否	String	公司ID
+pageNo	是	number	当前页码
+pageSize	是	number	页数
+ */
+export function getContracDetail (contractId) {
+    return request({
+        url: ContractApi.contracDetail + contractId,
+        method: 'get'
+    })
 }
 /**
  companyId	否	String	公司ID

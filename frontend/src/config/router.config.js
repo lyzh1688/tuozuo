@@ -124,6 +124,22 @@ export const asyncRouterMap = [
       }
     ]
   },
+  {
+    path: '/staffContractControl',
+    name: 'staffContractControl',
+    redirect: '/staffContractControl/StaffContractList',
+    component: BasicLayout,
+    meta: { title: '合同管理', keepAlive: true, icon: 'account-book', permission: ['admin', 'shuiruyi.staff.normal'] },
+    children: [
+      {
+        path: '/staffContractControl/StaffContractList',
+        name: 'StaffContractList',
+        component: resolve => require(['@/views/contract/StaffContractList'], resolve),
+        // component: () => import('@/views/company/MycompanyList'),
+        meta: { title: '合同列表', keepAlive: true, permission: ['admin', 'shuiruyi.staff.normal'] }
+      }
+    ]
+  },
    // forms
   //  {
   //   path: '/form',

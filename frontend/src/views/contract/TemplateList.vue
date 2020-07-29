@@ -13,11 +13,6 @@
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="ops" slot-scope="text, record">
           <a-button size="small" @click="download(record.templateFile)" >下载</a-button>
-          <a
-            :href="record.templateFile"
-            :download="record.templateFile.split('/')[record.templateFile.split('/').length-1]"
-            title="下载"
-            mce_href="#">下载</a>
         </span>
       </s-table>
     </a-card>
@@ -27,7 +22,6 @@
 import { STable } from '@/components'
 import { getContractTemplateList } from '@/api/contract'
 import { success, errorMessage } from '@/utils/helper/responseHelper'
-import jsonp from 'jsonp'
 const columns = [
   {
     title: '编号',
@@ -110,16 +104,10 @@ export default {
   },
   methods: {
       download (url1) {
- const url = url1 // data:项目中获取的数据，包含文件url以及文件名等相关参数
-    const fileName = ''
-    // 先测试一下能不能跨域成功
-    jsonp(url, null, (err, data) => {
-        if (err) {
-            console.error(err.message)
-        } else {
-            console.log(data)
-        }
-    })
+  const elemIF = document.createElement(`iframe`)
+        elemIF.src = url1
+        elemIF.style.display = `none`
+        document.body.appendChild(elemIF)
       }
   },
   created () {

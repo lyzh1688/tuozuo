@@ -42,7 +42,7 @@
         </a-form>
       </a-skeleton>
     </a-card>
-    <a-card style="margin-top: 24px" :bordered="false" >
+    <a-card style="margin-top: 24px" :bordered="false">
       <s-table
         ref="table"
         size="default"
@@ -53,17 +53,59 @@
         showPagination="auto"
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
-        <span slot="contractStatus" slot-scope="text">{{ contractStatus[text] }}</span>
+        <span slot="ops" slot-scope="text, record">
+          <a-button size="small" @click="handleUpdate(record)" :loading="confirmLoading">审核</a-button>
+          <a-button size="small" @click="handleDetail(record)" :loading="confirmLoading">详情</a-button>
+        </span>
       </s-table>
     </a-card>
+    <contractForm
+      ref="contractForm"
+      :clearUpload="clearUpload"
+      :visible="contractVisible"
+      :loading="confirmLoading"
+      :model="contractMdl"
+      :isUpdate="isupdate"
+      :isShowOnly="true"
+      @cancel="handleCancel"
+      @ok="handleOk"
+    >
+      <template v-slot:extraInfo>
+        <a-row>
+          <a-col :span="12">
+            <a-form-item label="合同状态" key="合同状态">
+              <a-select
+                :disabled="!isUpdate"
+                style="width:200px;"
+                v-decorator="['contractStatus', {rules: [{required: true, message: '请输入合同状态！'}], validateTrigger: 'blur'}]"
+                placeholder="请选择"
+              >
+                <a-select-option
+                  v-for=" taxItem in contractStatus"
+                  :key="taxItem.id"
+                >{{ taxItem.name }}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="备注">
+              <a-textarea
+                :disabled="!isUpdate"
+                v-decorator="['remark', {rules: [{required: true, message: '请输入备注！'}], validateTrigger: 'blur'} ]"
+              />
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </template>
+    </contractForm>
   </page-header-wrapper>
 </template>
 <script>
 import { STable } from '@/components'
-import { getContractList } from '@/api/contract'
-import { success, errorMessage } from '@/utils/helper/responseHelper'
+import { getContractList, confirmContrac, getContracDetail } from '@/api/contract'
+import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 import { dictQuery, fuzzyQueryCompany } from '../../api/company'
-
+import contractForm from './form/ContractForm'
 const columns = [
   {
     title: '编号',
@@ -103,6 +145,11 @@ const columns = [
     title: '备注',
     dataIndex: 'remark',
     scopedSlots: { customRender: 'remark' }
+  },
+  {
+    title: '操作',
+    dataIndex: 'ops',
+    scopedSlots: { customRender: 'ops' }
   }
 ]
 // const statusMap = {
@@ -134,11 +181,11 @@ function fetch (value, callback) {
   currentValue = value
 
   function fake () {
-    fuzzyQueryCompany(value, 20, false).then(d => {
+    fuzzyQueryCompany(value, 20, false).then((d) => {
       if (currentValue === value) {
         const result = d.data
         const data = []
-        result.forEach(r => {
+        result.forEach((r) => {
           data.push({
             value: r['id'],
             text: r['name']
@@ -158,7 +205,8 @@ function fetch (value, callback) {
 export default {
   name: 'StaffContractList',
   components: {
-    STable
+    STable,
+    contractForm
   },
   data () {
     this.columns = columns
@@ -166,14 +214,20 @@ export default {
       fuzzyCompanyList: [],
       infoLoading: false,
       queryParam: {
-           companyId: ''
+        companyId: ''
       },
-      contractStatus: {},
-      loadData: parameter => {
+      isShowOnly: false,
+      isupdate: false,
+      clearUpload: false,
+      contractVisible: false,
+      confirmLoading: false,
+      contractMdl: {},
+      contractStatus: [],
+      loadData: (parameter) => {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
         console.log('loadData request parameters:', requestParameters)
         return getContractList(requestParameters.companyId, requestParameters.pageNo, requestParameters.pageSize)
-          .then(Response => {
+          .then((Response) => {
             const result = Response
             // console.log('getTradeflow', result)
             if (success(result)) {
@@ -195,7 +249,7 @@ export default {
             }, 600)
             return []
           })
-          .catch(error => {
+          .catch((error) => {
             setTimeout(() => {
               this.tradeflowLoading = false
             }, 600)
@@ -208,19 +262,114 @@ export default {
     }
   },
   methods: {
+      fetchContracDetail (record) {
+      this.isShowOnly = true
+      this.confirmLoading = true
+      getContracDetail(record.contractId)
+        .then(response => {
+          const result = response
+          if (success(result)) {
+            this.contractMdl = {
+              ...result.data,
+              contractId: record.contractId
+            }
+            console.log('this.companyMdl ', this.companyMdl)
+            this.confirmLoading = false
+          } else {
+            this.confirmLoading = false
+            this.$notification.error({
+              message: errorMessage(result),
+              description: '获取公司详情失败'
+            })
+          }
+        })
+        .catch(error => {
+          this.$notification.error({
+            message: '获取公司详情失败',
+            description: error
+          })
+          this.confirmLoading = false
+        })
+    },
+    handleOk () {
+      if (this.isShowOnly) {
+        const form = this.$refs.contractForm.form
+        this.clearUpload = !this.clearUpload
+        form.resetFields() // 清理表单数据（可不做）
+        this.$refs.table.refresh(true)
+        this.contractVisible = false
+        return
+      }
+      const form = this.$refs.contractForm.form
+      form.validateFields((errors, values) => {
+        if (!errors) {
+            const tmpkey = values.companyPartyBName.split(':')
+            values['companyId'] = tmpkey[0]
+            values.companyPartyBName = tmpkey[1]
+          this.confirmLoading = true
+          confirmContrac(values, values.customId)
+              .then((response) => {
+                const result = response
+                if (success(result)) {
+                  this.$notification.success({
+                    message: '修改成功'
+                  })
+                  const form = this.$refs.contractForm.form
+                  this.clearUpload = !this.clearUpload
+                  form.resetFields() // 清理表单数据（可不做）
+                  this.$refs.table.refresh(true)
+                  this.contractVisible = false
+                  this.confirmLoading = false
+                } else {
+                  this.confirmLoading = false
+                  this.$notification.error({
+                    message: errorMessage(result),
+                    description: '修改失败'
+                  })
+                }
+                if (needLogin(result)) {
+                  this.contractVisible = false
+                  this.confirmLoading = false
+                }
+              })
+              .catch((error) => {
+                this.$notification.error({
+                  message: '修改失败。请稍后再试',
+                  description: error
+                })
+                this.confirmLoading = false
+              })
+        }
+      })
+    },
+     async handleDetail (record) {
+         this.isupdate = false
+           this.contractVisible = true
+      await this.fetchContracDetail(record)
+    },
+    handleCancel () {
+      this.contractVisible = false
+
+      // const form = this.$refs.createModal.form
+      // form.resetFields() // 清理表单数据（可不做）
+    },
+    async handleUpdate (record) {
+      await this.fetchContracDetail(record)
+
+      this.isupdate = true
+      this.contractVisible = true
+      this.isShowOnly = false
+    },
     handleDefault (value) {
       return value === undefined || value === null ? '暂无数据' : String(value)
     },
-     getDictBizStatus () {
+    getContractStatus () {
       dictQuery('contractStatus')
-        .then(Response => {
+        .then((Response) => {
           const result = Response
           // console.log('dictQuery', result)
           if (success(result)) {
-            this.contractStatus = {}
-            for (const i of result.data) {
-              this.bizStatusMap[i.id] = i.name
-            }
+            this.contractStatus = result.data
           } else {
             this.$notification.error({
               message: errorMessage(result),
@@ -231,7 +380,7 @@ export default {
             this.infoLoading = false
           }, 600)
         })
-        .catch(error => {
+        .catch((error) => {
           this.infoLoading = false
           this.$notification.error({
             message: '查询字典失败',
@@ -239,33 +388,32 @@ export default {
           })
         })
     },
-     handleCustomSearch (value) {
-      fetch(value, data => (this.fuzzyCompanyList = data))
+    handleCustomSearch (value) {
+      fetch(value, (data) => (this.fuzzyCompanyList = data))
     },
     handleCustomChange (value) {
       // console.log(value)
       this.queryParam.companyId = value
-      fetch(value, data => (this.fuzzyCompanyList = data))
-    } },
+      fetch(value, (data) => (this.fuzzyCompanyList = data))
+    }
+  },
   created () {
-    // this.getCustomInfo()
+    this.getContractStatus()
   },
   activated () {
-    if (this.innerUpdate) {
-     this.$refs.table.refresh(true)
-}
+      this.$refs.table.refresh(true)
   },
   watch: {
     customId: function (newVal, oldVal) {
       if (newVal !== '') {
         this.currentCustomId = newVal // newVal即是chartData
         this.getCustomInfo()
-          this.$refs.table.refresh(true)
+        this.$refs.table.refresh(true)
       }
     },
     refresh: function (newVal, oldVal) {
-        this.getCustomInfo()
-          this.$refs.table.refresh(true)
+      this.getCustomInfo()
+      this.$refs.table.refresh(true)
     }
   }
 }
