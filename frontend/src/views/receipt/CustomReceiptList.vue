@@ -3,8 +3,8 @@
     <a-card :bordered="false">
       <a-skeleton :loading="infoLoading" active title>
         <a-form layout="inline">
-          <a-row :gutter="48">
-            <a-col :md="10" :sm="8">
+          <a-row >
+            <a-col :md="7" :sm="8">
               <a-form-item label="公司名称">
                 <a-select
                   show-search
@@ -22,7 +22,39 @@
                 </a-select>
               </a-form-item>
             </a-col>
-            <a-col :md="6" :sm="8">
+            <a-col :md="7" :sm="8">
+              <a-form-item label="合同名称">
+                <a-select
+                  show-search
+                  :value="queryParam.contractId"
+                  placeholder="input search text"
+                  style="width: 200px"
+                  :default-active-first-option="false"
+                  :show-arrow="false"
+                  :filter-option="false"
+                  :not-found-content="null"
+                  @search="handleCustomSearch2"
+                  @change="handleCustomChange2"
+                >
+                  <a-select-option v-for="d in fuzzyContractList" :key="d.value">{{ d.text }}</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :md="7" :sm="8">
+              <a-form-item label="开票状态" key="开票状态">
+                <a-select
+                  :value="queryParam.invoiceStatus"
+                  style="width:200px;"
+                  placeholder="请选择"
+                >
+                  <a-select-option
+                    v-for=" taxItem in receiptStatus"
+                    :key="taxItem.id"
+                  >{{ taxItem.name }}</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :md="3" :sm="8">
               <a-form-item>
                 <a-button type="primary" size="small" @click="$refs.table.refresh(true)">查询</a-button>
                 <a-button
@@ -30,6 +62,8 @@
                   type="primary"
                   @click="()=>{queryParam= {
                     companyId: '',
+                    contractId: '',
+                    invoiceStatus: '',
                     pageNo: 1,
                     pageSize: 20
                   }}"
@@ -40,7 +74,7 @@
           <a-row>
             <a-col :span="12">
               <a-form-item>
-                <a-button size="small" @click="handleAdd">创建合同申请</a-button>
+                <a-button size="small" @click="handleAdd">创建开票申请</a-button>
               </a-form-item>
             </a-col>
           </a-row>
@@ -59,12 +93,7 @@
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="ops" slot-scope="text, record">
-          <a-button
-            :disabled="record.contractStatus!='未审核'&&record.contractStatus!='审核失败'"
-            size="small"
-            @click="handleUpdate(record)"
-            :loading="confirmLoading"
-          >修改</a-button>
+          <a-button size="small" @click="handleUpdate(record)" :loading="confirmLoading">修改</a-button>
           <a-button size="small" @click="handleDetail(record)" :loading="confirmLoading">详情</a-button>
         </span>
       </s-table>
@@ -72,21 +101,23 @@
     <contractForm
       ref="contractForm"
       :clearUpload="clearUpload"
-      :visible="contractVisible"
+      :visible="receiptVisible"
       :loading="confirmLoading"
-      :model="contractMdl"
+      :model="receiptMdl"
       :isUpdate="isupdate"
       :isShowOnly="isShowOnly"
       @cancel="handleCancel"
       @ok="handleOk"
-    />
+    >
+    </contractForm>
   </page-header-wrapper>
 </template>
 <script>
 import { STable } from '@/components'
-import { getContractList, addContract, updateContract, getContracDetail } from '@/api/contract'
+import { getReceiptList, addReceipt, updateReceipt, getReceiptDetail } from '@/api/receipt'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 import { dictQuery, fuzzyQueryCompany } from '../../api/company'
+import { fuzzyQueryContract } from '../../api/contract'
 import contractForm from './form/ContractForm'
 const columns = [
   {
@@ -109,19 +140,19 @@ const columns = [
     scopedSlots: { customRender: 'contractName' }
   },
   {
-    title: '合同金额',
-    dataIndex: 'contractAmount',
-    scopedSlots: { customRender: 'contractAmount' }
-  },
-  {
-    title: '已开发票金额',
+    title: '发票金额',
     dataIndex: 'invoiceAmount',
     scopedSlots: { customRender: 'invoiceAmount' }
   },
   {
-    title: '合同状态',
-    dataIndex: 'contractStatus',
-    scopedSlots: { customRender: 'contractStatus' }
+    title: '快递单号',
+    dataIndex: 'deliveryId',
+    scopedSlots: { customRender: 'deliveryId' }
+  },
+  {
+    title: '状态',
+    dataIndex: 'invoiceStatus',
+    scopedSlots: { customRender: 'invoiceStatus' }
   },
   {
     title: '备注',
@@ -152,7 +183,6 @@ const columns = [
 //     text: '异常'
 //   }
 // }
-
 let timeout
 let currentValue
 
@@ -185,8 +215,40 @@ function fetch (value, callback) {
 
   timeout = setTimeout(fake, 300)
 }
+let timeout2
+let currentValue2
+
+function fetch2 (value, callback) {
+  if (timeout2) {
+    clearTimeout(timeout2)
+    timeout2 = null
+  }
+  currentValue2 = value
+
+  function fake () {
+    fuzzyQueryContract('', value, 20).then((d) => {
+      if (currentValue2 === value) {
+        const result = d.data
+        const data = []
+        result.forEach((r) => {
+          data.push({
+            value: r['id'],
+            text: r['name']
+          })
+        })
+        data.push({
+          value: '',
+          text: ''
+        })
+        callback(data)
+      }
+    })
+  }
+
+  timeout2 = setTimeout(fake, 300)
+}
 export default {
-  name: 'CustomContractList',
+  name: 'CustomReceiptList',
   components: {
     STable,
     contractForm
@@ -195,26 +257,29 @@ export default {
     this.columns = columns
     return {
       fuzzyCompanyList: [],
+      fuzzyContractList: [],
       infoLoading: false,
       queryParam: {
-        companyId: ''
+        companyId: '',
+        contractId: '',
+        invoiceStatus: ''
       },
       isShowOnly: false,
       isupdate: false,
       clearUpload: false,
-      contractVisible: false,
+      receiptVisible: false,
       confirmLoading: false,
-      contractMdl: {},
-      contractStatus: {},
+      receiptMdl: {},
+      receiptStatus: [],
       loadData: (parameter) => {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
         console.log('loadData request parameters:', requestParameters)
-        return getContractList(requestParameters.companyId, requestParameters.pageNo, requestParameters.pageSize)
+        return getReceiptList(requestParameters.companyId, requestParameters.contractId, requestParameters.invoiceStatus, requestParameters.pageNo, requestParameters.pageSize)
           .then((Response) => {
             const result = Response
             // console.log('getTradeflow', result)
             if (success(result)) {
-              const ans = result.data.contracts
+              const ans = result.data.invoices
               return {
                 pageSize: requestParameters.pageSize,
                 pageNo: requestParameters.pageNo,
@@ -224,7 +289,7 @@ export default {
             } else {
               this.$notification.error({
                 message: errorMessage(result),
-                description: '查询合同列表失败，请稍后再试'
+                description: '查询开票列表失败，请稍后再试'
               })
             }
             setTimeout(() => {
@@ -237,7 +302,7 @@ export default {
               this.tradeflowLoading = false
             }, 600)
             this.$notification.error({
-              message: '查询合同列表失败，请稍后再试',
+              message: '查询开票列表失败，请稍后再试',
               description: error
             })
           })
@@ -245,30 +310,30 @@ export default {
     }
   },
   methods: {
-    fetchContracDetail (record) {
+      fetchReceiptDetail (record) {
       this.isShowOnly = true
       this.confirmLoading = true
-      getContracDetail(record.contractId)
-        .then((response) => {
+      getReceiptDetail(record.invoiceId)
+        .then(response => {
           const result = response
           if (success(result)) {
-            this.contractMdl = {
+            this.receiptMdl = {
               ...result.data,
-              contractId: record.contractId
+              contractId: record.invoiceId
             }
-            console.log('this.contractMdl ', this.contractMdl)
+            console.log('this.receiptMdl ', this.receiptMdl)
             this.confirmLoading = false
           } else {
             this.confirmLoading = false
             this.$notification.error({
               message: errorMessage(result),
-              description: '获取合同详情失败'
+              description: '获取开票详情失败'
             })
           }
         })
-        .catch((error) => {
+        .catch(error => {
           this.$notification.error({
-            message: '获取合同详情失败',
+            message: '获取开票详情失败',
             description: error
           })
           this.confirmLoading = false
@@ -280,20 +345,15 @@ export default {
         this.clearUpload = !this.clearUpload
         form.resetFields() // 清理表单数据（可不做）
         this.$refs.table.refresh(true)
-        this.contractVisible = false
+        this.receiptVisible = false
         return
       }
       const form = this.$refs.contractForm.form
       form.validateFields((errors, values) => {
         if (!errors) {
-          const tmpkey = values.companyPartyBName.split(':')
-          if (tmpkey[1] !== undefined && tmpkey[1] != null) {
-            values['companyId'] = tmpkey[0]
-            values.companyPartyBName = tmpkey[1]
-          }
           this.confirmLoading = true
           if (this.isupdate) {
-            updateContract(values, values.customId)
+ updateReceipt(values)
               .then((response) => {
                 const result = response
                 if (success(result)) {
@@ -304,7 +364,7 @@ export default {
                   this.clearUpload = !this.clearUpload
                   form.resetFields() // 清理表单数据（可不做）
                   this.$refs.table.refresh(true)
-                  this.contractVisible = false
+                  this.receiptVisible = false
                   this.confirmLoading = false
                 } else {
                   this.confirmLoading = false
@@ -314,7 +374,7 @@ export default {
                   })
                 }
                 if (needLogin(result)) {
-                  this.contractVisible = false
+                  this.receiptVisible = false
                   this.confirmLoading = false
                 }
               })
@@ -326,34 +386,34 @@ export default {
                 this.confirmLoading = false
               })
           } else {
-            addContract(values)
+            addReceipt(values)
               .then((response) => {
                 const result = response
                 if (success(result)) {
                   this.$notification.success({
-                    message: '新增成功'
+                    message: '添加成功'
                   })
                   const form = this.$refs.contractForm.form
                   this.clearUpload = !this.clearUpload
                   form.resetFields() // 清理表单数据（可不做）
                   this.$refs.table.refresh(true)
-                  this.contractVisible = false
+                  this.receiptVisible = false
                   this.confirmLoading = false
                 } else {
                   this.confirmLoading = false
                   this.$notification.error({
                     message: errorMessage(result),
-                    description: '新增失败。请稍后再试'
+                    description: '添加失败'
                   })
                 }
                 if (needLogin(result)) {
-                  this.contractVisible = false
+                  this.receiptVisible = false
                   this.confirmLoading = false
                 }
               })
               .catch((error) => {
                 this.$notification.error({
-                  message: '新增失败。请稍后再试',
+                  message: '添加失败。请稍后再试',
                   description: error
                 })
                 this.confirmLoading = false
@@ -362,46 +422,44 @@ export default {
         }
       })
     },
-    async handleDetail (record) {
-      this.contractVisible = true
-      await this.fetchContracDetail(record)
+     async handleDetail (record) {
+         this.isupdate = false
+           this.receiptVisible = true
+      await this.fetchReceiptDetail(record)
+    },
+    handleAdd () {
+        const tmp = { ...this.receiptMdl }
+      tmp['receiptId'] = ''
+      tmp['authLetterFile	'] = null
+      tmp['bankFlowFile	'] = null
+      this.receiptMdl = { ...tmp }
+      this.isupdate = false
+      this.receiptVisible = true
+       this.isShowOnly = false
     },
     handleCancel () {
-      this.contractVisible = false
+      this.receiptVisible = false
 
       // const form = this.$refs.createModal.form
       // form.resetFields() // 清理表单数据（可不做）
     },
-    handleAdd () {
-        const tmp = { ...this.contractMdl }
-      tmp['contractId'] = ''
-      tmp['companyPartyBName'] = ''
-      tmp['contractFile'] = null
-      this.contractMdl = { ...tmp }
-      this.isupdate = false
-      this.contractVisible = true
-       this.isShowOnly = false
-    },
     async handleUpdate (record) {
-      await this.fetchContracDetail(record)
+      await this.fetchReceiptDetail(record)
 
       this.isupdate = true
-      this.contractVisible = true
+      this.receiptVisible = true
       this.isShowOnly = false
     },
     handleDefault (value) {
       return value === undefined || value === null ? '暂无数据' : String(value)
     },
-    getDictBizStatus () {
-      dictQuery('contractStatus')
+    getContractStatus () {
+      dictQuery('invoiceStatus')
         .then((Response) => {
           const result = Response
           // console.log('dictQuery', result)
           if (success(result)) {
-            this.contractStatus = {}
-            for (const i of result.data) {
-              this.bizStatusMap[i.id] = i.name
-            }
+            this.receiptStatus = result.data
           } else {
             this.$notification.error({
               message: errorMessage(result),
@@ -427,13 +485,21 @@ export default {
       // console.log(value)
       this.queryParam.companyId = value
       fetch(value, (data) => (this.fuzzyCompanyList = data))
+    },
+    handleCustomSearch2 (value) {
+      fetch2(value, (data) => (this.fuzzyContractList = data))
+    },
+    handleCustomChange2 (value) {
+      // console.log(value)
+      this.queryParam.contractId = value
+      fetch2(value, (data) => (this.fuzzyContractList = data))
     }
   },
   created () {
-    // this.getCustomInfo()
+    this.getContractStatus()
   },
   activated () {
-    this.$refs.table.refresh(true)
+      this.$refs.table.refresh(true)
   },
   watch: {
     customId: function (newVal, oldVal) {

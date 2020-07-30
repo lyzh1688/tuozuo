@@ -29,8 +29,6 @@
                   size="small"
                   type="primary"
                   @click="()=>{queryParam= {
-                    beginMonth: '',
-                    endMonth: '',
                     companyId: '',
                     pageNo: 1,
                     pageSize: 20
@@ -75,7 +73,7 @@
           <a-col :span="12">
             <a-form-item label="合同状态" key="合同状态">
               <a-select
-                :disabled="!isUpdate"
+                :disabled="!isupdate"
                 style="width:200px;"
                 v-decorator="['contractStatus', {rules: [{required: true, message: '请输入合同状态！'}], validateTrigger: 'blur'}]"
                 placeholder="请选择"
@@ -90,7 +88,7 @@
           <a-col :span="12">
             <a-form-item label="备注">
               <a-textarea
-                :disabled="!isUpdate"
+                :disabled="!isupdate"
                 v-decorator="['remark', {rules: [{required: true, message: '请输入备注！'}], validateTrigger: 'blur'} ]"
               />
             </a-form-item>
@@ -241,7 +239,7 @@ export default {
             } else {
               this.$notification.error({
                 message: errorMessage(result),
-                description: '查询缴税明细失败，请稍后再试'
+                description: '查询合同列表失败，请稍后再试'
               })
             }
             setTimeout(() => {
@@ -254,7 +252,7 @@ export default {
               this.tradeflowLoading = false
             }, 600)
             this.$notification.error({
-              message: '查询缴税明细失败，请稍后再试',
+              message: '查询合同列表失败，请稍后再试',
               description: error
             })
           })
@@ -273,19 +271,19 @@ export default {
               ...result.data,
               contractId: record.contractId
             }
-            console.log('this.companyMdl ', this.companyMdl)
+            console.log('this.contractMdl ', this.contractMdl)
             this.confirmLoading = false
           } else {
             this.confirmLoading = false
             this.$notification.error({
               message: errorMessage(result),
-              description: '获取公司详情失败'
+              description: '获取合同详情失败'
             })
           }
         })
         .catch(error => {
           this.$notification.error({
-            message: '获取公司详情失败',
+            message: '获取合同详情失败',
             description: error
           })
           this.confirmLoading = false

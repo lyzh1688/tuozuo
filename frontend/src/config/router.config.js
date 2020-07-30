@@ -109,6 +109,22 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/customReceiptControl',
+    name: 'customReceiptControl',
+    redirect: '/customReceiptControl/CustomReceiptList',
+    component: BasicLayout,
+    meta: { title: '开票管理', keepAlive: true, icon: 'account-book', permission: ['admin', 'shuiruyi.custom.normal'] },
+    children: [
+      {
+        path: '/customReceiptControl/CustomReceiptList',
+        name: 'customReceiptControl',
+        component: resolve => require(['@/views/receipt/CustomReceiptList'], resolve),
+        // component: () => import('@/views/company/MycompanyList'),
+        meta: { title: '开票列表', keepAlive: true, permission: ['admin', 'shuiruyi.custom.normal'] }
+      }
+    ]
+  },
+  {
     path: '/staffcompanyControl',
     name: 'staffcompanyControl',
     redirect: '/staffcompanyControl/CompanyList',
@@ -137,6 +153,22 @@ export const asyncRouterMap = [
         component: resolve => require(['@/views/contract/StaffContractList'], resolve),
         // component: () => import('@/views/company/MycompanyList'),
         meta: { title: '合同列表', keepAlive: true, permission: ['admin', 'shuiruyi.staff.normal'] }
+      }
+    ]
+  },
+  {
+    path: '/staffReceiptControl',
+    name: 'staffReceiptControl',
+    redirect: '/staffReceiptControl/StaffCReceiptList',
+    component: BasicLayout,
+    meta: { title: '开票管理', keepAlive: true, icon: 'account-book', permission: ['admin', 'shuiruyi.staff.normal'] },
+    children: [
+      {
+        path: '/staffReceiptControl/StaffCReceiptList',
+        name: 'StaffCReceiptList',
+        component: resolve => require(['@/views/receipt/StaffCReceiptList'], resolve),
+        // component: () => import('@/views/company/MycompanyList'),
+        meta: { title: '开票列表', keepAlive: true, permission: ['admin', 'shuiruyi.staff.normal'] }
       }
     ]
   },

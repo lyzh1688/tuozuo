@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 const ContractApi = {
     receiptList: process.env.VUE_APP_SYSTEM_URL + '/v1/invoice/list',
-    addReceipt: process.env.VUE_APP_SYSTEM_URL + '/v1/contract', // post
+    addReceipt: process.env.VUE_APP_SYSTEM_URL + '/v1/invoice', // post
     receiptDetail: process.env.VUE_APP_SYSTEM_URL + '/v1/invoice/detail/',
     updateReceipt: process.env.VUE_APP_SYSTEM_URL + '/v1/invoice/', // put
     confirmReceipt: process.env.VUE_APP_SYSTEM_URL + 'v1/invoice/audit/' // put
