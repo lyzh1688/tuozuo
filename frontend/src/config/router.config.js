@@ -172,6 +172,22 @@ export const asyncRouterMap = [
       }
     ]
   },
+  {
+    path: '/staffSummaryControl',
+    name: 'staffSummaryControl',
+    redirect: '/staffSummaryControl/TaxSummary',
+    component: BasicLayout,
+    meta: { title: '开票管理', keepAlive: true, icon: 'account-book', permission: ['admin', 'shuiruyi.staff.normal'] },
+    children: [
+      {
+        path: '/staffSummaryControl/TaxSummary',
+        name: 'TaxSummary',
+        component: resolve => require(['@/views/summary/TaxSummary'], resolve),
+        // component: () => import('@/views/company/MycompanyList'),
+        meta: { title: '开票列表', keepAlive: true, permission: ['admin', 'shuiruyi.staff.normal'] }
+      }
+    ]
+  },
    // forms
   //  {
   //   path: '/form',

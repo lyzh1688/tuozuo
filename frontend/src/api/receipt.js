@@ -4,7 +4,7 @@ const ContractApi = {
     addReceipt: process.env.VUE_APP_SYSTEM_URL + '/v1/invoice', // post
     receiptDetail: process.env.VUE_APP_SYSTEM_URL + '/v1/invoice/detail/',
     updateReceipt: process.env.VUE_APP_SYSTEM_URL + '/v1/invoice/', // put
-    confirmReceipt: process.env.VUE_APP_SYSTEM_URL + 'v1/invoice/audit/' // put
+    confirmReceipt: process.env.VUE_APP_SYSTEM_URL + '/v1/invoice/audit/' // put
 }
 /**
  receiptId	否	String	公司ID

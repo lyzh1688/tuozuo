@@ -43,7 +43,7 @@
             <a-col :md="8" :sm="8">
               <a-form-item label="开票状态" key="开票状态">
                 <a-select
-                  :value="queryParam.invoiceStatus"
+                  v-model="queryParam.invoiceStatus"
                   style="width:200px;"
                   placeholder="请选择"
                 >
@@ -105,8 +105,8 @@
       <template v-slot:extraInfo>
         <a-row>
           <a-col :span="12">
-            <a-form-item label="发票状态" key="发票状态">
-              <a-input-number
+            <a-form-item label="快递单号" key="快递单号">
+              <a-input
                 :min="0"
                 style="width:200px;"
                 :disabled="!isupdate"
@@ -359,7 +359,7 @@ export default {
           if (success(result)) {
             this.receiptMdl = {
               ...result.data,
-              contractId: record.invoiceId
+              invoiceId: record.invoiceId
             }
             console.log('this.receiptMdl ', this.receiptMdl)
             this.confirmLoading = false

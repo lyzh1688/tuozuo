@@ -15,7 +15,7 @@
             <a-form-item v-show="false" label="开票Id" key="开票Id">
               <a-input
                 :disabled="isShowOnly"
-                v-decorator="['receiptId', { validateTrigger: 'blur'}]"
+                v-decorator="['invoiceId', { validateTrigger: 'blur'}]"
               />
             </a-form-item>
             <a-form-item label="已审核合同" key="已审核合同">
@@ -70,7 +70,8 @@
                   :key="taxItem.id"
                 >{{ taxItem.name }}</a-select-option>
               </a-select>
-            </a-form-item></a-col>
+            </a-form-item>
+          </a-col>
           <a-col :span="12">
             <a-form-item label="本次开票金额(元)" key="本次开票金额">
               <a-input-number
@@ -81,7 +82,6 @@
               />
             </a-form-item>
           </a-col>
-
         </a-row>
         <a-row>
           <a-col :span="12">
@@ -114,6 +114,7 @@
                 @click="()=>{jumpToFile(model.authLetterFile)}"
               >已上传的文件</a-button>
               <a-upload
+                :beforeUpload="beforeUpload"
                 v-show="!isShowOnly"
                 name="authLetterFile"
                 :file-list="authLetterFileList"
@@ -128,29 +129,31 @@
               </a-upload>
             </a-form-item>
           </a-col>
-          <a-col :span="12"><a-form-item label="银行流水" key="银行流水">
-            <a-button
-              type="text"
-              v-if="model&&typeof model.bankFlowFile === 'string'"
-              @click="()=>{jumpToFile(model.bankFlowFile)}"
-            >已上传的文件</a-button>
-            <a-upload
-              v-show="!isShowOnly"
-              name="bankFlowFile"
-              :file-list="bankFlowFileList"
-              list-type="picture-card"
-              v-decorator="['bankFlowFile', {rules: [{required: true, message: '请输入银行流水！'}], validateTrigger: 'blur'}]"
-              :showUploadList="{ showPreviewIcon: false, showRemoveIcon: true }"
-              @change="handlebankFlowFileChange"
-            >
-              <a-button v-show="!isShowOnly" :v-if="showUpload">
-                <a-icon :v-if="showUpload" type="upload" />上传
-              </a-button>
-            </a-upload>
-          </a-form-item></a-col>
+          <a-col :span="12">
+            <a-form-item label="银行流水" key="银行流水">
+              <a-button
+                type="text"
+                v-if="model&&typeof model.bankFlowFile === 'string'"
+                @click="()=>{jumpToFile(model.bankFlowFile)}"
+              >已上传的文件</a-button>
+              <a-upload
+                :beforeUpload="beforeUpload"
+                v-show="!isShowOnly"
+                name="bankFlowFile"
+                :file-list="bankFlowFileList"
+                list-type="picture-card"
+                v-decorator="['bankFlowFile', {rules: [{required: true, message: '请输入银行流水！'}], validateTrigger: 'blur'}]"
+                :showUploadList="{ showPreviewIcon: false, showRemoveIcon: true }"
+                @change="handlebankFlowFileChange"
+              >
+                <a-button v-show="!isShowOnly" :v-if="showUpload">
+                  <a-icon :v-if="showUpload" type="upload" />上传
+                </a-button>
+              </a-upload>
+            </a-form-item>
+          </a-col>
         </a-row>
-        <slot name="extraInfo">
-        </slot>
+        <slot name="extraInfo"></slot>
       </a-form>
     </a-spin>
   </a-modal>
@@ -227,7 +230,7 @@ function fetch2 (value, callback) {
 }
 // 表单字段
 const fields = [
-  'receiptId',
+  'invoiceId',
   'companyId',
   'contractId',
   'invoiceType',
@@ -312,6 +315,8 @@ export default {
     // 当 model 发生改变时，为表单设置值
     this.$watch('model', () => {
       this.model && this.form.setFieldsValue(pick(this.model, fields))
+      fetch2(this.model.contractName, (data) => (this.fuzzyContractList = data))
+      fetch(this.model.companyName, (data) => (this.fuzzyCompanyList = data))
     })
   },
   methods: {
@@ -346,6 +351,18 @@ export default {
       console.log(info.file.originFileObj)
       //   this.fileList = [info]
     },
+    beforeUpload (file) {
+      return new Promise((resolve, reject) => {
+        console.log('beforeUpload', file)
+        if (file.size / (1024 * 1024) > 30) {
+          this.$notification.error({
+            message: '文件大小不能超过30M'
+          })
+          reject(new Error('文件大小不能超过30M'))
+        }
+        resolve()
+      })
+    },
     getDict (keyword) {
       return new Promise((resolve, reject) => {
         dictQuery(keyword).then((Response) => {
@@ -366,7 +383,7 @@ export default {
   watch: {
     clearUpload: function (newVal, oldVal) {
       this.bankFlowFileList = []
-       this.authLetterFileList = []
+      this.authLetterFileList = []
     }
   }
 }

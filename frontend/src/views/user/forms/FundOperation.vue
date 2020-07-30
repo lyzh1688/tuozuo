@@ -49,6 +49,7 @@
         </a-form-item>
         <a-form-item label="金额">
           <a-input-number
+            :min="0"
             v-decorator="['amount', {rules: [{required: true, message: '请输入金额！'}], validateTrigger: 'blur'} ]"
           />
         </a-form-item>
@@ -59,6 +60,7 @@
         </a-form-item>
         <a-form-item label="凭证文件">
           <a-upload
+            :beforeUpload="beforeUpload"
             name="tradeSnapshot"
             :file-list="fileList"
             list-type="picture-card"
@@ -140,7 +142,7 @@ export default {
     console.log('custom modal created')
     this.getEventDict()
     // 防止表单未注册
-    fields.forEach(v => this.form.getFieldDecorator(v))
+    fields.forEach((v) => this.form.getFieldDecorator(v))
 
     // 当 model 发生改变时，为表单设置值
     this.$watch('model', () => {
@@ -152,16 +154,29 @@ export default {
       console.log(info)
       return info
     },
+    beforeUpload (file) {
+      return new Promise((resolve, reject) => {
+        console.log('beforeUpload', file)
+        if (file.size / (1024 * 1024) > 30) {
+          this.$notification.error({
+            message: '文件大小不能超过30M'
+          })
+          reject(new Error('文件大小不能超过30M'))
+        }
+        resolve()
+      })
+    },
     handleChange (info) {
       let fileList = [...info.fileList]
       fileList = fileList.slice(-1)
       this.fileList = fileList
       console.log(info.file.originFileObj)
+
       //   this.fileList = [info]
     },
     getEventDict () {
       dictQuery('event')
-        .then(Response => {
+        .then((Response) => {
           const result = Response
           // console.log('dictQuery', result)
           if (success(result)) {
@@ -176,7 +191,7 @@ export default {
             this.infoLoading = false
           }, 600)
         })
-        .catch(error => {
+        .catch((error) => {
           this.infoLoading = false
           this.$notification.error({
             message: '事件字典失败',

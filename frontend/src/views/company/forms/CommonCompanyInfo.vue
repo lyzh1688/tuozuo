@@ -106,6 +106,7 @@
                   @click="()=>{jumpToFile(model.bossIdPicUp)}"
                 >已上传的文件</a-button>
                 <a-upload
+                  :beforeUpload="beforeUpload"
                   v-show="!isShowOnly"
                   name="bossIdPicUp"
                   :file-list="bossIdPicUpList"
@@ -128,6 +129,7 @@
                   @click="()=>{jumpToFile(model.bossIdPicBack)}"
                 >已上传的文件</a-button>
                 <a-upload
+                  :beforeUpload="beforeUpload"
                   v-show="!isShowOnly"
                   name="bossIdPicBack"
                   :file-list="bossIdPicBackList"
@@ -184,6 +186,7 @@
                   @click="()=>{jumpToFile(model.cfoIdPicUp)}"
                 >已上传的文件</a-button>
                 <a-upload
+                  :beforeUpload="beforeUpload"
                   v-show="!isShowOnly"
                   name="cfoIdPicUp"
                   :file-list="cfoIdPicUpList"
@@ -206,6 +209,7 @@
                   @click="()=>{jumpToFile(model.cfoIdPicBack)}"
                 >已上传的文件</a-button>
                 <a-upload
+                  :beforeUpload="beforeUpload"
                   v-show="!isShowOnly"
                   name="cfoIdPicBack"
                   :file-list="cfoIdPicBackList"
@@ -363,6 +367,18 @@ export default {
       this.cfoIdPicBackList = fileList
       console.log(info.file.originFileObj)
       //   this.fileList = [info]
+    },
+    beforeUpload (file) {
+      return new Promise((resolve, reject) => {
+        console.log('beforeUpload', file)
+        if (file.size / (1024 * 1024) > 30) {
+          this.$notification.error({
+            message: '文件大小不能超过30M'
+          })
+          reject(new Error('文件大小不能超过30M'))
+        }
+        resolve()
+      })
     },
     getDict (keyword) {
       return new Promise((resolve, reject) => {

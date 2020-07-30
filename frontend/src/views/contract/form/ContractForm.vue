@@ -50,7 +50,10 @@
                 @search="handleCustomSearch"
                 @change="handleCustomChange"
               >
-                <a-select-option v-for="d in fuzzyCompanyList" :key="d.value+':'+d.text">{{ d.text }}</a-select-option>
+                <a-select-option
+                  v-for="d in fuzzyCompanyList"
+                  :key="d.value+':'+d.text"
+                >{{ d.text }}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -69,7 +72,6 @@
               </a-select>
             </a-form-item>
           </a-col>
-
         </a-row>
         <a-row>
           <a-col :span="12">
@@ -90,6 +92,7 @@
                 @click="()=>{jumpToFile(model.contractFile)}"
               >已上传的文件</a-button>
               <a-upload
+                :beforeUpload="beforeUpload"
                 v-show="!isShowOnly"
                 name="contractFile"
                 :file-list="contractFileList"
@@ -247,6 +250,18 @@ export default {
       this.contractFileList = fileList
       console.log(info.file.originFileObj)
       //   this.fileList = [info]
+    },
+    beforeUpload (file) {
+      return new Promise((resolve, reject) => {
+        console.log('beforeUpload', file)
+        if (file.size / (1024 * 1024) > 30) {
+          this.$notification.error({
+            message: '文件大小不能超过30M'
+          })
+          reject(new Error('文件大小不能超过30M'))
+        }
+        resolve()
+      })
     },
     getDict (keyword) {
       return new Promise((resolve, reject) => {

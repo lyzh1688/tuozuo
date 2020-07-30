@@ -3,7 +3,7 @@
     <a-card :bordered="false">
       <a-skeleton :loading="infoLoading" active title>
         <a-form layout="inline">
-          <a-row >
+          <a-row>
             <a-col :md="7" :sm="8">
               <a-form-item label="公司名称">
                 <a-select
@@ -42,11 +42,7 @@
             </a-col>
             <a-col :md="7" :sm="8">
               <a-form-item label="开票状态" key="开票状态">
-                <a-select
-                  :value="queryParam.invoiceStatus"
-                  style="width:200px;"
-                  placeholder="请选择"
-                >
+                <a-select v-model="queryParam.invoiceStatus" style="width:200px;" placeholder="请选择">
                   <a-select-option
                     v-for=" taxItem in receiptStatus"
                     :key="taxItem.id"
@@ -108,8 +104,7 @@
       :isShowOnly="isShowOnly"
       @cancel="handleCancel"
       @ok="handleOk"
-    >
-    </contractForm>
+    ></contractForm>
   </page-header-wrapper>
 </template>
 <script>
@@ -274,7 +269,13 @@ export default {
       loadData: (parameter) => {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
         console.log('loadData request parameters:', requestParameters)
-        return getReceiptList(requestParameters.companyId, requestParameters.contractId, requestParameters.invoiceStatus, requestParameters.pageNo, requestParameters.pageSize)
+        return getReceiptList(
+          requestParameters.companyId,
+          requestParameters.contractId,
+          requestParameters.invoiceStatus,
+          requestParameters.pageNo,
+          requestParameters.pageSize
+        )
           .then((Response) => {
             const result = Response
             // console.log('getTradeflow', result)
@@ -310,16 +311,16 @@ export default {
     }
   },
   methods: {
-      fetchReceiptDetail (record) {
+    fetchReceiptDetail (record) {
       this.isShowOnly = true
       this.confirmLoading = true
       getReceiptDetail(record.invoiceId)
-        .then(response => {
+        .then((response) => {
           const result = response
           if (success(result)) {
             this.receiptMdl = {
               ...result.data,
-              contractId: record.invoiceId
+              invoiceId: record.invoiceId
             }
             console.log('this.receiptMdl ', this.receiptMdl)
             this.confirmLoading = false
@@ -331,7 +332,7 @@ export default {
             })
           }
         })
-        .catch(error => {
+        .catch((error) => {
           this.$notification.error({
             message: '获取开票详情失败',
             description: error
@@ -353,7 +354,7 @@ export default {
         if (!errors) {
           this.confirmLoading = true
           if (this.isupdate) {
- updateReceipt(values)
+            updateReceipt(values)
               .then((response) => {
                 const result = response
                 if (success(result)) {
@@ -422,20 +423,20 @@ export default {
         }
       })
     },
-     async handleDetail (record) {
-         this.isupdate = false
-           this.receiptVisible = true
+    async handleDetail (record) {
+      this.isupdate = false
+      this.receiptVisible = true
       await this.fetchReceiptDetail(record)
     },
     handleAdd () {
-        const tmp = { ...this.receiptMdl }
+      const tmp = { ...this.receiptMdl }
       tmp['receiptId'] = ''
       tmp['authLetterFile	'] = null
       tmp['bankFlowFile	'] = null
       this.receiptMdl = { ...tmp }
       this.isupdate = false
       this.receiptVisible = true
-       this.isShowOnly = false
+      this.isShowOnly = false
     },
     handleCancel () {
       this.receiptVisible = false
@@ -499,7 +500,7 @@ export default {
     this.getContractStatus()
   },
   activated () {
-      this.$refs.table.refresh(true)
+    this.$refs.table.refresh(true)
   },
   watch: {
     customId: function (newVal, oldVal) {
