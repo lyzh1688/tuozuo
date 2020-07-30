@@ -70,10 +70,10 @@
       and t1.custom_id = #{customId}
     </if>
     <if test="contractName != null and contractName != ''">
-      and t1.contract_name like concat('%', #{contractName}, '%')
+      and t4.contract_name like concat('%', #{contractName}, '%')
     </if>
     <if test="contractStatus != null and contractStatus != ''">
-      and t2.contract_status = #{contractStatus}
+      and t4.contract_status = #{contractStatus}
     </if>
   </where>
     order by  t4.contract_date desc limit #{queryCnt}
