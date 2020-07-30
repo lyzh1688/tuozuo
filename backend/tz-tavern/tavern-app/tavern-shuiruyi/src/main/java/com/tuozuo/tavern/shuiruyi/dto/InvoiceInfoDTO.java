@@ -6,14 +6,68 @@ package com.tuozuo.tavern.shuiruyi.dto;
  */
 public class InvoiceInfoDTO {
 
-   private String companyName;
-   private String contractName;
-   private String invoiceType;
-   private double invoiceAmount;
-   private double recvAmount;
-   private String authLetterFile;
-   private String bankFlowFile;
-   private String invoiceContent;
+    private String companyId;
+    private String contractId;
+    private String companyName;
+    private String contractName;
+    private String invoiceType;
+    private double invoiceAmount;
+    private double recvAmount;
+    private String recvDate;
+    private String authLetterFile;
+    private String bankFlowFile;
+    private String invoiceContent;
+    private String invoiceStatus;
+    private String remark;
+    private String deliveryId;
+
+    public String getInvoiceStatus() {
+        return invoiceStatus;
+    }
+
+    public void setInvoiceStatus(String invoiceStatus) {
+        this.invoiceStatus = invoiceStatus;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getDeliveryId() {
+        return deliveryId;
+    }
+
+    public void setDeliveryId(String deliveryId) {
+        this.deliveryId = deliveryId;
+    }
+
+    public String getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(String contractId) {
+        this.contractId = contractId;
+    }
+
+    public String getRecvDate() {
+        return recvDate;
+    }
+
+    public void setRecvDate(String recvDate) {
+        this.recvDate = recvDate;
+    }
 
     public String getCompanyName() {
         return companyName;

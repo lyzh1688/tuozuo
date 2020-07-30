@@ -82,12 +82,13 @@ public class InvoiceInfoServiceImpl implements InvoiceInfoService {
     }
 
     @Override
-    public void auditInvoiceInfo(String invoiceId, String invoiceStatus, String deliveryId, String remark) {
+    public void auditInvoiceInfo(String invoiceId, String invoiceStatus, String deliveryId, String remark, String invoiceContent) {
         InvoiceInfo invoiceInfo = new InvoiceInfo();
         invoiceInfo.setInvoiceId(invoiceId);
         invoiceInfo.setInvoiceStatus(invoiceStatus);
         invoiceInfo.setDeliveryId(deliveryId);
         invoiceInfo.setRemark(remark);
+        invoiceInfo.setInvoiceContent(invoiceContent);
         this.invoiceInfoDao.update(invoiceInfo);
     }
 

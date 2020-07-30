@@ -1,8 +1,14 @@
 package com.tuozuo.tavern.shuiruyi.model;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+
 import java.util.Date;
 
-public class ContractAuditFlow {
+@TableName("contract_audit_flow")
+public class ContractAuditFlow extends Model<ContractAuditFlow> {
+    @TableId
     private String flowId;
 
     private String contractId;

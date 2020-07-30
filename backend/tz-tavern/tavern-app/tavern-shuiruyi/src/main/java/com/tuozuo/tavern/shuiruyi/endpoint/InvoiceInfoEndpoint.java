@@ -122,7 +122,7 @@ public class InvoiceInfoEndpoint {
     @PutMapping(value = "/audit/{invoiceId}")
     public TavernResponse auditInvoiceInfo(@PathVariable("invoiceId") String invoiceId, @RequestBody @Valid InvoiceAuditVO vo) {
         try {
-            this.invoiceInfoService.auditInvoiceInfo(invoiceId,vo.getInvoiceStatus(),vo.getDeliveryId(),vo.getRemark());
+            this.invoiceInfoService.auditInvoiceInfo(invoiceId,vo.getInvoiceStatus(),vo.getDeliveryId(),vo.getRemark(),vo.getInvoiceContent());
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[发票审核] failed", e);

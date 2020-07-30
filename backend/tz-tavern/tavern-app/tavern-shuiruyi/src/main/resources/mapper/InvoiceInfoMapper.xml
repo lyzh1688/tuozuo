@@ -80,6 +80,9 @@
         <if test="customId != null and customId != ''">
             and t1.custom_id = #{customId}
         </if>
+        <if test="contractId != null and contractId != ''">
+            and t3.contract_id = #{contractId}
+        </if>
         <if test="companyId != null and companyId != ''">
             and t2.company_id = #{companyId}
         </if>

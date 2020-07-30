@@ -1,8 +1,13 @@
 package com.tuozuo.tavern.shuiruyi.model;
 
-import java.util.Date;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 
-public class InvoiceAuditFlow {
+import java.util.Date;
+@TableName("invoice_audit_flow")
+public class InvoiceAuditFlow extends Model<InvoiceAuditFlow> {
+    @TableId
     private String flowId;
 
     private String invoiceId;

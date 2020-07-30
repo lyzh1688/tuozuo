@@ -9,10 +9,18 @@ import javax.validation.constraints.NotNull;
 public class InvoiceAuditVO {
     @NotNull(message = "invoiceStatus is not null")
     private String invoiceStatus;
-    @NotNull(message = "deliveryId is not null")
     private String deliveryId;
     @NotNull(message = "remark is not null")
     private String remark;
+    private String invoiceContent;
+
+    public String getInvoiceContent() {
+        return invoiceContent;
+    }
+
+    public void setInvoiceContent(String invoiceContent) {
+        this.invoiceContent = invoiceContent;
+    }
 
     public String getInvoiceStatus() {
         return invoiceStatus;

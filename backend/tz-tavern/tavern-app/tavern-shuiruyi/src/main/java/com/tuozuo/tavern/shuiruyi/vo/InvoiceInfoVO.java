@@ -14,8 +14,17 @@ public class InvoiceInfoVO {
     private String invoiceType;
     private double invoiceAmount;
     private double recvAmount;
+    private String recvDate;
     private MultipartFile authLetterFile;
     private MultipartFile bankFlowFile;
+
+    public String getRecvDate() {
+        return recvDate;
+    }
+
+    public void setRecvDate(String recvDate) {
+        this.recvDate = recvDate;
+    }
 
     public String getInvoiceId() {
         return invoiceId;
