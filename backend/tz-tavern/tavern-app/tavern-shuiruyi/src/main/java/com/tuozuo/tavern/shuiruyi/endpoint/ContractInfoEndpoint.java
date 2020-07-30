@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.shuiruyi.endpoint;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
@@ -164,6 +165,7 @@ public class ContractInfoEndpoint {
     public TavernResponse modifyCompanyInfo(@PathVariable("contractId") String contractId,
                                             @RequestBody ContractAuditVO vo) {
         try {
+            LOGGER.info("audit: {},contractId: {}", JSON.toJSONString(vo),contractId);
             this.contractInfoService.auditContractInfo(contractId, vo.getContractStatus(), vo.getRemark());
             return TavernResponse.OK;
         } catch (Exception e) {

@@ -66,9 +66,6 @@
     inner join contract_info t4 on t2.company_id = t4.company_id
     left join invoice_info t3 on t4.contract_id = t3.contract_id
   <where>
-    t1.custom_id = t2.custom_id
-    and t2.company_id = t3.company_id
-    and t3.contract_id = t4.contract_id
     <if test="customId != null and customId != ''">
       and t1.custom_id = #{customId}
     </if>
@@ -79,6 +76,6 @@
       and t2.contract_status = #{contractStatus}
     </if>
   </where>
-    order by  t4.contract_date desc desc limit #{queryCnt}
+    order by  t4.contract_date desc limit #{queryCnt}
   </select>
 </mapper>
