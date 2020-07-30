@@ -89,7 +89,7 @@
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="ops" slot-scope="text, record">
-          <a-button size="small" @click="handleUpdate(record)" :loading="confirmLoading">修改</a-button>
+          <a-button :disabled="record.invoiceStatus!=='审核中'&&record.invoiceStatus!=='审核失败'" size="small" @click="handleUpdate(record)" :loading="confirmLoading">修改</a-button>
           <a-button size="small" @click="handleDetail(record)" :loading="confirmLoading">详情</a-button>
         </span>
       </s-table>
