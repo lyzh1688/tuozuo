@@ -67,7 +67,7 @@ public class ContractInfoEndpoint {
     public TavernResponse queryCompanyDetail(@PathVariable("contractId") String contractId) {
         try {
             ContractDetailInfo contractDetailInfo = this.contractInfoService.queryContractDetail(contractId);
-            if(contractDetailInfo == null){
+            if (contractDetailInfo == null) {
                 throw new Exception("该合同不存在");
             }
             ContractItemDTO itemDTO = BusinessConverter.modelToContractDetailDTO(contractDetailInfo);
@@ -122,13 +122,15 @@ public class ContractInfoEndpoint {
                                          @RequestHeader(TavernRequestAuthFields.USER_ID) String customId,
                                          @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
         try {
-            List<BusinessDictDTO> businessDictList = this.contractInfoService.fuzzyQueryContractInfo(contractStatus, contractName, queryCnt, customId, roleGroup)
+            List<ContractSearchDTO> businessDictList = this.contractInfoService.fuzzyQueryContractInfo(contractStatus, contractName, queryCnt, customId, roleGroup)
                     .stream()
                     .map(contractInfo -> {
-                        BusinessDictDTO dict = new BusinessDictDTO();
-                        dict.setId(contractInfo.getContractId());
-                        dict.setName(contractInfo.getContractName());
-                        return dict;
+                        ContractSearchDTO contractSearchDTO = new ContractSearchDTO();
+                        contractSearchDTO.setId(contractInfo.getContractId());
+                        contractSearchDTO.setName(contractInfo.getContractName());
+                        contractSearchDTO.setCompanyId(contractInfo.getCompanyId());
+                        contractSearchDTO.setCompanyName(contractInfo.getCompanyPartyBName());
+                        return contractSearchDTO;
                     }).collect(Collectors.toList());
             return TavernResponse.ok(businessDictList);
         } catch (Exception e) {
@@ -165,7 +167,7 @@ public class ContractInfoEndpoint {
     public TavernResponse modifyCompanyInfo(@PathVariable("contractId") String contractId,
                                             @RequestBody ContractAuditVO vo) {
         try {
-            LOGGER.info("audit: {},contractId: {}", JSON.toJSONString(vo),contractId);
+            LOGGER.info("audit: {},contractId: {}", JSON.toJSONString(vo), contractId);
             this.contractInfoService.auditContractInfo(contractId, vo.getContractStatus(), vo.getRemark());
             return TavernResponse.OK;
         } catch (Exception e) {
