@@ -81,7 +81,7 @@
       <s-table
         ref="table"
         size="default"
-        rowKey="contractId"
+        rowKey="invoiceId"
         :pageSize="20"
         :columns="columns"
         :data="loadData"

@@ -37,22 +37,19 @@
             </a-form-item>
           </a-col>
           <a-col :span="12">
-            <a-form-item label="公司名称" key="公司名称">
-              <a-select
+            <a-form-item v-show="false" label="公司id" key="公司id">
+              <a-input
+                style="width:200px;"
                 :disabled="isShowOnly"
-                show-search
-                v-decorator="['companyId', {rules: [{required: true, message: '请选择公司名称！'}], validateTrigger: 'blur'}]"
-                placeholder="input search text"
-                style="width: 200px"
-                :default-active-first-option="false"
-                :show-arrow="false"
-                :filter-option="false"
-                :not-found-content="null"
-                @search="handleCustomSearch"
-                @change="handleCustomChange"
-              >
-                <a-select-option v-for="d in fuzzyCompanyList" :key="d.value">{{ d.text }}</a-select-option>
-              </a-select>
+                v-decorator="['companyId', {rules: [{required: true, message: '请输入公司id！'}], validateTrigger: 'blur'}]"
+              />
+            </a-form-item>
+            <a-form-item label="公司名称" key="公司名称">
+              <a-input
+                :disabled="true"
+                style="width:200px;"
+                v-decorator="['companyName', {rules: [{required: true, message: '请输入公司名称！'}], validateTrigger: 'blur'}]"
+              />
             </a-form-item>
           </a-col>
         </a-row>
@@ -214,7 +211,9 @@ function fetch2 (value, callback) {
         result.forEach((r) => {
           data.push({
             value: r['id'],
-            text: r['name']
+            text: r['name'],
+            companyId: r['companyId'],
+            companyName: r['companyName']
           })
         })
         data.push({
@@ -232,6 +231,7 @@ function fetch2 (value, callback) {
 const fields = [
   'invoiceId',
   'companyId',
+  'companyName',
   'contractId',
   'invoiceType',
   'invoiceAmount',
@@ -243,7 +243,7 @@ const fields = [
   'recvDate',
   'invoiceContent',
   'remark',
-  'invoiceATaxRate'
+  'tax'
 ]
 
 export default {
@@ -334,9 +334,20 @@ export default {
     handleCustomSearch2 (value) {
       fetch2(value, (data) => (this.fuzzyContractList = data))
     },
-    handleCustomChange2 (value) {
-      // console.log(value)
-      fetch2(value, (data) => (this.fuzzyContractList = data))
+   async handleCustomChange2 (value) {
+      // this.form.setFieldsValue({ tradeFlow: result.data.tradeFlowId })
+      // await fetch2(value, (data) => {
+      //   this.fuzzyContractList = data
+
+      //   })
+             for (const i of this.fuzzyContractList) {
+      console.log(value, i)
+
+        if (i.value === value) {
+          this.form.setFieldsValue({ companyId: i.companyId })
+          this.form.setFieldsValue({ companyName: i.companyName })
+        }
+      }
     },
     handlebankFlowFileChange (info) {
       let fileList = [...info.fileList]

@@ -78,7 +78,7 @@
       <s-table
         ref="table"
         size="default"
-        rowKey="contractId"
+        rowKey="invoiceId"
         :pageSize="20"
         :columns="columns"
         :data="loadData"
@@ -155,7 +155,7 @@
                 :min="0"
                 style="width:200px;"
                 :disabled="isShowOnly"
-                v-decorator="['invoiceATaxRate', {rules: [{required: true, message: '请输入开票税率！'}], validateTrigger: 'blur'}]"
+                v-decorator="['tax', {rules: [{required: true, message: '请输入开票税率！'}], validateTrigger: 'blur'}]"
               />
             </a-form-item>
           </a-col>
