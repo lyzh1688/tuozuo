@@ -44,11 +44,11 @@
           </a-row>
           <a-row>
             <a-col :span="12">
-              <a-form-item label="综合税率" key="综合税率">
+              <a-form-item label="核定征收率" key="核定征收率">
                 <a-select
                   :disabled="isShowOnly"
                   style="width:200px;"
-                  v-decorator="['tax', {rules: [{required: true, message: '请输入公司类型！'}], validateTrigger: 'blur'}]"
+                  v-decorator="['tax', {rules: [{required: true, message: '请输入核定征收率！'}], validateTrigger: 'blur'}]"
                   placeholder="请选择"
                 >
                   <a-select-option v-for=" taxItem in taxList" :key="taxItem.id">{{ taxItem.name }}</a-select-option>

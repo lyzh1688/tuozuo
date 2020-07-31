@@ -148,6 +148,18 @@
             </a-form-item>
           </a-col>
         </a-row>
+        <a-row>
+          <a-col :span="12">
+            <a-form-item label="开票税率" key="开票税率">
+              <a-input-number
+                :min="0"
+                style="width:200px;"
+                :disabled="isShowOnly"
+                v-decorator="['invoiceATaxRate', {rules: [{required: true, message: '请输入开票税率！'}], validateTrigger: 'blur'}]"
+              />
+            </a-form-item>
+          </a-col>
+        </a-row>
       </template>
     </contractForm>
   </page-header-wrapper>

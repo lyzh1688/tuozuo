@@ -242,7 +242,8 @@ const fields = [
   'deliveryId',
   'recvDate',
   'invoiceContent',
-  'remark'
+  'remark',
+  'invoiceATaxRate'
 ]
 
 export default {
