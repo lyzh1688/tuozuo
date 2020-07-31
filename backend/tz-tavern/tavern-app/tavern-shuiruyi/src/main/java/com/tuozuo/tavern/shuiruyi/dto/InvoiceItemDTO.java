@@ -1,5 +1,7 @@
 package com.tuozuo.tavern.shuiruyi.dto;
 
+import java.math.BigDecimal;
+
 /**
  * Code Monkey: 何彪 <br>
  * Dev Time: 2020/7/26 <br>
@@ -13,6 +15,15 @@ public class InvoiceItemDTO {
     private String deliveryId;
     private String invoiceStatus;
     private String remark;
+    private BigDecimal tax;
+
+    public BigDecimal getTax() {
+        return tax;
+    }
+
+    public void setTax(BigDecimal tax) {
+        this.tax = tax;
+    }
 
     public String getCompanyPartyBName() {
         return companyPartyBName;

@@ -15,8 +15,17 @@ public class InvoiceInfoVO {
     private double invoiceAmount;
     private double recvAmount;
     private String recvDate;
+    private double tax;
     private MultipartFile authLetterFile;
     private MultipartFile bankFlowFile;
+
+    public double getTax() {
+        return tax;
+    }
+
+    public void setTax(double tax) {
+        this.tax = tax;
+    }
 
     public String getRecvDate() {
         return recvDate;

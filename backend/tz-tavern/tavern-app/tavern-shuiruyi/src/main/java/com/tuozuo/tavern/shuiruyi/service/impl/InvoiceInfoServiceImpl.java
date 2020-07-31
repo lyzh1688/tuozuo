@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -82,13 +83,14 @@ public class InvoiceInfoServiceImpl implements InvoiceInfoService {
     }
 
     @Override
-    public void auditInvoiceInfo(String invoiceId, String invoiceStatus, String deliveryId, String remark, String invoiceContent) {
+    public void auditInvoiceInfo(String invoiceId, String invoiceStatus, String deliveryId, String remark, String invoiceContent,double tax) {
         InvoiceInfo invoiceInfo = new InvoiceInfo();
         invoiceInfo.setInvoiceId(invoiceId);
         invoiceInfo.setInvoiceStatus(invoiceStatus);
         invoiceInfo.setDeliveryId(deliveryId);
         invoiceInfo.setRemark(remark);
         invoiceInfo.setInvoiceContent(invoiceContent);
+        invoiceInfo.setTax(new BigDecimal(tax));
         this.invoiceInfoDao.update(invoiceInfo);
     }
 

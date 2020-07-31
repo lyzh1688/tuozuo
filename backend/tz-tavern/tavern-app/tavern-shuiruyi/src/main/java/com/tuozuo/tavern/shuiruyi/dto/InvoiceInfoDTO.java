@@ -1,5 +1,7 @@
 package com.tuozuo.tavern.shuiruyi.dto;
 
+import java.math.BigDecimal;
+
 /**
  * Code Monkey: 何彪 <br>
  * Dev Time: 2020/7/26 <br>
@@ -13,6 +15,7 @@ public class InvoiceInfoDTO {
     private String invoiceType;
     private double invoiceAmount;
     private double recvAmount;
+    private BigDecimal tax;
     private String recvDate;
     private String authLetterFile;
     private String bankFlowFile;
@@ -20,6 +23,14 @@ public class InvoiceInfoDTO {
     private String invoiceStatus;
     private String remark;
     private String deliveryId;
+
+    public BigDecimal getTax() {
+        return tax;
+    }
+
+    public void setTax(BigDecimal tax) {
+        this.tax = tax;
+    }
 
     public String getInvoiceStatus() {
         return invoiceStatus;

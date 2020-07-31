@@ -199,6 +199,7 @@ public class BusinessConverter {
         item.setDeliveryId(invoiceDetailInfo.getDeliveryId());
         item.setInvoiceStatus(InvoiceStatus.getInvoiceStatus(invoiceDetailInfo.getInvoiceStatus()).getName());
         item.setRemark(invoiceDetailInfo.getRemark());
+        item.setTax(invoiceDetailInfo.getTax());
         return item;
     }
 
@@ -212,6 +213,7 @@ public class BusinessConverter {
         if (vo.getRecvDate() != null) {
             invoiceInfo.setRecvDate(DateUtils.convert2Date(DateUtils.parseDateTime(vo.getRecvDate() + " 00:00:00", DateUtils.DEFAULT_DATETIME_FORMATTER)));
         }
+        invoiceInfo.setTax(new BigDecimal(vo.getTax()));
         return invoiceInfo;
     }
 
@@ -236,6 +238,7 @@ public class BusinessConverter {
         invoiceInfoDTO.setInvoiceStatus(invoiceDetailInfo.getInvoiceStatus());
         invoiceInfoDTO.setRemark(invoiceDetailInfo.getRemark());
         invoiceInfoDTO.setDeliveryId(invoiceDetailInfo.getDeliveryId());
+        invoiceInfoDTO.setTax(invoiceDetailInfo.getTax());
 
         return invoiceInfoDTO;
     }

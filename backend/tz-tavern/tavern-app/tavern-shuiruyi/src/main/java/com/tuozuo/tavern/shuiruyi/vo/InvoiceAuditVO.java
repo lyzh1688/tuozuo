@@ -12,7 +12,17 @@ public class InvoiceAuditVO {
     private String deliveryId;
     @NotNull(message = "remark is not null")
     private String remark;
+    @NotNull(message = "tax is not null")
+    private double tax;
     private String invoiceContent;
+
+    public double getTax() {
+        return tax;
+    }
+
+    public void setTax(double tax) {
+        this.tax = tax;
+    }
 
     public String getInvoiceContent() {
         return invoiceContent;
