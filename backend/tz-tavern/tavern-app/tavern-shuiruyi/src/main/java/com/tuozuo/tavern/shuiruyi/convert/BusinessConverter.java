@@ -98,6 +98,8 @@ public class BusinessConverter {
         customInfoDetailDTO.setCustomName(customDetailInfo.getCustomName());
         customInfoDetailDTO.setCustomContact(customDetailInfo.getCustomContact());
         customInfoDetailDTO.setProvince(customDetailInfo.getProvince());
+        customInfoDetailDTO.setCity(customDetailInfo.getCity());
+        customInfoDetailDTO.setDistrict(customDetailInfo.getDistrict());
         customInfoDetailDTO.setTotalServerCharge(customDetailInfo.getTotalServerCharge());
         customInfoDetailDTO.setBalance(customDetailInfo.getBalance());
         return customInfoDetailDTO;
