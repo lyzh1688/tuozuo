@@ -104,7 +104,7 @@
         and (t1.company_status = 'REG_AUDIT_NAME' or t1.company_status = 'REG_AUDIT_TAX')
       </if>
       <if test='registerStatus != null and registerStatus == "2"'>
-        and (t1.company_status = 'REG_DOND' or t1.company_status ='SERVICE' or t1.company_status = 'ARREARAGE' or t1.company_status = 'TAX_CANCEL' or t1.company_status = 'BIZ_CANCEL' or t1.company_status = 'FINISH')
+        and (t1.company_status = 'REG_DONE' or t1.company_status ='SERVICE' or t1.company_status = 'ARREARAGE' or t1.company_status = 'TAX_CANCEL' or t1.company_status = 'BIZ_CANCEL' or t1.company_status = 'FINISH')
       </if>
     </where>
       order by t1.company_name

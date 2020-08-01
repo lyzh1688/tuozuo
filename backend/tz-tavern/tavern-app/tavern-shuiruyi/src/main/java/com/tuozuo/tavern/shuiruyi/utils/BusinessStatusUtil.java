@@ -25,7 +25,7 @@ public class BusinessStatusUtil {
         registeringMap.put(BusinessStatus.REG_AUDIT_NAME.name(),BusinessStatus.REG_AUDIT_NAME.name());
         registeringMap.put(BusinessStatus.REG_AUDIT_TAX.name(),BusinessStatus.REG_AUDIT_TAX.name());
 
-        registeredMap.put(BusinessStatus.REG_DOND.name(),BusinessStatus.REG_DOND.name());
+        registeredMap.put(BusinessStatus.REG_DONE.name(),BusinessStatus.REG_DONE.name());
         registeredMap.put(BusinessStatus.SERVICE.name(),BusinessStatus.SERVICE.name());
         registeredMap.put(BusinessStatus.ARREARAGE.name(),BusinessStatus.ARREARAGE.name());
         registeredMap.put(BusinessStatus.TAX_CANCEL.name(),BusinessStatus.TAX_CANCEL.name());

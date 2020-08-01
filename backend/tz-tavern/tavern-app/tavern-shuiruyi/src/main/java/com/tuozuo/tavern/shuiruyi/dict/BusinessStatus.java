@@ -16,7 +16,7 @@ public enum BusinessStatus {
 
     REG_AUDIT_NAME("注册核名中"),
     REG_AUDIT_TAX("注册核税种"),
-    REG_DOND("注册完成"),
+    REG_DONE("注册完成"),
     SERVICE("服务中"),
     ARREARAGE("欠费中"),
     TAX_CANCEL("税务注销中"),
