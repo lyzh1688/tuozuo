@@ -1,16 +1,8 @@
 package com.tuozuo.tavern.shuiruyi.dict;
 
 /**
- * 功能说明: <br>
- * 系统说明: <br>
- * 模块说明: <br>
- * 功能描述: <br>
- * <br>
- *
- * @author hebiao@orientsec.com.cn
- * <br>
- * 软件著作: 东方证券 版权所有
- * @since 1.0
+ * Code Monkey: 何彪 <br>
+ * Dev Time: 2020/7/18 <br>
  */
 public enum BusinessStatus {
 
