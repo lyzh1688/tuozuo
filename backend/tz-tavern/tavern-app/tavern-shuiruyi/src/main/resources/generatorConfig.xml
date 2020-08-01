@@ -17,33 +17,15 @@
                         userId="root"
                         password="y2iaciej" />
 
-        <javaModelGenerator targetPackage="com.tuozuo.tavern.shuiruyi.entity" targetProject="src/main/java" >
+        <javaModelGenerator targetPackage="com.tuozuo.tavern.shuiruyi.model" targetProject="src/main/java" >
             <property name="trimStrings" value = "true"></property>
         </javaModelGenerator>
 
         <sqlMapGenerator targetPackage="mapper/" targetProject="src/main/resources" />
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.tuozuo.tavern.shuiruyi.dao" targetProject="src/main/java" />
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.tuozuo.tavern.shuiruyi.mapper" targetProject="src/main/java" />
 
-        <table tableName="business_dict" domainObjectName="BusinessDict">
-        </table>
-        <table tableName="company_info" domainObjectName="companyInfo">
-        </table>
-        <table tableName="contract_audit_flow" domainObjectName="contractAuditFlow">
-        </table>
-        <table tableName="contract_info" domainObjectName="ContractInfo">
-        </table>
-        <table tableName="contract_template" domainObjectName="ContractTemplate">
-        </table>
-        <table tableName="custom_info" domainObjectName="CustomInfo">
-        </table>
-        <table tableName="custom_statistic_snapshot" domainObjectName="CustomStatisticSnapshot">
-        </table>
-        <table tableName="custom_trade_flow" domainObjectName="CustomTradeFlow">
-        </table>
-        <table tableName="invoice_audit_flow" domainObjectName="InvoiceAuditFlow">
-        </table>
-        <table tableName="invoice_info" domainObjectName="InvoiceInfo">
+        <table tableName="area_info" domainObjectName="AreaInfo">
         </table>
 
 

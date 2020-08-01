@@ -16,10 +16,30 @@ public class CustomInfoVO {
     private String customContact;
     @NotNull(message = "province is not null")
     private String province;
+    @NotNull(message = "city is not null")
+    private String city;
+    @NotNull(message = "district is not null")
+    private String district;
     @NotNull(message = "customType is not null")
     private String customType;
     @NotNull(message = "hasPaid is not null")
     private String hasPaid;
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
 
     public String getCustomName() {
         return customName;

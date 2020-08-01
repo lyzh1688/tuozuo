@@ -46,6 +46,14 @@
     <result column="invoice_amount" jdbcType="DECIMAL" property="invoiceAmount" />
     <result column="invoice_date" jdbcType="VARCHAR" property="invoiceDate" />
   </resultMap>
+  <resultMap id="BaseTaxStatisticsResultMap" type="com.tuozuo.tavern.shuiruyi.model.TaxStatistic">
+      <result column="custom_name" jdbcType="VARCHAR" property="customName" />
+      <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="income_tax" jdbcType="DECIMAL" property="incomeTax" />
+    <result column="value_added_tax" jdbcType="DECIMAL" property="valueAddedTax" />
+    <result column="total_value_added_tax" jdbcType="DECIMAL" property="totalValueAddedTax" />
+    <result column="total_income_tax" jdbcType="DECIMAL" property="totalIncomeTax" />
+  </resultMap>
   <select id="selectStatistic"  resultMap="BaseStatisticsResultMap">
      select  t1.company_id, t1.company_name,count(t.invoice_id) invoice_cnt,
      date_format(t.invoice_date,'%Y-%m-%d') invoice_date,sum(t.invoice_amount) invoice_amount
@@ -111,4 +119,185 @@
 
 
     </select>
+    <select id="selectTaxStatistic" resultMap="BaseTaxStatisticsResultMap">
+
+        select custom_name,company_name,convert(sum(value_added_tax),decimal(10,4)) value_added_tax,convert(sum(income_tax),decimal(10,4)) income_tax from
+        (
+        select custom_id,
+        custom_name,
+        company_id,
+        company_name,
+        value_added_tax,income*tax_rate - tax_deduction income_tax from
+        (
+        SELECT
+        custom_id,
+        custom_name,
+        company_id,
+        company_name,
+        value_added_tax,
+        income ,
+        t1.tax_rate,
+        t1.tax_deduction
+        FROM
+        (
+        SELECT
+        custom_id,
+        custom_name,
+        company_id,
+        company_name,
+        invoice_amount,
+        invoice_amount / ( 1+tax ) * tax value_added_tax,
+        ( invoice_amount - invoice_amount / ( 1+tax ) * tax ) * company_tax income
+        FROM
+        (
+        SELECT
+        t1.custom_id,
+        t2.company_id,
+        t1.custom_name,
+        t2.company_name,
+        sum( t3.invoice_amount ) invoice_amount,
+        t3.tax,
+        t2.tax company_tax
+        FROM
+        custom_info t1,
+        company_info t2,
+        invoice_info t3,
+        contract_info t4
+        <where>
+        t1.custom_id = t2.custom_id
+        AND t2.company_id = t3.company_id
+        AND t3.contract_id = t4.contract_id
+        <if test="registerArea != null and registerArea != ''">
+            and t2.register_area = #{registerArea}
+        </if>
+        <if test="customId != null and customId != ''">
+            and t1.custom_id = #{customId}
+        </if>
+        <if test="areaLevel != null and areaLevel == 'province'">
+            and t1.province = #{areaCode}
+        </if>
+        <if test="areaLevel != null and areaLevel == 'city'">
+            and t1.city = #{areaCode}
+        </if>
+        <if test='areaLevel != null and areaLevel == "district"'>
+            and t1.district = #{areaCode}
+        </if>
+        <if test="invoiceType != null and invoiceType != ''">
+            and t3.invoice_type = #{invoiceType}
+        </if>
+        <if test="beginDate != null and beginDate != ''">
+            and t3.invoice_date >= STR_TO_DATE(#{beginDate},'%Y-%m-%d')
+        </if>
+        <if test="endDate != null and endDate != ''">
+            and t3.invoice_date <![CDATA[ <= ]]> STR_TO_DATE(#{endDate},'%Y-%m-%d')
+        </if>
+
+    </where>
+        GROUP BY
+        t1.custom_id,
+        t2.company_id,
+        t3.tax
+        order by  t3.invoice_date desc
+        ) t
+        ) t,tax_info t1
+        where t.income  BETWEEN t1.tax_limit AND t1.tax_top
+
+
+        )t
+        )t
+
+        GROUP BY
+        custom_id,
+        company_id
+
+    </select>
+    <select id="selectTotalTaxStatistic" resultMap="BaseTaxStatisticsResultMap">
+
+        select custom_name,company_name,convert(sum(value_added_tax),decimal(10,4)) total_value_added_tax,convert(sum(income_tax),decimal(10,4)) total_income_tax from
+        (
+        select custom_id,
+        custom_name,
+        company_id,
+        company_name,
+        value_added_tax,income*tax_rate - tax_deduction income_tax from
+        (
+        SELECT
+        custom_id,
+        custom_name,
+        company_id,
+        company_name,
+        value_added_tax,
+        income ,
+        t1.tax_rate,
+        t1.tax_deduction
+        FROM
+        (
+        SELECT
+        custom_id,
+        custom_name,
+        company_id,
+        company_name,
+        invoice_amount,
+        invoice_amount / ( 1+tax ) * tax value_added_tax,
+        ( invoice_amount - invoice_amount / ( 1+tax ) * tax ) * company_tax income
+        FROM
+        (
+        SELECT
+        t1.custom_id,
+        t2.company_id,
+        t1.custom_name,
+        t2.company_name,
+        sum( t3.invoice_amount ) invoice_amount,
+        t3.tax,
+        t2.tax company_tax
+        FROM
+        custom_info t1,
+        company_info t2,
+        invoice_info t3,
+        contract_info t4
+        <where>
+        t1.custom_id = t2.custom_id
+        AND t2.company_id = t3.company_id
+        AND t3.contract_id = t4.contract_id
+        <if test="registerArea != null and registerArea != ''">
+            and t2.register_area = #{registerArea}
+        </if>
+        <if test="customId != null and customId != ''">
+            and t1.custom_id = #{customId}
+        </if>
+        <if test="areaLevel != null and areaLevel == 'province'">
+            and t1.province = #{areaCode}
+        </if>
+        <if test="areaLevel != null and areaLevel == 'city'">
+            and t1.city = #{areaCode}
+        </if>
+        <if test="areaLevel != null and areaLevel == 'district'">
+            and t1.district = #{areaCode}
+        </if>
+        <if test="invoiceType != null and invoiceType != ''">
+            and t3.invoice_type = #{invoiceType}
+        </if>
+        <if test="beginDate != null and beginDate != ''">
+            and t3.invoice_date >= STR_TO_DATE(#{beginDate},'%Y-%m-%d')
+        </if>
+        <if test="endDate != null and endDate != ''">
+            and t3.invoice_date <![CDATA[ <= ]]> STR_TO_DATE(#{endDate},'%Y-%m-%d')
+        </if>
+
+    </where>
+        GROUP BY
+        t1.custom_id,
+        t2.company_id,
+        t3.tax
+        order by  t3.invoice_date desc
+        ) t
+        ) t,tax_info t1
+        where t.income  BETWEEN t1.tax_limit AND t1.tax_top
+
+
+        )t
+        )t
+
+    </select>
+
 </mapper>

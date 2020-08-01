@@ -6,11 +6,9 @@ import com.tuozuo.tavern.shuiruyi.convert.BusinessConverter;
 import com.tuozuo.tavern.shuiruyi.dao.CompanyInfoDao;
 import com.tuozuo.tavern.shuiruyi.dao.InvoiceInfoDao;
 import com.tuozuo.tavern.shuiruyi.model.*;
-import com.tuozuo.tavern.shuiruyi.service.CompanyInfoService;
 import com.tuozuo.tavern.shuiruyi.service.InvoiceInfoService;
 import com.tuozuo.tavern.shuiruyi.utils.FileUtils;
 import com.tuozuo.tavern.shuiruyi.utils.UUIDUtil;
-import com.tuozuo.tavern.shuiruyi.vo.InvoiceAuditVO;
 import com.tuozuo.tavern.shuiruyi.vo.InvoiceInfoVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -22,9 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -37,6 +33,10 @@ public class InvoiceInfoServiceImpl implements InvoiceInfoService {
     private String fileUrlPath;
     @Value("${shuiruyi.company.file.path:/mnt/file/invoice/file/}")
     private String filePath;
+    @Value("${shuiruyi.progressiveTax:0.1}")
+    double progressiveTax;
+    @Value("${shuiruyi.deduction:1500}")
+    double deduction;
     private static final Logger LOGGER = LoggerFactory.getLogger(InvoiceInfoServiceImpl.class);
     @Autowired
     private InvoiceInfoDao invoiceInfoDao;
@@ -105,6 +105,16 @@ public class InvoiceInfoServiceImpl implements InvoiceInfoService {
         invoiceInfo.setInvoiceContent(invoiceContent);
         invoiceInfo.setTax(new BigDecimal(tax));
         this.invoiceInfoDao.update(invoiceInfo);
+    }
+
+    @Override
+    public IPage<TaxStatistic> queryTaxStatistic(String registerArea, String customId, String areaLevel, String areaCode, String invoiceType, String beginDate, String endDate, int pageNo, int pageSize) {
+        return this.invoiceInfoDao.selectTaxStatistic(registerArea, customId, areaLevel, areaCode, invoiceType, beginDate, endDate, pageNo, pageSize);
+    }
+
+    @Override
+    public TaxStatistic queryTotalTaxStatistic(String registerArea, String customId, String areaLevel, String areaCode, String invoiceType, String beginDate, String endDate) {
+        return this.invoiceInfoDao.selectTotalTaxStatistic(registerArea, customId, areaLevel, areaCode, invoiceType, beginDate, endDate);
     }
 
 

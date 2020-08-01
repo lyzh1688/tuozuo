@@ -7,6 +7,7 @@ import com.tuozuo.tavern.shuiruyi.mapper.InvoiceInfoMapper;
 import com.tuozuo.tavern.shuiruyi.model.InvoiceDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.InvoiceInfo;
 import com.tuozuo.tavern.shuiruyi.model.InvoiceStatistic;
+import com.tuozuo.tavern.shuiruyi.model.TaxStatistic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -45,5 +46,16 @@ public class InvoiceInfoDaoImpl implements InvoiceInfoDao {
     @Override
     public InvoiceDetailInfo selectInvoiceInfo(String invoiceId) {
         return this.invoiceInfoMapper.select(invoiceId);
+    }
+
+    @Override
+    public IPage<TaxStatistic> selectTaxStatistic(String registerArea, String customId, String areaLevel, String areaCode, String invoiceType, String beginDate, String endDate,int pageNo,int pageSize) {
+        Page page = new Page(pageNo,pageSize);
+        return this.invoiceInfoMapper.selectTaxStatistic(page,registerArea, customId, areaLevel, areaCode, invoiceType, beginDate, endDate);
+    }
+
+    @Override
+    public TaxStatistic selectTotalTaxStatistic(String registerArea, String customId, String areaLevel, String areaCode, String invoiceType, String beginDate, String endDate) {
+        return this.invoiceInfoMapper.selectTotalTaxStatistic(registerArea, customId, areaLevel, areaCode, invoiceType, beginDate, endDate);
     }
 }

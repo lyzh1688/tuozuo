@@ -11,23 +11,43 @@ import java.util.Date;
 @TableName("custom_info")
 public class CustomInfo extends Model<CustomInfo> {
     @TableId
-     String customId;
+    String customId;
 
-     String customName;
+    String customName;
 
-     String customPswd;
+    String customPswd;
 
-     String customContact;
+    String customContact;
 
-     BigDecimal balance;
+    BigDecimal balance;
 
-     String province;
+    String province;
 
-     LocalDateTime updateDate;
+    String city;
 
-     String customType;
+    String district;
 
-     String hasPaid;
+    LocalDateTime updateDate;
+
+    String customType;
+
+    String hasPaid;
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
 
     public String getCustomId() {
         return customId;

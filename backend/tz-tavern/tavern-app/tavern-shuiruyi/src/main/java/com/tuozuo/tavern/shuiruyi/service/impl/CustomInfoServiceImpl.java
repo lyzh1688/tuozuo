@@ -136,6 +136,8 @@ public class CustomInfoServiceImpl implements CustomInfoService {
         customInfo.setCustomPswd(vo.getCustomPswd());
         customInfo.setCustomContact(vo.getCustomContact());
         customInfo.setProvince(vo.getProvince());
+        customInfo.setCity(vo.getCity());
+        customInfo.setDistrict(vo.getDistrict());
         customInfo.setCustomType(vo.getCustomType());
         customInfo.setHasPaid(vo.getHasPaid());
         customInfo.setUpdateDate(LocalDateTime.now());

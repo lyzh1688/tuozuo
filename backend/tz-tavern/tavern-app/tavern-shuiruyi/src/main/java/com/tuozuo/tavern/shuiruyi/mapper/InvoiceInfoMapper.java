@@ -6,10 +6,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tuozuo.tavern.shuiruyi.model.InvoiceDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.InvoiceInfo;
 import com.tuozuo.tavern.shuiruyi.model.InvoiceStatistic;
+import com.tuozuo.tavern.shuiruyi.model.TaxStatistic;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 @Mapper
 public interface InvoiceInfoMapper extends BaseMapper<InvoiceInfo> {
@@ -28,5 +27,22 @@ public interface InvoiceInfoMapper extends BaseMapper<InvoiceInfo> {
 
     InvoiceDetailInfo select(@Param("invoiceId") String invoiceId);
 
+
+    IPage<TaxStatistic> selectTaxStatistic(Page page,
+                                    @Param("registerArea") String registerArea,
+                                    @Param("customId") String customId,
+                                    @Param("areaLevel") String areaLevel,
+                                    @Param("areaCode") String areaCode,
+                                    @Param("invoiceType") String invoiceType,
+                                    @Param("beginDate") String beginDate,
+                                    @Param("endDate") String endDate);
+
+    TaxStatistic selectTotalTaxStatistic(@Param("registerArea") String registerArea,
+                                    @Param("customId") String customId,
+                                    @Param("areaLevel") String areaLevel,
+                                    @Param("areaCode") String areaCode,
+                                    @Param("invoiceType") String invoiceType,
+                                    @Param("beginDate") String beginDate,
+                                    @Param("endDate") String endDate);
 
 }

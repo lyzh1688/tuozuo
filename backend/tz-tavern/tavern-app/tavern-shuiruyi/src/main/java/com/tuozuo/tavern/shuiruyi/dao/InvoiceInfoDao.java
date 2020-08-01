@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.shuiruyi.model.InvoiceDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.InvoiceInfo;
 import com.tuozuo.tavern.shuiruyi.model.InvoiceStatistic;
+import com.tuozuo.tavern.shuiruyi.model.TaxStatistic;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -25,5 +26,23 @@ public interface InvoiceInfoDao {
     void update(InvoiceInfo invoiceInfo);
 
     InvoiceDetailInfo selectInvoiceInfo(String invoiceId);
+
+    IPage<TaxStatistic> selectTaxStatistic(String registerArea,
+                                           String customId,
+                                           String areaLevel,
+                                           String areaCode,
+                                           String invoiceType,
+                                           String beginDate,
+                                           String endDate,
+                                           int pageNo,
+                                           int pageSize);
+
+    TaxStatistic selectTotalTaxStatistic(String registerArea,
+                                         String customId,
+                                         String areaLevel,
+                                         String areaCode,
+                                         String invoiceType,
+                                         String beginDate,
+                                         String endDate);
 
 }

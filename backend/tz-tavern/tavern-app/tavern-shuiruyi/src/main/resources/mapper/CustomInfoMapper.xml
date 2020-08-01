@@ -8,6 +8,8 @@
     <result column="custom_contact" jdbcType="VARCHAR" property="customContact" />
     <result column="balance" jdbcType="DECIMAL" property="balance" />
     <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="district" jdbcType="VARCHAR" property="district" />
     <result column="update_date" jdbcType="DATE" property="updateDate" />
     <result column="custom_type" jdbcType="VARCHAR" property="customType" />
     <result column="has_paid" jdbcType="VARCHAR" property="hasPaid" />
@@ -19,20 +21,22 @@
     <result column="custom_contact" jdbcType="VARCHAR" property="customContact" />
     <result column="balance" jdbcType="DECIMAL" property="balance" />
     <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="district" jdbcType="VARCHAR" property="district" />
     <result column="update_date" jdbcType="DATE" property="updateDate" />
     <result column="custom_type" jdbcType="VARCHAR" property="customType" />
     <result column="has_paid" jdbcType="VARCHAR" property="hasPaid" />
     <result column="total_fee" jdbcType="DECIMAL" property="totalServerCharge" />
   </resultMap>
   <select id="selectDetailInfo" resultMap="BaseDetailResultMap">
-    select t.custom_id, t.custom_name, t.custom_pswd, t.custom_contact, t.balance, t.province, t.update_date,
+    select t.custom_id, t.custom_name, t.custom_pswd, t.custom_contact, t.balance, t.province,t.city,t.district, t.update_date,
     t.custom_type, t.has_paid,t1.total_fee
     from custom_info t left join custom_statistic_snapshot t1
     on t.custom_id = t1.custom_id
     where t.custom_id = #{customId,jdbcType=VARCHAR}
   </select>
   <select id="selectCustomInfoList" resultMap="BaseResultMap">
-    select custom_id, custom_name, custom_pswd, custom_contact, balance, province, update_date, 
+    select custom_id, custom_name, custom_pswd, custom_contact, balance, province,city,district, update_date,
     custom_type, has_paid
     from custom_info
     <where>
