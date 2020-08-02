@@ -133,7 +133,7 @@ public class InvoiceInfoEndpoint {
                                            @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
         try {
             this.invoiceInfoService.auditInvoiceInfo(invoiceId, vo.getInvoiceStatus(), vo.getDeliveryId(), vo.getRemark(), vo.getInvoiceContent(), vo.getTax());
-            this.invoiceInfoService.addInvoiceFlow(invoiceId, Event.CREATE, customId, roleGroup);
+            this.invoiceInfoService.addInvoiceFlow(invoiceId, Event.AUDIT, customId, roleGroup);
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[发票审核] failed", e);
