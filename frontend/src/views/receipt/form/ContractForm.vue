@@ -23,7 +23,7 @@
                 :disabled="isShowOnly"
                 show-search
                 v-decorator="['contractId', {rules: [{required: true, message: '请选择已审核合同！'}], validateTrigger: 'blur'}]"
-                placeholder="input search text"
+                placeholder="请输入合同名称"
                 style="width: 200px"
                 :default-active-first-option="false"
                 :show-arrow="false"

@@ -60,7 +60,7 @@
                 <a-select
                   show-search
                   v-model="queryParam.customId"
-                  placeholder="input search text"
+                  placeholder="请输入客户名称"
                   style="width: 200px"
                   :default-active-first-option="false"
                   :show-arrow="false"

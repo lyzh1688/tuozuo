@@ -9,7 +9,7 @@
                 <a-select
                   show-search
                   :value="queryParam.customName"
-                  placeholder="input search text"
+                  placeholder="请输入客户名称"
                   style="width: 200px"
                   :default-active-first-option="false"
                   :show-arrow="false"

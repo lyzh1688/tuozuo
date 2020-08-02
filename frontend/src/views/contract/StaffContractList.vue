@@ -9,7 +9,7 @@
                 <a-select
                   show-search
                   :value="queryParam.companyId"
-                  placeholder="input search text"
+                  placeholder="请输入公司名称"
                   style="width: 200px"
                   :default-active-first-option="false"
                   :show-arrow="false"

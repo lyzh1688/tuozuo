@@ -41,7 +41,7 @@
                 :disabled="isShowOnly"
                 show-search
                 v-decorator="['companyPartyBName', {rules: [{required: true, message: '请选择乙方名称！'}], validateTrigger: 'blur'}]"
-                placeholder="input search text"
+                placeholder="请输入乙方名称"
                 style="width: 200px"
                 :default-active-first-option="false"
                 :show-arrow="false"
