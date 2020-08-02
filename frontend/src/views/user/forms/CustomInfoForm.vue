@@ -37,28 +37,28 @@
             @change="handleChane"
           >
             <a-select-option
-              v-for="province in citiesHepler"
-              :key="province.label"
-            >{{ province.label }}</a-select-option>
-          </a-select>
-          <a-select
-            v-decorator="['area', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
-            style="width: 120px"
-            @change="handleChane2"
-          >
-            <a-select-option
-              v-for="cityItem in citiesHepler[areaIndex].children"
-              :key="cityItem.label"
-            >{{ cityItem.label }}</a-select-option>
+              v-for="province in provinceList"
+              :key="province.areaCode"
+            >{{ province.areaName }}</a-select-option>
           </a-select>
           <a-select
             v-decorator="['city', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
             style="width: 120px"
+            @change="handleChane2"
           >
             <a-select-option
-              v-for="cityItem in citiesHepler[areaIndex].children[cityIndex].children"
-              :key="cityItem.label"
-            >{{ cityItem.label }}</a-select-option>
+              v-for="cityItem in cityList"
+              :key="cityItem.areaCode"
+            >{{ cityItem.areaName }}</a-select-option>
+          </a-select>
+          <a-select
+            v-decorator="['district', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
+            style="width: 120px"
+          >
+            <a-select-option
+              v-for="cityItem in districtList"
+              :key="cityItem.areaCode"
+            >{{ cityItem.areaName }}</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="客户类型">
@@ -93,15 +93,16 @@
 
 <script>
 import pick from 'lodash.pick'
-import citiesHepler from '@/utils/helper/citiesHelper'
+import { getAreaCode } from '@/api/company'
+import { success, errorMessage } from '@/utils/helper/responseHelper'
 // 表单字段
 const fields = [
   'customId',
   'customName',
   'customPswd',
   'province',
-  'area',
   'city',
+  'district',
   'customType',
   'customContact',
   'hasPaid'
@@ -138,8 +139,10 @@ export default {
       }
     }
     return {
-      citiesHepler: citiesHepler,
       // city: citiesHepler[0].label,
+      provinceList: [],
+      cityList: [],
+      districtList: [],
       cityIndex: 0,
       areaIndex: 0,
       // secondCity: citiesHepler[0].children[0].label,
@@ -149,7 +152,9 @@ export default {
   },
   created () {
     console.log('custom modal created')
-
+ this.getAreaCode('province', '').then((response) => {
+      this.provinceList = response
+    })
     // 防止表单未注册
     fields.forEach(v => this.form.getFieldDecorator(v))
 
@@ -159,24 +164,43 @@ export default {
       if (this.model.province && this.model.province !== '') {
         this.handleChane(this.model.province)
       }
-      if (this.model.area && this.model.area !== '') {
-        this.handleChane(this.model.area)
+      if (this.model.city && this.model.city !== '') {
+        this.handleChane2(this.model.city)
       }
     })
   },
   methods: {
-    handleChane (index) {
-      for (const i in citiesHepler) {
-        if (citiesHepler[i].label === index) {
-          this.areaIndex = i
-        }
+     getAreaCode (level, code) {
+      return new Promise((resolve, reject) => {
+        getAreaCode(level, code).then((Response) => {
+          const result = Response
+          // console.log('dictQuery', result)
+          if (success(result)) {
+            resolve(result.data)
+          } else {
+            this.$notification.error({
+              message: errorMessage(result),
+              description: '查询区域信息失败'
+            })
+          }
+        })
+      })
+    },
+       async handleChane (index) {
+      await this.getAreaCode('city', index).then((response) => {
+        this.cityList = response
+      })
+      if (this.model.province !== index) {
+ this.form.setFieldsValue({ city: '' })
+       this.form.setFieldsValue({ district: '' })
       }
     },
-    handleChane2 (index) {
-      for (const i in citiesHepler[this.areaIndex].children) {
-        if (citiesHepler[this.areaIndex].children[i].label === index) {
-          this.cityIndex = i
-        }
+    async handleChane2 (index) {
+      await this.getAreaCode('district', index).then((response) => {
+        this.districtList = response
+      })
+       if (this.model.city !== index) {
+      this.form.setFieldsValue({ district: '' })
       }
     }
   }

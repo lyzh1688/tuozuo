@@ -15,7 +15,11 @@
             />
           </a-col>
           <a-col :sm="8" :xs="24">
-            <userInfo title="所在城市" :value="handleDefault(customInfo.province)" />
+            <userInfo title="所在城市" >
+              <template v-slot:value>
+                <areashow :provinceCode="customInfo.province" :cityCode="customInfo.city" :districtCode="customInfo.district"/>
+              </template>
+            </userInfo>
           </a-col>
           <a-col :sm="12" :xs="24">
             <userInfo title="账户余额" :value="handleDefault(customInfo.balance)" :bordered="true" />
@@ -48,6 +52,7 @@ import { STable } from '@/components'
 import { getCustomInfo, getTradeflow, dictQuery } from '@/api/company'
 import { success, errorMessage } from '@/utils/helper/responseHelper'
 import UserInfo from './Info'
+import areashow from './AreaShow'
 const columns = [
   {
     title: '编号',
@@ -111,7 +116,8 @@ export default {
   },
   components: {
     STable,
-    UserInfo
+    UserInfo,
+    areashow
   },
   data () {
     this.columns = columns

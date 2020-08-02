@@ -7,33 +7,33 @@
             <a-col :span="8">
               <a-form-item label="地区">
                 <a-select
-                  v-decorator="['province', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
+                  v-model="areaForm.province"
                   style="width: 120px"
                   @change="handleChane"
                 >
                   <a-select-option
-                    v-for="province in citiesHepler"
-                    :key="province.label"
-                  >{{ province.label }}</a-select-option>
+                    v-for="province in provinceList"
+                    :key="province.areaCode"
+                  >{{ province.areaName }}</a-select-option>
                 </a-select>
                 <a-select
-                  v-decorator="['area', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
+                  v-model="areaForm.city"
                   style="width: 120px"
                   @change="handleChane2"
                 >
                   <a-select-option
-                    v-for="cityItem in citiesHepler[areaIndex].children"
-                    :key="cityItem.label"
-                  >{{ cityItem.label }}</a-select-option>
+                    v-for="cityItem in cityList"
+                    :key="cityItem.areaCode"
+                  >{{ cityItem.areaName }}</a-select-option>
                 </a-select>
                 <a-select
-                  v-decorator="['city', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
+                  v-model="areaForm.district"
                   style="width: 120px"
                 >
                   <a-select-option
-                    v-for="cityItem in citiesHepler[areaIndex].children[cityIndex].children"
-                    :key="cityItem.label"
-                  >{{ cityItem.label }}</a-select-option>
+                    v-for="cityItem in districtList"
+                    :key="cityItem.areaCode"
+                  >{{ cityItem.areaName }}</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
@@ -59,7 +59,7 @@
               <a-form-item label="客户名称">
                 <a-select
                   show-search
-                  :value="queryParam.customId"
+                  v-model="queryParam.customId"
                   placeholder="input search text"
                   style="width: 200px"
                   :default-active-first-option="false"
@@ -74,26 +74,17 @@
               </a-form-item>
             </a-col>
             <a-col :span="8">
-              <a-form-item label="综合税率" key="综合税率">
-                <a-select
-                  :disabled="isShowOnly"
-                  style="width:200px;"
-                  :value="queryParam.tax"
-                  placeholder="请选择"
-                >
-                  <a-select-option v-for=" taxItem in taxList" :key="taxItem.id">{{ taxItem.name }}</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col :span="8">
               <a-form-item label="注册园区" key="注册园区">
                 <a-select
                   :disabled="isShowOnly"
                   style="width:200px;"
-                  :value="queryParam.registerArea"
+                  v-model="queryParam.registerArea"
                   placeholder="请选择"
                 >
-                  <a-select-option v-for=" taxItem in registerArea" :key="taxItem.id">{{ taxItem.name }}</a-select-option>
+                  <a-select-option
+                    v-for=" taxItem in registerArea"
+                    :key="taxItem.id"
+                  >{{ taxItem.name }}</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
@@ -104,15 +95,20 @@
                   size="small"
                   type="primary"
                   @click="()=>{queryParam= {
-                    registerArea: '',
-                    customId: '',
-                    area: '',
-                    tax: '',
-                    beginDate: '',
-                    endDate: '',
-                    pageNo: 1,
-                    pageSize: 20
-                  }}"
+                                 registerArea: '',
+                                 customId: '',
+                                 areaCode: '',
+                                 areaLevel: '',
+                                 beginDate: '',
+                                 endDate: '',
+                                 pageNo: 1,
+                                 pageSize: 20
+                               }
+                               areaForm= {
+                                 province: '',
+                                 city: '',
+                                 district: ''
+                               }}"
                 >重置</a-button>
               </a-form-item>
             </a-col>
@@ -139,9 +135,8 @@
 <script>
 import { STable } from '@/components'
 import { getTaxSummary } from '@/api/summary'
-import { fuzzyQueryCustom, dictQuery } from '@/api/company'
+import { fuzzyQueryCustom, dictQuery, getAreaCode } from '@/api/company'
 import { success, errorMessage } from '@/utils/helper/responseHelper'
-import citiesHepler from '@/utils/helper/citiesHelper'
 const columns = [
   {
     title: '编号',
@@ -156,6 +151,16 @@ const columns = [
     title: '公司名称',
     dataIndex: 'companyName',
     scopedSlots: { customRender: 'companyName' }
+  },
+  {
+    title: '增值税',
+    dataIndex: 'valueAddedTax',
+    scopedSlots: { customRender: 'valueAddedTax' }
+  },
+  {
+    title: '个税',
+    dataIndex: 'incomeTax',
+    scopedSlots: { customRender: 'incomeTax' }
   }
 ]
 // const statusMap = {
@@ -226,32 +231,49 @@ export default {
   data () {
     this.columns = columns
     return {
-      citiesHepler: citiesHepler,
       fuzzyCustomList: [],
       registerArea: [],
+      provinceList: [],
+      cityList: [],
+      districtList: [],
       taxList: [],
       cityIndex: 0,
       areaIndex: 0,
       infoLoading: false,
+      areaForm: {
+        province: '',
+        city: '',
+        district: ''
+      },
       queryParam: {
         registerArea: '',
-         customId: '',
-          area: '',
-           tax: '',
-            beginDate: '',
-             endDate: ''
+        customId: '',
+        areaCode: '',
+        areaLevel: '',
+        beginDate: '',
+        endDate: ''
       },
       eventMap: {},
       loadData: (parameter) => {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
+        if (this.areaForm.district !== '') {
+          requestParameters.areaLevel = 'district'
+          requestParameters.areaCode = this.areaForm.district
+        } else if (this.areaForm.city !== '') {
+          requestParameters.areaLevel = 'city'
+          requestParameters.areaCode = this.areaForm.city
+        } else if (this.areaForm.province !== '') {
+          requestParameters.areaLevel = 'province'
+          requestParameters.areaCode = this.areaForm.province
+        }
         console.log('loadData request parameters:', requestParameters)
         return getTaxSummary(
           requestParameters.registerArea,
           requestParameters.customId,
-          requestParameters.area,
-          requestParameters.tax,
+          requestParameters.areaCode,
+          requestParameters.areaLevel,
           requestParameters.beginDate,
-          requestParameters.tendDateax,
+          requestParameters.endDate,
           requestParameters.pageNo,
           requestParameters.pageSize
         )
@@ -320,26 +342,41 @@ export default {
         })
       })
     },
-    handleChane (index) {
-      for (const i in citiesHepler) {
-        if (citiesHepler[i].label === index) {
-          this.areaIndex = i
-        }
-      }
+    getAreaCode (level, code) {
+      return new Promise((resolve, reject) => {
+        getAreaCode(level, code).then((Response) => {
+          const result = Response
+          // console.log('dictQuery', result)
+          if (success(result)) {
+            resolve(result.data)
+          } else {
+            this.$notification.error({
+              message: errorMessage(result),
+              description: '查询区域信息失败'
+            })
+          }
+        })
+      })
     },
-    handleChane2 (index) {
-      for (const i in citiesHepler[this.areaIndex].children) {
-        if (citiesHepler[this.areaIndex].children[i].label === index) {
-          this.cityIndex = i
-        }
-      }
+    async handleChane (index) {
+      await this.getAreaCode('city', index).then((response) => {
+        this.cityList = response
+      })
+      this.areaForm.city = ''
+      this.areaForm.district = ''
+    },
+    async handleChane2 (index) {
+      await this.getAreaCode('district', index).then((response) => {
+        this.districtList = response
+      })
+      this.areaForm.district = ''
     }
   },
   created () {
-    this.getDict('tax').then((response) => {
-      this.taxList = response
+    this.getAreaCode('province', '').then((response) => {
+      this.provinceList = response
     })
-    this.getDict('registerArea').then(response => {
+    this.getDict('registerArea').then((response) => {
       this.registerArea = response
     })
     // this.getCustomInfo()

@@ -15,7 +15,19 @@ const CompanyApi = {
   dictQuery: process.env.VUE_APP_SYSTEM_URL + '/v1/dict/', // bizStatus,customType,registerStatus,event
   managementCompany: process.env.VUE_APP_SYSTEM_URL + '/v1/company/management/', // put
   invoiceList: process.env.VUE_APP_SYSTEM_URL + '/v1/bizControl/invoice/detail',
-  invoiceStatistics: process.env.VUE_APP_SYSTEM_URL + '/v1/bizControl/invoice/statistics'
+  invoiceStatistics: process.env.VUE_APP_SYSTEM_URL + '/v1/bizControl/invoice/statistics',
+  areaCode: process.env.VUE_APP_SYSTEM_URL + '/v1/search/area'
+}
+/**
+ *
+ * @param {地区等级} areaLevel
+ * @param {区域代码} areaCode
+ */
+export function getAreaCode (areaLevel, areaCode) {
+  return request({
+    url: CompanyApi.areaCode + '?areaLevel=' + areaLevel + '&areaCode=' + areaCode,
+    method: 'GET'
+  })
 }
 /*
 统计个独公司的开票信息

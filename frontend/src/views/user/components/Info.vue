@@ -2,6 +2,7 @@
   <div class="header-info">
     <span>{{ title }}</span>
     <p>{{ value }}</p>
+    <slot name="value"/>
     <em v-if="bordered" />
   </div>
 </template>
@@ -40,6 +41,12 @@ export default {
     line-height: 22px;
   }
   & > p {
+    margin: 0;
+    color: @heading-color;
+    font-size: 24px;
+    line-height: 32px;
+  }
+  & > span {
     margin: 0;
     color: @heading-color;
     font-size: 24px;

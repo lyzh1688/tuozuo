@@ -314,10 +314,7 @@ export default {
       form.validateFields((errors, values) => {
         if (!errors) {
           this.confirmLoading = true
-          values['province'] = values['province'] + '-' + values['area'] + '-' + values['city']
           values['customPswd'] = md5(values['customPswd'])
-          delete values.ctiy
-          delete values.area
           if (this.isupdate) {
             updateCustom(values, values.customId)
               .then(response => {
@@ -402,14 +399,6 @@ export default {
       this.isupdate = true
       this.customOpsVisible = true
       this.customMdl = { ...record }
-      const province = this.customMdl.province.split('-')
-      if (province.length === 3) {
-        this.customMdl.province = province[0]
-        this.customMdl['area'] = province[1]
-        this.customMdl['city'] = province[2]
-      } else {
-        this.customMdl.province = ''
-      }
       console.log(this.customMdl, record)
     },
     toCustomInfo (value) {

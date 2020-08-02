@@ -22,10 +22,7 @@
           />
         </a-form-item>
         <a-form-item label="所在城市">
-          <a-input
-            disabled
-            v-decorator="['province', {rules: [{required: true}], validateTrigger: 'blur'} ]"
-          />
+          <areashow :provinceCode="model.province" :cityCode="model.city" :districtCode="model.district"/>
         </a-form-item>
         <a-form-item label="客户类型">
           <a-select
@@ -89,10 +86,14 @@
 import pick from 'lodash.pick'
 import { dictQuery } from '@/api/company'
 import { success, errorMessage } from '@/utils/helper/responseHelper'
+import areashow from '../components/AreaShow'
 // 表单字段
-const fields = ['customId', 'customName', 'province', 'customType', 'event', 'amount', 'city', 'remark', 'tradeFile']
+const fields = ['customId', 'customName', 'customType', 'event', 'amount', 'city', 'remark', 'tradeFile']
 
 export default {
+  components: {
+    areashow
+  },
   props: {
     visible: {
       type: Boolean,
