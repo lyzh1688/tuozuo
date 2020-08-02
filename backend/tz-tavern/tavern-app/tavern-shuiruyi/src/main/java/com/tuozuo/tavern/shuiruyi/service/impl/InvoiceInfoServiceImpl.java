@@ -1,10 +1,13 @@
 package com.tuozuo.tavern.shuiruyi.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.UserTypeDict;
 import com.tuozuo.tavern.shuiruyi.convert.BusinessConverter;
 import com.tuozuo.tavern.shuiruyi.dao.CompanyInfoDao;
+import com.tuozuo.tavern.shuiruyi.dao.InvoiceAuditDao;
 import com.tuozuo.tavern.shuiruyi.dao.InvoiceInfoDao;
+import com.tuozuo.tavern.shuiruyi.dict.Event;
 import com.tuozuo.tavern.shuiruyi.model.*;
 import com.tuozuo.tavern.shuiruyi.service.InvoiceInfoService;
 import com.tuozuo.tavern.shuiruyi.utils.FileUtils;
@@ -15,12 +18,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -42,6 +47,8 @@ public class InvoiceInfoServiceImpl implements InvoiceInfoService {
     private InvoiceInfoDao invoiceInfoDao;
     @Autowired
     private CompanyInfoDao companyInfoDao;
+    @Autowired
+    private InvoiceAuditDao invoiceAuditDao;
 
     @Override
     public IPage<InvoiceStatistic> queryInvoiceStatistics(String beginMonth, String endMonth, String companyId, String customId, int pageNo, int pageSize) {
@@ -66,7 +73,7 @@ public class InvoiceInfoServiceImpl implements InvoiceInfoService {
 
     @Transactional
     @Override
-    public void createInvoice(InvoiceInfoVO invoiceInfoVO) throws Exception {
+    public String createInvoice(InvoiceInfoVO invoiceInfoVO) throws Exception {
         InvoiceInfo invoiceInfo = BusinessConverter.voToInvoiceInfo(invoiceInfoVO);
         invoiceInfo.setInvoiceId(UUIDUtil.randomUUID32());
         invoiceInfo.setInvoiceDate(LocalDateTime.now());
@@ -80,6 +87,7 @@ public class InvoiceInfoServiceImpl implements InvoiceInfoService {
         companyInfo.setCompanyId(companyDetailInfo.getCompanyId());
         companyInfo.setFreeDelivery(companyDetailInfo.getFreeDelivery() - 1);
         this.companyInfoDao.update(companyInfo);
+        return invoiceInfo.getInvoiceId();
     }
 
     @Override
@@ -141,4 +149,27 @@ public class InvoiceInfoServiceImpl implements InvoiceInfoService {
         return StringUtils.join(fileUrlPath, invoiceId, "/", file.getOriginalFilename());
 
     }
+
+    @Async
+    @Override
+    public void addInvoiceFlow(String invoiceId, Event event, String userId, String userType) {
+        InvoiceInfo invoiceInfo = this.invoiceInfoDao.selectInvoiceInfo(invoiceId);
+        InvoiceAuditFlow invoiceAuditFlow = this.convert(invoiceInfo, event, userId, userType);
+        this.invoiceAuditDao.insert(invoiceAuditFlow);
+    }
+
+
+    private InvoiceAuditFlow convert(InvoiceInfo invoiceInfo, Event event, String userId, String userType) {
+        InvoiceAuditFlow invoiceAuditFlow = new InvoiceAuditFlow();
+        invoiceAuditFlow.setEvent(event.name());
+        invoiceAuditFlow.setFlowId(UUIDUtil.randomUUID32());
+        invoiceAuditFlow.setInvoiceId(invoiceInfo.getInvoiceId());
+        invoiceAuditFlow.setUpdateDate(LocalDateTime.now());
+        invoiceAuditFlow.setUserId(userId);
+        invoiceAuditFlow.setUserType(userType);
+        String invoiceAuditFlowString = JSON.toJSONString(invoiceInfo);
+        invoiceAuditFlow.setResultSnapshot(invoiceAuditFlowString);
+        return invoiceAuditFlow;
+    }
+
 }

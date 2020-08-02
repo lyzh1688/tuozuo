@@ -1,6 +1,7 @@
 package com.tuozuo.tavern.shuiruyi.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.tuozuo.tavern.shuiruyi.dict.Event;
 import com.tuozuo.tavern.shuiruyi.model.ContractDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.ContractInfo;
 import com.tuozuo.tavern.shuiruyi.model.ContractTemplate;
@@ -17,7 +18,7 @@ public interface ContractInfoService {
 
     IPage<ContractDetailInfo> queryContractList(String companyId, int pageNo, int pageSize, String customId, String customGroup);
 
-    void addContractInfo(ContractInfoVO vo) throws Exception;
+    String addContractInfo(ContractInfoVO vo) throws Exception;
 
     List<ContractTemplate> queryContractTemplateList();
 
@@ -28,4 +29,6 @@ public interface ContractInfoService {
     void auditContractInfo(String contractId,String contractStatus,String remark);
 
     ContractDetailInfo queryContractDetail(String contractId);
+
+    void addContractFlow(String contractId, Event event, String userId, String userType) ;
 }

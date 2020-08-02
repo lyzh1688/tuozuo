@@ -1,6 +1,7 @@
 package com.tuozuo.tavern.shuiruyi.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.tuozuo.tavern.shuiruyi.dict.Event;
 import com.tuozuo.tavern.shuiruyi.dto.TaxStatisticDTO;
 import com.tuozuo.tavern.shuiruyi.model.InvoiceDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.InvoiceInfo;
@@ -25,13 +26,13 @@ public interface InvoiceInfoService {
                                                   String customId,
                                                   String customGroup);
 
-    void createInvoice(InvoiceInfoVO invoiceInfoVO) throws Exception;
+    String createInvoice(InvoiceInfoVO invoiceInfoVO) throws Exception;
 
     InvoiceDetailInfo queryInvoiceInfo(String invoiceId);
 
     void modifyInvoiceInfo(InvoiceInfoVO vo) throws Exception;
 
-    void auditInvoiceInfo(String invoiceId, String invoiceStatus, String deliveryId, String remark,String invoiceContent,double tax);
+    void auditInvoiceInfo(String invoiceId, String invoiceStatus, String deliveryId, String remark, String invoiceContent, double tax);
 
     IPage<TaxStatistic> queryTaxStatistic(String registerArea,
                                           String customId,
@@ -42,11 +43,16 @@ public interface InvoiceInfoService {
                                           String endDate,
                                           int pageNo,
                                           int pageSize);
+
     TaxStatistic queryTotalTaxStatistic(String registerArea,
-                                          String customId,
-                                          String areaLevel,
-                                          String areaCode,
-                                          String invoiceType,
-                                          String beginDate,
-                                          String endDate);
+                                        String customId,
+                                        String areaLevel,
+                                        String areaCode,
+                                        String invoiceType,
+                                        String beginDate,
+                                        String endDate);
+
+    void addInvoiceFlow(String invoiceId, Event event, String userId, String userType);
+
+
 }

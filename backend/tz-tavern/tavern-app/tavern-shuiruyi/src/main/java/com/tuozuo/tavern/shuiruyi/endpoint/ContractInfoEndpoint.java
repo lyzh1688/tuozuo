@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.shuiruyi.convert.BusinessConverter;
+import com.tuozuo.tavern.shuiruyi.dict.Event;
 import com.tuozuo.tavern.shuiruyi.dto.*;
 import com.tuozuo.tavern.shuiruyi.model.CompanyDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.ContractDetailInfo;
@@ -83,10 +84,13 @@ public class ContractInfoEndpoint {
      */
     @PostMapping()
     public TavernResponse addContractInfo(@ModelAttribute @Valid ContractInfoVO vo,
-                                          @RequestParam(value = "contractFile") MultipartFile contractFile) {
+                                          @RequestParam(value = "contractFile") MultipartFile contractFile,
+                                          @RequestHeader(TavernRequestAuthFields.USER_ID) String customId,
+                                          @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
         try {
             vo.setContractFile(contractFile);
-            this.contractInfoService.addContractInfo(vo);
+            String contractId = this.contractInfoService.addContractInfo(vo);
+            this.contractInfoService.addContractFlow(contractId, Event.CREATE,customId,roleGroup);
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[新建合同] failed", e);
@@ -145,7 +149,9 @@ public class ContractInfoEndpoint {
     @PutMapping(value = "/{contractId}")
     public TavernResponse modifyCompanyInfo(@PathVariable("contractId") String contractId,
                                             @ModelAttribute @Valid ContractModifyVO vo,
-                                            @RequestParam(name = "contractFile", required = false) MultipartFile contractFile) {
+                                            @RequestParam(name = "contractFile", required = false) MultipartFile contractFile,
+                                            @RequestHeader(TavernRequestAuthFields.USER_ID) String customId,
+                                            @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
         try {
             if (contractFile != null) {
                 LOGGER.info("contractFile: {}", contractFile.getOriginalFilename());
@@ -153,6 +159,7 @@ public class ContractInfoEndpoint {
             vo.setContractId(contractId);
             vo.setContractFile(contractFile);
             this.contractInfoService.modifyContractInfo(vo);
+            this.contractInfoService.addContractFlow(contractId, Event.UPDATE,customId,roleGroup);
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[合同审核修改] failed", e);
@@ -165,10 +172,13 @@ public class ContractInfoEndpoint {
      */
     @PutMapping(value = "/audit/{contractId}")
     public TavernResponse modifyCompanyInfo(@PathVariable("contractId") String contractId,
-                                            @RequestBody ContractAuditVO vo) {
+                                            @RequestBody ContractAuditVO vo,
+                                            @RequestHeader(TavernRequestAuthFields.USER_ID) String customId,
+                                            @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
         try {
             LOGGER.info("audit: {},contractId: {}", JSON.toJSONString(vo), contractId);
             this.contractInfoService.auditContractInfo(contractId, vo.getContractStatus(), vo.getRemark());
+            this.contractInfoService.addContractFlow(contractId, Event.AUDIT,customId,roleGroup);
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[合同审核] failed", e);

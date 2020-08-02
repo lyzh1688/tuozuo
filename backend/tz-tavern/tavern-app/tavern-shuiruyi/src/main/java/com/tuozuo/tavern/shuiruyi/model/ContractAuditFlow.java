@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @TableName("contract_audit_flow")
@@ -21,7 +22,7 @@ public class ContractAuditFlow extends Model<ContractAuditFlow> {
 
     private String resultSnapshot;
 
-    private Date updateDate;
+    private LocalDateTime updateDate;
 
     public String getFlowId() {
         return flowId;
@@ -71,11 +72,11 @@ public class ContractAuditFlow extends Model<ContractAuditFlow> {
         this.resultSnapshot = resultSnapshot == null ? null : resultSnapshot.trim();
     }
 
-    public Date getUpdateDate() {
+    public LocalDateTime getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
 }

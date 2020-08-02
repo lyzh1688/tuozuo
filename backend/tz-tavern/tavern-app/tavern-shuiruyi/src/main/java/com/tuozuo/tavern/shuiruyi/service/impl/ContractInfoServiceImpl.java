@@ -1,8 +1,13 @@
 package com.tuozuo.tavern.shuiruyi.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.UserTypeDict;
+import com.tuozuo.tavern.shuiruyi.dao.ContractAuditFlowDao;
 import com.tuozuo.tavern.shuiruyi.dao.ContractInfoDao;
+import com.tuozuo.tavern.shuiruyi.dict.Event;
+import com.tuozuo.tavern.shuiruyi.model.ContractAuditFlow;
 import com.tuozuo.tavern.shuiruyi.model.ContractDetailInfo;
 import com.tuozuo.tavern.shuiruyi.model.ContractInfo;
 import com.tuozuo.tavern.shuiruyi.model.ContractTemplate;
@@ -11,11 +16,13 @@ import com.tuozuo.tavern.shuiruyi.utils.FileUtils;
 import com.tuozuo.tavern.shuiruyi.utils.UUIDUtil;
 import com.tuozuo.tavern.shuiruyi.vo.ContractInfoVO;
 import com.tuozuo.tavern.shuiruyi.vo.ContractModifyVO;
+import netscape.javascript.JSObject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,6 +45,8 @@ public class ContractInfoServiceImpl implements ContractInfoService {
     private String fileUrlPath;
     @Value("${shuiruyi.company.file.path:/mnt/file/contract/file/}")
     private String filePath;
+    @Autowired
+    private ContractAuditFlowDao contractAuditFlowDao;
 
     @Override
     public IPage<ContractDetailInfo> queryContractList(String companyId, int pageNo, int pageSize, String customId, String customGroup) {
@@ -49,7 +58,7 @@ public class ContractInfoServiceImpl implements ContractInfoService {
     }
 
     @Override
-    public void addContractInfo(ContractInfoVO vo) throws Exception {
+    public String addContractInfo(ContractInfoVO vo) throws Exception {
         String contractId = UUIDUtil.randomUUID32();
         ContractInfo contractInfo = new ContractInfo();
         contractInfo.setContractId(contractId);
@@ -63,6 +72,7 @@ public class ContractInfoServiceImpl implements ContractInfoService {
         contractInfo.setContractFile(fileUrl);
         contractInfo.setContractDate(LocalDateTime.now());
         this.contractInfoDao.insert(contractInfo);
+        return contractId;
     }
 
     @Override
@@ -107,6 +117,22 @@ public class ContractInfoServiceImpl implements ContractInfoService {
     @Override
     public ContractDetailInfo queryContractDetail(String contractId) {
         return this.contractInfoDao.queryContractDetail(contractId);
+    }
+
+    @Async
+    @Override
+    public void addContractFlow(String contractId, Event event, String userId, String userType) {
+        ContractInfo contractInfo = this.contractInfoDao.queryContractDetail(contractId);
+        ContractAuditFlow contractAuditFlow = new ContractAuditFlow();
+        contractAuditFlow.setContractId(contractId);
+        contractAuditFlow.setEvent(event.name());
+        contractAuditFlow.setFlowId(UUIDUtil.randomUUID32());
+        contractAuditFlow.setUpdateDate(LocalDateTime.now());
+        contractAuditFlow.setUserId(userId);
+        contractAuditFlow.setUserType(userType);
+        String contractInfoString = JSON.toJSONString(contractInfo);
+        contractAuditFlow.setResultSnapshot(contractInfoString);
+        this.contractAuditFlowDao.insert(contractAuditFlow);
     }
 
 
