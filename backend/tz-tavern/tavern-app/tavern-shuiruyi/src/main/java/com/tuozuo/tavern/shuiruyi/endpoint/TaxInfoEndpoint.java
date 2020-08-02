@@ -34,7 +34,7 @@ public class TaxInfoEndpoint {
     /**
      * 纳税统计
      */
-    @GetMapping("/statistic")
+    @GetMapping("/statistics")
     public TavernResponse queryTaxStatistic(@ModelAttribute @Valid TaxStatisticVO vo) {
         try {
             IPage<TaxStatistic> page = this.invoiceInfoService.queryTaxStatistic(vo.getRegisterArea(),
