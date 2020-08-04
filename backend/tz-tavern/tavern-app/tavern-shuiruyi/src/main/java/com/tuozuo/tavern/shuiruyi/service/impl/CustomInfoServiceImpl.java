@@ -68,7 +68,7 @@ public class CustomInfoServiceImpl implements CustomInfoService {
 
     @Override
     public void addCustomInfo(CustomAddInfoVO vo) throws Exception {
-        UserVO userVO = BusinessConverter.userToVO(vo);
+        UserVO userVO = BusinessConverter.userToVO(vo.getCustomId(), vo.getCustomType(), vo.getCustomPswd());
         TavernResponse response = this.authorityService.createUser(userVO);
         if (response.getCode() != 0) {
             throw new Exception("客户创建失败");
@@ -81,7 +81,14 @@ public class CustomInfoServiceImpl implements CustomInfoService {
     }
 
     @Override
-    public void modifyCustomInfo(CustomInfoVO vo, String customId) {
+    public void modifyCustomInfo(CustomInfoVO vo, String customId) throws Exception {
+
+        UserVO userVO = BusinessConverter.userToVO(customId, vo.getCustomType(), vo.getCustomPswd());
+        TavernResponse response = this.authorityService.modifyUser(userVO);
+        if (response.getCode() != 0) {
+            throw new Exception("客户修改失败");
+        }
+
         CustomInfo customInfo = new CustomInfo();
         customInfo.setCustomId(customId);
         setCustomInfo(vo, customInfo);

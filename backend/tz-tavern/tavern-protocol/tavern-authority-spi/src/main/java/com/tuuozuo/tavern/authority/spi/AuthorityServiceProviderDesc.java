@@ -24,6 +24,14 @@ public class AuthorityServiceProviderDesc {
                 .build();
         authorityServiceProviderDesc.put("createUser", createUser);
 
+        SpiDescription modifyUser = new SpiDescription.Builder()
+                .serviceClass(AuthorityService.class)
+                .requestMethod(RequestMethods.PUT)
+                .resourcePath("/tuozuo/auth/v1/user")
+                .serviceApi("modifyUser")
+                .build();
+        authorityServiceProviderDesc.put("modifyUser", modifyUser);
+
         serviceProviderDesc.put(AuthorityService.class, authorityServiceProviderDesc);
     }
 }

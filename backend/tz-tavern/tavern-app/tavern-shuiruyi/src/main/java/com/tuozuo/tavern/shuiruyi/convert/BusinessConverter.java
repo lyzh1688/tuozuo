@@ -6,10 +6,7 @@ import com.tuozuo.tavern.shuiruyi.dto.*;
 import com.tuozuo.tavern.shuiruyi.model.*;
 import com.tuozuo.tavern.shuiruyi.utils.BusinessStatusUtil;
 import com.tuozuo.tavern.shuiruyi.utils.DateUtils;
-import com.tuozuo.tavern.shuiruyi.vo.CompanyDetailVO;
-import com.tuozuo.tavern.shuiruyi.vo.CompanyModifyVO;
-import com.tuozuo.tavern.shuiruyi.vo.CustomAddInfoVO;
-import com.tuozuo.tavern.shuiruyi.vo.InvoiceInfoVO;
+import com.tuozuo.tavern.shuiruyi.vo.*;
 import com.tuuozuo.tavern.authority.spi.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -182,12 +179,12 @@ public class BusinessConverter {
         return companyInfo;
     }
 
-    public static UserVO userToVO(CustomAddInfoVO vo) {
+    public static UserVO userToVO(String userId, String customType, String customPswd) {
         UserVO user = new UserVO();
-        user.setUserId(vo.getCustomId());
+        user.setUserId(userId);
         user.setSystemId(SystemID.SYS_ID);
-        user.setRoleGroup(vo.getCustomType());
-        user.setUserPswd(vo.getCustomPswd());
+        user.setRoleGroup(customType);
+        user.setUserPswd(customPswd);
         return user;
     }
 

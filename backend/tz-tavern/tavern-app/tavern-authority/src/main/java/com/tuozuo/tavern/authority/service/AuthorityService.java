@@ -19,4 +19,8 @@ public interface AuthorityService {
     boolean logout(String userId, String systemId, String roleGroup, String accessToken);
 
     boolean createUser(User user);
+
+    void modifyUser(User user);
+
+
 }

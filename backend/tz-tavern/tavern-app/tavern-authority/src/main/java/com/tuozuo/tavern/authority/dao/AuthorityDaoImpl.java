@@ -78,4 +78,9 @@ public class AuthorityDaoImpl extends ServiceImpl<AuthUserMapper, User> implemen
         return this.save(user);
     }
 
+    @Override
+    public void updateUser(User user) {
+        this.updateById(user);
+    }
+
 }

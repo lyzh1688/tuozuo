@@ -10,5 +10,6 @@ import com.tuuozuo.tavern.authority.spi.vo.UserVO;
 public interface AuthorityService {
 
     TavernResponse createUser(UserVO userVO);
+    TavernResponse modifyUser(UserVO userVO);
 
 }

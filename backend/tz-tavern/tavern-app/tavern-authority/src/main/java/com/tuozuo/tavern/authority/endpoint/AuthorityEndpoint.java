@@ -63,12 +63,11 @@ public class AuthorityEndpoint {
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public TavernResponse<TokenAuthority> logout(@RequestBody User user,
                                                  @RequestHeader(value = "access-token") String accessToken
-                                                 ) {
-        boolean ret = this.authorityService.logout(user.getUserId(),user.getSystemId(),user.getRoleGroup(),accessToken);
-        if(ret){
+    ) {
+        boolean ret = this.authorityService.logout(user.getUserId(), user.getSystemId(), user.getRoleGroup(), accessToken);
+        if (ret) {
             return TavernResponse.OK;
-        }
-        else {
+        } else {
             return TavernResponse.bizFailure("创建用户失败");
         }
     }
@@ -82,6 +81,18 @@ public class AuthorityEndpoint {
             return TavernResponse.OK;
         } else {
             return TavernResponse.bizFailure("创建用户失败");
+        }
+    }
+
+    @RequestMapping(value = "/user", method = RequestMethod.PUT)
+    TavernResponse<Void> modifyUser(@RequestBody UserVO userVO) {
+        try {
+            User user = this.voToUser(userVO);
+            this.authorityService.modifyUser(user);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[用户修改] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
         }
     }
 

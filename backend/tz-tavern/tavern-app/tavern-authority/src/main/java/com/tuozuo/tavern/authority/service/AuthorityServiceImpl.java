@@ -80,8 +80,7 @@ public class AuthorityServiceImpl implements AuthorityService {
         try {
             RedisSession session = new RedisSession(userId, systemId, roleGroup, accessToken);
             return this.sessionManager.dispose(session);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
@@ -93,5 +92,10 @@ public class AuthorityServiceImpl implements AuthorityService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public void modifyUser(User user) {
+        this.authorityDao.updateUser(user);
     }
 }

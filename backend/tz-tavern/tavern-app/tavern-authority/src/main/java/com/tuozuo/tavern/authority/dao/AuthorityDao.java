@@ -12,4 +12,5 @@ public interface AuthorityDao {
     User getUser(String userId, String systemId, String roleGroup);
     void updateFailedTimes(User user);
     boolean createUser(User user);
+    void updateUser(User user);
 }

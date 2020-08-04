@@ -24,7 +24,7 @@ public interface CustomInfoService {
 
     void addCustomInfo(CustomAddInfoVO vo) throws Exception;
 
-    void modifyCustomInfo(CustomInfoVO vo, String customId);
+    void modifyCustomInfo(CustomInfoVO vo, String customId) throws Exception;
 
     IPage<CustomInfo> queryCustomInfoList(String customName, String hasPaid, int pageNo, int pageSize);
 
