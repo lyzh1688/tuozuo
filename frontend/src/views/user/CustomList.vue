@@ -314,7 +314,9 @@ export default {
       form.validateFields((errors, values) => {
         if (!errors) {
           this.confirmLoading = true
+          if (this.customMdl['customPswd'] !== values['customPswd']) {
           values['customPswd'] = md5(values['customPswd'])
+          }
           if (this.isupdate) {
             updateCustom(values, values.customId)
               .then(response => {
