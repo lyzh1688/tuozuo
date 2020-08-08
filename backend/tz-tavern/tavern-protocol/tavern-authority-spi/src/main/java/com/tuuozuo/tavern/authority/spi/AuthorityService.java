@@ -1,6 +1,7 @@
 package com.tuuozuo.tavern.authority.spi;
 
 import com.tuozuo.tavern.common.protocol.TavernResponse;
+import com.tuozuo.tavern.common.protocol.annotation.PathParam;
 import com.tuuozuo.tavern.authority.spi.vo.UserVO;
 
 /**
@@ -11,5 +12,6 @@ public interface AuthorityService {
 
     TavernResponse createUser(UserVO userVO);
     TavernResponse modifyUser(UserVO userVO);
+    TavernResponse removeUser(@PathParam(name = "userId") String userId);
 
 }

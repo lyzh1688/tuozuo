@@ -96,6 +96,17 @@ public class AuthorityEndpoint {
         }
     }
 
+    @RequestMapping(value = "/user", method = RequestMethod.DELETE)
+    TavernResponse<Void> removeUser(@RequestParam(value = "userId") String userId) {
+        try {
+            this.authorityService.remove(userId);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[用户删除] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
     private User voToUser(UserVO userVO) {
         User user = new User();
         user.setUserId(userVO.getUserId());

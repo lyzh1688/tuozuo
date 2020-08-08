@@ -124,6 +124,19 @@ public class CustomInfoEndpoint {
             return TavernResponse.bizFailure(e.getMessage());
         }
     }
+    /**
+     * 删除用户
+     */
+    @DeleteMapping("/{customId}")
+    public TavernResponse removeCustomInfo(@PathVariable("customId") String customId) {
+        try {
+            this.customInfoService.removeCustomId(customId);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[删除用户] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
 
 
     /**
@@ -159,7 +172,7 @@ public class CustomInfoEndpoint {
                                            @RequestParam("event") String event,
                                            @RequestParam("remark") String remark,
                                            @RequestParam("amount") double amount,
-                                           @RequestParam("tradeFile") MultipartFile tradFile) {
+                                           @RequestParam(value = "tradeFile",required = false) MultipartFile tradFile) {
         try {
             String tradeFlowId = this.customInfoService.investAndPayment(customId, customType, event, amount, tradFile,remark);
             JSONObject response = new JSONObject();

@@ -149,6 +149,19 @@ public class CustomInfoServiceImpl implements CustomInfoService {
         this.customInfoDao.countCustomStatistic();
     }
 
+    @Override
+    public void removeCustomId(String customId) throws Exception {
+        TavernResponse response = this.authorityService.removeUser(customId);
+        if (response.getCode() != 0) {
+            throw new Exception("客户删除失败");
+        }
+
+        CustomInfo customInfo = new CustomInfo();
+        customInfo.setCustomId(customId);
+        customInfo.setIsValid("0");
+        this.customInfoDao.update(customInfo);
+    }
+
     private void setCustomInfo(CustomInfoVO vo, CustomInfo customInfo) {
         customInfo.setCustomName(vo.getCustomName());
         customInfo.setCustomPswd(vo.getCustomPswd());

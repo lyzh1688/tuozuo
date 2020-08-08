@@ -98,4 +98,9 @@ public class AuthorityServiceImpl implements AuthorityService {
     public void modifyUser(User user) {
         this.authorityDao.updateUser(user);
     }
+
+    @Override
+    public void remove(String userId) {
+        this.authorityDao.removeUser(userId);
+    }
 }

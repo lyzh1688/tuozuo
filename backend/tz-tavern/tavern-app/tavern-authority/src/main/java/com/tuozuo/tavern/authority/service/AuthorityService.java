@@ -22,5 +22,7 @@ public interface AuthorityService {
 
     void modifyUser(User user);
 
+    void remove(String userId);
+
 
 }

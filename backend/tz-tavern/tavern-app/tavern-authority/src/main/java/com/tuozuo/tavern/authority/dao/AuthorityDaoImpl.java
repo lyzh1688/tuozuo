@@ -83,4 +83,9 @@ public class AuthorityDaoImpl extends ServiceImpl<AuthUserMapper, User> implemen
         this.updateById(user);
     }
 
+    @Override
+    public void removeUser(String userId) {
+        this.removeById(userId);
+    }
+
 }

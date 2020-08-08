@@ -32,6 +32,14 @@ public class AuthorityServiceProviderDesc {
                 .build();
         authorityServiceProviderDesc.put("modifyUser", modifyUser);
 
+        SpiDescription removeUser = new SpiDescription.Builder()
+                .serviceClass(AuthorityService.class)
+                .requestMethod(RequestMethods.DELETE)
+                .resourcePath("/tuozuo/auth/v1/user?userId=${userId}")
+                .serviceApi("removeUser")
+                .build();
+        authorityServiceProviderDesc.put("removeUser", removeUser);
+
         serviceProviderDesc.put(AuthorityService.class, authorityServiceProviderDesc);
     }
 }

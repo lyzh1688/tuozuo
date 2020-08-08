@@ -7,7 +7,9 @@ import com.tuozuo.tavern.shuiruyi.dto.*;
 import com.tuozuo.tavern.shuiruyi.model.*;
 import com.tuozuo.tavern.shuiruyi.utils.BusinessStatusUtil;
 import com.tuozuo.tavern.shuiruyi.utils.DateUtils;
-import com.tuozuo.tavern.shuiruyi.vo.*;
+import com.tuozuo.tavern.shuiruyi.vo.CompanyDetailVO;
+import com.tuozuo.tavern.shuiruyi.vo.CompanyModifyVO;
+import com.tuozuo.tavern.shuiruyi.vo.InvoiceInfoVO;
 import com.tuuozuo.tavern.authority.spi.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -60,7 +62,8 @@ public class BusinessConverter {
         }
         companyInfoDTO.setTradeFlow(companyDetailInfo.getTradeFlow());
         companyInfoDTO.setRegisterArea(companyDetailInfo.getRegisterArea());
-        companyInfoDTO.setRebateTaxRate(companyDetailInfo.getRebateTaxRate());
+        companyInfoDTO.setValueAddedRebateRate(companyDetailInfo.getValueAddedRebateRate());
+        companyInfoDTO.setIncomeRebateRate(companyDetailInfo.getIncomeRebateRate());
 
         BossInfoDTO bossInfoDTO = new BossInfoDTO();
         bossInfoDTO.setBossId(companyDetailInfo.getBossId());
@@ -175,12 +178,13 @@ public class BusinessConverter {
 
         companyInfo.setTradeFlow(vo.getTradeFlow());
         companyInfo.setRegisterArea(vo.getRegisterArea());
-        companyInfo.setRebateTaxRate(new BigDecimal(vo.getRebateTaxRate()));
+        companyInfo.setValueAddedRebateRate(new BigDecimal(vo.getValueAddedRebateRate()));
+        companyInfo.setIncomeRebateRate(new BigDecimal(vo.getIncomeRebateRate()));
 
         return companyInfo;
     }
 
-    public static UserVO userToVO(String userId,  String customPswd) {
+    public static UserVO userToVO(String userId, String customPswd) {
         UserVO user = new UserVO();
         user.setUserId(userId);
         user.setSystemId(SystemID.SYS_ID);

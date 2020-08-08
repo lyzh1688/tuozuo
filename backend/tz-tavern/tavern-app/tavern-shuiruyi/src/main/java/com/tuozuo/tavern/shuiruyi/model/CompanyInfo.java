@@ -57,7 +57,26 @@ public class CompanyInfo extends Model<CompanyInfo> {
 
     String registerArea;
 
-    BigDecimal rebateTaxRate;
+    BigDecimal valueAddedRebateRate;
+
+    BigDecimal incomeRebateRate;
+
+
+    public BigDecimal getValueAddedRebateRate() {
+        return valueAddedRebateRate;
+    }
+
+    public void setValueAddedRebateRate(BigDecimal valueAddedRebateRate) {
+        this.valueAddedRebateRate = valueAddedRebateRate;
+    }
+
+    public BigDecimal getIncomeRebateRate() {
+        return incomeRebateRate;
+    }
+
+    public void setIncomeRebateRate(BigDecimal incomeRebateRate) {
+        this.incomeRebateRate = incomeRebateRate;
+    }
 
     public String getTradeFlow() {
         return tradeFlow;
@@ -73,14 +92,6 @@ public class CompanyInfo extends Model<CompanyInfo> {
 
     public void setRegisterArea(String registerArea) {
         this.registerArea = registerArea;
-    }
-
-    public BigDecimal getRebateTaxRate() {
-        return rebateTaxRate;
-    }
-
-    public void setRebateTaxRate(BigDecimal rebateTaxRate) {
-        this.rebateTaxRate = rebateTaxRate;
     }
 
     public String getCompanyId() {

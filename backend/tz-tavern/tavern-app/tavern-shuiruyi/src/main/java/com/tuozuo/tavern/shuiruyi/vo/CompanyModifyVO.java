@@ -14,7 +14,25 @@ public class CompanyModifyVO {
     private String endDate;
     private String tradeFlow;
     private String registerArea;
-    private double rebateTaxRate;
+    private double valueAddedRebateRate;
+    private double incomeRebateRate;
+
+
+    public double getValueAddedRebateRate() {
+        return valueAddedRebateRate;
+    }
+
+    public void setValueAddedRebateRate(double valueAddedRebateRate) {
+        this.valueAddedRebateRate = valueAddedRebateRate;
+    }
+
+    public double getIncomeRebateRate() {
+        return incomeRebateRate;
+    }
+
+    public void setIncomeRebateRate(double incomeRebateRate) {
+        this.incomeRebateRate = incomeRebateRate;
+    }
 
     public String getCompanyId() {
         return companyId;
@@ -80,11 +98,4 @@ public class CompanyModifyVO {
         this.registerArea = registerArea;
     }
 
-    public double getRebateTaxRate() {
-        return rebateTaxRate;
-    }
-
-    public void setRebateTaxRate(double rebateTaxRate) {
-        this.rebateTaxRate = rebateTaxRate;
-    }
 }

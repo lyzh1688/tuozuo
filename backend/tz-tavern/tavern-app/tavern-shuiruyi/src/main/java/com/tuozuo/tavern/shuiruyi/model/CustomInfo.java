@@ -33,6 +33,16 @@ public class CustomInfo extends Model<CustomInfo> {
 
     String hasPaid;
 
+    String isValid;
+
+    public String getIsValid() {
+        return isValid;
+    }
+
+    public void setIsValid(String isValid) {
+        this.isValid = isValid;
+    }
+
     public String getCity() {
         return city;
     }

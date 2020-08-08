@@ -37,4 +37,6 @@ public interface CustomInfoService {
 
     void countCustomStatistic();
 
+    void removeCustomId(String customId) throws Exception;
+
 }

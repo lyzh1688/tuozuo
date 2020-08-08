@@ -13,6 +13,7 @@
     <result column="update_date" jdbcType="DATE" property="updateDate" />
     <result column="custom_type" jdbcType="VARCHAR" property="customType" />
     <result column="has_paid" jdbcType="VARCHAR" property="hasPaid" />
+    <result column="is_valid" jdbcType="VARCHAR" property="isValid" />
   </resultMap>
   <resultMap id="BaseDetailResultMap" type="com.tuozuo.tavern.shuiruyi.model.CustomDetailInfo">
     <id column="custom_id" jdbcType="VARCHAR" property="customId" />
@@ -34,12 +35,14 @@
     from custom_info t left join custom_statistic_snapshot t1
     on t.custom_id = t1.custom_id
     where t.custom_id = #{customId,jdbcType=VARCHAR}
+    and t.is_valid = '1'
   </select>
   <select id="selectCustomInfoList" resultMap="BaseResultMap">
     select custom_id, custom_name, custom_pswd, custom_contact, balance, province,city,district, update_date,
     custom_type, has_paid
     from custom_info
     <where>
+      is_valid = '1'
       <if test="customName != null and customName != ''">
         custom_name = #{customName}
       </if>

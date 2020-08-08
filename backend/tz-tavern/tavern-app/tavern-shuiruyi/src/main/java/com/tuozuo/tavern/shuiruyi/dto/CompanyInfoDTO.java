@@ -22,7 +22,8 @@ public class CompanyInfoDTO {
     private String endDate;
     private String tradeFlow;
     private String registerArea;
-    private BigDecimal rebateTaxRate;
+    private BigDecimal valueAddedRebateRate;
+    private BigDecimal incomeRebateRate;
 
     public String getCustomId() {
         return customId;
@@ -144,11 +145,19 @@ public class CompanyInfoDTO {
         this.registerArea = registerArea;
     }
 
-    public BigDecimal getRebateTaxRate() {
-        return rebateTaxRate;
+    public BigDecimal getValueAddedRebateRate() {
+        return valueAddedRebateRate;
     }
 
-    public void setRebateTaxRate(BigDecimal rebateTaxRate) {
-        this.rebateTaxRate = rebateTaxRate;
+    public void setValueAddedRebateRate(BigDecimal valueAddedRebateRate) {
+        this.valueAddedRebateRate = valueAddedRebateRate;
+    }
+
+    public BigDecimal getIncomeRebateRate() {
+        return incomeRebateRate;
+    }
+
+    public void setIncomeRebateRate(BigDecimal incomeRebateRate) {
+        this.incomeRebateRate = incomeRebateRate;
     }
 }

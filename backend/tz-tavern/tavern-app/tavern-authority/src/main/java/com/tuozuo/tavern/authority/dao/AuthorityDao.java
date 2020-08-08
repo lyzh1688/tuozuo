@@ -13,4 +13,5 @@ public interface AuthorityDao {
     void updateFailedTimes(User user);
     boolean createUser(User user);
     void updateUser(User user);
+    void removeUser(String userId);
 }
