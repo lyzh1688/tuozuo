@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.UserTypeDict;
 import com.tuozuo.tavern.shuiruyi.convert.BusinessConverter;
 import com.tuozuo.tavern.shuiruyi.dao.CompanyInfoDao;
+import com.tuozuo.tavern.shuiruyi.dao.ContractInfoDao;
 import com.tuozuo.tavern.shuiruyi.dao.InvoiceAuditDao;
 import com.tuozuo.tavern.shuiruyi.dao.InvoiceInfoDao;
 import com.tuozuo.tavern.shuiruyi.dict.Event;
+import com.tuozuo.tavern.shuiruyi.dict.InvoiceStatus;
 import com.tuozuo.tavern.shuiruyi.model.*;
 import com.tuozuo.tavern.shuiruyi.service.InvoiceInfoService;
 import com.tuozuo.tavern.shuiruyi.utils.FileUtils;
@@ -25,7 +27,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -49,6 +50,8 @@ public class InvoiceInfoServiceImpl implements InvoiceInfoService {
     private CompanyInfoDao companyInfoDao;
     @Autowired
     private InvoiceAuditDao invoiceAuditDao;
+    @Autowired
+    private ContractInfoDao contractInfoDao;
 
     @Override
     public IPage<InvoiceStatistic> queryInvoiceStatistics(String beginMonth, String endMonth, String companyId, String customId, int pageNo, int pageSize) {
@@ -104,7 +107,27 @@ public class InvoiceInfoServiceImpl implements InvoiceInfoService {
     }
 
     @Override
-    public void auditInvoiceInfo(String invoiceId, String invoiceStatus, String deliveryId, String remark, String invoiceContent, double tax) {
+    public void auditInvoiceInfo(String invoiceId, String invoiceStatus, String deliveryId, String remark, String invoiceContent, double tax) throws Exception {
+        if (invoiceStatus.equals(InvoiceStatus.PAY.getName())) {
+
+            InvoiceInfo invoiceInfo = this.invoiceInfoDao.selectInvoiceInfo(invoiceId);
+            ContractDetailInfo contractDetailInfo = this.contractInfoDao.selectInvoicedContract(invoiceInfo.getContractId());
+            BigDecimal invoicedAmount = contractDetailInfo.getInvoicedAmount();
+            //都不为空，判断合同金额和当前发票的总和
+            if (invoicedAmount != null && invoiceInfo.getInvoiceAmount() != null) {
+                BigDecimal totalInvoicedAmount = invoicedAmount.add(invoiceInfo.getInvoiceAmount());
+                if (contractDetailInfo.getContractAmount().compareTo(totalInvoicedAmount) < 0) {
+                    throw new Exception("已开发票金额已超过合同金额！");
+                }
+            }
+            if (invoicedAmount == null && invoiceInfo.getInvoiceAmount() != null) {
+                BigDecimal totalInvoicedAmount = invoiceInfo.getInvoiceAmount();
+                if (contractDetailInfo.getContractAmount().compareTo(totalInvoicedAmount) < 0) {
+                    throw new Exception("已开发票金额已超过合同金额！");
+                }
+            }
+        }
+
         InvoiceInfo invoiceInfo = new InvoiceInfo();
         invoiceInfo.setInvoiceId(invoiceId);
         invoiceInfo.setInvoiceStatus(invoiceStatus);

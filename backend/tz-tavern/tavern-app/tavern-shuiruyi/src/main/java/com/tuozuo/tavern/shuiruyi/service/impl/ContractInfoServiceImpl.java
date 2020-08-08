@@ -1,7 +1,6 @@
 package com.tuozuo.tavern.shuiruyi.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.UserTypeDict;
 import com.tuozuo.tavern.shuiruyi.dao.ContractAuditFlowDao;
@@ -16,7 +15,6 @@ import com.tuozuo.tavern.shuiruyi.utils.FileUtils;
 import com.tuozuo.tavern.shuiruyi.utils.UUIDUtil;
 import com.tuozuo.tavern.shuiruyi.vo.ContractInfoVO;
 import com.tuozuo.tavern.shuiruyi.vo.ContractModifyVO;
-import netscape.javascript.JSObject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -116,13 +114,13 @@ public class ContractInfoServiceImpl implements ContractInfoService {
 
     @Override
     public ContractDetailInfo queryContractDetail(String contractId) {
-        return this.contractInfoDao.queryContractDetail(contractId);
+        return this.contractInfoDao.selectContractDetail(contractId);
     }
 
     @Async
     @Override
     public void addContractFlow(String contractId, Event event, String userId, String userType) {
-        ContractInfo contractInfo = this.contractInfoDao.queryContractDetail(contractId);
+        ContractInfo contractInfo = this.contractInfoDao.selectContractDetail(contractId);
         ContractAuditFlow contractAuditFlow = new ContractAuditFlow();
         contractAuditFlow.setContractId(contractId);
         contractAuditFlow.setEvent(event.name());

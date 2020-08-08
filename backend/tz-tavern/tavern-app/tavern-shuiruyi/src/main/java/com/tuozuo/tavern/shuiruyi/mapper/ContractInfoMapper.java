@@ -13,12 +13,15 @@ import java.util.List;
 @Mapper
 public interface ContractInfoMapper extends BaseMapper<ContractInfo> {
     IPage<ContractDetailInfo> selectList(Page page,
-                                         @Param("companyId")String companyId,
-                                         @Param("customId")String customId);
+                                         @Param("companyId") String companyId,
+                                         @Param("customId") String customId);
+
     List<ContractInfo> fuzzyQuery(@Param("contractStatus") String contractStatus,
                                   @Param("contractName") String contractName,
                                   @Param("queryCnt") int queryCnt,
                                   @Param("customId") String customId);
 
-    ContractDetailInfo select(@Param("contractId")String contractId);
+    ContractDetailInfo select(@Param("contractId") String contractId);
+
+    ContractDetailInfo selectInvoiced(@Param("contractId") String contractId);
 }

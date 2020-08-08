@@ -53,7 +53,12 @@ public class ContractInfoDaoImpl implements ContractInfoDao {
     }
 
     @Override
-    public ContractDetailInfo queryContractDetail(String contractId) {
+    public ContractDetailInfo selectContractDetail(String contractId) {
         return this.contractInfoMapper.select(contractId);
+    }
+
+    @Override
+    public ContractDetailInfo selectInvoicedContract(String contractId) {
+        return this.contractInfoMapper.selectInvoiced(contractId);
     }
 }

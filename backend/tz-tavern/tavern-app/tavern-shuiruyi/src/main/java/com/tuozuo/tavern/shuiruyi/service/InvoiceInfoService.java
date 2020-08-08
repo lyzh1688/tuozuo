@@ -32,7 +32,7 @@ public interface InvoiceInfoService {
 
     void modifyInvoiceInfo(InvoiceInfoVO vo) throws Exception;
 
-    void auditInvoiceInfo(String invoiceId, String invoiceStatus, String deliveryId, String remark, String invoiceContent, double tax);
+    void auditInvoiceInfo(String invoiceId, String invoiceStatus, String deliveryId, String remark, String invoiceContent, double tax) throws Exception;
 
     IPage<TaxStatistic> queryTaxStatistic(String registerArea,
                                           String customId,
