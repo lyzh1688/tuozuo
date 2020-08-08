@@ -44,6 +44,7 @@ public class CustomInfoDaoImpl implements CustomInfoDao {
     @Override
     public List<CustomInfo> fuzzyQueryCustomInfo(String customName, int queryCnt) {
         return this.customInfoMapper.selectList(Wrappers.<CustomInfo>query().lambda()
+                .eq(CustomInfo::getIsValid,"1")
                 .like(CustomInfo::getCustomName, customName)
                 .orderByAsc(CustomInfo::getCustomName)
                 .last("limit " + queryCnt));
