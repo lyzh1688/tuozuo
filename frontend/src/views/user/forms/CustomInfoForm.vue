@@ -15,7 +15,9 @@
           label="客户账户"
         >
           <a-input
-            v-decorator="['customId', {rules: [{required: true, message: '请输入客户账号！'}], validateTrigger: 'blur'}]"
+            v-decorator="['customId', {rules: [{required: true, message: '请输入客户账号！'},
+                                               { validator: checkData, trigger: 'blur'}
+            ], validateTrigger: 'blur'}]"
           />
         </a-form-item>
         <a-form-item label="客户名称">
@@ -170,6 +172,16 @@ export default {
     })
   },
   methods: {
+      checkData (rule, value, callback) {
+      if (value) {
+        if (/[\u4E00-\u9FA5]/g.test(value) || /^[0-9]+.?[0-9]*$/g.test(value)) {
+          callback(new Error('只可输入字母、不能输入汉字!'))
+        } else {
+          callback()
+        }
+      }
+      callback()
+    },
      getAreaCode (level, code) {
       return new Promise((resolve, reject) => {
         getAreaCode(level, code).then((Response) => {

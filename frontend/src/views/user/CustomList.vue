@@ -109,6 +109,11 @@ const columns = [
     scopedSlots: { customRender: 'no' }
   },
   {
+    title: '账户Id',
+    dataIndex: 'customId',
+    scopedSlots: { customRender: 'customId' }
+  },
+  {
     title: '客户名称',
     dataIndex: 'customName',
     scopedSlots: { customRender: 'customName' }
