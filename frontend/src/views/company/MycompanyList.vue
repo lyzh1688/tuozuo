@@ -428,6 +428,7 @@ export default {
       this.companyMdl['bossIdPicBack'] = null
       this.companyMdl['cfoIdPicUp'] = null
       this.companyMdl['cfoIdPicBack'] = null
+      this.companyMdl = { ...this.companyMdl }
       this.isupdate = false
       this.companyVisible = true
     },

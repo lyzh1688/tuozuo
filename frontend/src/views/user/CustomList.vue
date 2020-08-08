@@ -394,6 +394,8 @@ export default {
     },
     handleAdd () {
       this.customMdl['customId'] = ''
+      this.customMdl['customPswd'] = ''
+      this.customMdl = { ...this.customMdl }
       this.isupdate = false
       this.customOpsVisible = true
     },
