@@ -18,6 +18,7 @@ public interface CompanyInfoMapper extends BaseMapper<CompanyInfo> {
     CompanyDetailInfo selectDetailInfo(@Param("companyId") String companyId);
 
     IPage<CompanyInfo> selectCompanyList(Page page,
+                                         @Param("companyId") String companyId,
                                          @Param("customId") String customId,
                                          @Param("companyStatus") String companyStatus,
                                          @Param("registerStatus") String registerStatus);

@@ -66,9 +66,9 @@ public class CompanyInfoDaoImpl implements CompanyInfoDao {
     }
 
     @Override
-    public IPage<CompanyInfo> selectCompanyList(String customId, String companyStatus, String registerStatus, int pageNo, int pageSize) {
+    public IPage<CompanyInfo> selectCompanyList(String companyId,String customId, String companyStatus, String registerStatus, int pageNo, int pageSize) {
         Page<CompanyInfo> page = new Page<>(pageNo, pageSize);
-        return this.companyInfoMapper.selectCompanyList(page, customId, companyStatus, registerStatus);
+        return this.companyInfoMapper.selectCompanyList(page,companyId, customId, companyStatus, registerStatus);
     }
 
     @Override

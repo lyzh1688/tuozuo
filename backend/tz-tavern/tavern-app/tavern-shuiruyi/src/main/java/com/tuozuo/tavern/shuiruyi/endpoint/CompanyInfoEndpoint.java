@@ -81,14 +81,15 @@ public class CompanyInfoEndpoint {
      * 个独公司列表
      */
     @GetMapping("/list")
-    public TavernResponse queryCompanyDict(@RequestParam(name = "companyStatus", defaultValue = "") String companyStatus,
+    public TavernResponse queryCompanyDict(@RequestParam(name = "companyId", defaultValue = "") String companyId,
+                                           @RequestParam(name = "companyStatus", defaultValue = "") String companyStatus,
                                            @RequestParam(name = "registerStatus", defaultValue = "") String registerStatus,
                                            @RequestParam(name = "pageNo") int pageNo,
                                            @RequestParam(name = "pageSize") int pageSize,
                                            @RequestHeader(TavernRequestAuthFields.USER_ID) String customId,
                                            @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
         try {
-            IPage<CompanyInfo> page = this.companyInfoService.queryCompanyList(customId, roleGroup, companyStatus, registerStatus, pageNo, pageSize);
+            IPage<CompanyInfo> page = this.companyInfoService.queryCompanyList(companyId,customId, roleGroup, companyStatus, registerStatus, pageNo, pageSize);
             CompanyInfoListDTO companyInfoListDTO = new CompanyInfoListDTO();
 
             List<CompanyBriefInfo> companyBriefInfoList = page.getRecords().stream()

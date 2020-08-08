@@ -69,11 +69,11 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     }
 
     @Override
-    public IPage<CompanyInfo> queryCompanyList(String customId, String roleGroup, String companyStatus, String registerStatus, int pageNo, int pageSize) {
+    public IPage<CompanyInfo> queryCompanyList(String companyId,String customId, String roleGroup, String companyStatus, String registerStatus, int pageNo, int pageSize) {
         if (roleGroup.equals(UserTypeDict.custom)) {
-            return this.companyInfoDao.selectCompanyList(customId, companyStatus, registerStatus, pageNo, pageSize);
+            return this.companyInfoDao.selectCompanyList(companyId,customId, companyStatus, registerStatus, pageNo, pageSize);
         } else {
-            return this.companyInfoDao.selectCompanyList(null, companyStatus, registerStatus, pageNo, pageSize);
+            return this.companyInfoDao.selectCompanyList(companyId,null, companyStatus, registerStatus, pageNo, pageSize);
         }
     }
 

@@ -96,6 +96,9 @@
     from custom_info t inner  join company_info t1 on t.custom_id = t1.custom_id
     <where>
 
+      <if test="companyId != null and companyId != ''">
+       and t1.company_id = #{companyId}
+      </if>
       <if test="companyStatus != null and companyStatus != ''">
        and t1.company_status = #{companyStatus}
       </if>
