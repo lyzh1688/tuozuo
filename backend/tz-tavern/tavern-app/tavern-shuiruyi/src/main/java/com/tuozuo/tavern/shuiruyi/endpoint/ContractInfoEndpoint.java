@@ -6,8 +6,10 @@ import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.shuiruyi.convert.BusinessConverter;
 import com.tuozuo.tavern.shuiruyi.dict.Event;
-import com.tuozuo.tavern.shuiruyi.dto.*;
-import com.tuozuo.tavern.shuiruyi.model.CompanyDetailInfo;
+import com.tuozuo.tavern.shuiruyi.dto.ContractItemDTO;
+import com.tuozuo.tavern.shuiruyi.dto.ContractListDTO;
+import com.tuozuo.tavern.shuiruyi.dto.ContractSearchDTO;
+import com.tuozuo.tavern.shuiruyi.dto.ContractTemplateDTO;
 import com.tuozuo.tavern.shuiruyi.model.ContractDetailInfo;
 import com.tuozuo.tavern.shuiruyi.service.ContractInfoService;
 import com.tuozuo.tavern.shuiruyi.vo.ContractAuditVO;
@@ -20,8 +22,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -90,7 +92,7 @@ public class ContractInfoEndpoint {
         try {
             vo.setContractFile(contractFile);
             String contractId = this.contractInfoService.addContractInfo(vo);
-            this.contractInfoService.addContractFlow(contractId, Event.CREATE,customId,roleGroup);
+            this.contractInfoService.addContractFlow(contractId, Event.CREATE, customId, roleGroup);
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[新建合同] failed", e);
@@ -134,6 +136,10 @@ public class ContractInfoEndpoint {
                         contractSearchDTO.setName(contractInfo.getContractName());
                         contractSearchDTO.setCompanyId(contractInfo.getCompanyId());
                         contractSearchDTO.setCompanyName(contractInfo.getCompanyPartyBName());
+                        double invoicedAmount = contractInfo.getInvoicedAmount() != null ? contractInfo.getInvoicedAmount().doubleValue() : BigDecimal.ZERO.doubleValue();
+                        double contractAmount = contractInfo.getContractAmount() != null ? contractInfo.getContractAmount().doubleValue() : BigDecimal.ZERO.doubleValue();
+                        contractSearchDTO.setInvoicedAmount(invoicedAmount);
+                        contractSearchDTO.setContractAmount(contractAmount);
                         return contractSearchDTO;
                     }).collect(Collectors.toList());
             return TavernResponse.ok(businessDictList);
@@ -159,7 +165,7 @@ public class ContractInfoEndpoint {
             vo.setContractId(contractId);
             vo.setContractFile(contractFile);
             this.contractInfoService.modifyContractInfo(vo);
-            this.contractInfoService.addContractFlow(contractId, Event.UPDATE,customId,roleGroup);
+            this.contractInfoService.addContractFlow(contractId, Event.UPDATE, customId, roleGroup);
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[合同审核修改] failed", e);
@@ -178,7 +184,7 @@ public class ContractInfoEndpoint {
         try {
             LOGGER.info("audit: {},contractId: {}", JSON.toJSONString(vo), contractId);
             this.contractInfoService.auditContractInfo(contractId, vo.getContractStatus(), vo.getRemark());
-            this.contractInfoService.addContractFlow(contractId, Event.AUDIT,customId,roleGroup);
+            this.contractInfoService.addContractFlow(contractId, Event.AUDIT, customId, roleGroup);
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[合同审核] failed", e);

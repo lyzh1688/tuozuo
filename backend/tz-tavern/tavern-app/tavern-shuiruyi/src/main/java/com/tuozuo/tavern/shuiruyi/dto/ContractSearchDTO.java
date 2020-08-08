@@ -9,6 +9,24 @@ public class ContractSearchDTO {
     private String name;
     private String companyId;
     private String companyName;
+    private double contractAmount;
+    private double invoicedAmount;
+
+    public double getContractAmount() {
+        return contractAmount;
+    }
+
+    public void setContractAmount(double contractAmount) {
+        this.contractAmount = contractAmount;
+    }
+
+    public double getInvoicedAmount() {
+        return invoicedAmount;
+    }
+
+    public void setInvoicedAmount(double invoicedAmount) {
+        this.invoicedAmount = invoicedAmount;
+    }
 
     public String getId() {
         return id;
