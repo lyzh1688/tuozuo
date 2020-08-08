@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    :title="model && model.receiptId!=undefined&&model.receiptId!==''?'修改开票':'新建开票申请'"
+    :title="formTitle"
     :width="740"
     :visible="visible"
     :confirmLoading="loading"
@@ -49,6 +49,28 @@
                 :disabled="true"
                 style="width:200px;"
                 v-decorator="['companyName', {rules: [{required: true, message: '请输入公司名称！'}], validateTrigger: 'blur'}]"
+              />
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row v-if="!isShowOnly">
+          <a-col :span="12">
+            <a-form-item label="合同金额(元)" key="合同金额">
+              <a-input
+                :min="0"
+                style="width:200px;"
+                :disabled="true"
+                v-decorator="['contractAmountShow']"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="已开票金额(元)" key="已开票金额">
+              <a-input
+                :min="0"
+                style="width:200px;"
+                :disabled="true"
+                v-decorator="['invoicedAmountShow']"
               />
             </a-form-item>
           </a-col>
@@ -159,7 +181,7 @@
 <script>
 import pick from 'lodash.pick'
 import { dictQuery, fuzzyQueryCompany } from '@/api/company'
-import { success, errorMessage } from '@/utils/helper/responseHelper'
+import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 import { fuzzyQueryContract } from '@/api/contract'
 let timeout
 let currentValue
@@ -213,7 +235,9 @@ function fetch2 (value, callback) {
             value: r['id'],
             text: r['name'],
             companyId: r['companyId'],
-            companyName: r['companyName']
+            companyName: r['companyName'],
+            contractAmount: r['contractAmount'],
+            invoicedAmount: r['invoicedAmount']
           })
         })
         data.push({
@@ -233,6 +257,7 @@ const fields = [
   'companyId',
   'companyName',
   'contractId',
+  'contractName',
   'invoiceType',
   'invoiceAmount',
   'recvAmount',
@@ -243,11 +268,17 @@ const fields = [
   'recvDate',
   'invoiceContent',
   'remark',
-  'tax'
+  'tax',
+  'contractAmountShow',
+  'invoicedAmountShow'
 ]
 
 export default {
   props: {
+    formTitle: {
+      type: String,
+      default: ''
+    },
     visible: {
       type: Boolean,
       required: true
@@ -309,15 +340,32 @@ export default {
       this.invoicePatternList = response
     })
     console.log('custom modal created')
-
     // 防止表单未注册
     fields.forEach((v) => this.form.getFieldDecorator(v))
 
     // 当 model 发生改变时，为表单设置值
     this.$watch('model', () => {
       this.model && this.form.setFieldsValue(pick(this.model, fields))
-      fetch2(this.model.contractName, (data) => (this.fuzzyContractList = data))
-      fetch(this.model.companyName, (data) => (this.fuzzyCompanyList = data))
+      if (this.model.contractName !== undefined) {
+        fetch2(this.model.contractName, (data) => {
+this.fuzzyContractList = data
+               for (const i of this.fuzzyContractList) {
+        if (i.value === this.model.contractId) {
+          this.form.setFieldsValue({ companyId: i.companyId })
+          this.form.setFieldsValue({ companyName: i.companyName })
+          this.form.setFieldsValue({ contractAmountShow: i.contractAmount })
+          this.form.setFieldsValue({ invoicedAmountShow: i.invoicedAmount })
+        }
+      }
+})
+      } else {
+        fetch2('', (data) => (this.fuzzyContractList = data))
+      }
+      if (this.model.companyName !== undefined) {
+        fetch(this.model.companyName, (data) => (this.fuzzyCompanyList = data))
+      } else {
+        fetch(this.model.companyName, (data) => (this.fuzzyCompanyList = data))
+      }
     })
   },
   methods: {
@@ -333,19 +381,27 @@ export default {
     },
     handleCustomSearch2 (value) {
       fetch2(value, (data) => (this.fuzzyContractList = data))
+        for (const i of this.fuzzyContractList) {
+        if (i.value === value) {
+          this.form.setFieldsValue({ companyId: i.companyId })
+          this.form.setFieldsValue({ companyName: i.companyName })
+          this.form.setFieldsValue({ contractAmountShow: i.contractAmount })
+          this.form.setFieldsValue({ invoicedAmountShow: i.invoicedAmount })
+        }
+      }
     },
-   async handleCustomChange2 (value) {
+    async handleCustomChange2 (value) {
       // this.form.setFieldsValue({ tradeFlow: result.data.tradeFlowId })
       // await fetch2(value, (data) => {
       //   this.fuzzyContractList = data
 
       //   })
-             for (const i of this.fuzzyContractList) {
-      console.log(value, i)
-
+      for (const i of this.fuzzyContractList) {
         if (i.value === value) {
           this.form.setFieldsValue({ companyId: i.companyId })
           this.form.setFieldsValue({ companyName: i.companyName })
+          this.form.setFieldsValue({ contractAmountShow: i.contractAmount })
+          this.form.setFieldsValue({ invoicedAmountShow: i.invoicedAmount })
         }
       }
     },
@@ -387,6 +443,9 @@ export default {
               message: errorMessage(result),
               description: '查询字典失败'
             })
+          }
+          if (needLogin(result)) {
+            this.visible = false
           }
         })
       })

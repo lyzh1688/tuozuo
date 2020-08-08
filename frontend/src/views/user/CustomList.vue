@@ -63,13 +63,17 @@
         :pageSize="20"
         :columns="columns"
         :data="loadData"
-        showPagination="auto"
+        :showPagination="true"
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="customType" slot-scope="text">{{ customTypeMap[text] }}</span>
         <span slot="ops" slot-scope="text, record">
           <a-button size="small" @click="handleUpdate(record)" :loading="confirmLoading">修改</a-button>
           <a-button size="small" @click="handleops(record)" :loading="confirmLoading">余额变动</a-button>
+          <a-popconfirm title="确定删除该客户吗？操作不可逆！" @confirm="handledelete(record.customId)">
+            <a-icon slot="icon" type="question-circle-o" style="color: red" />
+            <a-button size="small" :loading="confirmLoading">删除</a-button>
+          </a-popconfirm>
         </span>
         <a slot="customName" slot-scope="text,record" @click="toCustomInfo(record)">{{ text }}</a>
       </s-table>
@@ -97,7 +101,7 @@
 </template>
 <script>
 import { STable } from '@/components'
-import { getCustomList, dictQuery, fuzzyQueryCustom, addCustom, updateCustom, tradeOpration } from '@/api/company'
+import { getCustomList, dictQuery, fuzzyQueryCustom, addCustom, updateCustom, tradeOpration, deleteCustom } from '@/api/company'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 import { mapState } from 'vuex'
 import custominfoform from './forms/CustomInfoForm'
@@ -121,7 +125,7 @@ const columns = [
   {
     title: '是否完成支付',
     dataIndex: 'hasPaid',
-    customRender: text => {
+    customRender: (text) => {
       if (text === '0') {
         return '否'
       }
@@ -176,11 +180,11 @@ function fetch (value, callback) {
   currentValue = value
 
   function fake () {
-    fuzzyQueryCustom(value, 20).then(d => {
+    fuzzyQueryCustom(value, 20).then((d) => {
       if (currentValue === value) {
         const result = d.data
         const data = []
-        result.forEach(r => {
+        result.forEach((r) => {
           data.push({
             value: r['id'],
             text: r['name']
@@ -225,7 +229,7 @@ export default {
         pageNo: 1,
         pageSize: 20
       },
-      loadData: parameter => {
+      loadData: (parameter) => {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
         console.log('loadData request parameters:', requestParameters)
         return getCustomList(
@@ -234,7 +238,7 @@ export default {
           requestParameters.pageNo,
           requestParameters.pageSize
         )
-          .then(Response => {
+          .then((Response) => {
             const result = Response
             // console.log('getTradeflow', result)
             if (success(result)) {
@@ -256,7 +260,7 @@ export default {
             }, 600)
             return []
           })
-          .catch(error => {
+          .catch((error) => {
             setTimeout(() => {
               this.tradeflowLoading = false
             }, 600)
@@ -273,14 +277,44 @@ export default {
       this.fundOpsVisible = true
       this.fundMdl = { ...record }
     },
+    handledelete (record) {
+      this.confirmLoading = true
+      deleteCustom(record)
+        .then((Response) => {
+          const result = Response
+          // console.log('dictQuery', result)
+          if (success(result)) {
+            this.$refs.table.refresh(true)
+              this.$notification.success({
+              message: errorMessage(result),
+              description: '删除成功'
+            })
+          } else {
+            this.$notification.error({
+              message: errorMessage(result),
+              description: '删除失败'
+            })
+          }
+          setTimeout(() => {
+           this.confirmLoading = false
+          }, 600)
+        })
+        .catch((error) => {
+           this.confirmLoading = false
+          this.$notification.error({
+            message: '删除失败',
+            description: error
+          })
+        })
+    },
     handleFundOpsOk () {
       const form = this.$refs.fundoperation.form
       form.validateFields((errors, values) => {
         if (!errors) {
           this.confirmLoading = true
-       values.tradeFile = values.tradeFile.file.originFileObj
+          values.tradeFile = values.tradeFile.file.originFileObj
           tradeOpration(values)
-            .then(response => {
+            .then((response) => {
               const result = response
               if (success(result)) {
                 this.$notification.success({
@@ -299,12 +333,12 @@ export default {
                   description: '余额修改成功'
                 })
               }
-               if (needLogin(result)) {
-                  this.fundOpsVisible = false
-                  this.confirmLoading = false
-                }
+              if (needLogin(result)) {
+                this.fundOpsVisible = false
+                this.confirmLoading = false
+              }
             })
-            .catch(error => {
+            .catch((error) => {
               this.$notification.error({
                 message: '余额修改成功失败。请稍后再试',
                 description: error
@@ -320,11 +354,11 @@ export default {
         if (!errors) {
           this.confirmLoading = true
           if (this.customMdl['customPswd'] !== values['customPswd']) {
-          values['customPswd'] = md5(values['customPswd'])
+            values['customPswd'] = md5(values['customPswd'])
           }
           if (this.isupdate) {
             updateCustom(values, values.customId)
-              .then(response => {
+              .then((response) => {
                 const result = response
                 if (success(result)) {
                   this.$notification.success({
@@ -342,12 +376,12 @@ export default {
                     description: '修改失败'
                   })
                 }
-                 if (needLogin(result)) {
+                if (needLogin(result)) {
                   this.customOpsVisible = false
                   this.confirmLoading = false
                 }
               })
-              .catch(error => {
+              .catch((error) => {
                 this.$notification.error({
                   message: '修改失败。请稍后再试',
                   description: error
@@ -356,7 +390,7 @@ export default {
               })
           } else {
             addCustom(values)
-              .then(response => {
+              .then((response) => {
                 const result = response
                 if (success(result)) {
                   this.$notification.success({
@@ -379,7 +413,7 @@ export default {
                   this.confirmLoading = false
                 }
               })
-              .catch(error => {
+              .catch((error) => {
                 this.$notification.error({
                   message: '新增失败。请稍后再试',
                   description: error
@@ -398,9 +432,13 @@ export default {
       // form.resetFields() // 清理表单数据（可不做）
     },
     handleAdd () {
-      this.customMdl['customId'] = ''
-      this.customMdl['customPswd'] = ''
-      this.customMdl = { ...this.customMdl }
+      // this.customMdl['customId'] = ''
+      // this.customMdl['customPswd'] = ''
+      // this.customMdl = { ...this.customMdl }
+      this.customMdl = {}
+      const form = this.$refs.CustomInfoForm.form
+      form.resetFields() // 清理表单数据（可不做）
+      this.$refs.table.refresh(true)
       this.isupdate = false
       this.customOpsVisible = true
     },
@@ -414,19 +452,19 @@ export default {
       this.$router.push({ name: 'CustomInfo', params: { customId: value.customId } })
     },
     handleCustomSearch (value) {
-      fetch(value, data => (this.fuzzyCustomList = data))
+      fetch(value, (data) => (this.fuzzyCustomList = data))
     },
     handleCustomChange (value) {
       // console.log(value)
       this.queryParam.customName = value
-      fetch(value, data => (this.fuzzyCustomList = data))
+      fetch(value, (data) => (this.fuzzyCustomList = data))
     },
     handleDefault (value) {
       return value === undefined ? '暂无数据' : String(value)
     },
     getDict () {
       dictQuery('customType')
-        .then(Response => {
+        .then((Response) => {
           const result = Response
           // console.log('dictQuery', result)
           if (success(result)) {
@@ -445,7 +483,7 @@ export default {
             this.infoLoading = false
           }, 600)
         })
-        .catch(error => {
+        .catch((error) => {
           this.infoLoading = false
           this.$notification.error({
             message: '查询字典失败',
@@ -456,7 +494,7 @@ export default {
   },
   computed: {
     ...mapState({
-      username: state => state.user.name
+      username: (state) => state.user.name
     }),
     rowSelection () {
       return {
@@ -465,9 +503,9 @@ export default {
       }
     }
   },
-  // created () {
-  //   this.getDict()
-  // },
+  created () {
+    fetch('', (data) => (this.fuzzyCustomList = data))
+  },
   activated () {
     this.$refs.table.refresh(true)
     this.getDict()

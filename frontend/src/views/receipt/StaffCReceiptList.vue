@@ -42,11 +42,7 @@
             </a-col>
             <a-col :md="8" :sm="8">
               <a-form-item label="开票状态" key="开票状态">
-                <a-select
-                  v-model="queryParam.invoiceStatus"
-                  style="width:200px;"
-                  placeholder="请选择"
-                >
+                <a-select v-model="queryParam.invoiceStatus" style="width:200px;" placeholder="请选择">
                   <a-select-option
                     v-for=" taxItem in receiptStatus"
                     :key="taxItem.id"
@@ -82,7 +78,7 @@
         :pageSize="20"
         :columns="columns"
         :data="loadData"
-        showPagination="auto"
+        :showPagination="true"
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="ops" slot-scope="text, record">
@@ -92,6 +88,7 @@
       </s-table>
     </a-card>
     <contractForm
+      :formTitle="formTitle"
       ref="contractForm"
       :clearUpload="clearUpload"
       :visible="receiptVisible"
@@ -308,6 +305,7 @@ export default {
   data () {
     this.columns = columns
     return {
+      formTitle: '',
       fuzzyCompanyList: [],
       fuzzyContractList: [],
       infoLoading: false,
@@ -326,7 +324,13 @@ export default {
       loadData: (parameter) => {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
         console.log('loadData request parameters:', requestParameters)
-        return getReceiptList(requestParameters.companyId, requestParameters.contractId, requestParameters.invoiceStatus, requestParameters.pageNo, requestParameters.pageSize)
+        return getReceiptList(
+          requestParameters.companyId,
+          requestParameters.contractId,
+          requestParameters.invoiceStatus,
+          requestParameters.pageNo,
+          requestParameters.pageSize
+        )
           .then((Response) => {
             const result = Response
             // console.log('getTradeflow', result)
@@ -362,11 +366,12 @@ export default {
     }
   },
   methods: {
-      fetchContracDetail (record) {
+    fetchContracDetail (record) {
+      this.formTitle = '开票申请详情'
       this.isShowOnly = true
       this.confirmLoading = true
       getReceiptDetail(record.invoiceId)
-        .then(response => {
+        .then((response) => {
           const result = response
           if (success(result)) {
             this.receiptMdl = {
@@ -383,7 +388,7 @@ export default {
             })
           }
         })
-        .catch(error => {
+        .catch((error) => {
           this.$notification.error({
             message: '获取开票详情失败',
             description: error
@@ -403,51 +408,54 @@ export default {
       const form = this.$refs.contractForm.form
       form.validateFields((errors, values) => {
         if (!errors) {
-          if (values.invoiceStatus === '3' && (values.deliveryId === '' || values.deliveryId === null || values.deliveryId === undefined)) {
+          if (
+            values.invoiceStatus === '3' &&
+            (values.deliveryId === '' || values.deliveryId === null || values.deliveryId === undefined)
+          ) {
             this.$notification.error({
-                  message: '请填写快递单号'
-                })
-                return
+              message: '请填写快递单号'
+            })
+            return
           }
           this.confirmLoading = true
           confirmReceipt(values)
-              .then((response) => {
-                const result = response
-                if (success(result)) {
-                  this.$notification.success({
-                    message: '修改成功'
-                  })
-                  const form = this.$refs.contractForm.form
-                  this.clearUpload = !this.clearUpload
-                  form.resetFields() // 清理表单数据（可不做）
-                  this.$refs.table.refresh(true)
-                  this.receiptVisible = false
-                  this.confirmLoading = false
-                } else {
-                  this.confirmLoading = false
-                  this.$notification.error({
-                    message: errorMessage(result),
-                    description: '修改失败'
-                  })
-                }
-                if (needLogin(result)) {
-                  this.receiptVisible = false
-                  this.confirmLoading = false
-                }
-              })
-              .catch((error) => {
-                this.$notification.error({
-                  message: '修改失败。请稍后再试',
-                  description: error
+            .then((response) => {
+              const result = response
+              if (success(result)) {
+                this.$notification.success({
+                  message: '修改成功'
                 })
+                const form = this.$refs.contractForm.form
+                this.clearUpload = !this.clearUpload
+                form.resetFields() // 清理表单数据（可不做）
+                this.$refs.table.refresh(true)
+                this.receiptVisible = false
                 this.confirmLoading = false
+              } else {
+                this.confirmLoading = false
+                this.$notification.error({
+                  message: errorMessage(result),
+                  description: '修改失败'
+                })
+              }
+              if (needLogin(result)) {
+                this.receiptVisible = false
+                this.confirmLoading = false
+              }
+            })
+            .catch((error) => {
+              this.$notification.error({
+                message: '修改失败。请稍后再试',
+                description: error
               })
+              this.confirmLoading = false
+            })
         }
       })
     },
-     async handleDetail (record) {
-         this.isupdate = false
-           this.receiptVisible = true
+    async handleDetail (record) {
+      this.isupdate = false
+      this.receiptVisible = true
       await this.fetchContracDetail(record)
     },
     handleCancel () {
@@ -458,7 +466,7 @@ export default {
     },
     async handleUpdate (record) {
       await this.fetchContracDetail(record)
-
+      this.formTitle = '审核开票申请'
       this.isupdate = true
       this.receiptVisible = true
       this.isShowOnly = false
@@ -509,10 +517,12 @@ export default {
     }
   },
   created () {
+    fetch('', (data) => (this.fuzzyCompanyList = data))
+    fetch2('', (data) => (this.fuzzyContractList = data))
     this.getContractStatus()
   },
   activated () {
-      this.$refs.table.refresh(true)
+    this.$refs.table.refresh(true)
   },
   watch: {
     customId: function (newVal, oldVal) {

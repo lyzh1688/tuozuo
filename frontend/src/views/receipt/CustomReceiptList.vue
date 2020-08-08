@@ -85,16 +85,22 @@
         :pageSize="20"
         :columns="columns"
         :data="loadData"
-        showPagination="auto"
+        :showPagination="true"
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="ops" slot-scope="text, record">
-          <a-button :disabled="record.invoiceStatus!=='审核中'&&record.invoiceStatus!=='审核失败'" size="small" @click="handleUpdate(record)" :loading="confirmLoading">修改</a-button>
+          <a-button
+            :disabled="record.invoiceStatus!=='审核中'&&record.invoiceStatus!=='审核失败'"
+            size="small"
+            @click="handleUpdate(record)"
+            :loading="confirmLoading"
+          >修改</a-button>
           <a-button size="small" @click="handleDetail(record)" :loading="confirmLoading">详情</a-button>
         </span>
       </s-table>
     </a-card>
     <contractForm
+      :formTitle="formTitle"
       ref="contractForm"
       :clearUpload="clearUpload"
       :visible="receiptVisible"
@@ -251,6 +257,7 @@ export default {
   data () {
     this.columns = columns
     return {
+      formTitle: '',
       fuzzyCompanyList: [],
       fuzzyContractList: [],
       infoLoading: false,
@@ -312,6 +319,7 @@ export default {
   },
   methods: {
     fetchReceiptDetail (record) {
+      this.formTitle = '开票申请详情'
       this.isShowOnly = true
       this.confirmLoading = true
       getReceiptDetail(record.invoiceId)
@@ -429,11 +437,15 @@ export default {
       await this.fetchReceiptDetail(record)
     },
     handleAdd () {
-      const tmp = { ...this.receiptMdl }
-      tmp['receiptId'] = ''
-      tmp['authLetterFile	'] = null
-      tmp['bankFlowFile	'] = null
-      this.receiptMdl = { ...tmp }
+      // const tmp = { ...this.receiptMdl }
+      // tmp['receiptId'] = ''
+      // tmp['authLetterFile	'] = null
+      // tmp['bankFlowFile	'] = null
+      this.formTitle = '新增开票申请'
+      this.receiptMdl = {}
+      const form = this.$refs.contractForm.form
+      this.clearUpload = !this.clearUpload
+      form.resetFields() // 清理表单数据（可不做）
       this.isupdate = false
       this.receiptVisible = true
       this.isShowOnly = false
@@ -446,7 +458,7 @@ export default {
     },
     async handleUpdate (record) {
       await this.fetchReceiptDetail(record)
-
+this.formTitle = '修改开票申请'
       this.isupdate = true
       this.receiptVisible = true
       this.isShowOnly = false
@@ -498,6 +510,8 @@ export default {
   },
   created () {
     this.getContractStatus()
+    fetch('', (data) => (this.fuzzyCompanyList = data))
+    fetch2('', (data) => (this.fuzzyContractList = data))
   },
   activated () {
     this.$refs.table.refresh(true)

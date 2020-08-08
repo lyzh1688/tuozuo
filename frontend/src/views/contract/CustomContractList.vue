@@ -55,7 +55,7 @@
         :pageSize="20"
         :columns="columns"
         :data="loadData"
-        showPagination="auto"
+        :showPagination="true"
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="ops" slot-scope="text, record">
@@ -70,6 +70,7 @@
       </s-table>
     </a-card>
     <contractForm
+      :formTitle="formTitle"
       ref="contractForm"
       :clearUpload="clearUpload"
       :visible="contractVisible"
@@ -194,6 +195,7 @@ export default {
   data () {
     this.columns = columns
     return {
+      formTitle: '',
       fuzzyCompanyList: [],
       infoLoading: false,
       queryParam: {
@@ -246,6 +248,7 @@ export default {
   },
   methods: {
     fetchContracDetail (record) {
+      this.formTitle = '合同详情'
       this.isShowOnly = true
       this.confirmLoading = true
       getContracDetail(record.contractId)
@@ -373,18 +376,22 @@ export default {
       // form.resetFields() // 清理表单数据（可不做）
     },
     handleAdd () {
-        const tmp = { ...this.contractMdl }
-      tmp['contractId'] = ''
-      tmp['companyPartyBName'] = ''
-      tmp['contractFile'] = null
-      this.contractMdl = { ...tmp }
+      //   const tmp = { ...this.contractMdl }
+      // tmp['contractId'] = ''
+      // tmp['companyPartyBName'] = ''
+      // tmp['contractFile'] = null
+      this.formTitle = '新增合同申请'
+      this.contractMdl = {}
+      const form = this.$refs.contractForm.form
+      this.clearUpload = !this.clearUpload
+      form.resetFields() // 清理表单数据（可不做）
       this.isupdate = false
       this.contractVisible = true
-       this.isShowOnly = false
+      this.isShowOnly = false
     },
     async handleUpdate (record) {
       await this.fetchContracDetail(record)
-
+      this.formTitle = '修改合同'
       this.isupdate = true
       this.contractVisible = true
       this.isShowOnly = false
@@ -431,6 +438,7 @@ export default {
   },
   created () {
     // this.getCustomInfo()
+    fetch('', (data) => (this.fuzzyCompanyList = data))
   },
   activated () {
     this.$refs.table.refresh(true)

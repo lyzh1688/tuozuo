@@ -68,7 +68,7 @@
         :pageSize="20"
         :columns="columns"
         :data="loadData"
-        showPagination="auto"
+        :showPagination="true"
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="event" slot-scope="text">{{ eventMap[text] }}</span>
@@ -258,6 +258,7 @@ export default {
     } },
   created () {
     // this.getCustomInfo()
+     fetch('', (data) => (this.fuzzyCompanyList = data))
   },
   activated () {
     if (this.innerUpdate) {

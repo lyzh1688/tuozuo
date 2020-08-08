@@ -96,7 +96,7 @@
 <script>
 import pick from 'lodash.pick'
 import { getAreaCode } from '@/api/company'
-import { success, errorMessage } from '@/utils/helper/responseHelper'
+import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 // 表单字段
 const fields = [
   'customId',
@@ -194,6 +194,9 @@ export default {
               message: errorMessage(result),
               description: '查询区域信息失败'
             })
+          }
+           if (needLogin(result)) {
+            this.visible = false
           }
         })
       })

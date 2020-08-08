@@ -76,7 +76,6 @@
             <a-col :span="8">
               <a-form-item label="注册园区" key="注册园区">
                 <a-select
-                  :disabled="isShowOnly"
                   style="width:200px;"
                   v-model="queryParam.registerArea"
                   placeholder="请选择"
@@ -117,6 +116,10 @@
       </a-skeleton>
     </a-card>
     <a-card style="margin-top: 24px" :bordered="false">
+      <template v-slot:title>
+        <span style="padding:5px;">个税总额:{{ totalIncomeTax }}元</span>
+        <span style="padding:5px;">增值税总额:{{ totalValueAddedTax }}元</span>
+      </template>
       <s-table
         ref="table"
         size="default"
@@ -124,10 +127,9 @@
         :pageSize="20"
         :columns="columns"
         :data="loadData"
-        showPagination="auto"
+        :showPagination="true"
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
-        <span slot="event" slot-scope="text">{{ eventMap[text] }}</span>
       </s-table>
     </a-card>
   </page-header-wrapper>
@@ -240,6 +242,8 @@ export default {
       cityIndex: 0,
       areaIndex: 0,
       infoLoading: false,
+      totalIncomeTax: '暂无数据',
+      totalValueAddedTax: '暂无数据',
       areaForm: {
         province: '',
         city: '',
@@ -285,6 +289,8 @@ export default {
               for (const i in result.data.statistics) {
                 ans.push({ ...result.data.statistics[i], key: i })
               }
+              this.totalIncomeTax = result.data.totalIncomeTax
+              this.totalValueAddedTax = result.data.totalValueAddedTax
               return {
                 pageSize: requestParameters.pageSize,
                 pageNo: requestParameters.pageNo,
@@ -373,6 +379,7 @@ export default {
     }
   },
   created () {
+    fetch('', (data) => (this.fuzzyCompanyList = data))
     this.getAreaCode('province', '').then((response) => {
       this.provinceList = response
     })

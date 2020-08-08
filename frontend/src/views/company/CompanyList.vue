@@ -17,11 +17,7 @@
         <a-row>
           <a-col :md="12" :sm="24">
             <a-form-item>
-              <a-button
-                type="primary"
-                size="small"
-                @click="()=>{$refs.table.refresh(true)}"
-              >查询</a-button>
+              <a-button type="primary" size="small" @click="()=>{$refs.table.refresh(true)}">查询</a-button>
             </a-form-item>
           </a-col>
         </a-row>
@@ -33,7 +29,7 @@
         :pageSize="20"
         :columns="columns"
         :data="loadData"
-        showPagination="auto"
+        :showPagination="true"
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="customType" slot-scope="text">{{ customTypeMap[text] }}</span>
@@ -61,11 +57,7 @@
         <a-row>
           <a-col :md="12" :sm="24">
             <a-form-item>
-              <a-button
-                type="primary"
-                size="small"
-                @click="()=>{$refs.table2.refresh(true)}"
-              >查询</a-button>
+              <a-button type="primary" size="small" @click="()=>{$refs.table2.refresh(true)}">查询</a-button>
             </a-form-item>
           </a-col>
         </a-row>
@@ -77,7 +69,7 @@
         :pageSize="20"
         :columns="columns"
         :data="loadData2"
-        showPagination="auto"
+        :showPagination="true"
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="customType" slot-scope="text">{{ customTypeMap[text] }}</span>
@@ -89,6 +81,7 @@
       </s-table>
     </a-card>
     <companyInfoform
+      :title="formTitle"
       ref="companyInfoform"
       :clearUpload="clearUpload"
       :visible="companyVisible"
@@ -186,17 +179,34 @@
         <a-row>
           <a-col :span="12">
             <a-form-item label="注册园区" key="注册园区">
-              <a-input
+              <a-select
                 :disabled="isShowOnly"
+                style="width:200px;"
                 v-decorator="['registerArea', {rules: [{required: true, message: '请输入注册园区！'}], validateTrigger: 'blur'}]"
-              />
+                placeholder="请选择"
+              >
+                <a-select-option
+                  v-for=" typeItem in registerArea"
+                  :key="typeItem.id"
+                >{{ typeItem.name }}</a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
           <a-col :span="12">
-            <a-form-item label="返税比例" key="返税比例">
+            <a-form-item label="个税返税比例" key="个税返税比例">
               <a-input
                 :disabled="isShowOnly"
-                v-decorator="['rebateTaxRate', {rules: [{required: true, message: '请输入返税比例！'}], validateTrigger: 'blur'}]"
+                v-decorator="['incomeRebateRate', {rules: [{required: true, message: '请输入个税返税比例！'}], validateTrigger: 'blur'}]"
+              />
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row>
+          <a-col :span="12">
+            <a-form-item label="增值税返税比例" key="增值税返税比例">
+              <a-input
+                :disabled="isShowOnly"
+                v-decorator="['valueAddedRebateRate', {rules: [{required: true, message: '请输入增值税返税比例！'}], validateTrigger: 'blur'}]"
               />
             </a-form-item>
           </a-col>
@@ -211,6 +221,7 @@
       :model="companyMdl"
       :isUpdate="isupdate"
       :isShowOnly="true"
+      :resetStep="resetStep"
       @cancel="handleCancel"
       @ok="handleOk"
     ></stepForm>
@@ -293,10 +304,13 @@ export default {
   data () {
     this.columns = columns
     return {
+      formTitle: '新建公司',
+      resetStep: false,
       stepVisible: false,
       clearUpload: false,
       isShowOnly: false,
       companyMdl: {},
+      registerArea: [],
       companyVisible: false,
       confirmLoading: false,
       bizStatus: [],
@@ -316,7 +330,7 @@ export default {
         pageNo: 1,
         pageSize: 20
       },
-      loadData: parameter => {
+      loadData: (parameter) => {
         const requestParameters = Object.assign({}, parameter, this.queryParam1)
         console.log('loadData request parameters:', requestParameters)
         return getCompanyList(
@@ -325,7 +339,7 @@ export default {
           requestParameters.pageNo,
           requestParameters.pageSize
         )
-          .then(Response => {
+          .then((Response) => {
             const result = Response
             // console.log('getTradeflow', result)
             if (success(result)) {
@@ -347,7 +361,7 @@ export default {
             }, 600)
             return []
           })
-          .catch(error => {
+          .catch((error) => {
             setTimeout(() => {
               this.tradeflowLoading = false
             }, 600)
@@ -357,7 +371,7 @@ export default {
             })
           })
       },
-      loadData2: parameter => {
+      loadData2: (parameter) => {
         const requestParameters = Object.assign({}, parameter, this.queryParam2)
         console.log('loadData request parameters:', requestParameters)
         return getCompanyList(
@@ -366,7 +380,7 @@ export default {
           requestParameters.pageNo,
           requestParameters.pageSize
         )
-          .then(Response => {
+          .then((Response) => {
             const result = Response
             // console.log('getTradeflow', result)
             if (success(result)) {
@@ -388,7 +402,7 @@ export default {
             }, 600)
             return []
           })
-          .catch(error => {
+          .catch((error) => {
             setTimeout(() => {
               this.tradeflowLoading = false
             }, 600)
@@ -401,12 +415,12 @@ export default {
     }
   },
   methods: {
-
     fetchCompanyDetail (record) {
+      this.formTitle = '公司详情'
       this.isShowOnly = true
       this.confirmLoading = true
       getCompanyInfo(record.companyId)
-        .then(response => {
+        .then((response) => {
           const result = response
           if (success(result)) {
             this.companyMdl = {
@@ -426,7 +440,7 @@ export default {
             })
           }
         })
-        .catch(error => {
+        .catch((error) => {
           this.$notification.error({
             message: '获取公司详情失败',
             description: error
@@ -449,7 +463,7 @@ export default {
           console.log(values)
           this.confirmLoading = true
           manageCompany(values, values.customId)
-            .then(response => {
+            .then((response) => {
               const result = response
               if (success(result)) {
                 this.$notification.success({
@@ -473,7 +487,7 @@ export default {
                 this.confirmLoading = false
               }
             })
-            .catch(error => {
+            .catch((error) => {
               this.$notification.error({
                 message: '修改失败。请稍后再试',
                 description: error
@@ -485,6 +499,7 @@ export default {
     },
     async handleDetail (record) {
       this.companyVisible = true
+      this.formTitle = '公司详情'
       await this.fetchCompanyDetail(record)
     },
     handleCancel () {
@@ -496,14 +511,18 @@ export default {
     },
     async handleUpdate (record) {
       await this.fetchCompanyDetail(record)
-
+      this.companyMdl = {
+        ...this.companyMdl,
+        tradeFlow: ''
+      }
+      this.resetStep = !this.resetStep
       this.isupdate = true
       this.stepVisible = true
       this.isShowOnly = false
     },
     getDictBizStatus () {
       dictQuery('bizStatus')
-        .then(Response => {
+        .then((Response) => {
           const result = Response
           // console.log('dictQuery', result)
           if (success(result)) {
@@ -523,7 +542,32 @@ export default {
             this.infoLoading = false
           }, 600)
         })
-        .catch(error => {
+        .catch((error) => {
+          this.infoLoading = false
+          this.$notification.error({
+            message: '查询字典失败',
+            description: error
+          })
+        })
+    },
+    getDictRegisterArea () {
+      dictQuery('registerArea')
+        .then((Response) => {
+          const result = Response
+          // console.log('dictQuery', result)
+          if (success(result)) {
+            this.registerArea = result.data
+          } else {
+            this.$notification.error({
+              message: errorMessage(result),
+              description: '查询字典失败'
+            })
+          }
+          setTimeout(() => {
+            this.infoLoading = false
+          }, 600)
+        })
+        .catch((error) => {
           this.infoLoading = false
           this.$notification.error({
             message: '查询字典失败',
@@ -534,7 +578,7 @@ export default {
   },
   computed: {
     ...mapState({
-      username: state => state.user.name
+      username: (state) => state.user.name
     }),
     rowSelection () {
       return {
@@ -550,6 +594,7 @@ export default {
     this.$refs.table.refresh(true)
     this.$refs.table2.refresh(true)
     this.getDictBizStatus()
+    this.getDictRegisterArea()
   }
 }
 </script>

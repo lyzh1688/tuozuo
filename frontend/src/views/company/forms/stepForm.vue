@@ -1,7 +1,7 @@
 
 <template>
   <a-modal
-    :title="model && model.customId!=undefined&&model.customId!==''?'修改客户':'新建客户'"
+    :title="'审核公司'"
     :width="740"
     :visible="visible"
     :confirmLoading="loading"
@@ -21,7 +21,7 @@
           <a-form-item label="公司id" v-show="false">
             <a-input v-decorator="['companyId', { validateTrigger: 'blur'}]" />
           </a-form-item>
-          <a-form-item label="关联流水">
+          <a-form-item label="关联流水" v-show="currentTab === 0">
             <a-input v-show="false" v-model="tradeFlow" v-decorator="['tradeFlow', { validateTrigger: 'blur'}]" />
             <a-button size="small" @click="handleops(record)" :loading="confirmLoading">余额变动</a-button>
           </a-form-item>
@@ -94,20 +94,36 @@
                 >
                   <a-select-option
                     v-for=" typeItem in registerArea"
-                    :key="typeItem.name"
+                    :key="typeItem.id"
                   >{{ typeItem.name }}</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
             <a-col v-show="currentTab === 1" :span="12">
-              <a-form-item label="返税比例" key="返税比例">
+              <a-form-item label="个税返税比例" key="个税返税比例">
                 <a-select
                   style="width:200px;"
-                  v-decorator="['rebateTaxRate', {rules: [{required: true, message: '请输入返税比例！'}], validateTrigger: 'blur'}]"
+                  v-decorator="['incomeRebateRate', {rules: [{required: true, message: '请输入个税返税比例！'}], validateTrigger: 'blur'}]"
                   placeholder="请选择"
                 >
                   <a-select-option
-                    v-for=" typeItem in rebateTaxRate"
+                    v-for=" typeItem in incomeRebateRate"
+                    :key="typeItem.id"
+                  >{{ typeItem.name }}</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row>
+            <a-col v-show="currentTab === 1" :span="12">
+              <a-form-item label="增值税返税比例	" key="增值税返税比例	">
+                <a-select
+                  style="width:200px;"
+                  v-decorator="['valueAddedRebateRate', {rules: [{required: true, message: '请输入增值税返税比例	！'}], validateTrigger: 'blur'}]"
+                  placeholder="请选择"
+                >
+                  <a-select-option
+                    v-for=" typeItem in valueAddedRebateRate"
                     :key="typeItem.id"
                   >{{ typeItem.name }}</a-select-option>
                 </a-select>
@@ -120,7 +136,7 @@
               type="primary"
               @click="nextStep"
             >下一步</a-button>
-            <a-button type="primary" @click="nextStep">跳过</a-button>
+            <a-button v-if="currentTab === 0" type="primary" @click="nextStep">跳过</a-button>
           </a-form-item>
           <a-form-item v-if="currentTab === 1" :wrapperCol="{span: 19, offset: 5}">
             <a-button :loading="loading" type="primary" @click="finish">提交</a-button>
@@ -163,7 +179,8 @@ const fields = [
   'endDate',
   'tradeFlow',
   'registerArea',
-  'rebateTaxRate'
+  'valueAddedRebateRate',
+  'incomeRebateRate'
 ]
 
 export default {
@@ -214,7 +231,8 @@ export default {
       currentTab: 0,
       bizStatus: [],
       registerArea: [],
-      rebateTaxRate: [],
+      valueAddedRebateRate: [],
+      incomeRebateRate: [],
       // city: citiesHepler[0].label,
       cityIndex: 0,
       areaIndex: 0,
@@ -230,8 +248,11 @@ export default {
     this.getDict('registerArea').then(response => {
       this.registerArea = response
     })
-    this.getDict('rebateTaxRate').then(response => {
-      this.rebateTaxRate = response
+    this.getDict('valueAddedRebateRate').then(response => {
+      this.valueAddedRebateRate = response
+    })
+    this.getDict('incomeRebateRate').then(response => {
+      this.incomeRebateRate = response
     })
      this.getDict('customType').then(response => {
       this.customType = response
@@ -243,6 +264,7 @@ export default {
 
     // 当 model 发生改变时，为表单设置值
     this.$watch('model', () => {
+      this.tradeFlow = ''
       this.model && this.form.setFieldsValue(pick(this.model, fields))
     })
     this.$watch('resetStep', () => {
@@ -350,6 +372,9 @@ export default {
               message: errorMessage(result),
               description: '查询字典失败'
             })
+          }
+          if (needLogin(result)) {
+            this.visible = false
           }
         })
       })

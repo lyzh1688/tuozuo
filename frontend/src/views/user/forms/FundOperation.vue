@@ -61,7 +61,7 @@
             name="tradeSnapshot"
             :file-list="fileList"
             list-type="picture-card"
-            v-decorator="['tradeFile', {rules: [{required: true, message: '请上传凭证！'}], validateTrigger: 'blur'} ]"
+            v-decorator="['tradeFile' ]"
             :showUploadList="{ showPreviewIcon: false, showRemoveIcon: true }"
             @change="handleChange"
           >
@@ -85,7 +85,7 @@
 <script>
 import pick from 'lodash.pick'
 import { dictQuery } from '@/api/company'
-import { success, errorMessage } from '@/utils/helper/responseHelper'
+import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 import areashow from '../components/AreaShow'
 // 表单字段
 const fields = ['customId', 'customName', 'customType', 'event', 'amount', 'city', 'remark', 'tradeFile']
@@ -187,6 +187,9 @@ export default {
               message: errorMessage(result),
               description: '事件字典失败'
             })
+          }
+           if (needLogin(result)) {
+            this.visible = false
           }
           setTimeout(() => {
             this.infoLoading = false

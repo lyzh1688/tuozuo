@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    :title="model && model.companyId!=undefined&&model.companyId!==''?'修改公司':'新建客户申请'"
+    :title="title"
     :width="740"
     :visible="visible"
     :confirmLoading="loading"
@@ -57,7 +57,7 @@
             </a-col>
             <a-col :span="12">
               <a-form-item label="邮寄地址" key="邮寄地址">
-                <a-input
+                <a-textarea
                   :disabled="isShowOnly"
                   v-decorator="['address', {rules: [{required: true, message: '请输入公司名称！'}], validateTrigger: 'blur'}]"
                 />
@@ -234,7 +234,7 @@
 <script>
 import pick from 'lodash.pick'
 import { dictQuery } from '@/api/company'
-import { success, errorMessage } from '@/utils/helper/responseHelper'
+import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 // 表单字段
 const fields = [
   'companyId',
@@ -252,7 +252,8 @@ const fields = [
   'endDate',
   'tradeFlow',
   'registerArea',
-  'rebateTaxRate',
+  'valueAddedRebateRate',
+  'incomeRebateRate',
   'bossName',
   'bossId',
   'bossContact',
@@ -290,6 +291,10 @@ export default {
     isUpdate: {
       type: Boolean,
       default: false
+    },
+    title: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -320,16 +325,16 @@ export default {
     }
   },
   created () {
-    this.getDict('companyType').then(response => {
+    this.getDict('companyType').then((response) => {
       this.companyTypeList = response
     })
-    this.getDict('tax').then(response => {
+    this.getDict('tax').then((response) => {
       this.taxList = response
     })
     console.log('custom modal created')
 
     // 防止表单未注册
-    fields.forEach(v => this.form.getFieldDecorator(v))
+    fields.forEach((v) => this.form.getFieldDecorator(v))
 
     // 当 model 发生改变时，为表单设置值
     this.$watch('model', () => {
@@ -382,7 +387,7 @@ export default {
     },
     getDict (keyword) {
       return new Promise((resolve, reject) => {
-        dictQuery(keyword).then(Response => {
+        dictQuery(keyword).then((Response) => {
           const result = Response
           // console.log('dictQuery', result)
           if (success(result)) {
@@ -392,6 +397,9 @@ export default {
               message: errorMessage(result),
               description: '查询字典失败'
             })
+          }
+          if (needLogin(result)) {
+            this.visible = false
           }
         })
       })

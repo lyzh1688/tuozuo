@@ -6,6 +6,7 @@ const CompanyApi = {
   fuzzyQueryCustom: process.env.VUE_APP_SYSTEM_URL + '/v1/custom', //
   fuzzyQueryCompany: process.env.VUE_APP_SYSTEM_URL + '/v1/company', //
   updateCustom: process.env.VUE_APP_SYSTEM_URL + '/v1/custom/', // put
+  deleteCustom: process.env.VUE_APP_SYSTEM_URL + '/v1/custom/', // put
   tradeflow: process.env.VUE_APP_SYSTEM_URL + '/v1/custom/tradeflow/',
   companyInfo: process.env.VUE_APP_SYSTEM_URL + '/v1/company/detail/',
   companyList: process.env.VUE_APP_SYSTEM_URL + '/v1/company/list',
@@ -27,6 +28,16 @@ export function getAreaCode (areaLevel, areaCode) {
   return request({
     url: CompanyApi.areaCode + '?areaLevel=' + areaLevel + '&areaCode=' + areaCode,
     method: 'GET'
+  })
+}
+/**
+ *
+ * @param {客户Id} customId
+ */
+export function deleteCustom (customId) {
+  return request({
+    url: CompanyApi.deleteCustom + customId,
+    method: 'DELETE'
   })
 }
 /*
@@ -110,9 +121,12 @@ registerStatus	否	String	注册状态，0：未注册，1：注册完成
 pageNo	是	number	当前页码
 pageSize	是	number	页数
 */
-export function getCompanyList (companyStatus, registerStatus, pageNo, pageSize) {
+export function getCompanyList (companyStatus, registerStatus, pageNo, pageSize, companyId) {
+  if (companyId === undefined) {
+    companyId = ''
+  }
   return request({
-    url: CompanyApi.companyList + '?companyStatus=' + companyStatus + '&registerStatus=' + registerStatus + '&pageNo=' + pageNo + '&pageSize=' + pageSize,
+    url: CompanyApi.companyList + '?companyStatus=' + companyStatus + '&registerStatus=' + registerStatus + '&pageNo=' + pageNo + '&pageSize=' + pageSize + '&companyId=' + companyId,
     method: 'GET'
   })
 }

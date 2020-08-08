@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    :title="model && model.contractId!=undefined&&model.contractId!==''?'修改合同':'新建合同申请'"
+    :title="formTitle"
     :width="740"
     :visible="visible"
     :confirmLoading="loading"
@@ -117,7 +117,7 @@
 <script>
 import pick from 'lodash.pick'
 import { dictQuery, fuzzyQueryCompany } from '@/api/company'
-import { success, errorMessage } from '@/utils/helper/responseHelper'
+import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 let timeout
 let currentValue
 
@@ -192,6 +192,10 @@ export default {
     clearUpload: {
       type: Boolean,
       default: false
+    },
+    formTitle: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -220,6 +224,7 @@ export default {
     }
   },
   created () {
+     fetch('', (data) => (this.fuzzyCompanyList = data))
     this.getDict('invoicePattern').then((response) => {
       this.invoicePatternList = response
     })
@@ -275,6 +280,9 @@ export default {
               message: errorMessage(result),
               description: '查询字典失败'
             })
+          }
+          if (needLogin(result)) {
+            this.visible = false
           }
         })
       })

@@ -21,10 +21,10 @@
               </template>
             </userInfo>
           </a-col>
-          <a-col :sm="12" :xs="24">
+          <a-col :sm="8" :xs="24">
             <userInfo title="账户余额" :value="handleDefault(customInfo.balance)" :bordered="true" />
           </a-col>
-          <a-col :sm="12" :xs="24">
+          <a-col :sm="8" :xs="24">
             <userInfo title="总服务费用" :value="handleDefault(customInfo.totalServerCharge)" />
           </a-col>
 
@@ -39,7 +39,7 @@
         :pageSize="20"
         :columns="columns"
         :data="loadData"
-        showPagination="auto"
+        :showPagination="true"
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="event" slot-scope="text">{{ eventMap[text] }}</span>

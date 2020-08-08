@@ -48,7 +48,7 @@
         :pageSize="20"
         :columns="columns"
         :data="loadData"
-        showPagination="auto"
+        :showPagination="true"
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="ops" slot-scope="text, record">
@@ -58,6 +58,7 @@
       </s-table>
     </a-card>
     <contractForm
+      :formTitle="formTitle"
       ref="contractForm"
       :clearUpload="clearUpload"
       :visible="contractVisible"
@@ -209,6 +210,7 @@ export default {
   data () {
     this.columns = columns
     return {
+      formTitle: '',
       fuzzyCompanyList: [],
       infoLoading: false,
       queryParam: {
@@ -260,11 +262,12 @@ export default {
     }
   },
   methods: {
-      fetchContracDetail (record) {
+    fetchContracDetail (record) {
+      this.formTitle = '合同详情'
       this.isShowOnly = true
       this.confirmLoading = true
       getContracDetail(record.contractId)
-        .then(response => {
+        .then((response) => {
           const result = response
           if (success(result)) {
             this.contractMdl = {
@@ -281,7 +284,7 @@ export default {
             })
           }
         })
-        .catch(error => {
+        .catch((error) => {
           this.$notification.error({
             message: '获取合同详情失败',
             description: error
@@ -301,48 +304,48 @@ export default {
       const form = this.$refs.contractForm.form
       form.validateFields((errors, values) => {
         if (!errors) {
-            const tmpkey = values.companyPartyBName.split(':')
-            values['companyId'] = tmpkey[0]
-            values.companyPartyBName = tmpkey[1]
+          const tmpkey = values.companyPartyBName.split(':')
+          values['companyId'] = tmpkey[0]
+          values.companyPartyBName = tmpkey[1]
           this.confirmLoading = true
           confirmContrac(values, values.customId)
-              .then((response) => {
-                const result = response
-                if (success(result)) {
-                  this.$notification.success({
-                    message: '修改成功'
-                  })
-                  const form = this.$refs.contractForm.form
-                  this.clearUpload = !this.clearUpload
-                  form.resetFields() // 清理表单数据（可不做）
-                  this.$refs.table.refresh(true)
-                  this.contractVisible = false
-                  this.confirmLoading = false
-                } else {
-                  this.confirmLoading = false
-                  this.$notification.error({
-                    message: errorMessage(result),
-                    description: '修改失败'
-                  })
-                }
-                if (needLogin(result)) {
-                  this.contractVisible = false
-                  this.confirmLoading = false
-                }
-              })
-              .catch((error) => {
-                this.$notification.error({
-                  message: '修改失败。请稍后再试',
-                  description: error
+            .then((response) => {
+              const result = response
+              if (success(result)) {
+                this.$notification.success({
+                  message: '修改成功'
                 })
+                const form = this.$refs.contractForm.form
+                this.clearUpload = !this.clearUpload
+                form.resetFields() // 清理表单数据（可不做）
+                this.$refs.table.refresh(true)
+                this.contractVisible = false
                 this.confirmLoading = false
+              } else {
+                this.confirmLoading = false
+                this.$notification.error({
+                  message: errorMessage(result),
+                  description: '修改失败'
+                })
+              }
+              if (needLogin(result)) {
+                this.contractVisible = false
+                this.confirmLoading = false
+              }
+            })
+            .catch((error) => {
+              this.$notification.error({
+                message: '修改失败。请稍后再试',
+                description: error
               })
+              this.confirmLoading = false
+            })
         }
       })
     },
-     async handleDetail (record) {
-         this.isupdate = false
-           this.contractVisible = true
+    async handleDetail (record) {
+      this.isupdate = false
+      this.contractVisible = true
       await this.fetchContracDetail(record)
     },
     handleCancel () {
@@ -353,7 +356,7 @@ export default {
     },
     async handleUpdate (record) {
       await this.fetchContracDetail(record)
-
+      this.formTitle = '审核合同'
       this.isupdate = true
       this.contractVisible = true
       this.isShowOnly = false
@@ -397,9 +400,10 @@ export default {
   },
   created () {
     this.getContractStatus()
+    fetch('', (data) => (this.fuzzyCompanyList = data))
   },
   activated () {
-      this.$refs.table.refresh(true)
+    this.$refs.table.refresh(true)
   },
   watch: {
     customId: function (newVal, oldVal) {
