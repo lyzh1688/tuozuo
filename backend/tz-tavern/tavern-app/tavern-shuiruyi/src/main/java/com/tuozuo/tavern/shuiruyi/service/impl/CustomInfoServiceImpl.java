@@ -15,6 +15,7 @@ import com.tuozuo.tavern.shuiruyi.model.CustomTradeFlow;
 import com.tuozuo.tavern.shuiruyi.service.CustomInfoService;
 import com.tuozuo.tavern.shuiruyi.utils.FileUtils;
 import com.tuozuo.tavern.shuiruyi.utils.UUIDUtil;
+import com.tuozuo.tavern.shuiruyi.utils.ValidateUtils;
 import com.tuozuo.tavern.shuiruyi.vo.CustomAddInfoVO;
 import com.tuozuo.tavern.shuiruyi.vo.CustomInfoVO;
 
@@ -68,7 +69,17 @@ public class CustomInfoServiceImpl implements CustomInfoService {
 
     @Override
     public void addCustomInfo(CustomAddInfoVO vo) throws Exception {
-        UserVO userVO = BusinessConverter.userToVO(vo.getCustomId(), vo.getCustomType(), vo.getCustomPswd());
+        //前置校验
+        //1、中文校验
+        if (ValidateUtils.isContainChinese(vo.getCustomId())) {
+            throw new Exception("客户账户含有非法中文字符");
+        }
+        //账户已存在
+        if (this.customInfoDao.isExistUser(vo.getCustomId())) {
+            throw new Exception("该账户已存在");
+        }
+
+        UserVO userVO = BusinessConverter.userToVO(vo.getCustomId(), vo.getCustomPswd());
         TavernResponse response = this.authorityService.createUser(userVO);
         if (response.getCode() != 0) {
             throw new Exception("客户创建失败");
@@ -83,7 +94,7 @@ public class CustomInfoServiceImpl implements CustomInfoService {
     @Override
     public void modifyCustomInfo(CustomInfoVO vo, String customId) throws Exception {
 
-        UserVO userVO = BusinessConverter.userToVO(customId, vo.getCustomType(), vo.getCustomPswd());
+        UserVO userVO = BusinessConverter.userToVO(customId, vo.getCustomPswd());
         TavernResponse response = this.authorityService.modifyUser(userVO);
         if (response.getCode() != 0) {
             throw new Exception("客户修改失败");

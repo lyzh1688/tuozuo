@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -67,5 +68,10 @@ public class CustomInfoDaoImpl implements CustomInfoDao {
     @Override
     public void countCustomStatistic() {
         this.customStatisticSnapshotMapper.countStatistic();
+    }
+
+    @Override
+    public boolean isExistUser(String userId) {
+        return Optional.ofNullable(this.customInfoMapper.selectById(userId)).isPresent();
     }
 }

@@ -1,6 +1,7 @@
 package com.tuozuo.tavern.shuiruyi.convert;
 
 import com.tuozuo.tavern.common.protocol.SystemID;
+import com.tuozuo.tavern.common.protocol.UserTypeDict;
 import com.tuozuo.tavern.shuiruyi.dict.*;
 import com.tuozuo.tavern.shuiruyi.dto.*;
 import com.tuozuo.tavern.shuiruyi.model.*;
@@ -179,11 +180,11 @@ public class BusinessConverter {
         return companyInfo;
     }
 
-    public static UserVO userToVO(String userId, String customType, String customPswd) {
+    public static UserVO userToVO(String userId,  String customPswd) {
         UserVO user = new UserVO();
         user.setUserId(userId);
         user.setSystemId(SystemID.SYS_ID);
-        user.setRoleGroup(customType);
+        user.setRoleGroup(UserTypeDict.custom);
         user.setUserPswd(customPswd);
         return user;
     }

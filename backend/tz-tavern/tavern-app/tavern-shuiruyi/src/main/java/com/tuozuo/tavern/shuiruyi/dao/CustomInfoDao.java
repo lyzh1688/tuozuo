@@ -26,4 +26,6 @@ public interface CustomInfoDao {
     IPage<CustomInfo> selectCustomInfoList(String customName, String hasPaid, int pageNo, int pageSize);
 
     void countCustomStatistic();
+
+    boolean isExistUser(String userId);
 }
