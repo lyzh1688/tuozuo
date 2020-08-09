@@ -21,6 +21,7 @@ public class FileUtils {
 
     private final static int BUFFER_SIZE = 1024 * 1024;
 
+
     public static String multiPartFileWriter(MultipartFile file, String location) throws Exception {
         BufferedOutputStream buffStream = null;
         try {
@@ -28,12 +29,21 @@ public class FileUtils {
             if (!locationFile.exists()) {
                 locationFile.mkdirs();
             }
-            String fileName = new String(file.getOriginalFilename().getBytes(),"utf-8");
+
+            //String fileName = new String(file.getOriginalFilename().getBytes(),"utf-8");
+            String fileName = StringUtils.substringBefore(file.getOriginalFilename(), ".");
+            boolean hasChinese = ValidateUtils.isContainChinese(fileName);
+            if (hasChinese) {
+                fileName = UUIDUtil.randomUUID8() + "." + StringUtils.substringAfter(file.getOriginalFilename(), ".");
+            } else {
+                fileName = file.getOriginalFilename();
+            }
+
             byte[] bytes = file.getBytes();
             buffStream = new BufferedOutputStream(new FileOutputStream(new File(StringUtils.join(location, "/", fileName))));
             buffStream.write(bytes);
             buffStream.close();
-            return StringUtils.join(location, "/", fileName);
+            return fileName;
         } catch (Exception e) {
             LOGGER.error("FileUtils-->multiPartFileWriter-->Error: {}", e.getMessage());
             throw e;
