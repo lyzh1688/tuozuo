@@ -108,11 +108,14 @@ public class InvoiceInfoServiceImpl implements InvoiceInfoService {
 
     @Override
     public void auditInvoiceInfo(String invoiceId, String invoiceStatus, String deliveryId, String remark, String invoiceContent, double tax) throws Exception {
-        if (invoiceStatus.equals(InvoiceStatus.PAY.getName())) {
+        if (invoiceStatus.equals(InvoiceStatus.PAY.getType())) {
 
             InvoiceInfo invoiceInfo = this.invoiceInfoDao.selectInvoiceInfo(invoiceId);
             ContractDetailInfo contractDetailInfo = this.contractInfoDao.selectInvoicedContract(invoiceInfo.getContractId());
             BigDecimal invoicedAmount = contractDetailInfo.getInvoicedAmount();
+
+            LOGGER.info("invoicedAmount: {},invoiceAmount: {},contractAmount: {}", invoicedAmount, invoiceInfo.getInvoiceAmount(), contractDetailInfo.getContractAmount());
+
             //都不为空，判断合同金额和当前发票的总和
             if (invoicedAmount != null && invoiceInfo.getInvoiceAmount() != null) {
                 BigDecimal totalInvoicedAmount = invoicedAmount.add(invoiceInfo.getInvoiceAmount());
@@ -168,8 +171,8 @@ public class InvoiceInfoServiceImpl implements InvoiceInfoService {
     private String storeInvoiceFile(String invoiceId, MultipartFile file) throws Exception {
 
         String pathLocation = StringUtils.join(filePath, invoiceId);
-        FileUtils.multiPartFileWriter(file, pathLocation);
-        return StringUtils.join(fileUrlPath, invoiceId, "/", file.getOriginalFilename());
+        String fileName = FileUtils.multiPartFileWriter(file, pathLocation);
+        return StringUtils.join(fileUrlPath, invoiceId, "/", fileName);
 
     }
 

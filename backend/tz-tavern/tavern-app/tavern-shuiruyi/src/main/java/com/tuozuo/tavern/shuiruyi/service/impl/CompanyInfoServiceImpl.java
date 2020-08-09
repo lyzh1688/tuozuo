@@ -69,11 +69,11 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     }
 
     @Override
-    public IPage<CompanyInfo> queryCompanyList(String companyId,String customId, String roleGroup, String companyStatus, String registerStatus, int pageNo, int pageSize) {
+    public IPage<CompanyInfo> queryCompanyList(String companyId, String customId, String roleGroup, String companyStatus, String registerStatus, int pageNo, int pageSize) {
         if (roleGroup.equals(UserTypeDict.custom)) {
-            return this.companyInfoDao.selectCompanyList(companyId,customId, companyStatus, registerStatus, pageNo, pageSize);
+            return this.companyInfoDao.selectCompanyList(companyId, customId, companyStatus, registerStatus, pageNo, pageSize);
         } else {
-            return this.companyInfoDao.selectCompanyList(companyId,null, companyStatus, registerStatus, pageNo, pageSize);
+            return this.companyInfoDao.selectCompanyList(companyId, null, companyStatus, registerStatus, pageNo, pageSize);
         }
     }
 
@@ -131,9 +131,9 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
 
         String pathLocation = StringUtils.join(filePath, companyId,
                 "/", fileType.name());
-        FileUtils.multiPartFileWriter(file, pathLocation);
+        String fileName = FileUtils.multiPartFileWriter(file, pathLocation);
         return StringUtils.join(fileUrlPath, companyId,
-                "/", fileType.name(), "/", file.getOriginalFilename());
+                "/", fileType.name(), "/", fileName);
 
     }
 

@@ -140,8 +140,8 @@ public class ContractInfoServiceImpl implements ContractInfoService {
             return null;
         }
         String pathLocation = StringUtils.join(filePath, contractId);
-        FileUtils.multiPartFileWriter(file, pathLocation);
-        return StringUtils.join(fileUrlPath, contractId, "/", file.getOriginalFilename());
+        String fileName =   FileUtils.multiPartFileWriter(file, pathLocation);
+        return StringUtils.join(fileUrlPath, contractId, "/", fileName);
 
     }
 }

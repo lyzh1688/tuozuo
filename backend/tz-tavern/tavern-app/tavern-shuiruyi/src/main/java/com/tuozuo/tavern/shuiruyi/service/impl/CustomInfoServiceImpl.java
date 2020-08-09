@@ -178,9 +178,9 @@ public class CustomInfoServiceImpl implements CustomInfoService {
     private String fileStore(String customId, String tradeFlowId, MultipartFile tradeSnapshot) throws Exception {
         String pathLocation = StringUtils.join(tradeFilePath, customId,
                 "/", tradeFlowId);
-        FileUtils.multiPartFileWriter(tradeSnapshot, pathLocation);
+        String fileName = FileUtils.multiPartFileWriter(tradeSnapshot, pathLocation);
         return StringUtils.join(tradeFileUrlPath, customId,
-                "/", tradeFlowId, "/", tradeSnapshot.getOriginalFilename());
+                "/", tradeFlowId, "/", fileName);
     }
 
     private double calBalance(String event, double balance, double amount) throws Exception {
