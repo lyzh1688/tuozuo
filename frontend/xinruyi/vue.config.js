@@ -35,7 +35,7 @@ const assetsCDN = {
 const vueConfig = {
   publicPath: '/',
   // 构建时输出目录 默认dist
-  outputDir: 'shuiruyi_ui',
+  outputDir: 'xinruyi_ui',
   // 放置静态资源目录
   assetsDir: 'static',
   // indexPath: "index.html", html输出路
