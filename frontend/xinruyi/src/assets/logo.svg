@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 470" width="450" height="470">
+	<defs>
+		<linearGradient id="grd1" gradientUnits="userSpaceOnUse"  x1="177" y1="337" x2="177" y2="172">
+			<stop offset="0" stop-color="#feb8a7"  />
+			<stop offset="1" stop-color="#fe3c0b"  />
+		</linearGradient>
+		<linearGradient id="grd2" gradientUnits="userSpaceOnUse"  x1="225.637" y1="338.065" x2="225.637" y2="112">
+			<stop offset="0" stop-color="#feb8a7"  />
+			<stop offset="1" stop-color="#fe3c0b"  />
+		</linearGradient>
+	</defs>
+	<style>
+		tspan { white-space:pre }
+		.shp0 { fill: url(#grd1);stroke: #000000;paint-order:stroke fill markers;stroke-width: 2 } 
+		.shp1 { fill: url(#grd2);stroke: #000000;paint-order:stroke fill markers;stroke-width: 2 } 
+	</style>
+	<path id="形状 1" class="shp0" d="M100 172L296 172L254 220L190 221L189 337L144 337L143 222L58 221L100 172Z" />
+	<path id="形状 2" class="shp1" d="M100 161L306 161C306 161 317 159.35 311 168C305 176.65 210 284 210 284C210 284 169.5 337.85 224 338C278.5 338.15 334 338 334 338L388 292L277 292C277 292 262.83 292.19 274 280C285.17 267.81 376 164 376 164C376 164 419.33 114.02 355 114C290.67 113.98 61 112 61 112L100 161Z" />
+</svg>

@@ -1,0 +1,1 @@
+修改layout名称需要同时修改store的user和tagsview的appexcludelist名称，否则无法处理用户切换登录重载tab页
