@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuozuo.tavern.xinruyi.mapper.ProjectPaymentMapper">
+  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.xinruyi.model.ProjectPayment">
+    <id column="payment_id" jdbcType="VARCHAR" property="paymentId" />
+    <result column="company_id" jdbcType="VARCHAR" property="companyId" />
+    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="period" jdbcType="VARCHAR" property="period" />
+    <result column="file_voucher" jdbcType="VARCHAR" property="fileVoucher" />
+    <result column="file_pay_cert" jdbcType="VARCHAR" property="filePayCert" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from project_payment
+    where payment_id = #{paymentId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tuozuo.tavern.xinruyi.model.ProjectPayment">
+    insert into project_payment (payment_id, company_id, project_id, 
+      period, file_voucher, file_pay_cert, 
+      status)
+    values (#{paymentId,jdbcType=VARCHAR}, #{companyId,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, 
+      #{period,jdbcType=VARCHAR}, #{fileVoucher,jdbcType=VARCHAR}, #{filePayCert,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.xinruyi.model.ProjectPayment">
+    update project_payment
+    set company_id = #{companyId,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=VARCHAR},
+      period = #{period,jdbcType=VARCHAR},
+      file_voucher = #{fileVoucher,jdbcType=VARCHAR},
+      file_pay_cert = #{filePayCert,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR}
+    where payment_id = #{paymentId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select payment_id, company_id, project_id, period, file_voucher, file_pay_cert, status
+    from project_payment
+    where payment_id = #{paymentId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select payment_id, company_id, project_id, period, file_voucher, file_pay_cert, status
+    from project_payment
+  </select>
+</mapper>

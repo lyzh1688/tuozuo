@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuozuo.tavern.xinruyi.mapper.ProjectInfoMapper">
+  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.xinruyi.model.ProjectInfo">
+    <id column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="company_id" jdbcType="VARCHAR" property="companyId" />
+    <result column="project_industry" jdbcType="VARCHAR" property="projectIndustry" />
+    <result column="publish_date" jdbcType="DATE" property="publishDate" />
+    <result column="period" jdbcType="DECIMAL" property="period" />
+    <result column="contract_person" jdbcType="VARCHAR" property="contractPerson" />
+    <result column="contract_phone" jdbcType="VARCHAR" property="contractPhone" />
+    <result column="project_member_count" jdbcType="DECIMAL" property="projectMemberCount" />
+    <result column="area" jdbcType="VARCHAR" property="area" />
+    <result column="on_spot" jdbcType="VARCHAR" property="onSpot" />
+    <result column="file_material" jdbcType="VARCHAR" property="fileMaterial" />
+    <result column="project_desc" jdbcType="VARCHAR" property="projectDesc" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="fee" jdbcType="DECIMAL" property="fee" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="budget" jdbcType="VARCHAR" property="budget" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from project_info
+    where project_id = #{projectId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tuozuo.tavern.xinruyi.model.ProjectInfo">
+    insert into project_info (project_id, company_id, project_industry, 
+      publish_date, period, contract_person, 
+      contract_phone, project_member_count, area, 
+      on_spot, file_material, project_desc, 
+      remark, fee, status, 
+      budget)
+    values (#{projectId,jdbcType=VARCHAR}, #{companyId,jdbcType=VARCHAR}, #{projectIndustry,jdbcType=VARCHAR}, 
+      #{publishDate,jdbcType=DATE}, #{period,jdbcType=DECIMAL}, #{contractPerson,jdbcType=VARCHAR}, 
+      #{contractPhone,jdbcType=VARCHAR}, #{projectMemberCount,jdbcType=DECIMAL}, #{area,jdbcType=VARCHAR}, 
+      #{onSpot,jdbcType=VARCHAR}, #{fileMaterial,jdbcType=VARCHAR}, #{projectDesc,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{fee,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, 
+      #{budget,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.xinruyi.model.ProjectInfo">
+    update project_info
+    set company_id = #{companyId,jdbcType=VARCHAR},
+      project_industry = #{projectIndustry,jdbcType=VARCHAR},
+      publish_date = #{publishDate,jdbcType=DATE},
+      period = #{period,jdbcType=DECIMAL},
+      contract_person = #{contractPerson,jdbcType=VARCHAR},
+      contract_phone = #{contractPhone,jdbcType=VARCHAR},
+      project_member_count = #{projectMemberCount,jdbcType=DECIMAL},
+      area = #{area,jdbcType=VARCHAR},
+      on_spot = #{onSpot,jdbcType=VARCHAR},
+      file_material = #{fileMaterial,jdbcType=VARCHAR},
+      project_desc = #{projectDesc,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      fee = #{fee,jdbcType=DECIMAL},
+      status = #{status,jdbcType=VARCHAR},
+      budget = #{budget,jdbcType=VARCHAR}
+    where project_id = #{projectId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select project_id, company_id, project_industry, publish_date, period, contract_person, 
+    contract_phone, project_member_count, area, on_spot, file_material, project_desc, 
+    remark, fee, status, budget
+    from project_info
+    where project_id = #{projectId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select project_id, company_id, project_industry, publish_date, period, contract_person, 
+    contract_phone, project_member_count, area, on_spot, file_material, project_desc, 
+    remark, fee, status, budget
+    from project_info
+  </select>
+</mapper>

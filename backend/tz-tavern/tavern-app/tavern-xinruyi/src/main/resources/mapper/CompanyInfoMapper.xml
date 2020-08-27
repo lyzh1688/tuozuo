@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuozuo.tavern.xinruyi.mapper.CompanyInfoMapper">
+  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.xinruyi.model.CompanyInfo">
+    <id column="register_id" jdbcType="VARCHAR" property="registerId" />
+    <result column="company_id" jdbcType="VARCHAR" property="companyId" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="company_infocol" jdbcType="VARCHAR" property="companyInfocol" />
+    <result column="company_industry" jdbcType="VARCHAR" property="companyIndustry" />
+    <result column="area" jdbcType="VARCHAR" property="area" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from company_info
+    where register_id = #{registerId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tuozuo.tavern.xinruyi.model.CompanyInfo">
+    insert into company_info (register_id, company_id, company_name, 
+      company_infocol, company_industry, area, 
+      status)
+    values (#{registerId,jdbcType=VARCHAR}, #{companyId,jdbcType=VARCHAR}, #{companyName,jdbcType=VARCHAR}, 
+      #{companyInfocol,jdbcType=VARCHAR}, #{companyIndustry,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.xinruyi.model.CompanyInfo">
+    update company_info
+    set company_id = #{companyId,jdbcType=VARCHAR},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      company_infocol = #{companyInfocol,jdbcType=VARCHAR},
+      company_industry = #{companyIndustry,jdbcType=VARCHAR},
+      area = #{area,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR}
+    where register_id = #{registerId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select register_id, company_id, company_name, company_infocol, company_industry, 
+    area, status
+    from company_info
+    where register_id = #{registerId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select register_id, company_id, company_name, company_infocol, company_industry, 
+    area, status
+    from company_info
+  </select>
+</mapper>

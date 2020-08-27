@@ -20,6 +20,10 @@ zuul:
       path: /tuozuo/shuiruyi/v1/**
       url: http://127.0.0.1:8083/
       stripPrefix: false
+    tavern-xinruyi:
+      path: /tuozuo/xinruyi/v1/**
+      url: http://127.0.0.1:8084/
+      stripPrefix: false
   host:
     connect-timeout-millis: 10000
     socket-timeout-millis: 60000

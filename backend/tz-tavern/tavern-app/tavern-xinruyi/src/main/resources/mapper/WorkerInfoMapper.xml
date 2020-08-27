@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuozuo.tavern.xinruyi.mapper.WorkerInfoMapper">
+  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.xinruyi.model.WorkerInfo">
+    <id column="register_id" jdbcType="VARCHAR" property="registerId" />
+    <result column="id_number" jdbcType="VARCHAR" property="idNumber" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="is_certificate" jdbcType="VARCHAR" property="isCertificate" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from worker_info
+    where register_id = #{registerId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tuozuo.tavern.xinruyi.model.WorkerInfo">
+    insert into worker_info (register_id, id_number, name, 
+      is_certificate)
+    values (#{registerId,jdbcType=VARCHAR}, #{idNumber,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{isCertificate,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.xinruyi.model.WorkerInfo">
+    update worker_info
+    set id_number = #{idNumber,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      is_certificate = #{isCertificate,jdbcType=VARCHAR}
+    where register_id = #{registerId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select register_id, id_number, name, is_certificate
+    from worker_info
+    where register_id = #{registerId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select register_id, id_number, name, is_certificate
+    from worker_info
+  </select>
+</mapper>

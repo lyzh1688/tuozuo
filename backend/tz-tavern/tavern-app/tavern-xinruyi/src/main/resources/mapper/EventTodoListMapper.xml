@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuozuo.tavern.xinruyi.mapper.EventTodoListMapper">
+  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.xinruyi.model.EventTodoList">
+    <id column="event_id" jdbcType="VARCHAR" property="eventId" />
+    <result column="event_type" jdbcType="VARCHAR" property="eventType" />
+    <result column="event_owner" jdbcType="VARCHAR" property="eventOwner" />
+    <result column="event_date" jdbcType="DATE" property="eventDate" />
+    <result column="snapshot" jdbcType="VARCHAR" property="snapshot" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from event_todo_list
+    where event_id = #{eventId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tuozuo.tavern.xinruyi.model.EventTodoList">
+    insert into event_todo_list (event_id, event_type, event_owner, 
+      event_date, snapshot)
+    values (#{eventId,jdbcType=VARCHAR}, #{eventType,jdbcType=VARCHAR}, #{eventOwner,jdbcType=VARCHAR}, 
+      #{eventDate,jdbcType=DATE}, #{snapshot,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.xinruyi.model.EventTodoList">
+    update event_todo_list
+    set event_type = #{eventType,jdbcType=VARCHAR},
+      event_owner = #{eventOwner,jdbcType=VARCHAR},
+      event_date = #{eventDate,jdbcType=DATE},
+      snapshot = #{snapshot,jdbcType=VARCHAR}
+    where event_id = #{eventId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select event_id, event_type, event_owner, event_date, snapshot
+    from event_todo_list
+    where event_id = #{eventId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select event_id, event_type, event_owner, event_date, snapshot
+    from event_todo_list
+  </select>
+</mapper>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuozuo.tavern.xinruyi.mapper.ProjectStaffMapper">
+  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.xinruyi.model.ProjectStaff">
+    <id column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <id column="staff_id" jdbcType="VARCHAR" property="staffId" />
+    <result column="is_signed" jdbcType="VARCHAR" property="isSigned" />
+    <result column="enter_date" jdbcType="DATE" property="enterDate" />
+    <result column="quit_date" jdbcType="DATE" property="quitDate" />
+    <result column="salary" jdbcType="DECIMAL" property="salary" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="is_settled" jdbcType="VARCHAR" property="isSettled" />
+    <result column="quit_reason" jdbcType="VARCHAR" property="quitReason" />
+    <result column="staff_name" jdbcType="VARCHAR" property="staffName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    delete from project_staff
+    where project_id = #{projectId,jdbcType=VARCHAR}
+      and staff_id = #{staffId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tuozuo.tavern.xinruyi.model.ProjectStaff">
+    insert into project_staff (project_id, staff_id, is_signed, 
+      enter_date, quit_date, salary, 
+      status, remark, is_settled, 
+      quit_reason, staff_name)
+    values (#{projectId,jdbcType=VARCHAR}, #{staffId,jdbcType=VARCHAR}, #{isSigned,jdbcType=VARCHAR}, 
+      #{enterDate,jdbcType=DATE}, #{quitDate,jdbcType=DATE}, #{salary,jdbcType=DECIMAL}, 
+      #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{isSettled,jdbcType=VARCHAR}, 
+      #{quitReason,jdbcType=VARCHAR}, #{staffName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.xinruyi.model.ProjectStaff">
+    update project_staff
+    set is_signed = #{isSigned,jdbcType=VARCHAR},
+      enter_date = #{enterDate,jdbcType=DATE},
+      quit_date = #{quitDate,jdbcType=DATE},
+      salary = #{salary,jdbcType=DECIMAL},
+      status = #{status,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      is_settled = #{isSettled,jdbcType=VARCHAR},
+      quit_reason = #{quitReason,jdbcType=VARCHAR},
+      staff_name = #{staffName,jdbcType=VARCHAR}
+    where project_id = #{projectId,jdbcType=VARCHAR}
+      and staff_id = #{staffId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    select project_id, staff_id, is_signed, enter_date, quit_date, salary, status, remark, 
+    is_settled, quit_reason, staff_name
+    from project_staff
+    where project_id = #{projectId,jdbcType=VARCHAR}
+      and staff_id = #{staffId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select project_id, staff_id, is_signed, enter_date, quit_date, salary, status, remark, 
+    is_settled, quit_reason, staff_name
+    from project_staff
+  </select>
+</mapper>
