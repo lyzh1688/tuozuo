@@ -4,11 +4,10 @@
   <resultMap id="BaseResultMap" type="com.tuozuo.tavern.xinruyi.model.BankInfo">
     <id column="bank_code" jdbcType="VARCHAR" property="bankCode" />
     <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
-    <result column="bank_level" jdbcType="VARCHAR" property="bankLevel" />
     <result column="bank_parent_code" jdbcType="VARCHAR" property="bankParentCode" />
   </resultMap>
   <select id="selectList" resultMap="BaseResultMap">
-    select  bank_code, bank_name, bank_level, bank_parent_code
+    select  bank_code, bank_name, bank_parent_code
     from bank_info
     <where>
       <if test="bankCode != null and bankCode != ''">

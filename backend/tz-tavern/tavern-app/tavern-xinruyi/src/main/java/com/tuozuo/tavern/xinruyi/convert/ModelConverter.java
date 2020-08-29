@@ -13,16 +13,15 @@ import org.mapstruct.Mappings;
  * Code Monkey: 何彪 <br>
  * Dev Time: 2020/8/28 <br>
  */
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ModelConverter {
 
     @Mappings({
             @Mapping(source = "vo.name", target = "staffName"),
             @Mapping(source = "vo.idNo", target = "idNumber"),
             @Mapping(source = "vo.accntBank", target = "bankBranch"),
-            @Mapping(source = "1", target = "isValid"),
             @Mapping(source = "companyId", target = "companyId"),
-            @Mapping(source = "java.time.LocalDateTime.now()", target = "updateDate")
+            @Mapping(target = "updateDate",expression = "java(java.time.LocalDateTime.now())" )
     })
     StaffResourcePool voToStaffResourcePool(StaffInfoVO vo, String companyId);
 

@@ -10,8 +10,6 @@ public class BankInfo {
 
     private String bankName;
 
-    private String bankLevel;
-
     private String bankParentCode;
 
     public String getBankCode() {
@@ -28,14 +26,6 @@ public class BankInfo {
 
     public void setBankName(String bankName) {
         this.bankName = bankName == null ? null : bankName.trim();
-    }
-
-    public String getBankLevel() {
-        return bankLevel;
-    }
-
-    public void setBankLevel(String bankLevel) {
-        this.bankLevel = bankLevel == null ? null : bankLevel.trim();
     }
 
     public String getBankParentCode() {
