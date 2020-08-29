@@ -1,11 +1,14 @@
 package com.tuozuo.tavern.xinruyi.model;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 @TableName("project_info")
 public class ProjectInfo {
+    @TableId
     private String projectId;
 
     private String companyId;
@@ -14,15 +17,15 @@ public class ProjectInfo {
 
     private String projectName;
 
-    private Date publishDate;
+    private LocalDateTime publishDate;
 
-    private Short period;
+    private BigDecimal period;
 
     private String contractPerson;
 
     private String contractPhone;
 
-    private Short projectMemberCount;
+    private Integer projectMemberCount;
 
     private String area;
 
@@ -72,19 +75,19 @@ public class ProjectInfo {
         this.projectIndustry = projectIndustry == null ? null : projectIndustry.trim();
     }
 
-    public Date getPublishDate() {
+    public LocalDateTime getPublishDate() {
         return publishDate;
     }
 
-    public void setPublishDate(Date publishDate) {
+    public void setPublishDate(LocalDateTime publishDate) {
         this.publishDate = publishDate;
     }
 
-    public Short getPeriod() {
+    public BigDecimal getPeriod() {
         return period;
     }
 
-    public void setPeriod(Short period) {
+    public void setPeriod(BigDecimal period) {
         this.period = period;
     }
 
@@ -104,11 +107,11 @@ public class ProjectInfo {
         this.contractPhone = contractPhone == null ? null : contractPhone.trim();
     }
 
-    public Short getProjectMemberCount() {
+    public Integer getProjectMemberCount() {
         return projectMemberCount;
     }
 
-    public void setProjectMemberCount(Short projectMemberCount) {
+    public void setProjectMemberCount(Integer projectMemberCount) {
         this.projectMemberCount = projectMemberCount;
     }
 

@@ -20,54 +20,35 @@
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="budget" jdbcType="VARCHAR" property="budget" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from project_info
-    where project_id = #{projectId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.tuozuo.tavern.xinruyi.model.ProjectInfo">
-    insert into project_info (project_id,project_name, company_id, project_industry,
-      publish_date, period, contract_person, 
-      contract_phone, project_member_count, area, 
-      on_spot, file_material, project_desc, 
-      remark, fee, status, 
-      budget)
-    values (#{projectId,jdbcType=VARCHAR}, #{companyId,jdbcType=VARCHAR}, #{projectIndustry,jdbcType=VARCHAR}, 
-      #{publishDate,jdbcType=DATE}, #{period,jdbcType=DECIMAL}, #{contractPerson,jdbcType=VARCHAR}, 
-      #{contractPhone,jdbcType=VARCHAR}, #{projectMemberCount,jdbcType=DECIMAL}, #{area,jdbcType=VARCHAR}, 
-      #{onSpot,jdbcType=VARCHAR}, #{fileMaterial,jdbcType=VARCHAR}, #{projectDesc,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR}, #{fee,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, 
-      #{budget,jdbcType=VARCHAR})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.xinruyi.model.ProjectInfo">
-    update project_info
-    set company_id = #{companyId,jdbcType=VARCHAR},
-      project_industry = #{projectIndustry,jdbcType=VARCHAR},
-      publish_date = #{publishDate,jdbcType=DATE},
-      period = #{period,jdbcType=DECIMAL},
-      contract_person = #{contractPerson,jdbcType=VARCHAR},
-      contract_phone = #{contractPhone,jdbcType=VARCHAR},
-      project_member_count = #{projectMemberCount,jdbcType=DECIMAL},
-      area = #{area,jdbcType=VARCHAR},
-      on_spot = #{onSpot,jdbcType=VARCHAR},
-      file_material = #{fileMaterial,jdbcType=VARCHAR},
-      project_desc = #{projectDesc,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR},
-      fee = #{fee,jdbcType=DECIMAL},
-      status = #{status,jdbcType=VARCHAR},
-      budget = #{budget,jdbcType=VARCHAR}
-    where project_id = #{projectId,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select project_id,project_name, company_id, project_industry, publish_date, period, contract_person,
-    contract_phone, project_member_count, area, on_spot, file_material, project_desc, 
-    remark, fee, status, budget
-    from project_info
-    where project_id = #{projectId,jdbcType=VARCHAR}
-  </select>
+  <resultMap id="BaseProjectStaffMap" type="com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo">
+    <result column="staff_id" jdbcType="VARCHAR" property="id" />
+    <result column="id_number" jdbcType="VARCHAR" property="idNo" />
+    <result column="staff_name" jdbcType="VARCHAR" property="name" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
+    <result column="salary" jdbcType="DECIMAL" property="salary" />
+    <result column="enter_date" jdbcType="VARCHAR" property="beginDate" />
+    <result column="quit_date" jdbcType="VARCHAR" property="endDate" />
+    <result column="is_valid" jdbcType="VARCHAR" property="isValid" />
+    <result column="status" jdbcType="VARCHAR" property="quit" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="is_signed" jdbcType="VARCHAR" property="isSigned" />
+  </resultMap>
   <select id="selectAll" resultMap="BaseResultMap">
     select project_id,project_name, company_id, project_industry, publish_date, period, contract_person,
     contract_phone, project_member_count, area, on_spot, file_material, project_desc, 
     remark, fee, status, budget
     from project_info
+  </select>
+  <select id="selectProjectStaffInfo" resultMap="BaseProjectStaffMap">
+    select
+      t1.staff_id,t1.id_number,t1.staff_name,t1.gender,
+      t2.salary,date_format(t2.enter_date ,'%Y-%m-%d') enter_date,
+      date_format(t2.quit_date ,'%Y-%m-%d') quit_date,is_valid,
+      case t2.`status` when '0' then '0' when '1' then '1' else '1' end status ,
+      t2.remark,t2.is_signed
+    from staff_resource_pool t1,project_staff t2
+    where t1.staff_id = t2.staff_id
+    and t2.project_id = #{projectId}
+    and t1.company_id = #{companyId}
   </select>
 </mapper>

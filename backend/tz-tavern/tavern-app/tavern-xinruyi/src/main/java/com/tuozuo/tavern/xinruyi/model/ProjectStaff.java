@@ -1,7 +1,7 @@
 package com.tuozuo.tavern.xinruyi.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class ProjectStaff {
     private String projectId;
@@ -10,9 +10,9 @@ public class ProjectStaff {
 
     private String isSigned;
 
-    private Date enterDate;
+    private LocalDate enterDate;
 
-    private Date quitDate;
+    private LocalDate quitDate;
 
     private BigDecimal salary;
 
@@ -50,19 +50,19 @@ public class ProjectStaff {
         this.isSigned = isSigned == null ? null : isSigned.trim();
     }
 
-    public Date getEnterDate() {
+    public LocalDate getEnterDate() {
         return enterDate;
     }
 
-    public void setEnterDate(Date enterDate) {
+    public void setEnterDate(LocalDate enterDate) {
         this.enterDate = enterDate;
     }
 
-    public Date getQuitDate() {
+    public LocalDate getQuitDate() {
         return quitDate;
     }
 
-    public void setQuitDate(Date quitDate) {
+    public void setQuitDate(LocalDate quitDate) {
         this.quitDate = quitDate;
     }
 
