@@ -43,7 +43,9 @@
         </table>
         <table tableName="staff_resource_pool" domainObjectName="StaffResourcePool">
         </table>-->
-        <table tableName="bank_info" domainObjectName="BankInfo">
+        <!--<table tableName="bank_info" domainObjectName="BankInfo">
+        </table>-->
+        <table tableName="business_dict" domainObjectName="BusinessDict">
         </table>
 
 
