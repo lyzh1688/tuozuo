@@ -1,5 +1,7 @@
 package com.tuozuo.tavern.xinruyi.convert;
 
+import com.tuozuo.tavern.xinruyi.dto.BusinessDictDTO;
+import com.tuozuo.tavern.xinruyi.model.BusinessDict;
 import com.tuozuo.tavern.xinruyi.model.StaffResourcePool;
 import com.tuozuo.tavern.xinruyi.vo.StaffInfoVO;
 import org.mapstruct.Mapper;
@@ -23,6 +25,12 @@ public interface ModelConverter {
             @Mapping(source = "java.time.LocalDateTime.now()", target = "updateDate")
     })
     StaffResourcePool voToStaffResourcePool(StaffInfoVO vo, String companyId);
+
+    @Mappings({
+            @Mapping(source = "businessDict.businessId", target = "id"),
+            @Mapping(source = "businessDict.businessName", target = "name")
+    })
+    BusinessDictDTO modelToBusinessDictDTO(BusinessDict businessDict);
 
 
 }
