@@ -2,10 +2,8 @@ package com.tuozuo.tavern.authority.service;
 
 import com.google.common.base.Strings;
 import com.tuozuo.tavern.authority.dao.AuthorityDao;
-import com.tuozuo.tavern.authority.model.Password;
-import com.tuozuo.tavern.authority.model.RSAPublicKey;
-import com.tuozuo.tavern.authority.model.TokenAuthority;
-import com.tuozuo.tavern.authority.model.User;
+import com.tuozuo.tavern.authority.dao.PrivilegeDao;
+import com.tuozuo.tavern.authority.model.*;
 import com.tuozuo.tavern.libs.auth.encrypt.RSAEncrypt;
 import com.tuozuo.tavern.libs.auth.encrypt.RSAKeyPair;
 import com.tuozuo.tavern.libs.auth.jwt.JwtAuthenticationProperty;
@@ -13,6 +11,7 @@ import com.tuozuo.tavern.libs.auth.session.RedisSession;
 import com.tuozuo.tavern.libs.auth.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
@@ -28,6 +27,9 @@ public class AuthorityServiceImpl implements AuthorityService {
 
     @Autowired
     AuthorityDao authorityDao;
+
+    @Autowired
+    PrivilegeDao privilegeDao;
 
     @Autowired
     SessionManager sessionManager;
@@ -53,10 +55,22 @@ public class AuthorityServiceImpl implements AuthorityService {
         if (Strings.isNullOrEmpty(inputMD5Pswd)) {
             return Optional.of(new TokenAuthority(false, "密码不能为空"));
         }
+        //获取用户
         User user = this.authorityDao.getUser(userId, systemId, roleGroup);
         if (user == null) {
             return Optional.of(new TokenAuthority(false, "用户不存在"));
         }
+        //获取用户权限
+        Optional<Privilege> privilegeOp = this.privilegeDao.getPrivilege(userId, systemId, roleGroup);
+        if(privilegeOp.isPresent()){
+            user.setPrivilege(privilegeOp.get());
+        }
+        else {
+            //兼容老系统,若无权限，则为默认NORMAL权限
+            Privilege defaultPrivilege = Privilege.createDefaultPrivilege(userId,systemId,roleGroup);
+            user.setPrivilege(defaultPrivilege);
+        }
+
         TokenAuthority tokenAuthority = user.login(inputMD5Pswd, property);
         if (tokenAuthority.getLoginSuccess()) {
             //登陆成功失败次数清零
@@ -85,18 +99,22 @@ public class AuthorityServiceImpl implements AuthorityService {
         }
     }
 
+    @Transactional
     @Override
     public boolean createUser(User user) {
         try {
-            return this.authorityDao.createUser(user);
+            this.authorityDao.createUser(user);
+            return this.privilegeDao.addPrivilege(user.getPrivilege());
         } catch (Exception e) {
             return false;
         }
     }
 
+    @Transactional
     @Override
     public void modifyUser(User user) {
         this.authorityDao.updateUser(user);
+        this.privilegeDao.updatePrivilege(user.getPrivilege());
     }
 
     @Override

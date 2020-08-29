@@ -7,13 +7,15 @@ import com.tuozuo.tavern.libs.auth.jwt.AuthTokenFactor;
 import com.tuozuo.tavern.libs.auth.jwt.JwtAuthenticationProperty;
 import com.tuozuo.tavern.libs.auth.jwt.TokenHelper;
 
+import java.util.List;
+
 /**
  * Created by 刘悦之 on 2020/7/18.
  */
 @TableName("AUTH_USER")
 public class User {
     static int maxFailedTimes = 5;
-    static String AUTHORITY = "normal";
+//    static String AUTHORITY = "normal";
     @TableId
     String userId;
     @TableId
@@ -24,8 +26,17 @@ public class User {
     int failedTimes;
     @TableField(exist = false)
     TokenAuthority tokenAuthority = new TokenAuthority();
-
+    @TableField(exist = false)
+    Privilege privilege;
     public User() {
+    }
+
+    public User(String userId, String systemId, String roleGroup, String userPswd, Privilege privilege) {
+        this.userId = userId;
+        this.systemId = systemId;
+        this.roleGroup = roleGroup;
+        this.userPswd = userPswd;
+        this.privilege = privilege;
     }
 
     public User(String userId, String systemId, String roleGroup, String userPswd) {
@@ -42,7 +53,7 @@ public class User {
         } else {
             if (this.userPswd.equals(inputMD5Pswd)) {
                 this.tokenAuthority.setLoginSuccess(true);
-                this.tokenAuthority.setAuthority(String.join(".", this.systemId, this.roleGroup, AUTHORITY));
+                this.tokenAuthority.setAuthority(String.join(".", this.systemId, this.roleGroup, this.privilege.getPrivilege()));
                 AuthTokenFactor tokenFactor = new AuthTokenFactor(this.userId, this.systemId, this.roleGroup);
                 String accessToken = TokenHelper.createToken(config, tokenFactor);
                 this.tokenAuthority.setAccessToken(accessToken);
@@ -62,12 +73,12 @@ public class User {
         User.maxFailedTimes = maxFailedTimes;
     }
 
-    public static String getAUTHORITY() {
-        return AUTHORITY;
+    public Privilege getPrivilege() {
+        return privilege;
     }
 
-    public static void setAUTHORITY(String AUTHORITY) {
-        User.AUTHORITY = AUTHORITY;
+    public void setPrivilege(Privilege privilege) {
+        this.privilege = privilege;
     }
 
     public String getUserId() {
