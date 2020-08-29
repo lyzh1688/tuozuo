@@ -1,11 +1,15 @@
 package com.tuozuo.tavern.xinruyi.model;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
+@TableName("project_staff")
 public class ProjectStaff {
+    @TableId
     private String projectId;
-
+    @TableId
     private String staffId;
 
     private String isSigned;

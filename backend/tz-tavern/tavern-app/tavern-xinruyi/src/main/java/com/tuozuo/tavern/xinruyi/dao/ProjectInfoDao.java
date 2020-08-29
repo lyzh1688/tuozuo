@@ -2,6 +2,7 @@ package com.tuozuo.tavern.xinruyi.dao;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
+import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo;
 
 import java.util.List;
@@ -15,8 +16,6 @@ public interface ProjectInfoDao {
     List<ProjectInfo> selectAllProjectInfo(String companyId, String projectName);
 
     List<ProjectInfo> selectProjectInfo(String companyId, String projectName,int queryCnt);
-
-    IPage<ProjectStaffInfo> selectProjectStaffInfo(int pageNo, int pageSize, String companyId, String projectId);
 
 
 }

@@ -17,5 +17,9 @@ public interface ProjectInfoService {
 
     IPage<ProjectStaffInfo> queryProjectStaffInfo(int pageNo, int pageSize, String companyId, String projectId);
 
+    void addProjectStaff(ProjectStaff projectStaff);
+
+    void modifyProjectStaff(ProjectStaff projectStaff);
+
 
 }

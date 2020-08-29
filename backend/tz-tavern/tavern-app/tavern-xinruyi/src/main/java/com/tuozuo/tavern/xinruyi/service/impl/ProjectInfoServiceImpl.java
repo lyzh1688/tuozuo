@@ -2,7 +2,9 @@ package com.tuozuo.tavern.xinruyi.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.xinruyi.dao.ProjectInfoDao;
+import com.tuozuo.tavern.xinruyi.dao.ProjectStaffInfoDao;
 import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
+import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ import java.util.List;
 public class ProjectInfoServiceImpl implements ProjectInfoService {
     @Autowired
     private ProjectInfoDao projectInfoDao;
+    @Autowired
+    private ProjectStaffInfoDao projectStaffInfoDao;
 
 
     @Override
@@ -31,6 +35,16 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     @Override
     public IPage<ProjectStaffInfo> queryProjectStaffInfo(int pageNo, int pageSize, String companyId, String projectId) {
-        return null;
+        return this.projectStaffInfoDao.selectProjectStaffInfo(pageNo, pageSize, companyId, projectId);
+    }
+
+    @Override
+    public void addProjectStaff(ProjectStaff projectStaff) {
+        this.projectStaffInfoDao.insertProjectStaff(projectStaff);
+    }
+
+    @Override
+    public void modifyProjectStaff(ProjectStaff projectStaff) {
+        this.projectStaffInfoDao.updateProjectStaff(projectStaff);
     }
 }

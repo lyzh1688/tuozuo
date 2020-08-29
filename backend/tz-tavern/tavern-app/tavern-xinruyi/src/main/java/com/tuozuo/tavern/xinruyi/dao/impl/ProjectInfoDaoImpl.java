@@ -1,12 +1,9 @@
 package com.tuozuo.tavern.xinruyi.dao.impl;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tuozuo.tavern.xinruyi.dao.ProjectInfoDao;
 import com.tuozuo.tavern.xinruyi.mapper.ProjectInfoMapper;
 import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
-import com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -41,9 +38,6 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
                 .last("limit " + queryCnt));
     }
 
-    @Override
-    public IPage<ProjectStaffInfo> selectProjectStaffInfo(int pageNo, int pageSize, String companyId, String projectId) {
-        Page page = new Page(pageNo, pageSize);
-        return null;
-    }
+
+
 }
