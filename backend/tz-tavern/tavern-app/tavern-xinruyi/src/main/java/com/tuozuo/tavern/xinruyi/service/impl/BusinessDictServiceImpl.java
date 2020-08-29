@@ -19,7 +19,7 @@ public class BusinessDictServiceImpl implements BusinessDictService {
     private BusinessDictDao businessDictDao;
 
     @Override
-    public List<BusinessDict> queryBuinessDicts(String group) {
+    public List<BusinessDict> queryBusinessDicts(String group) {
         return this.businessDictDao.selectBuinessDicts(group);
     }
 }

@@ -11,6 +11,6 @@ import java.util.List;
  */
 public interface BusinessDictService {
 
-    List<BusinessDict> queryBuinessDicts(String group);
+    List<BusinessDict> queryBusinessDicts(String group);
 
 }
