@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverter;
 import com.tuozuo.tavern.xinruyi.dao.StaffInfoDao;
 import com.tuozuo.tavern.xinruyi.model.StaffResourcePool;
+import com.tuozuo.tavern.xinruyi.model.StaffSalaryInfo;
 import com.tuozuo.tavern.xinruyi.service.StaffInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,5 +46,10 @@ public class StaffInfoServiceImpl implements StaffInfoService {
     @Override
     public List<StaffResourcePool> queryStaffByName(String name,String companyId,int queryCnt) {
         return this.staffInfoDao.selectByName(name, companyId, queryCnt);
+    }
+
+    @Override
+    public IPage<StaffSalaryInfo> queryStaffSalaryInfo(int pageNo, int pageSize, String companyId, String staffId, String projectId, String beginDate, String endDate) {
+        return this.staffInfoDao.selectStaffSalaryInfo(pageNo, pageSize, companyId, staffId, projectId, beginDate, endDate);
     }
 }

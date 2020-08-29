@@ -2,6 +2,7 @@ package com.tuozuo.tavern.xinruyi.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.xinruyi.model.StaffResourcePool;
+import com.tuozuo.tavern.xinruyi.model.StaffSalaryInfo;
 
 import java.util.List;
 
@@ -20,6 +21,13 @@ public interface StaffInfoService {
     void removeStaff(String staffId);
 
     List<StaffResourcePool> queryStaffByName(String name,String companyId,int queryCnt);
+
+    IPage<StaffSalaryInfo> queryStaffSalaryInfo(int pageNo, int pageSize,
+                                                 String companyId,
+                                                 String staffId,
+                                                 String projectId,
+                                                 String beginDate,
+                                                 String endDate);
 
     
 
