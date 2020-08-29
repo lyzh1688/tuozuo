@@ -10,6 +10,7 @@ public class UserVO {
     String systemId;
     String roleGroup;
     String userPswd;
+    String privilege;
 
     public String getUserId() {
         return userId;
@@ -41,5 +42,13 @@ public class UserVO {
 
     public void setUserPswd(String userPswd) {
         this.userPswd = userPswd;
+    }
+
+    public String getPrivilege() {
+        return privilege;
+    }
+
+    public void setPrivilege(String privilege) {
+        this.privilege = privilege;
     }
 }

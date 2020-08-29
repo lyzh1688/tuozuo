@@ -1,9 +1,6 @@
 package com.tuozuo.tavern.authority.endpoint;
 
-import com.tuozuo.tavern.authority.model.Password;
-import com.tuozuo.tavern.authority.model.RSAPublicKey;
-import com.tuozuo.tavern.authority.model.TokenAuthority;
-import com.tuozuo.tavern.authority.model.User;
+import com.tuozuo.tavern.authority.model.*;
 import com.tuozuo.tavern.authority.service.AuthorityService;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuuozuo.tavern.authority.spi.vo.UserVO;
@@ -113,6 +110,8 @@ public class AuthorityEndpoint {
         user.setSystemId(userVO.getSystemId());
         user.setRoleGroup(userVO.getRoleGroup());
         user.setUserPswd(userVO.getUserPswd());
+        Privilege privilege = new Privilege(userVO.getUserId(), userVO.getSystemId(),userVO.getRoleGroup(),userVO.getPrivilege());
+        user.setPrivilege(privilege);
         return user;
     }
 }
