@@ -10,6 +10,7 @@ import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -26,9 +27,9 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     @Override
     public List<ProjectInfo> queryProjectInfo(String companyId, String projectName, int queryCnt, Boolean all) {
-        if(all){
+        if (all) {
             return this.projectInfoDao.selectAllProjectInfo(companyId, projectName);
-        }else {
+        } else {
             return this.projectInfoDao.selectProjectInfo(companyId, projectName, queryCnt);
         }
     }
@@ -44,7 +45,15 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     }
 
     @Override
-    public void modifyProjectStaff(ProjectStaff projectStaff) {
+    public void modifyProjectStaff(ProjectStaff projectStaff) throws Exception {
+
+        LocalDate quitDate = projectStaff.getQuitDate();
+        if (quitDate != null && quitDate.getMonth().equals(LocalDate.now().getMonth())) {
+            throw new Exception("当月不可裁员，请重新选择离团日期!");
+        }else {
+            //TODO 增加裁员变动事件
+            projectStaff.setStatus("1");
+        }
         this.projectStaffInfoDao.updateProjectStaff(projectStaff);
     }
 }

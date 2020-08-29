@@ -28,4 +28,5 @@ public interface StaffInfoDao {
                                                  String projectId,
                                                  String beginDate,
                                                  String endDate);
+    StaffResourcePool selectStaffInfo(String staffId);
 }

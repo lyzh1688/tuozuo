@@ -52,4 +52,9 @@ public class StaffInfoServiceImpl implements StaffInfoService {
     public IPage<StaffSalaryInfo> queryStaffSalaryInfo(int pageNo, int pageSize, String companyId, String staffId, String projectId, String beginDate, String endDate) {
         return this.staffInfoDao.selectStaffSalaryInfo(pageNo, pageSize, companyId, staffId, projectId, beginDate, endDate);
     }
+
+    @Override
+    public StaffResourcePool queryStaffInfo(String staffId) {
+        return null;
+    }
 }

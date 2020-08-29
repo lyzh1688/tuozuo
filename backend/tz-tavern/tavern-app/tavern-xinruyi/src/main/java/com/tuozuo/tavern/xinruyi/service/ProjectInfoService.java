@@ -19,7 +19,6 @@ public interface ProjectInfoService {
 
     void addProjectStaff(ProjectStaff projectStaff);
 
-    void modifyProjectStaff(ProjectStaff projectStaff);
-
+    void modifyProjectStaff(ProjectStaff projectStaff) throws Exception;
 
 }

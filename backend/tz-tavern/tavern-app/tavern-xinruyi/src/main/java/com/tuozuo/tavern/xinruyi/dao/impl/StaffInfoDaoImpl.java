@@ -25,7 +25,7 @@ public class StaffInfoDaoImpl implements StaffInfoDao {
     @Override
     public IPage<StaffResourcePool> selectStaffList(int pageNo, int pageSize, String companyId) {
         Page page = new Page(pageNo, pageSize);
-        return this.staffResourcePoolMapper.selectList(page,companyId);
+        return this.staffResourcePoolMapper.selectList(page, companyId);
     }
 
     @Override
@@ -44,10 +44,10 @@ public class StaffInfoDaoImpl implements StaffInfoDao {
     }
 
     @Override
-    public List<StaffResourcePool> selectByName(String name,String companyId,int queryCnt) {
+    public List<StaffResourcePool> selectByName(String name, String companyId, int queryCnt) {
         return this.staffResourcePoolMapper.selectList(Wrappers.<StaffResourcePool>query().lambda()
-                .eq(StaffResourcePool::getIsValid,"1")
-                .eq(StaffResourcePool::getCompanyId,companyId)
+                .eq(StaffResourcePool::getIsValid, "1")
+                .eq(StaffResourcePool::getCompanyId, companyId)
                 .like(StaffResourcePool::getStaffName, name)
                 .last("limit " + queryCnt));
     }
@@ -55,9 +55,14 @@ public class StaffInfoDaoImpl implements StaffInfoDao {
     @Override
     public IPage<StaffSalaryInfo> selectStaffSalaryInfo(int pageNo, int pageSize, String companyId, String staffId, String projectId, String beginDate, String endDate) {
         Page page = new Page(pageNo, pageSize);
-        return this.staffResourcePoolMapper.selectSalary(page,companyId,staffId,projectId,beginDate,endDate);
+        return this.staffResourcePoolMapper.selectSalary(page, companyId, staffId, projectId, beginDate, endDate);
     }
 
+    @Override
+    public StaffResourcePool selectStaffInfo(String staffId) {
+        return this.staffResourcePoolMapper.selectOne(Wrappers.<StaffResourcePool>query().lambda()
+                .eq(StaffResourcePool::getStaffId, staffId));
+    }
 
 
 }

@@ -28,6 +28,8 @@ public interface StaffInfoService {
                                                  String projectId,
                                                  String beginDate,
                                                  String endDate);
+    StaffResourcePool queryStaffInfo(String staffId);
+
 
     
 
