@@ -1,15 +1,8 @@
 package com.tuozuo.tavern.shuiruyi.endpoint;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.Lists;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.shuiruyi.dto.AreaInfoDTO;
-import com.tuozuo.tavern.shuiruyi.mapper.AreaInfoMapper;
-import com.tuozuo.tavern.shuiruyi.model.AreaInfo;
-import com.tuozuo.tavern.shuiruyi.service.AreaInfoService;
 import com.tuozuo.tavern.shuiruyi.service.BusinessSearchService;
-import com.tuozuo.tavern.shuiruyi.utils.JsonTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +32,7 @@ public class BusinessSearchEndpoint {
      * 区域搜索
      */
     @GetMapping("/area")
-    public TavernResponse queryCompanyDetail(@RequestParam("areaLevel") String areaLevel,
+    public TavernResponse queryArea(@RequestParam("areaLevel") String areaLevel,
                                              @RequestParam(value = "areaCode", required = false) String areaCode) {
         try {
             List<AreaInfoDTO> areaInfoList = this.businessSearchService.queryAreaInfo(areaCode, areaLevel)

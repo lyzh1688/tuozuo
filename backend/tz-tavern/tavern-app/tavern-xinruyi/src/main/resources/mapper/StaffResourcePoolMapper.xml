@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.tuozuo.tavern.xinruyi.model.StaffResourcePool">
     <id column="company_id" jdbcType="VARCHAR" property="companyId" />
     <result column="staff_id" jdbcType="VARCHAR" property="staffId" />
+    <result column="staff_name" jdbcType="VARCHAR" property="staffName" />
     <result column="gender" jdbcType="VARCHAR" property="gender" />
     <result column="bank_card" jdbcType="VARCHAR" property="bankCard" />
     <result column="bank" jdbcType="VARCHAR" property="bank" />
@@ -12,41 +13,42 @@
     <result column="is_valid" jdbcType="VARCHAR" property="isValid" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from staff_resource_pool
-    where company_id = #{companyId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.tuozuo.tavern.xinruyi.model.StaffResourcePool">
-    insert into staff_resource_pool (company_id, staff_id, gender, 
-      bank_card, bank, bank_branch, 
-      id_number, is_valid, update_date
-      )
-    values (#{companyId,jdbcType=VARCHAR}, #{staffId,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, 
-      #{bankCard,jdbcType=VARCHAR}, #{bank,jdbcType=VARCHAR}, #{bankBranch,jdbcType=VARCHAR}, 
-      #{idNumber,jdbcType=VARCHAR}, #{isValid,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.xinruyi.model.StaffResourcePool">
-    update staff_resource_pool
-    set staff_id = #{staffId,jdbcType=VARCHAR},
-      gender = #{gender,jdbcType=VARCHAR},
-      bank_card = #{bankCard,jdbcType=VARCHAR},
-      bank = #{bank,jdbcType=VARCHAR},
-      bank_branch = #{bankBranch,jdbcType=VARCHAR},
-      id_number = #{idNumber,jdbcType=VARCHAR},
-      is_valid = #{isValid,jdbcType=VARCHAR},
-      update_date = #{updateDate,jdbcType=TIMESTAMP}
-    where company_id = #{companyId,jdbcType=VARCHAR}
+  <resultMap id="SalaryMap" type="com.tuozuo.tavern.xinruyi.model.StaffSalaryInfo">
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="staff_name" jdbcType="VARCHAR" property="staffName" />
+    <result column="salary" jdbcType="DECIMAL" property="salary" />
+    <result column="pay_date" jdbcType="VARCHAR" property="releaseDate" />
+    <result column="bank_card" jdbcType="VARCHAR" property="bankCard" />
+  </resultMap>
+  <select id="selectList" resultMap="BaseResultMap">
+    select company_id, staff_id,staff_name, gender, bank_card, bank, bank_branch, id_number, is_valid,
+    update_date
+    from staff_resource_pool
+    where company_id = #{companyId}
+  </select>
+  <update id="delete">
+    update staff_resource_pool set is_valid = '0' where staff_id = #{staffId}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select company_id, staff_id, gender, bank_card, bank, bank_branch, id_number, is_valid, 
-    update_date
-    from staff_resource_pool
-    where company_id = #{companyId,jdbcType=VARCHAR}
+  <select id="selectSalary" resultMap="SalaryMap">
+    select t.staff_name,t4.project_name,t1.salary,t3.pay_date,t.bank_card from
+    staff_resource_pool t,project_staff t1,project_payment t2,project_payment_detail t3,project_info t4
+    <where>
+      t.staff_id = t1.staff_id
+      and t1.project_id = t2.project_id
+      and t2.payment_id = t3.payment_id
+      and t1.project_id = t4.project_id
+      and t.company_id = #{companyId}
+      and t1.staff_id = #{staffId}
+      <if test="projectId != null and projectId != ''">
+        and t1.project_id  = #{projectId}
+      </if>
+      <if test="beginDate != null and beginDate != ''">
+        and t3.pay_date  >= #{beginDate}
+      </if>
+      <if test="endDate != null and endDate != ''">
+        and t3.pay_date  <![CDATA[ <= ]]> #{endDate}
+      </if>
+    </where>
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select company_id, staff_id, gender, bank_card, bank, bank_branch, id_number, is_valid, 
-    update_date
-    from staff_resource_pool
-  </select>
+
 </mapper>

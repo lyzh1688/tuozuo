@@ -1,14 +1,18 @@
 package com.tuozuo.tavern.xinruyi.model;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.math.BigDecimal;
 import java.util.Date;
-
+@TableName("project_info")
 public class ProjectInfo {
     private String projectId;
 
     private String companyId;
 
     private String projectIndustry;
+
+    private String projectName;
 
     private Date publishDate;
 
@@ -35,6 +39,14 @@ public class ProjectInfo {
     private String status;
 
     private String budget;
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
 
     public String getProjectId() {
         return projectId;

@@ -5,6 +5,7 @@
     <id column="project_id" jdbcType="VARCHAR" property="projectId" />
     <result column="company_id" jdbcType="VARCHAR" property="companyId" />
     <result column="project_industry" jdbcType="VARCHAR" property="projectIndustry" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
     <result column="publish_date" jdbcType="DATE" property="publishDate" />
     <result column="period" jdbcType="DECIMAL" property="period" />
     <result column="contract_person" jdbcType="VARCHAR" property="contractPerson" />
@@ -24,7 +25,7 @@
     where project_id = #{projectId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.tuozuo.tavern.xinruyi.model.ProjectInfo">
-    insert into project_info (project_id, company_id, project_industry, 
+    insert into project_info (project_id,project_name, company_id, project_industry,
       publish_date, period, contract_person, 
       contract_phone, project_member_count, area, 
       on_spot, file_material, project_desc, 
@@ -57,14 +58,14 @@
     where project_id = #{projectId,jdbcType=VARCHAR}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select project_id, company_id, project_industry, publish_date, period, contract_person, 
+    select project_id,project_name, company_id, project_industry, publish_date, period, contract_person,
     contract_phone, project_member_count, area, on_spot, file_material, project_desc, 
     remark, fee, status, budget
     from project_info
     where project_id = #{projectId,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select project_id, company_id, project_industry, publish_date, period, contract_person, 
+    select project_id,project_name, company_id, project_industry, publish_date, period, contract_person,
     contract_phone, project_member_count, area, on_spot, file_material, project_desc, 
     remark, fee, status, budget
     from project_info

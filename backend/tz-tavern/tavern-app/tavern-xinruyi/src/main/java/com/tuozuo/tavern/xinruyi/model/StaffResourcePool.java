@@ -1,11 +1,17 @@
 package com.tuozuo.tavern.xinruyi.model;
 
-import java.util.Date;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 
+import java.time.LocalDateTime;
+@TableName("staff_resource_pool")
 public class StaffResourcePool {
+    @TableId
     private String companyId;
 
     private String staffId;
+
+    private String staffName;
 
     private String gender;
 
@@ -19,7 +25,15 @@ public class StaffResourcePool {
 
     private String isValid;
 
-    private Date updateDate;
+    private LocalDateTime updateDate;
+
+    public String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
+    }
 
     public String getCompanyId() {
         return companyId;
@@ -85,11 +99,11 @@ public class StaffResourcePool {
         this.isValid = isValid == null ? null : isValid.trim();
     }
 
-    public Date getUpdateDate() {
+    public LocalDateTime getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
 }

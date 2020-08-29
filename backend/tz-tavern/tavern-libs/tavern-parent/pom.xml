@@ -20,6 +20,7 @@
 
         <!-- Dependencies -->
         <tavern.version>1.0-SNAPSHOT</tavern.version>
+        <mapstruct.version>1.2.0.CR1</mapstruct.version>
         <spring-cloud.version>Edgware.RELEASE</spring-cloud.version>
         <spring-boot.version>1.5.18.RELEASE</spring-boot.version>
         <spring-framework.version>4.3.21.RELEASE</spring-framework.version>
