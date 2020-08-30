@@ -3,10 +3,11 @@ package com.tuozuo.tavern.xinruyi.endpoint;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
-import com.tuozuo.tavern.xinruyi.convert.ModelConverter;
+import com.tuozuo.tavern.xinruyi.convert.ModelMapConverter;
 import com.tuozuo.tavern.xinruyi.dto.StaffResourcePoolDTO;
 import com.tuozuo.tavern.xinruyi.dto.StaffResourcePoolListDTO;
 import com.tuozuo.tavern.xinruyi.dto.StaffSalaryListDTO;
+import com.tuozuo.tavern.xinruyi.model.BusinessDict;
 import com.tuozuo.tavern.xinruyi.model.StaffResourcePool;
 import com.tuozuo.tavern.xinruyi.model.StaffSalaryInfo;
 import com.tuozuo.tavern.xinruyi.service.StaffInfoService;
@@ -34,7 +35,7 @@ public class StaffInfoEndpoint {
     @Autowired
     private StaffInfoService staffInfoService;
     @Autowired
-    private ModelConverter converter;
+    private ModelMapConverter converter;
 
     /**
      * 人力资源池员工查询
@@ -124,6 +125,40 @@ public class StaffInfoEndpoint {
             return TavernResponse.ok(staffSalaryListDTO);
         } catch (Exception e) {
             LOGGER.error("[历史工资单] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 人力资源池员工详情
+     */
+    @GetMapping("/detail/{staffId}")
+    public TavernResponse queryStaffDetail(@PathVariable("staffId") String staffId) {
+        try {
+            StaffResourcePool staffResourcePool = this.staffInfoService.queryStaffInfo(staffId);
+            StaffResourcePoolDTO dto = this.converter.modelToStaffResourcePoolDTO(staffResourcePool);
+            return TavernResponse.ok(dto);
+        } catch (Exception e) {
+            LOGGER.error("[人力资源池员工详情] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 员工模糊查询
+     */
+    @GetMapping("")
+    public TavernResponse queryStaff(@RequestParam(name = "staffName") String staffName,
+                                     @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt,
+                                     @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId) {
+        try {
+            List<BusinessDict> dictList = this.staffInfoService.queryStaffByName(staffName, companyId, queryCnt)
+                    .stream()
+                    .map(this.converter::staffPoolToBusinessDict)
+                    .collect(Collectors.toList());
+            return TavernResponse.ok(dictList);
+        } catch (Exception e) {
+            LOGGER.error("[员工模糊查询] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }

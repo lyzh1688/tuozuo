@@ -1,7 +1,7 @@
 package com.tuozuo.tavern.xinruyi.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.tuozuo.tavern.xinruyi.convert.ModelConverter;
+import com.tuozuo.tavern.xinruyi.convert.ModelMapConverter;
 import com.tuozuo.tavern.xinruyi.dao.StaffInfoDao;
 import com.tuozuo.tavern.xinruyi.model.StaffResourcePool;
 import com.tuozuo.tavern.xinruyi.model.StaffSalaryInfo;
@@ -21,7 +21,7 @@ public class StaffInfoServiceImpl implements StaffInfoService {
     @Autowired
     private StaffInfoDao staffInfoDao;
     @Autowired
-    ModelConverter converter;
+    ModelMapConverter converter;
 
     @Override
     public IPage<StaffResourcePool> queryStaffInfo(int pageNo, int pageSize, String companyId) {

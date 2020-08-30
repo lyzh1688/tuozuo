@@ -18,6 +18,7 @@ public final class DateUtils {
 	public static final DateTimeFormatter SIMPLE_DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss");
 	public static final DateTimeFormatter DEFAULT_TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
 	public static final DateTimeFormatter DEFAULT_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	public static final DateTimeFormatter DEFAULT_SIMPLE_8__FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 	public static final DateTimeFormatter SIMPLE_8_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 	public static final DateTimeFormatter DEFAULT_MIN_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 	public static final SimpleDateFormat DEFAULT_DATE_FORMATTER_BY_DATE = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
