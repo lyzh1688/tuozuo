@@ -5,11 +5,17 @@ import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverter;
 import com.tuozuo.tavern.xinruyi.convert.ModelMapConverter;
+import com.tuozuo.tavern.xinruyi.dto.ProjectInfoListDTO;
 import com.tuozuo.tavern.xinruyi.dto.ProjectStaffInfoListDTO;
+import com.tuozuo.tavern.xinruyi.dto.StaffResourcePoolDTO;
+import com.tuozuo.tavern.xinruyi.dto.StaffResourcePoolListDTO;
+import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo;
+import com.tuozuo.tavern.xinruyi.model.StaffResourcePool;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
 import com.tuozuo.tavern.xinruyi.vo.PageVO;
+import com.tuozuo.tavern.xinruyi.vo.ProjectListVo;
 import com.tuozuo.tavern.xinruyi.vo.ProjectStaffAddVO;
 import com.tuozuo.tavern.xinruyi.vo.ProjectStaffModifyVO;
 import org.slf4j.Logger;
@@ -18,6 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -33,6 +41,23 @@ public class ProjectInfoEndpoint {
     private ProjectInfoService projectInfoService;
     @Autowired
     private ModelMapConverter converter;
+
+    /**
+     * 项目列表
+     */
+    @GetMapping("/list")
+    public TavernResponse queryProjectList(@ModelAttribute @Valid ProjectListVo vo,
+                                           @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId) {
+        try {
+            ProjectInfoListDTO dto = new ProjectInfoListDTO();
+            IPage<ProjectInfo> page = this.projectInfoService.queryProjectInfo(vo.getPageNo(), vo.getPageSize(), companyId);
+
+            return TavernResponse.ok(dto);
+        } catch (Exception e) {
+            LOGGER.error("[人力资源池员工查询] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
 
     /**
      * 项目人员
