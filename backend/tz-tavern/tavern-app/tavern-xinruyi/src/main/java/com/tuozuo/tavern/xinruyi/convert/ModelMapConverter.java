@@ -25,6 +25,7 @@ public interface ModelMapConverter {
             @Mapping(source = "vo.idNo", target = "idNumber"),
             @Mapping(source = "vo.accntBank", target = "bankBranch"),
             @Mapping(source = "companyId", target = "companyId"),
+            @Mapping(target = "staffId", expression = "java(com.tuozuo.tavern.xinruyi.utils.UUIDUtil.randomUUID32())"),
             @Mapping(target = "updateDate", expression = "java(java.time.LocalDateTime.now())")
     })
     StaffResourcePool addVoToStaffResourcePool(StaffInfoVO vo, String companyId);
@@ -33,7 +34,7 @@ public interface ModelMapConverter {
             @Mapping(source = "vo.gender", target = "gender"),
             @Mapping(source = "vo.bankCard", target = "bankCard"),
             @Mapping(source = "vo.bank", target = "bank"),
-            @Mapping(source = "vo.accntBank", target = "accntBank"),
+            @Mapping(source = "vo.accntBank", target = "bankBranch"),
             @Mapping(source = "companyId", target = "companyId"),
             @Mapping(source = "staffId", target = "staffId"),
             @Mapping(target = "updateDate", expression = "java(java.time.LocalDateTime.now())")
@@ -47,19 +48,17 @@ public interface ModelMapConverter {
     BusinessDictDTO modelToBusinessDictDTO(BusinessDict businessDict);
 
     @Mappings({
-            @Mapping(source = "vo.name", target = "staffName"),
-            @Mapping(source = "vo.idNo", target = "idNumber"),
-            @Mapping(source = "vo.accntBank", target = "bankBranch"),
-            @Mapping(source = "companyId", target = "companyId"),
-            @Mapping(target = "updateDate", expression = "java(java.time.LocalDateTime.now())")
+            @Mapping(source = "staffId", target = "id"),
+            @Mapping(source = "staffName", target = "name"),
+            @Mapping(source = "idNumber", target = "idNo")
     })
     StaffResourcePoolDTO modelToStaffResourcePoolDTO(StaffResourcePool staffResourcePool);
 
     @Mappings({
-            @Mapping(source = "pool.staffId", target = "id"),
-            @Mapping(source = "pool.staffName", target = "name")
+            @Mapping(source = "staffId", target = "id"),
+            @Mapping(source = "staffName", target = "name")
     })
-    BusinessDict staffPoolToBusinessDict(StaffResourcePool pool);
+    BusinessDictDTO staffPoolToBusinessDict(StaffResourcePool pool);
 
 
 }

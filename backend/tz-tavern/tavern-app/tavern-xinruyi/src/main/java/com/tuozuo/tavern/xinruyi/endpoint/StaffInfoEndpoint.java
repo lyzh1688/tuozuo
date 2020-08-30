@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.xinruyi.convert.ModelMapConverter;
+import com.tuozuo.tavern.xinruyi.dto.BusinessDictDTO;
 import com.tuozuo.tavern.xinruyi.dto.StaffResourcePoolDTO;
 import com.tuozuo.tavern.xinruyi.dto.StaffResourcePoolListDTO;
 import com.tuozuo.tavern.xinruyi.dto.StaffSalaryListDTO;
@@ -152,7 +153,7 @@ public class StaffInfoEndpoint {
                                      @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt,
                                      @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId) {
         try {
-            List<BusinessDict> dictList = this.staffInfoService.queryStaffByName(staffName, companyId, queryCnt)
+            List<BusinessDictDTO> dictList = this.staffInfoService.queryStaffByName(staffName, companyId, queryCnt)
                     .stream()
                     .map(this.converter::staffPoolToBusinessDict)
                     .collect(Collectors.toList());
