@@ -50,7 +50,8 @@ public interface ModelMapConverter {
     @Mappings({
             @Mapping(source = "staffId", target = "id"),
             @Mapping(source = "staffName", target = "name"),
-            @Mapping(source = "idNumber", target = "idNo")
+            @Mapping(source = "idNumber", target = "idNo"),
+            @Mapping(source = "bankBranch", target = "accntBank")
     })
     StaffResourcePoolDTO modelToStaffResourcePoolDTO(StaffResourcePool staffResourcePool);
 

@@ -10,6 +10,24 @@ public class StaffResourcePoolDTO {
     private String idNo;
     private String gender;
     private String bankCard;
+    private String bank;
+    private String accntBank;
+
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
+    public String getAccntBank() {
+        return accntBank;
+    }
+
+    public void setAccntBank(String accntBank) {
+        this.accntBank = accntBank;
+    }
 
     public String getName() {
         return name;

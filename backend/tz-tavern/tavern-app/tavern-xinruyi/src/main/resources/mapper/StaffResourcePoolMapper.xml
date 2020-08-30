@@ -20,7 +20,7 @@
     <result column="pay_date" jdbcType="VARCHAR" property="releaseDate" />
     <result column="bank_card" jdbcType="VARCHAR" property="bankCard" />
   </resultMap>
-  <select id="selectList" resultMap="BaseResultMap">
+  <select id="selectByPage" resultMap="BaseResultMap">
     select company_id, staff_id,staff_name, gender, bank_card, bank, bank_branch, id_number, is_valid,
     update_date
     from staff_resource_pool

@@ -13,7 +13,7 @@ import java.util.List;
 @Mapper
 public interface StaffResourcePoolMapper extends BaseMapper<StaffResourcePool> {
 
-    IPage<StaffResourcePool> selectList(Page page, @Param("companyId") String companyId);
+    IPage<StaffResourcePool> selectByPage(Page page, @Param("companyId") String companyId);
 
     void delete(@Param("staffId") String staffId);
 

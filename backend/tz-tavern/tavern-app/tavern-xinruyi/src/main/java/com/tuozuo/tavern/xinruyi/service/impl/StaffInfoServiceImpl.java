@@ -55,6 +55,6 @@ public class StaffInfoServiceImpl implements StaffInfoService {
 
     @Override
     public StaffResourcePool queryStaffInfo(String staffId) {
-        return null;
+        return this.staffInfoDao.selectStaffInfo(staffId);
     }
 }

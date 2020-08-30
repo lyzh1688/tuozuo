@@ -25,7 +25,7 @@ public class StaffInfoDaoImpl implements StaffInfoDao {
     @Override
     public IPage<StaffResourcePool> selectStaffList(int pageNo, int pageSize, String companyId) {
         Page page = new Page(pageNo, pageSize);
-        return this.staffResourcePoolMapper.selectList(page, companyId);
+        return this.staffResourcePoolMapper.selectByPage(page, companyId);
     }
 
     @Override
