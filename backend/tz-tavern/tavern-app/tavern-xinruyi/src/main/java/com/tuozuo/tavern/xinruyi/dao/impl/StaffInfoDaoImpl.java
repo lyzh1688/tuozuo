@@ -35,7 +35,9 @@ public class StaffInfoDaoImpl implements StaffInfoDao {
 
     @Override
     public void update(StaffResourcePool pool) {
-        this.staffResourcePoolMapper.updateById(pool);
+        this.staffResourcePoolMapper.update(pool, Wrappers.<StaffResourcePool>query().lambda()
+                .eq(StaffResourcePool::getCompanyId, pool.getCompanyId())
+                .eq(StaffResourcePool::getStaffId, pool.getStaffId()));
     }
 
     @Override

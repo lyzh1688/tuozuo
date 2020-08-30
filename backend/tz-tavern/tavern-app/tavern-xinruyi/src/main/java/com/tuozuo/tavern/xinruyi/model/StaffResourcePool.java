@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.xinruyi.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
 public class StaffResourcePool {
     @TableId
     private String companyId;
-
+    @TableId
     private String staffId;
 
     private String staffName;
