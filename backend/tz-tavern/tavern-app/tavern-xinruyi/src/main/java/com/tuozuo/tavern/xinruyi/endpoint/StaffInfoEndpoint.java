@@ -6,8 +6,11 @@ import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverter;
 import com.tuozuo.tavern.xinruyi.dto.StaffResourcePoolDTO;
 import com.tuozuo.tavern.xinruyi.dto.StaffResourcePoolListDTO;
+import com.tuozuo.tavern.xinruyi.dto.StaffSalaryListDTO;
 import com.tuozuo.tavern.xinruyi.model.StaffResourcePool;
+import com.tuozuo.tavern.xinruyi.model.StaffSalaryInfo;
 import com.tuozuo.tavern.xinruyi.service.StaffInfoService;
+import com.tuozuo.tavern.xinruyi.vo.SalaryHistoryVO;
 import com.tuozuo.tavern.xinruyi.vo.StaffInfoVO;
 import com.tuozuo.tavern.xinruyi.vo.StaffModifyVO;
 import org.slf4j.Logger;
@@ -15,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -88,5 +92,40 @@ public class StaffInfoEndpoint {
         }
     }
 
+    /**
+     * 人力资源池员工删除
+     */
+    @DeleteMapping("/{staffId}")
+    public TavernResponse delStaff(@PathVariable("staffId") String staffId) {
+        try {
+            this.staffInfoService.removeStaff(staffId);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[人力资源池员工删除] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 历史工资单
+     */
+    @GetMapping("/salary")
+    public TavernResponse queryStaffSalaryList(@ModelAttribute @Valid SalaryHistoryVO vo,
+                                               @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId) {
+        try {
+            IPage<StaffSalaryInfo> page = this.staffInfoService.queryStaffSalaryInfo(vo.getPageNo(), vo.getPageSize(), companyId,
+                    vo.getStaffId(),
+                    vo.getProjectId(),
+                    vo.getBeginDate(),
+                    vo.getEndDate());
+            StaffSalaryListDTO staffSalaryListDTO = new StaffSalaryListDTO();
+            staffSalaryListDTO.setPayment(page.getRecords());
+            staffSalaryListDTO.setTotal((int) page.getTotal());
+            return TavernResponse.ok(staffSalaryListDTO);
+        } catch (Exception e) {
+            LOGGER.error("[历史工资单] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
 
 }

@@ -33,7 +33,7 @@ public class BusinessSearchEndpoint {
      */
     @GetMapping("/area")
     public TavernResponse queryArea(@RequestParam("areaLevel") String areaLevel,
-                                             @RequestParam(value = "areaCode", required = false) String areaCode) {
+                                    @RequestParam(value = "areaCode", required = false) String areaCode) {
         try {
             List<AreaInfoDTO> areaInfoList = this.businessSearchService.queryAreaInfo(areaCode, areaLevel)
                     .stream()
