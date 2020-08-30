@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.xinruyi.dao;
 
+import com.tuozuo.tavern.xinruyi.model.AreaInfo;
 import com.tuozuo.tavern.xinruyi.model.BankInfo;
 
 import java.util.List;
@@ -11,5 +12,7 @@ import java.util.List;
 public interface BusinessSearchDao {
 
     List<BankInfo> selectBankInfo(String bankCode);
+
+    List<AreaInfo> selectAreaInfo(String areaCode, String areaLevel);
 
 }

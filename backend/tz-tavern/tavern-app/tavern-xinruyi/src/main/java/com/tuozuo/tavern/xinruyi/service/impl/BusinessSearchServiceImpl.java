@@ -1,6 +1,7 @@
 package com.tuozuo.tavern.xinruyi.service.impl;
 
 import com.tuozuo.tavern.xinruyi.dao.BusinessSearchDao;
+import com.tuozuo.tavern.xinruyi.model.AreaInfo;
 import com.tuozuo.tavern.xinruyi.model.BankInfo;
 import com.tuozuo.tavern.xinruyi.service.BusinessSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,10 @@ public class BusinessSearchServiceImpl implements BusinessSearchService {
     @Autowired
     private BusinessSearchDao businessSearchDao;
 
+    @Override
+    public List<AreaInfo> queryAreaInfo(String areaCode, String areaLevel) {
+        return this.businessSearchDao.selectAreaInfo(areaCode, areaLevel);
+    }
 
     @Override
     public List<BankInfo> queryBankInfo(String bankCode) {

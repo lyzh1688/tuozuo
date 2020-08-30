@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.xinruyi.service;
 
+import com.tuozuo.tavern.xinruyi.model.AreaInfo;
 import com.tuozuo.tavern.xinruyi.model.BankInfo;
 
 import java.util.List;
@@ -12,5 +13,5 @@ public interface BusinessSearchService {
 
     List<BankInfo> queryBankInfo(String bankCode);
 
-
+    List<AreaInfo> queryAreaInfo(String areaCode, String areaLevel);
 }
