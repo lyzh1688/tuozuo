@@ -11,6 +11,7 @@ import com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
 import com.tuozuo.tavern.xinruyi.vo.PageVO;
 import com.tuozuo.tavern.xinruyi.vo.ProjectStaffAddVO;
+import com.tuozuo.tavern.xinruyi.vo.ProjectStaffModifyVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,36 +63,30 @@ public class ProjectInfoEndpoint {
     public TavernResponse addProjectStaff(@PathVariable("projectId") String projectId,
                                           @RequestBody ProjectStaffAddVO vo) {
         try {
-            ProjectStaff projectStaff = ModelConverter.addVoToProjectStaff(vo, projectId);
+            ProjectStaff projectStaff = ModelConverter.modifyVoToProjectStaff(vo, projectId);
             this.projectInfoService.addProjectStaff(projectStaff);
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[项目人员新增] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
-
-
-        
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * 项目人员修改
+     */
+    @PutMapping("/staff/{staffId}")
+    public TavernResponse modifyProjectStaff(@PathVariable("staffId") String staffId,
+                                             @RequestBody ProjectStaffModifyVO vo) {
+        try {
+            ProjectStaff projectStaff = ModelConverter.modifyVoToProjectStaff(vo, staffId);
+            this.projectInfoService.modifyProjectStaff(projectStaff);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[项目人员修改] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
 
 
 }

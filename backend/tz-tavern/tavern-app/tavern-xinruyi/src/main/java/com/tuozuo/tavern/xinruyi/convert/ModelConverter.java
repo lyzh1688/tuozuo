@@ -3,6 +3,7 @@ package com.tuozuo.tavern.xinruyi.convert;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
 import com.tuozuo.tavern.xinruyi.utils.DateUtils;
 import com.tuozuo.tavern.xinruyi.vo.ProjectStaffAddVO;
+import com.tuozuo.tavern.xinruyi.vo.ProjectStaffModifyVO;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -10,7 +11,7 @@ import com.tuozuo.tavern.xinruyi.vo.ProjectStaffAddVO;
  */
 public class ModelConverter {
 
-   public static ProjectStaff addVoToProjectStaff(ProjectStaffAddVO vo, String projectId){
+   public static ProjectStaff modifyVoToProjectStaff(ProjectStaffAddVO vo, String projectId){
        ProjectStaff projectStaff = new ProjectStaff();
        projectStaff.setProjectId(projectId);
        projectStaff.setStaffId(vo.getStaffId());
@@ -18,6 +19,16 @@ public class ModelConverter {
        projectStaff.setQuitDate(DateUtils.parseDate(vo.getQuitDate(),DateUtils.DEFAULT_SIMPLE_8__FORMATTER));
        projectStaff.setSalary(vo.getSalary());
        projectStaff.setRemark(vo.getRemark());
+        return projectStaff;
+    }
+
+    public static ProjectStaff modifyVoToProjectStaff(ProjectStaffModifyVO vo, String staffId){
+        ProjectStaff projectStaff = new ProjectStaff();
+        projectStaff.setProjectId(vo.getProjectId());
+        projectStaff.setStaffId(staffId);
+        projectStaff.setQuitDate(DateUtils.parseDate(vo.getQuitDate(),DateUtils.DEFAULT_SIMPLE_8__FORMATTER));
+        projectStaff.setSalary(vo.getSalary());
+        projectStaff.setRemark(vo.getRemark());
         return projectStaff;
     }
 

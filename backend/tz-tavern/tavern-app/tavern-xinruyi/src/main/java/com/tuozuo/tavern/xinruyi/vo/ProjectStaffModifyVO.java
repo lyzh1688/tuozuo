@@ -12,8 +12,18 @@ public class ProjectStaffModifyVO {
     private BigDecimal salary;
     @NotNull(message = "quitDate is not null")
     private String quitDate;
+    @NotNull(message = "projectId is not null")
+    private String projectId;
     @NotNull(message = "remark is not null")
     private String remark;
+
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
+    }
 
     public BigDecimal getSalary() {
         return salary;
