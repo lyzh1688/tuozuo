@@ -1,56 +1,24 @@
 package com.tuozuo.tavern.xinruyi.convert;
 
-import com.tuozuo.tavern.xinruyi.dto.BusinessDictDTO;
-import com.tuozuo.tavern.xinruyi.dto.StaffResourcePoolDTO;
-import com.tuozuo.tavern.xinruyi.model.BusinessDict;
-import com.tuozuo.tavern.xinruyi.model.StaffResourcePool;
-import com.tuozuo.tavern.xinruyi.vo.StaffInfoVO;
-import com.tuozuo.tavern.xinruyi.vo.StaffModifyVO;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
-
+import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
+import com.tuozuo.tavern.xinruyi.utils.DateUtils;
+import com.tuozuo.tavern.xinruyi.vo.ProjectStaffAddVO;
 
 /**
  * Code Monkey: 何彪 <br>
- * Dev Time: 2020/8/28 <br>
+ * Dev Time: 2020/8/30 <br>
  */
-@Mapper(componentModel = "spring")
-public interface ModelConverter {
+public class ModelConverter {
 
-    @Mappings({
-            @Mapping(source = "vo.name", target = "staffName"),
-            @Mapping(source = "vo.idNo", target = "idNumber"),
-            @Mapping(source = "vo.accntBank", target = "bankBranch"),
-            @Mapping(source = "companyId", target = "companyId"),
-            @Mapping(target = "updateDate", expression = "java(java.time.LocalDateTime.now())")
-    })
-    StaffResourcePool addVoToStaffResourcePool(StaffInfoVO vo, String companyId);
-
-    @Mappings({
-            @Mapping(source = "vo.gender", target = "gender"),
-            @Mapping(source = "vo.bankCard", target = "bankCard"),
-            @Mapping(source = "vo.bank", target = "bank"),
-            @Mapping(source = "vo.accntBank", target = "accntBank"),
-            @Mapping(source = "companyId", target = "companyId"),
-            @Mapping(source = "staffId", target = "staffId"),
-            @Mapping(target = "updateDate", expression = "java(java.time.LocalDateTime.now())")
-    })
-    StaffResourcePool modifyVoToStaffResourcePool(StaffModifyVO vo, String companyId, String staffId);
-
-    @Mappings({
-            @Mapping(source = "businessDict.businessId", target = "id"),
-            @Mapping(source = "businessDict.businessName", target = "name")
-    })
-    BusinessDictDTO modelToBusinessDictDTO(BusinessDict businessDict);
-
-    @Mappings({
-            @Mapping(source = "vo.name", target = "staffName"),
-            @Mapping(source = "vo.idNo", target = "idNumber"),
-            @Mapping(source = "vo.accntBank", target = "bankBranch"),
-            @Mapping(source = "companyId", target = "companyId"),
-            @Mapping(target = "updateDate", expression = "java(java.time.LocalDateTime.now())")
-    })
-    StaffResourcePoolDTO modelToStaffResourcePoolDTO(StaffResourcePool staffResourcePool);
+   public static ProjectStaff addVoToProjectStaff(ProjectStaffAddVO vo, String projectId){
+       ProjectStaff projectStaff = new ProjectStaff();
+       projectStaff.setProjectId(projectId);
+       projectStaff.setStaffId(vo.getStaffId());
+       projectStaff.setEnterDate(DateUtils.parseDate(vo.getEnterDate(),DateUtils.DEFAULT_SIMPLE_8__FORMATTER));
+       projectStaff.setQuitDate(DateUtils.parseDate(vo.getQuitDate(),DateUtils.DEFAULT_SIMPLE_8__FORMATTER));
+       projectStaff.setSalary(vo.getSalary());
+       projectStaff.setRemark(vo.getRemark());
+        return projectStaff;
+    }
 
 }
