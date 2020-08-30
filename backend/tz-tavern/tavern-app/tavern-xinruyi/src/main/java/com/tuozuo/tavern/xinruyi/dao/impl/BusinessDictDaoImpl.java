@@ -23,6 +23,6 @@ public class BusinessDictDaoImpl implements BusinessDictDao {
         return this.businessDictMapper.selectList(Wrappers.<BusinessDict>query()
                 .lambda()
                 .eq(BusinessDict::getBusinessGroup, group)
-                .orderByAsc(BusinessDict::getBusinessName));
+                .orderByAsc(BusinessDict::getBusinessId));
     }
 }
