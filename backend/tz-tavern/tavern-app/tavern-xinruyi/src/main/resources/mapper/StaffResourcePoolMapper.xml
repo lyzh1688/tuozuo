@@ -25,6 +25,7 @@
     update_date
     from staff_resource_pool
     where company_id = #{companyId}
+    and is_valid = '1'
     order by update_date desc
   </select>
   <update id="delete">
