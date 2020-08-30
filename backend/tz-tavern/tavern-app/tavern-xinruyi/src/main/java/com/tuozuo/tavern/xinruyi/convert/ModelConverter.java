@@ -1,9 +1,11 @@
 package com.tuozuo.tavern.xinruyi.convert;
 
 import com.tuozuo.tavern.xinruyi.dto.BusinessDictDTO;
+import com.tuozuo.tavern.xinruyi.dto.StaffResourcePoolDTO;
 import com.tuozuo.tavern.xinruyi.model.BusinessDict;
 import com.tuozuo.tavern.xinruyi.model.StaffResourcePool;
 import com.tuozuo.tavern.xinruyi.vo.StaffInfoVO;
+import com.tuozuo.tavern.xinruyi.vo.StaffModifyVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -21,9 +23,20 @@ public interface ModelConverter {
             @Mapping(source = "vo.idNo", target = "idNumber"),
             @Mapping(source = "vo.accntBank", target = "bankBranch"),
             @Mapping(source = "companyId", target = "companyId"),
-            @Mapping(target = "updateDate",expression = "java(java.time.LocalDateTime.now())" )
+            @Mapping(target = "updateDate", expression = "java(java.time.LocalDateTime.now())")
     })
-    StaffResourcePool voToStaffResourcePool(StaffInfoVO vo, String companyId);
+    StaffResourcePool addVoToStaffResourcePool(StaffInfoVO vo, String companyId);
+
+    @Mappings({
+            @Mapping(source = "vo.gender", target = "gender"),
+            @Mapping(source = "vo.bankCard", target = "bankCard"),
+            @Mapping(source = "vo.bank", target = "bank"),
+            @Mapping(source = "vo.accntBank", target = "accntBank"),
+            @Mapping(source = "companyId", target = "companyId"),
+            @Mapping(source = "staffId", target = "staffId"),
+            @Mapping(target = "updateDate", expression = "java(java.time.LocalDateTime.now())")
+    })
+    StaffResourcePool modifyVoToStaffResourcePool(StaffModifyVO vo, String companyId, String staffId);
 
     @Mappings({
             @Mapping(source = "businessDict.businessId", target = "id"),
@@ -31,5 +44,13 @@ public interface ModelConverter {
     })
     BusinessDictDTO modelToBusinessDictDTO(BusinessDict businessDict);
 
+    @Mappings({
+            @Mapping(source = "vo.name", target = "staffName"),
+            @Mapping(source = "vo.idNo", target = "idNumber"),
+            @Mapping(source = "vo.accntBank", target = "bankBranch"),
+            @Mapping(source = "companyId", target = "companyId"),
+            @Mapping(target = "updateDate", expression = "java(java.time.LocalDateTime.now())")
+    })
+    StaffResourcePoolDTO modelToStaffResourcePoolDTO(StaffResourcePool staffResourcePool);
 
 }
