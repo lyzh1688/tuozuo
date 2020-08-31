@@ -1,8 +1,10 @@
 package com.tuozuo.tavern.xinruyi.convert;
 
 import com.tuozuo.tavern.xinruyi.dto.BusinessDictDTO;
+import com.tuozuo.tavern.xinruyi.dto.ProjectInfoDTO;
 import com.tuozuo.tavern.xinruyi.dto.StaffResourcePoolDTO;
 import com.tuozuo.tavern.xinruyi.model.BusinessDict;
+import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
 import com.tuozuo.tavern.xinruyi.model.StaffResourcePool;
 import com.tuozuo.tavern.xinruyi.vo.ProjectStaffAddVO;
@@ -60,6 +62,8 @@ public interface ModelMapConverter {
             @Mapping(source = "staffName", target = "name")
     })
     BusinessDictDTO staffPoolToBusinessDict(StaffResourcePool pool);
+
+
 
 
 }

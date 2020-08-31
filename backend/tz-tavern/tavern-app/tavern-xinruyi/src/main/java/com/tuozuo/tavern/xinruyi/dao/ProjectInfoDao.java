@@ -15,7 +15,13 @@ public interface ProjectInfoDao {
 
     List<ProjectInfo> selectAllProjectInfo(String companyId, String projectName);
 
-    List<ProjectInfo> selectProjectInfo(String companyId, String projectName,int queryCnt);
+    List<ProjectInfo> selectProjectInfo(String companyId, String projectName, int queryCnt);
+
+    IPage<ProjectInfo> selectProjectPage(int pageNo, int pageSize, String projectId,
+                                         String industryType,
+                                         String limitBudget,
+                                         String upperBudget,
+                                         String requirementStatus);
 
 
 }

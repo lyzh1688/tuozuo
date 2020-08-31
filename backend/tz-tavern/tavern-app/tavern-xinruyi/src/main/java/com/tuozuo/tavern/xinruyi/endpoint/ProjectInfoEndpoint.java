@@ -5,14 +5,8 @@ import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverter;
 import com.tuozuo.tavern.xinruyi.convert.ModelMapConverter;
-import com.tuozuo.tavern.xinruyi.dto.ProjectInfoListDTO;
-import com.tuozuo.tavern.xinruyi.dto.ProjectStaffInfoListDTO;
-import com.tuozuo.tavern.xinruyi.dto.StaffResourcePoolDTO;
-import com.tuozuo.tavern.xinruyi.dto.StaffResourcePoolListDTO;
-import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
-import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
-import com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo;
-import com.tuozuo.tavern.xinruyi.model.StaffResourcePool;
+import com.tuozuo.tavern.xinruyi.dto.*;
+import com.tuozuo.tavern.xinruyi.model.*;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
 import com.tuozuo.tavern.xinruyi.vo.PageVO;
 import com.tuozuo.tavern.xinruyi.vo.ProjectListVo;
@@ -46,15 +40,45 @@ public class ProjectInfoEndpoint {
      * 项目列表
      */
     @GetMapping("/list")
-    public TavernResponse queryProjectList(@ModelAttribute @Valid ProjectListVo vo,
-                                           @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId) {
+    public TavernResponse queryProjectList(@ModelAttribute @Valid ProjectListVo vo) {
         try {
             ProjectInfoListDTO dto = new ProjectInfoListDTO();
-            IPage<ProjectInfo> page = this.projectInfoService.queryProjectInfo(vo.getPageNo(), vo.getPageSize(), companyId);
+            IPage<ProjectInfo> page = this.projectInfoService.queryProjectInfo(vo);
+            List<ProjectInfoDTO> list = page.getRecords()
+                    .stream()
+                    .map(ModelConverter::modelToProjectInfoDTO)
+                    .collect(Collectors.toList());
+
+            dto.setProjects(list);
+            dto.setTotal((int) page.getTotal());
 
             return TavernResponse.ok(dto);
         } catch (Exception e) {
-            LOGGER.error("[人力资源池员工查询] failed", e);
+            LOGGER.error("[项目列表查询] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 我的项目模糊搜索
+     */
+    @GetMapping("")
+    public TavernResponse queryProjects(@RequestParam(value = "projectName", required = false) String projectName,
+                                        @RequestParam(value = "queryCnt", required = false, defaultValue = "20") int queryCnt,
+                                        @RequestParam(value = "all", required = false) boolean all,
+                                        @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId) {
+        try {
+            List<BusinessDictDTO> list = this.projectInfoService.queryProjectInfo(companyId, projectName, queryCnt, all)
+                    .stream()
+                    .map(projectInfo -> {
+                        BusinessDictDTO dictDTO = new BusinessDictDTO();
+                        dictDTO.setId(projectInfo.getProjectId());
+                        dictDTO.setName(projectInfo.getProjectName());
+                        return dictDTO;
+                    }).collect(Collectors.toList());
+            return TavernResponse.ok(list);
+        } catch (Exception e) {
+            LOGGER.error("[我的项目模糊搜索] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }
@@ -84,7 +108,7 @@ public class ProjectInfoEndpoint {
     /**
      * 项目人员新增
      */
-    @PostMapping("/{projectId}")
+    @PostMapping("/staff/{projectId}")
     public TavernResponse addProjectStaff(@PathVariable("projectId") String projectId,
                                           @RequestBody ProjectStaffAddVO vo) {
         try {
@@ -106,6 +130,21 @@ public class ProjectInfoEndpoint {
         try {
             ProjectStaff projectStaff = ModelConverter.modifyVoToProjectStaff(vo, staffId);
             this.projectInfoService.modifyProjectStaff(projectStaff);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[项目人员修改] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 项目人员裁员
+     */
+    @DeleteMapping("/staff/{staffId}")
+    public TavernResponse delProjectStaff(@PathVariable("staffId") String staffId,
+                                          @RequestParam("projectId") String projectId) {
+        try {
+            this.projectInfoService.delProjectStaff(staffId, projectId);
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[项目人员修改] failed", e);

@@ -15,4 +15,7 @@ public interface ProjectStaffInfoDao {
 
     void updateProjectStaff(ProjectStaff projectStaff);
 
+    void delProjectStaff(ProjectStaff projectStaff);
+
+
 }

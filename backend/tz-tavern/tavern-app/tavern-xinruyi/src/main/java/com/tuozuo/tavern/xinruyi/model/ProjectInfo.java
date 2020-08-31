@@ -1,10 +1,11 @@
 package com.tuozuo.tavern.xinruyi.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Date;
 @TableName("project_info")
 public class ProjectInfo {
@@ -13,11 +14,14 @@ public class ProjectInfo {
 
     private String companyId;
 
+    @TableField(exist = false)
+    private String companyName;
+
     private String projectIndustry;
 
     private String projectName;
 
-    private LocalDateTime publishDate;
+    private LocalDate publishDate;
 
     private BigDecimal period;
 
@@ -42,6 +46,14 @@ public class ProjectInfo {
     private String status;
 
     private String budget;
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
 
     public String getProjectName() {
         return projectName;
@@ -75,11 +87,11 @@ public class ProjectInfo {
         this.projectIndustry = projectIndustry == null ? null : projectIndustry.trim();
     }
 
-    public LocalDateTime getPublishDate() {
+    public LocalDate getPublishDate() {
         return publishDate;
     }
 
-    public void setPublishDate(LocalDateTime publishDate) {
+    public void setPublishDate(LocalDate publishDate) {
         this.publishDate = publishDate;
     }
 

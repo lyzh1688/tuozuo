@@ -1,6 +1,8 @@
 package com.tuozuo.tavern.xinruyi.dao.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tuozuo.tavern.xinruyi.dao.ProjectInfoDao;
 import com.tuozuo.tavern.xinruyi.mapper.ProjectInfoMapper;
 import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
@@ -38,6 +40,11 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
                 .last("limit " + queryCnt));
     }
 
+    @Override
+    public IPage<ProjectInfo> selectProjectPage(int pageNo, int pageSize, String projectId, String industryType, String limitBudget, String upperBudget, String requirementStatus) {
+        Page page = new Page(pageNo, pageSize);
+        return this.projectInfoMapper.selectProjectPage(page, projectId, industryType, limitBudget, upperBudget, requirementStatus);
+    }
 
 
 }

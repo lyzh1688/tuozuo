@@ -1,31 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuozuo.tavern.xinruyi.mapper.ProjectInfoMapper">
-  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.xinruyi.model.ProjectInfo">
-    <id column="project_id" jdbcType="VARCHAR" property="projectId" />
-    <result column="company_id" jdbcType="VARCHAR" property="companyId" />
-    <result column="project_industry" jdbcType="VARCHAR" property="projectIndustry" />
-    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
-    <result column="publish_date" jdbcType="DATE" property="publishDate" />
-    <result column="period" jdbcType="DECIMAL" property="period" />
-    <result column="contract_person" jdbcType="VARCHAR" property="contractPerson" />
-    <result column="contract_phone" jdbcType="VARCHAR" property="contractPhone" />
-    <result column="project_member_count" jdbcType="DECIMAL" property="projectMemberCount" />
-    <result column="area" jdbcType="VARCHAR" property="area" />
-    <result column="on_spot" jdbcType="VARCHAR" property="onSpot" />
-    <result column="file_material" jdbcType="VARCHAR" property="fileMaterial" />
-    <result column="project_desc" jdbcType="VARCHAR" property="projectDesc" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="fee" jdbcType="DECIMAL" property="fee" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="budget" jdbcType="VARCHAR" property="budget" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.tuozuo.tavern.xinruyi.model.ProjectInfo">
+        <id column="project_id" jdbcType="VARCHAR" property="projectId"/>
+        <result column="company_id" jdbcType="VARCHAR" property="companyId"/>
+        <result column="project_industry" jdbcType="VARCHAR" property="projectIndustry"/>
+        <result column="project_name" jdbcType="VARCHAR" property="projectName"/>
+        <result column="publish_date" jdbcType="DATE" property="publishDate"/>
+        <result column="period" jdbcType="DECIMAL" property="period"/>
+        <result column="contract_person" jdbcType="VARCHAR" property="contractPerson"/>
+        <result column="contract_phone" jdbcType="VARCHAR" property="contractPhone"/>
+        <result column="project_member_count" jdbcType="DECIMAL" property="projectMemberCount"/>
+        <result column="area" jdbcType="VARCHAR" property="area"/>
+        <result column="on_spot" jdbcType="VARCHAR" property="onSpot"/>
+        <result column="file_material" jdbcType="VARCHAR" property="fileMaterial"/>
+        <result column="project_desc" jdbcType="VARCHAR" property="projectDesc"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="fee" jdbcType="DECIMAL" property="fee"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="budget" jdbcType="VARCHAR" property="budget"/>
+        <result column="company_name" jdbcType="VARCHAR" property="companyName"/>
+    </resultMap>
 
-  <select id="selectAll" resultMap="BaseResultMap">
-    select project_id,project_name, company_id, project_industry, publish_date, period, contract_person,
-    contract_phone, project_member_count, area, on_spot, file_material, project_desc, 
-    remark, fee, status, budget
-    from project_info
-  </select>
+    <select id="selectProjectPage" resultMap="BaseResultMap">
+        select t1.project_id,t1.project_name, t1.company_id, t1.project_industry, t1.publish_date, t1.period, t1.contract_person,
+        t1.contract_phone, t1.project_member_count, t1.area, t1.on_spot, t1.file_material, t1.project_desc,
+        t1.remark, t1.fee, t1.status, t1.budget，t2.company_name
+        from project_info t1 ,company_info t2
+        <where>
+            t1.company_id = t2.company_id
+            <if test="projectId != null and projectId != ''">
+              and  project_id = #{projectId}
+            </if>
+            <if test="industryType != null and industryType != ''">
+                and  project_industry = #{industryType}
+            </if>
+            <if test="downLimitBudget != null and downLimitBudget != ''">
+                and  budget >= #{downLimitBudget}
+            </if>
+            <if test="upperLimitBudget != null and upperLimitBudget != ''">
+                and budget <![CDATA[ <= ]]> #{upperLimitBudget}
+            </if>
+            <if test="requirementStatus != null and requirementStatus != ''">
+                and  status = #{requirementStatus}
+            </if>
+        </where>
+    </select>
 
 </mapper>

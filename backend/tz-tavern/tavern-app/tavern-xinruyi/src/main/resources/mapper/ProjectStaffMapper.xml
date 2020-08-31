@@ -50,5 +50,6 @@
     where t1.staff_id = t2.staff_id
     and t2.project_id = #{projectId}
     and t1.company_id = #{companyId}
+    and t2.status = '2'
   </select>
 </mapper>
