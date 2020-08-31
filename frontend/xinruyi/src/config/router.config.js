@@ -46,18 +46,18 @@ export const asyncRouterMap = [
     ]
   },
   {
-    path: '/customService',
-    name: 'CustomService',
-    redirect: '/customService/customList',
+    path: '/humanResourceService',
+    name: 'humanResourceService',
+    redirect: '/humanResourceService/resourcePool',
     component: BasicLayout,
-    meta: { title: '客户管理', keepAlive: true, icon: 'account-book', permission: ['admin', 'shuiruyi.staff.normal'] },
+    meta: { title: '人员管理', keepAlive: true, icon: 'account-book', permission: ['admin', 'xinruyi.custom.normal'] },
     children: [
       {
-        path: '/customService/customList',
-        name: 'CustomList',
-        component: resolve => require(['@/views/user/CustomList'], resolve),
+        path: '/humanResourceService/resourcePool',
+        name: 'HumanResourcePool',
+        component: resolve => require(['@/views/humanRources/humanResourcePool'], resolve),
         // component: () => import('@/views/user/CustomList'),
-        meta: { title: '客户列表', keepAlive: true, permission: ['admin', 'shuiruyi.staff.normal'] }
+        meta: { title: '人力资源池', keepAlive: true, permission: ['admin', 'xinruyi.custom.normal'] }
       },
       {
         path: '/customService/customInfo',
