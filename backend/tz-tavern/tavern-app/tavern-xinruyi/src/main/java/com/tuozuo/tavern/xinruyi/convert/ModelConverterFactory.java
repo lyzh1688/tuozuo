@@ -4,6 +4,8 @@ import com.tuozuo.tavern.xinruyi.dto.ProjectInfoDTO;
 import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
 import com.tuozuo.tavern.xinruyi.utils.DateUtils;
+import com.tuozuo.tavern.xinruyi.utils.UUIDUtil;
+import com.tuozuo.tavern.xinruyi.vo.ProjectAddVO;
 import com.tuozuo.tavern.xinruyi.vo.ProjectStaffAddVO;
 import com.tuozuo.tavern.xinruyi.vo.ProjectStaffModifyVO;
 import org.mapstruct.Mapping;
@@ -16,7 +18,7 @@ import java.time.LocalDate;
  * Code Monkey: 何彪 <br>
  * Dev Time: 2020/8/30 <br>
  */
-public class ModelConverter {
+public class ModelConverterFactory {
 
     public static ProjectStaff modifyVoToProjectStaff(ProjectStaffAddVO vo, String projectId) {
         ProjectStaff projectStaff = new ProjectStaff();
@@ -53,6 +55,25 @@ public class ModelConverter {
         dto.setEndDate(DateUtils.formatDate(endDate, DateUtils.DEFAULT_DATE_FORMATTER));
         dto.setProjectStatus(projectInfo.getStatus());
         return dto;
+    }
+
+    public static ProjectInfo addVoToProjectInfo(ProjectAddVO vo,String companyId){
+        ProjectInfo projectInfo = new ProjectInfo();
+        projectInfo.setCompanyId(companyId);
+        projectInfo.setProjectId(UUIDUtil.randomUUID32());
+        projectInfo.setProjectName(vo.getProjectName());
+        projectInfo.setProjectIndustry(vo.getIndustryType());
+        projectInfo.setPublishDate(DateUtils.parseDate(vo.getReleaseDate(),DateUtils.DEFAULT_SIMPLE_8__FORMATTER));
+        projectInfo.setPeriod(vo.getProjectCycle());
+        projectInfo.setContractPerson(vo.getContactName());
+        projectInfo.setContractPhone(vo.getContact());
+        projectInfo.setProjectMemberCount(vo.getStaffNum().intValue());
+        projectInfo.setProvince(vo.getProvince());
+        projectInfo.setCity(vo.getCity());
+        projectInfo.setDistrict(vo.getDistrict());
+        projectInfo.setOnSpot(vo.getIsResident());
+        projectInfo.setProjectDesc(vo.getDesc());
+        return projectInfo;
     }
 
 

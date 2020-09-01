@@ -1,18 +1,25 @@
 package com.tuozuo.tavern.xinruyi.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
 import com.tuozuo.tavern.xinruyi.dao.ProjectInfoDao;
 import com.tuozuo.tavern.xinruyi.dao.ProjectStaffInfoDao;
 import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
+import com.tuozuo.tavern.xinruyi.utils.FileUtils;
 import com.tuozuo.tavern.xinruyi.utils.ValidateUtils;
+import com.tuozuo.tavern.xinruyi.vo.ProjectAddVO;
 import com.tuozuo.tavern.xinruyi.vo.ProjectListVo;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,6 +30,13 @@ import java.util.List;
  */
 @Service
 public class ProjectInfoServiceImpl implements ProjectInfoService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectInfoServiceImpl.class);
+
+    @Value("${xinruyi.file.url.path:http://119.3.19.171/xinruyi/file/project/file/}")
+    private String fileUrlPath;
+    @Value("${xinruyi.company.file.path:/mnt/file/project/file/}")
+    private String filePath;
+
     @Autowired
     private ProjectInfoDao projectInfoDao;
     @Autowired
@@ -72,11 +86,13 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     @Override
     public IPage<ProjectInfo> queryProjectInfo(ProjectListVo vo) {
-
-        String downLimitBudget = StringUtils.substringBefore(vo.getBudget(), "~");
-        String upperLimitBudget = StringUtils.substringAfter(vo.getBudget(), "~");
-        if (ValidateUtils.isContainChinese(upperLimitBudget)) {
-            upperLimitBudget = null;
+        String downLimitBudget = null, upperLimitBudget = null;
+        if (StringUtils.isNoneEmpty(vo.getBudget())) {
+            downLimitBudget = StringUtils.substringBefore(vo.getBudget(), "~");
+            upperLimitBudget = StringUtils.substringAfter(vo.getBudget(), "~");
+            if (ValidateUtils.isContainChinese(upperLimitBudget)) {
+                upperLimitBudget = null;
+            }
         }
         return this.projectInfoDao.selectProjectPage(vo.getPageNo(),
                 vo.getPageSize(),
@@ -85,5 +101,33 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
                 downLimitBudget,
                 upperLimitBudget,
                 vo.getRequirementStatus());
+    }
+
+    @Override
+    public void addProjectInfo(ProjectAddVO vo, String companyId) throws Exception {
+        ProjectInfo projectInfo = ModelConverterFactory.addVoToProjectInfo(vo, companyId);
+        this.setProjectInfoFiles(vo.getProjectFile(), projectInfo);
+        this.projectInfoDao.insertProject(projectInfo);
+    }
+
+
+    private void setProjectInfoFiles(MultipartFile file, ProjectInfo projectInfo) throws Exception {
+        if (file != null) {
+            String projectFileUrl = this.storeProjectFile(projectInfo.getProjectId(), file);
+            LOGGER.info("projectFileUrl: {}", projectFileUrl);
+            projectInfo.setFileMaterial(projectFileUrl);
+        }
+
+    }
+
+    //path + projectId + file
+    private String storeProjectFile(String projectId, MultipartFile file) throws Exception {
+
+        String pathLocation = StringUtils.join(filePath, projectId,
+                "/");
+        String fileName = FileUtils.multiPartFileWriter(file, pathLocation);
+        return StringUtils.join(fileUrlPath, projectId,
+                "/", fileName);
+
     }
 }

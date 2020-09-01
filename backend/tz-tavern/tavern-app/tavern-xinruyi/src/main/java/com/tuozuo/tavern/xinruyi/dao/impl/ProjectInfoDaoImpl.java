@@ -46,5 +46,10 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
         return this.projectInfoMapper.selectProjectPage(page, projectId, industryType, limitBudget, upperBudget, requirementStatus);
     }
 
+    @Override
+    public void insertProject(ProjectInfo projectInfo) {
+        this.projectInfoMapper.insert(projectInfo);
+    }
+
 
 }

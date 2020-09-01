@@ -20,7 +20,7 @@ import org.mapstruct.Mappings;
  * Dev Time: 2020/8/28 <br>
  */
 @Mapper(componentModel = "spring")
-public interface ModelMapConverter {
+public interface ModelMapConverterFactory {
 
     @Mappings({
             @Mapping(source = "vo.name", target = "staffName"),

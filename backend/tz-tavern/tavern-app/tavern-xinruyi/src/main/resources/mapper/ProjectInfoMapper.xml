@@ -11,7 +11,9 @@
         <result column="contract_person" jdbcType="VARCHAR" property="contractPerson"/>
         <result column="contract_phone" jdbcType="VARCHAR" property="contractPhone"/>
         <result column="project_member_count" jdbcType="DECIMAL" property="projectMemberCount"/>
-        <result column="area" jdbcType="VARCHAR" property="area"/>
+        <result column="province" jdbcType="VARCHAR" property="province"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="district" jdbcType="VARCHAR" property="district"/>
         <result column="on_spot" jdbcType="VARCHAR" property="onSpot"/>
         <result column="file_material" jdbcType="VARCHAR" property="fileMaterial"/>
         <result column="project_desc" jdbcType="VARCHAR" property="projectDesc"/>
@@ -24,25 +26,25 @@
 
     <select id="selectProjectPage" resultMap="BaseResultMap">
         select t1.project_id,t1.project_name, t1.company_id, t1.project_industry, t1.publish_date, t1.period, t1.contract_person,
-        t1.contract_phone, t1.project_member_count, t1.area, t1.on_spot, t1.file_material, t1.project_desc,
-        t1.remark, t1.fee, t1.status, t1.budget，t2.company_name
+        t1.contract_phone, t1.project_member_count, t1.province,t1.city,t1.district, t1.on_spot, t1.file_material, t1.project_desc,
+        t1.remark, t1.fee, t1.status, t1.budget,t2.company_name
         from project_info t1 ,company_info t2
         <where>
             t1.company_id = t2.company_id
             <if test="projectId != null and projectId != ''">
-              and  project_id = #{projectId}
+              and  t1.project_id = #{projectId}
             </if>
             <if test="industryType != null and industryType != ''">
-                and  project_industry = #{industryType}
+                and  t1.project_industry = #{industryType}
             </if>
             <if test="downLimitBudget != null and downLimitBudget != ''">
-                and  budget >= #{downLimitBudget}
+                and t1. budget >= #{downLimitBudget}
             </if>
             <if test="upperLimitBudget != null and upperLimitBudget != ''">
-                and budget <![CDATA[ <= ]]> #{upperLimitBudget}
+                and t1.budget <![CDATA[ <= ]]> #{upperLimitBudget}
             </if>
             <if test="requirementStatus != null and requirementStatus != ''">
-                and  status = #{requirementStatus}
+                and  t1.status = #{requirementStatus}
             </if>
         </where>
     </select>

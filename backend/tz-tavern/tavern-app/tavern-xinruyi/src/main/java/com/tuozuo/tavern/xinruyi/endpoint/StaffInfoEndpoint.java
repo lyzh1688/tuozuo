@@ -3,12 +3,11 @@ package com.tuozuo.tavern.xinruyi.endpoint;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
-import com.tuozuo.tavern.xinruyi.convert.ModelMapConverter;
+import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.xinruyi.dto.BusinessDictDTO;
 import com.tuozuo.tavern.xinruyi.dto.StaffResourcePoolDTO;
 import com.tuozuo.tavern.xinruyi.dto.StaffResourcePoolListDTO;
 import com.tuozuo.tavern.xinruyi.dto.StaffSalaryListDTO;
-import com.tuozuo.tavern.xinruyi.model.BusinessDict;
 import com.tuozuo.tavern.xinruyi.model.StaffResourcePool;
 import com.tuozuo.tavern.xinruyi.model.StaffSalaryInfo;
 import com.tuozuo.tavern.xinruyi.service.StaffInfoService;
@@ -36,7 +35,7 @@ public class StaffInfoEndpoint {
     @Autowired
     private StaffInfoService staffInfoService;
     @Autowired
-    private ModelMapConverter converter;
+    private ModelMapConverterFactory converter;
 
     /**
      * 人力资源池员工查询

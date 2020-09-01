@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo;
+import com.tuozuo.tavern.xinruyi.vo.ProjectAddVO;
 import com.tuozuo.tavern.xinruyi.vo.ProjectListVo;
 
 import java.util.List;
@@ -25,5 +26,7 @@ public interface ProjectInfoService {
     void delProjectStaff(String projectId, String staffId) throws Exception;
 
     IPage<ProjectInfo> queryProjectInfo(ProjectListVo vo);
+
+    void addProjectInfo(ProjectAddVO vo, String companyId) throws Exception;
 
 }

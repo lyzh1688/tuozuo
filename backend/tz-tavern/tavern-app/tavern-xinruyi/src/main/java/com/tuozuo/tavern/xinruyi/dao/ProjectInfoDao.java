@@ -23,5 +23,7 @@ public interface ProjectInfoDao {
                                          String upperBudget,
                                          String requirementStatus);
 
+    void insertProject(ProjectInfo projectInfo);
+
 
 }

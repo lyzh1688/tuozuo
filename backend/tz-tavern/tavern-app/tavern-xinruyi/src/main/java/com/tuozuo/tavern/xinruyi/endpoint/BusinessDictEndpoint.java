@@ -1,7 +1,7 @@
 package com.tuozuo.tavern.xinruyi.endpoint;
 
 import com.tuozuo.tavern.common.protocol.TavernResponse;
-import com.tuozuo.tavern.xinruyi.convert.ModelMapConverter;
+import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.xinruyi.dto.BusinessDictDTO;
 import com.tuozuo.tavern.xinruyi.service.BusinessDictService;
 import org.slf4j.Logger;
@@ -27,7 +27,7 @@ public class BusinessDictEndpoint {
     @Autowired
     private BusinessDictService businessDictService;
     @Autowired
-    private ModelMapConverter converter;
+    private ModelMapConverterFactory converter;
 
     /**
      * 业务字典

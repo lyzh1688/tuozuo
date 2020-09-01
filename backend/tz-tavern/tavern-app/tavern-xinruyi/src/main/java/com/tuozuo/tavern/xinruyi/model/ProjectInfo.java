@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
+
 @TableName("project_info")
 public class ProjectInfo {
     @TableId
@@ -31,7 +31,9 @@ public class ProjectInfo {
 
     private Integer projectMemberCount;
 
-    private String area;
+    private String province;
+    private String city;
+    private String district;
 
     private String onSpot;
 
@@ -127,12 +129,28 @@ public class ProjectInfo {
         this.projectMemberCount = projectMemberCount;
     }
 
-    public String getArea() {
-        return area;
+    public String getProvince() {
+        return province;
     }
 
-    public void setArea(String area) {
-        this.area = area == null ? null : area.trim();
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
     public String getOnSpot() {

@@ -3,19 +3,17 @@ package com.tuozuo.tavern.xinruyi.endpoint;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
-import com.tuozuo.tavern.xinruyi.convert.ModelConverter;
-import com.tuozuo.tavern.xinruyi.convert.ModelMapConverter;
+import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
+import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.xinruyi.dto.*;
 import com.tuozuo.tavern.xinruyi.model.*;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
-import com.tuozuo.tavern.xinruyi.vo.PageVO;
-import com.tuozuo.tavern.xinruyi.vo.ProjectListVo;
-import com.tuozuo.tavern.xinruyi.vo.ProjectStaffAddVO;
-import com.tuozuo.tavern.xinruyi.vo.ProjectStaffModifyVO;
+import com.tuozuo.tavern.xinruyi.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -34,7 +32,7 @@ public class ProjectInfoEndpoint {
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
-    private ModelMapConverter converter;
+    private ModelMapConverterFactory converter;
 
     /**
      * 项目列表
@@ -46,7 +44,7 @@ public class ProjectInfoEndpoint {
             IPage<ProjectInfo> page = this.projectInfoService.queryProjectInfo(vo);
             List<ProjectInfoDTO> list = page.getRecords()
                     .stream()
-                    .map(ModelConverter::modelToProjectInfoDTO)
+                    .map(ModelConverterFactory::modelToProjectInfoDTO)
                     .collect(Collectors.toList());
 
             dto.setProjects(list);
@@ -112,7 +110,7 @@ public class ProjectInfoEndpoint {
     public TavernResponse addProjectStaff(@PathVariable("projectId") String projectId,
                                           @RequestBody ProjectStaffAddVO vo) {
         try {
-            ProjectStaff projectStaff = ModelConverter.modifyVoToProjectStaff(vo, projectId);
+            ProjectStaff projectStaff = ModelConverterFactory.modifyVoToProjectStaff(vo, projectId);
             this.projectInfoService.addProjectStaff(projectStaff);
             return TavernResponse.OK;
         } catch (Exception e) {
@@ -128,7 +126,7 @@ public class ProjectInfoEndpoint {
     public TavernResponse modifyProjectStaff(@PathVariable("staffId") String staffId,
                                              @RequestBody ProjectStaffModifyVO vo) {
         try {
-            ProjectStaff projectStaff = ModelConverter.modifyVoToProjectStaff(vo, staffId);
+            ProjectStaff projectStaff = ModelConverterFactory.modifyVoToProjectStaff(vo, staffId);
             this.projectInfoService.modifyProjectStaff(projectStaff);
             return TavernResponse.OK;
         } catch (Exception e) {
@@ -153,4 +151,20 @@ public class ProjectInfoEndpoint {
     }
 
 
+    /**
+     * 项目发布
+     */
+    @PostMapping("")
+    public TavernResponse addProject(@ModelAttribute @Valid ProjectAddVO vo,
+                                     @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId,
+                                     @RequestParam(name = "projectFile") MultipartFile projectFile) {
+        try {
+            vo.setProjectFile(projectFile);
+            this.projectInfoService.addProjectInfo(vo, companyId);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[项目人员新增] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
 }
