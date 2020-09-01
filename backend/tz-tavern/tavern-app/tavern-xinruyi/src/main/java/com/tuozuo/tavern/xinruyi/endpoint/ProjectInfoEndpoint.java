@@ -6,7 +6,9 @@ import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
 import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.xinruyi.dto.*;
-import com.tuozuo.tavern.xinruyi.model.*;
+import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
+import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
+import com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
 import com.tuozuo.tavern.xinruyi.vo.*;
 import org.slf4j.Logger;
@@ -163,7 +165,57 @@ public class ProjectInfoEndpoint {
             this.projectInfoService.addProjectInfo(vo, companyId);
             return TavernResponse.OK;
         } catch (Exception e) {
-            LOGGER.error("[项目人员新增] failed", e);
+            LOGGER.error("[项目发布] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 项目详情
+     */
+    @GetMapping("/detail/{projectId}")
+    public TavernResponse queryProjectDetail(@PathVariable("projectId") String projectId) {
+        try {
+
+            ProjectInfo projectInfo = this.projectInfoService.queryProjectDetail(projectId);
+            ProjectDetailDTO projectDetailDTO = ModelConverterFactory.modelToProjectDetailInfo(projectInfo);
+            return TavernResponse.ok(projectDetailDTO);
+        } catch (Exception e) {
+            LOGGER.error("[项目详情] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 项目修改
+     */
+    @PutMapping("/{projectId}")
+    public TavernResponse modifyProject(@PathVariable("projectId") String projectId,
+                                        @ModelAttribute ProjectModifyVO vo,
+                                        @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId,
+                                        @RequestParam(name = "projectFile") MultipartFile projectFile) {
+        try {
+            vo.setProjectFile(projectFile);
+            vo.setProjectId(projectId);
+            this.projectInfoService.modifyProjectInfo(vo, companyId);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[项目修改] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 项目状态修改
+     */
+    @PutMapping("/status/{projectId}")
+    public TavernResponse modifyProjectStatus(@PathVariable("projectId") String projectId,
+                                              @RequestParam("status") String status) {
+        try {
+            this.projectInfoService.modifyProjectStatus(status, projectId);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[项目状态修改] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }

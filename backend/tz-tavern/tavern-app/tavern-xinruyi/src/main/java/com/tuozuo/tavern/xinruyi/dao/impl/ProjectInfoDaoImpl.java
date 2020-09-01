@@ -51,5 +51,15 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
         this.projectInfoMapper.insert(projectInfo);
     }
 
+    @Override
+    public ProjectInfo selectProjectInfo(String projectId) {
+        return this.projectInfoMapper.selectById(projectId);
+    }
+
+    @Override
+    public void modifyProject(ProjectInfo projectInfo) {
+        this.projectInfoMapper.updateById(projectInfo);
+    }
+
 
 }

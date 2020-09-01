@@ -25,5 +25,9 @@ public interface ProjectInfoDao {
 
     void insertProject(ProjectInfo projectInfo);
 
+    ProjectInfo selectProjectInfo(String projectId);
+
+    void modifyProject(ProjectInfo projectInfo);
+
 
 }

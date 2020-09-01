@@ -6,6 +6,7 @@ import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo;
 import com.tuozuo.tavern.xinruyi.vo.ProjectAddVO;
 import com.tuozuo.tavern.xinruyi.vo.ProjectListVo;
+import com.tuozuo.tavern.xinruyi.vo.ProjectModifyVO;
 
 import java.util.List;
 
@@ -28,5 +29,11 @@ public interface ProjectInfoService {
     IPage<ProjectInfo> queryProjectInfo(ProjectListVo vo);
 
     void addProjectInfo(ProjectAddVO vo, String companyId) throws Exception;
+
+    void modifyProjectInfo(ProjectModifyVO vo, String companyId) throws Exception;
+
+    void modifyProjectStatus(String  status, String project);
+
+    ProjectInfo queryProjectDetail(String projectId);
 
 }

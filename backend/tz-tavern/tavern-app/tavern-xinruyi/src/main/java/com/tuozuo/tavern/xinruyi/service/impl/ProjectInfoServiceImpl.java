@@ -8,10 +8,12 @@ import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
+import com.tuozuo.tavern.xinruyi.utils.DateUtils;
 import com.tuozuo.tavern.xinruyi.utils.FileUtils;
 import com.tuozuo.tavern.xinruyi.utils.ValidateUtils;
 import com.tuozuo.tavern.xinruyi.vo.ProjectAddVO;
 import com.tuozuo.tavern.xinruyi.vo.ProjectListVo;
+import com.tuozuo.tavern.xinruyi.vo.ProjectModifyVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -108,6 +111,33 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         ProjectInfo projectInfo = ModelConverterFactory.addVoToProjectInfo(vo, companyId);
         this.setProjectInfoFiles(vo.getProjectFile(), projectInfo);
         this.projectInfoDao.insertProject(projectInfo);
+        //TODO 项目发布事件
+
+    }
+
+    @Override
+    public void modifyProjectInfo(ProjectModifyVO vo, String companyId) throws Exception {
+        String today = DateUtils.formatDate(LocalDate.now(), DateUtils.SIMPLE_8_FORMATTER);
+        if (vo.getReleaseDate().compareTo(today) > 0) {
+            throw new Exception("项目已发布，修改失败");
+        }
+        ProjectInfo projectInfo = ModelConverterFactory.modifyVoToProjectInfo(vo, companyId);
+        this.setProjectInfoFiles(vo.getProjectFile(), projectInfo);
+        this.projectInfoDao.modifyProject(projectInfo);
+
+    }
+
+    @Override
+    public void modifyProjectStatus(String status, String project) {
+        ProjectInfo projectInfo = new ProjectInfo();
+        projectInfo.setProjectId(project);
+        projectInfo.setStatus(status);
+        this.projectInfoDao.modifyProject(projectInfo);
+    }
+
+    @Override
+    public ProjectInfo queryProjectDetail(String projectId) {
+        return this.projectInfoDao.selectProjectInfo(projectId);
     }
 
 
