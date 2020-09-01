@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    :title="title"
+    :title="formTitle"
     :width="740"
     :visible="visible"
     :confirmLoading="loading"
@@ -15,8 +15,7 @@
           label="人员id"
         >
           <a-input
-            v-decorator="['id', {rules: [{required: true, message: '请输入客户账号！'},
-                                         { validator: checkData, trigger: 'blur'}
+            v-decorator="['id', {rules: [{validateTrigger: 'blur'}
             ], validateTrigger: 'blur'}]"
           />
         </a-form-item>
@@ -54,7 +53,6 @@
           <a-select
             :disabled="isShowOnly"
             v-decorator="['bank', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
-            style="width: 120px"
             @change="handleChane"
           >
             <a-select-option
@@ -65,7 +63,6 @@
           <a-select
             :disabled="isShowOnly"
             v-decorator="['accntBank', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
-            style="width: 120px"
             @change="handleChane2"
           >
             <a-select-option
@@ -108,9 +105,9 @@ export default {
       type: Object,
       default: () => null
     },
-    title: {
+    formTitle: {
         type: String,
-      required: true
+      default: () => ''
     },
     isShowOnly: {
       type: Boolean,
@@ -145,7 +142,7 @@ export default {
   created () {
     console.log('custom modal created')
  this.getBankDict('').then((response) => {
-      this.provinceList = response
+      this.bankList = response
     })
     this.getGenderDict('').then((response) => {
       this.genderList = response
@@ -156,8 +153,8 @@ export default {
     // 当 model 发生改变时，为表单设置值
     this.$watch('model', () => {
       this.model && this.form.setFieldsValue(pick(this.model, fields))
-      if (this.model.province && this.model.bank !== '') {
-        this.handleChane2(this.model.bank)
+      if (this.model.bank !== '') {
+        this.handleChane(this.model.bank)
       }
     })
   },
@@ -200,18 +197,18 @@ export default {
         })
       })
     },
-       async handleChane (index) {
-      await this.getBankDict(index).then((response) => {
-        this.bankList = response
+        handleChane (index) {
+     this.getBankDict(index).then((response) => {
+        this.bankAreaList = response
       })
       if (this.model.bank !== index) {
  this.form.setFieldsValue({ accntBank: '' })
       }
     },
-    async handleChane2 (index) {
-      await this.getBankDict(index).then((response) => {
-        this.bankAreaList = response
-      })
+     handleChane2 (index) {
+    //   await this.getBankDict(index).then((response) => {
+    //     this.bankAreaList = response
+    //   })
     }
   }
 }

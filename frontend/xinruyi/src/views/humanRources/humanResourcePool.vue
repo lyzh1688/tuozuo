@@ -4,6 +4,7 @@
       <a-skeleton :loading="infoLoading" active title>
         <a-row>
           <a-col :sm="8" :xs="24">
+            <a-button type="dashed" size="small" @click="handleAdd()">新增人员</a-button>
             <a-button type="primary" size="small" @click="refresh=!refresh">刷新</a-button>
           </a-col>
         </a-row>
@@ -17,19 +18,25 @@
         :pageSize="20"
         :columns="columns"
         :data="loadData"
-        :showPagination="true"
+        showPagination="true"
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
+        <span slot="name" slot-scope="text, record">
+          <a-button type=" dashed" size="small" @click="handleDetail(record)">{{ text }}</a-button>
+        </span>
         <span slot="gender" slot-scope="text">{{ genderMap[text] }}</span>
-        <span slot="ops" >
-          <a-button type="primary" size="small" @click="refresh=!refresh">修改</a-button>
-          <a-button type="danger" size="small" @click="refresh=!refresh">删除</a-button>
-          <a-button type="dashed" size="small" @click="refresh=!refresh">历史工资单</a-button>
+        <span slot="ops" slot-scope="text, record">
+          <a-button type="primary" size="small" @click="handleUpdate(record)">修改</a-button>
+          <a-button type="danger" size="small" @click="handleDelete(record)">删除</a-button>
+          <a-button
+            type="dashed"
+            size="small"
+            @click="handleSalaryList(record)">历史工资单</a-button>
         </span>
       </s-table>
     </a-card>
     <staffDetail
-      :title="formTitle"
+      :formTitle="formTitle"
       ref="staffDetailForm"
       :visible="staffDetailVisible"
       :loading="confirmLoading"
@@ -39,15 +46,24 @@
       @cancel="handleCancel"
       @ok="handleOk"
     ></staffDetail>
+    <SalaryListDrawer
+      ref="salaryDrawer"
+      :staffId="picStaffId"
+      :visible="salaryVisible"
+      :refresh="refreshSalary"
+      @onClose="handleSalaryClose"
+    ></SalaryListDrawer>
   </page-header-wrapper>
 </template>
 
 <script>
+import { Modal } from 'ant-design-vue'
 import { STable } from '@/components'
+import SalaryListDrawer from './form/SalaryListDrawer'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
-import { getStaffList, addStaff, updateStaff } from '@/api/humanResource'
+import { getStaffList, addStaff, updateStaff, getStaffDetail, deleteStaff } from '@/api/humanResource'
 import { getCommonDict } from '@/api/dictionary'
-import staffDetail from './form/staffDetail'
+import staffDetail from './form/StaffDetail'
 const columns = [
   {
     title: '编号',
@@ -84,7 +100,9 @@ export default {
     data () {
         this.columns = columns
         return {
+            picStaffId: '',
             staffDetailVisible: false,
+            salaryVisible: false,
             confirmLoading: false,
             staffDetailMdl: {},
             isupdate: false,
@@ -94,6 +112,7 @@ export default {
             queryParam: {},
             infoLoading: false,
             formTitle: '',
+            refreshSalary: false,
  loadData: parameter => {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
         console.log('loadData request parameters:', requestParameters)
@@ -136,8 +155,66 @@ export default {
         }
     },
     methods: {
+        handleSalaryList (record) {
+            this.refreshSalary = !this.refreshSalary
+            this.picStaffId = record.id
+            this.salaryVisible = true
+        },
          handleCancel () {
-      this.staffDetailVisible = false
+             if (!this.isShowOnly) {
+    Modal.confirm({
+        title: '取消操作',
+        content: '是否确认取消操作？所做的修改将会丢失！',
+        onOk: () => {
+           this.staffDetailVisible = false
+        },
+        onCancel () {}
+      })
+             } else {
+                  this.staffDetailVisible = false
+             }
+    },
+    handleSalaryClose () {
+        this.salaryVisible = false
+    },
+    handleDelete (record) {
+        Modal.confirm({
+        title: '删除人员',
+        content: '是否确认删除？该操作不可逆！',
+        onOk: () => {
+           this.confirmLoading = true
+      deleteStaff(record.id)
+        .then((response) => {
+          const result = response
+          if (success(result)) {
+            this.$notification.success({
+              message: errorMessage(result),
+              description: '删除成功'
+            })
+            this.$refs.table.refresh(true)
+            this.confirmLoading = false
+          } else {
+            this.confirmLoading = false
+            this.$notification.error({
+              message: errorMessage(result),
+              description: '删除失败'
+            })
+          }
+          if (needLogin(result)) {
+                  this.staffDetailVisible = false
+                  this.confirmLoading = false
+                }
+        })
+        .catch((error) => {
+          this.$notification.error({
+            message: '删除失败',
+            description: error
+          })
+          this.confirmLoading = false
+        })
+        },
+        onCancel () {}
+      })
     },
     handleOk () {
       if (this.isShowOnly) {
@@ -218,6 +295,64 @@ export default {
         }
       })
     },
+    async handleDetail (record) {
+      this.isupdate = false
+      this.staffDetailVisible = true
+      await this.getDetail(record)
+    },
+    handleAdd () {
+      // const tmp = { ...this.receiptMdl }
+      // tmp['receiptId'] = ''
+      // tmp['authLetterFile	'] = null
+      // tmp['bankFlowFile	'] = null
+      this.formTitle = '新增人员'
+      this.staffDetailMdl = {}
+      const form = this.$refs.staffDetailForm.form
+      form.resetFields() // 清理表单数据（可不做）
+      this.isupdate = false
+      this.staffDetailVisible = true
+      this.isShowOnly = false
+    },
+    async handleUpdate (record) {
+      await this.getDetail(record)
+this.formTitle = '修改人员详情'
+      this.isupdate = true
+      this.staffDetailVisible = true
+      this.isShowOnly = false
+    },
+    getDetail (record) {
+      this.formTitle = '人员详情'
+      this.isShowOnly = true
+      this.confirmLoading = true
+      getStaffDetail(record.id)
+        .then((response) => {
+          const result = response
+          if (success(result)) {
+            this.staffDetailMdl = {
+              ...result.data,
+              id: record.id
+            }
+            this.confirmLoading = false
+          } else {
+            this.confirmLoading = false
+            this.$notification.error({
+              message: errorMessage(result),
+              description: '获取人员详情失败'
+            })
+          }
+          if (needLogin(result)) {
+                  this.staffDetailVisible = false
+                  this.confirmLoading = false
+                }
+        })
+        .catch((error) => {
+          this.$notification.error({
+            message: '获取人员详情失败',
+            description: error
+          })
+          this.confirmLoading = false
+        })
+    },
         getDict (keyword) {
       return new Promise((resolve, reject) => {
         getCommonDict(keyword).then((Response) => {
@@ -251,7 +386,8 @@ this.getDict('gender').then((response) => {
   },
   components: {
     STable,
-    staffDetail
+    staffDetail,
+    SalaryListDrawer
   },
   watch: {
     refresh: function (newVal, oldVal) {

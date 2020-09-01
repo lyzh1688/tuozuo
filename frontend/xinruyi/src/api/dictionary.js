@@ -30,7 +30,7 @@ export function getAreaCode (areaLevel, areaCode) {
  */
 export function getBankDict (bankCode) {
   return request({
-    url: apiList.bankDict + bankCode,
+    url: apiList.bankDict + '?bankCode=' + bankCode,
     method: 'GET'
   })
 }

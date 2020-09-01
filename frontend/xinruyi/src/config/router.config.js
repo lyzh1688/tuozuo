@@ -55,7 +55,7 @@ export const asyncRouterMap = [
       {
         path: '/humanResourceService/resourcePool',
         name: 'HumanResourcePool',
-        component: resolve => require(['@/views/humanRources/humanResourcePool'], resolve),
+        component: resolve => require(['@/views/humanRources/HumanResourcePool'], resolve),
         // component: () => import('@/views/user/CustomList'),
         meta: { title: '人力资源池', keepAlive: true, permission: ['admin', 'xinruyi.custom.normal'] }
       },
