@@ -78,7 +78,7 @@
         :pageSize="20"
         :columns="columns"
         :data="loadData"
-        :showPagination="true"
+        showPagination="true"
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="ops" slot-scope="text, record">

@@ -39,7 +39,7 @@
         :pageSize="20"
         :columns="columns"
         :data="loadData"
-        :showPagination="true"
+        showPagination="true"
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="event" slot-scope="text">{{ eventMap[text] }}</span>
