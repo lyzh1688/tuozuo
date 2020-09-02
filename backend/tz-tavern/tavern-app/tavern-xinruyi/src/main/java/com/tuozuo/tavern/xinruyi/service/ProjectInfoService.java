@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface ProjectInfoService {
 
-    List<ProjectInfo> queryProjectInfo(String companyId, String projectName, int queryCnt, Boolean all);
+    List<ProjectInfo> queryProjectInfo(String companyId, String projectName, int queryCnt, Boolean all,String roleGroup);
 
     IPage<ProjectStaffInfo> queryProjectStaffInfo(int pageNo, int pageSize, String companyId, String projectId);
 
@@ -26,7 +26,7 @@ public interface ProjectInfoService {
 
     void delProjectStaff(String projectId, String staffId) throws Exception;
 
-    IPage<ProjectInfo> queryProjectInfo(ProjectListVo vo);
+    IPage<ProjectInfo> queryProjectInfo(ProjectListVo vo,String companyId);
 
     void addProjectInfo(ProjectAddVO vo, String companyId) throws Exception;
 

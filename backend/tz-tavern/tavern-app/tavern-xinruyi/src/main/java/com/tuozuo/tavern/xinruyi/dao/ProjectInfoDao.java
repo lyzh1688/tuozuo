@@ -13,11 +13,15 @@ import java.util.List;
  */
 public interface ProjectInfoDao {
 
-    List<ProjectInfo> selectAllProjectInfo(String companyId, String projectName);
+    List<ProjectInfo> selectAllProjectInfo( String projectName);
 
-    List<ProjectInfo> selectProjectInfo(String companyId, String projectName, int queryCnt);
+    List<ProjectInfo> selectAllCustomProjectInfo(String companyId, String projectName);
 
-    IPage<ProjectInfo> selectProjectPage(int pageNo, int pageSize, String projectId,
+    List<ProjectInfo> selectProjectInfo(String projectName, int queryCnt);
+
+    List<ProjectInfo> selectCustomProjectInfo( String companyId,String projectName, int queryCnt);
+
+    IPage<ProjectInfo> selectProjectPage(int pageNo, int pageSize, String companyId, String projectId,
                                          String industryType,
                                          String limitBudget,
                                          String upperBudget,

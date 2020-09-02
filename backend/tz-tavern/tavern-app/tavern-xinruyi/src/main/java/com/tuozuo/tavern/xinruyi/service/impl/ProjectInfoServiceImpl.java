@@ -1,6 +1,7 @@
 package com.tuozuo.tavern.xinruyi.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.tuozuo.tavern.common.protocol.UserTypeDict;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
 import com.tuozuo.tavern.xinruyi.dao.ProjectInfoDao;
 import com.tuozuo.tavern.xinruyi.dao.ProjectStaffInfoDao;
@@ -24,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,11 +47,22 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
 
     @Override
-    public List<ProjectInfo> queryProjectInfo(String companyId, String projectName, int queryCnt, Boolean all) {
-        if (all) {
-            return this.projectInfoDao.selectAllProjectInfo(companyId, projectName);
+    public List<ProjectInfo> queryProjectInfo(String companyId, String projectName, int queryCnt, Boolean all, String roleGroup) {
+        if (roleGroup.equals(UserTypeDict.custom)) {
+
+            if (all) {
+                return this.projectInfoDao.selectAllCustomProjectInfo(projectName, companyId);
+            } else {
+                return this.projectInfoDao.selectCustomProjectInfo(companyId, projectName, queryCnt);
+            }
+
         } else {
-            return this.projectInfoDao.selectProjectInfo(companyId, projectName, queryCnt);
+            if (all) {
+                return this.projectInfoDao.selectAllProjectInfo(projectName);
+            } else {
+                return this.projectInfoDao.selectProjectInfo(projectName, queryCnt);
+            }
+
         }
     }
 
@@ -88,7 +99,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     }
 
     @Override
-    public IPage<ProjectInfo> queryProjectInfo(ProjectListVo vo) {
+    public IPage<ProjectInfo> queryProjectInfo(ProjectListVo vo, String companyId) {
         String downLimitBudget = null, upperLimitBudget = null;
         if (StringUtils.isNoneEmpty(vo.getBudget())) {
             downLimitBudget = StringUtils.substringBefore(vo.getBudget(), "~");
@@ -99,6 +110,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         }
         return this.projectInfoDao.selectProjectPage(vo.getPageNo(),
                 vo.getPageSize(),
+                companyId,
                 vo.getProjectId(),
                 vo.getIndustryType(),
                 downLimitBudget,

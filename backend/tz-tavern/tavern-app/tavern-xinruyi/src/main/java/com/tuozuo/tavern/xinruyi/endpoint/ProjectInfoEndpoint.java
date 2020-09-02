@@ -40,10 +40,11 @@ public class ProjectInfoEndpoint {
      * 项目列表
      */
     @GetMapping("/list")
-    public TavernResponse queryProjectList(@ModelAttribute @Valid ProjectListVo vo) {
+    public TavernResponse queryProjectList(@ModelAttribute @Valid ProjectListVo vo,
+                                           @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId) {
         try {
             ProjectInfoListDTO dto = new ProjectInfoListDTO();
-            IPage<ProjectInfo> page = this.projectInfoService.queryProjectInfo(vo);
+            IPage<ProjectInfo> page = this.projectInfoService.queryProjectInfo(vo,companyId);
             List<ProjectInfoDTO> list = page.getRecords()
                     .stream()
                     .map(ModelConverterFactory::modelToProjectInfoDTO)
@@ -66,9 +67,11 @@ public class ProjectInfoEndpoint {
     public TavernResponse queryProjects(@RequestParam(value = "projectName", required = false) String projectName,
                                         @RequestParam(value = "queryCnt", required = false, defaultValue = "20") int queryCnt,
                                         @RequestParam(value = "all", required = false) boolean all,
-                                        @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId) {
+                                        @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId,
+                                        @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup
+                                        ) {
         try {
-            List<BusinessDictDTO> list = this.projectInfoService.queryProjectInfo(companyId, projectName, queryCnt, all)
+            List<BusinessDictDTO> list = this.projectInfoService.queryProjectInfo(companyId, projectName, queryCnt, all,roleGroup)
                     .stream()
                     .map(projectInfo -> {
                         BusinessDictDTO dictDTO = new BusinessDictDTO();

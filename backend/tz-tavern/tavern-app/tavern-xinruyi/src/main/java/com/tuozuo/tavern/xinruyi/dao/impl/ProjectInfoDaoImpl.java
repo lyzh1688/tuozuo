@@ -22,28 +22,45 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
     private ProjectInfoMapper projectInfoMapper;
 
     @Override
-    public List<ProjectInfo> selectAllProjectInfo(String companyId, String projectName) {
+    public List<ProjectInfo> selectAllProjectInfo(String projectName) {
         return this.projectInfoMapper.selectList(Wrappers.<ProjectInfo>query()
                 .lambda()
-                .like(ProjectInfo::getProjectName, projectName)
+                .like(projectName != null,ProjectInfo::getProjectName, projectName)
+                .orderByAsc(ProjectInfo::getProjectName));
+    }
+
+    @Override
+    public List<ProjectInfo> selectAllCustomProjectInfo(String companyId, String projectName) {
+        return this.projectInfoMapper.selectList(Wrappers.<ProjectInfo>query()
+                .lambda()
+                .like(projectName != null,ProjectInfo::getProjectName, projectName)
                 .eq(ProjectInfo::getCompanyId, companyId)
                 .orderByAsc(ProjectInfo::getProjectName));
     }
 
     @Override
-    public List<ProjectInfo> selectProjectInfo(String companyId, String projectName, int queryCnt) {
+    public List<ProjectInfo> selectProjectInfo(String projectName, int queryCnt) {
         return this.projectInfoMapper.selectList(Wrappers.<ProjectInfo>query()
                 .lambda()
-                .like(ProjectInfo::getProjectName, projectName)
+                .like(projectName != null,ProjectInfo::getProjectName, projectName)
+                .orderByAsc(ProjectInfo::getProjectName)
+                .last("limit " + queryCnt));
+    }
+
+    @Override
+    public List<ProjectInfo> selectCustomProjectInfo(String companyId, String projectName, int queryCnt) {
+        return this.projectInfoMapper.selectList(Wrappers.<ProjectInfo>query()
+                .lambda()
+                .like(projectName != null,ProjectInfo::getProjectName, projectName)
                 .eq(ProjectInfo::getCompanyId, companyId)
                 .orderByAsc(ProjectInfo::getProjectName)
                 .last("limit " + queryCnt));
     }
 
     @Override
-    public IPage<ProjectInfo> selectProjectPage(int pageNo, int pageSize, String projectId, String industryType, String limitBudget, String upperBudget, String requirementStatus) {
+    public IPage<ProjectInfo> selectProjectPage(int pageNo, int pageSize, String companyId, String projectId, String industryType, String limitBudget, String upperBudget, String requirementStatus) {
         Page page = new Page(pageNo, pageSize);
-        return this.projectInfoMapper.selectProjectPage(page, projectId, industryType, limitBudget, upperBudget, requirementStatus);
+        return this.projectInfoMapper.selectProjectPage(page, companyId, projectId, industryType, limitBudget, upperBudget, requirementStatus);
     }
 
     @Override
