@@ -35,7 +35,10 @@ public class ProjectStaffInfoDaoImpl implements ProjectStaffInfoDao {
 
     @Override
     public void updateProjectStaff(ProjectStaff projectStaff) {
-        this.projectStaffMapper.updateById(projectStaff);
+        this.projectStaffMapper.update(projectStaff, Wrappers.<ProjectStaff>query()
+                .lambda()
+                .eq(ProjectStaff::getStaffId, projectStaff.getStaffId())
+                .eq(ProjectStaff::getProjectId, projectStaff.getProjectId()));
     }
 
     @Override
