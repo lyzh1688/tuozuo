@@ -44,7 +44,7 @@ public class ProjectInfoEndpoint {
                                            @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId) {
         try {
             ProjectInfoListDTO dto = new ProjectInfoListDTO();
-            IPage<ProjectInfo> page = this.projectInfoService.queryProjectInfo(vo,companyId);
+            IPage<ProjectInfo> page = this.projectInfoService.queryProjectInfo(vo, companyId);
             List<ProjectInfoDTO> list = page.getRecords()
                     .stream()
                     .map(ModelConverterFactory::modelToProjectInfoDTO)
@@ -64,14 +64,14 @@ public class ProjectInfoEndpoint {
      * 我的项目模糊搜索
      */
     @GetMapping("")
-    public TavernResponse queryProjects(@RequestParam(value = "projectName", required = false) String projectName,
-                                        @RequestParam(value = "queryCnt", required = false, defaultValue = "20") int queryCnt,
-                                        @RequestParam(value = "all", required = false) boolean all,
-                                        @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId,
-                                        @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup
-                                        ) {
+    public TavernResponse queryProjectDict(@RequestParam(value = "projectName", required = false) String projectName,
+                                           @RequestParam(value = "queryCnt", required = false, defaultValue = "20") int queryCnt,
+                                           @RequestParam(value = "all", required = false) boolean all,
+                                           @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId,
+                                           @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup
+    ) {
         try {
-            List<BusinessDictDTO> list = this.projectInfoService.queryProjectInfo(companyId, projectName, queryCnt, all,roleGroup)
+            List<BusinessDictDTO> list = this.projectInfoService.queryProjectInfo(companyId, projectName, queryCnt, all, roleGroup)
                     .stream()
                     .map(projectInfo -> {
                         BusinessDictDTO dictDTO = new BusinessDictDTO();
@@ -90,9 +90,9 @@ public class ProjectInfoEndpoint {
      * 项目人员
      */
     @GetMapping("/staff/{projectId}")
-    public TavernResponse queryProjectStaffList(@PathVariable("projectId") String projectId,
-                                                @ModelAttribute @Valid PageVO pageVO,
-                                                @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId) {
+    public TavernResponse queryProjectStaff(@PathVariable("projectId") String projectId,
+                                            @ModelAttribute @Valid PageVO pageVO,
+                                            @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId) {
         try {
             IPage<ProjectStaffInfo> page = this.projectInfoService.queryProjectStaffInfo(pageVO.getPageNo(),
                     pageVO.getPageSize(), companyId, projectId);
