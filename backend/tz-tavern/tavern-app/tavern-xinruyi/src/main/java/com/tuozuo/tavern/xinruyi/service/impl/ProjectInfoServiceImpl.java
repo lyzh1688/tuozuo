@@ -145,6 +145,9 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         projectInfo.setProjectId(project);
         projectInfo.setStatus(status);
         this.projectInfoDao.modifyProject(projectInfo);
+        //TODO 项目完成事件确认
+
+
     }
 
     @Override

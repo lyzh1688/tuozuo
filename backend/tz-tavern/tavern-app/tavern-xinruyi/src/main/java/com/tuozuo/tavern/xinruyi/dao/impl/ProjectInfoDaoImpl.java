@@ -75,7 +75,9 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
 
     @Override
     public void modifyProject(ProjectInfo projectInfo) {
-        this.projectInfoMapper.updateById(projectInfo);
+        this.projectInfoMapper.update(projectInfo,Wrappers.<ProjectInfo>query()
+                .lambda()
+                .eq(ProjectInfo::getProjectId, projectInfo.getProjectId()));
     }
 
 

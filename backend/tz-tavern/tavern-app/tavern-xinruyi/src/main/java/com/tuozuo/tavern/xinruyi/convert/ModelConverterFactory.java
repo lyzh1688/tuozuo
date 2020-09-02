@@ -10,6 +10,7 @@ import com.tuozuo.tavern.xinruyi.vo.ProjectAddVO;
 import com.tuozuo.tavern.xinruyi.vo.ProjectModifyVO;
 import com.tuozuo.tavern.xinruyi.vo.ProjectStaffAddVO;
 import com.tuozuo.tavern.xinruyi.vo.ProjectStaffModifyVO;
+import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
@@ -79,13 +80,16 @@ public class ModelConverterFactory {
         projectInfo.setProjectDesc(vo.getDesc());
         return projectInfo;
     }
+
     public static ProjectInfo modifyVoToProjectInfo(ProjectModifyVO vo, String companyId) {
         ProjectInfo projectInfo = new ProjectInfo();
         projectInfo.setCompanyId(companyId);
-        projectInfo.setProjectId(UUIDUtil.randomUUID32());
+        projectInfo.setProjectId(vo.getProjectId());
         projectInfo.setProjectName(vo.getProjectName());
         projectInfo.setProjectIndustry(vo.getIndustryType());
-        projectInfo.setPublishDate(DateUtils.parseDate(vo.getReleaseDate(), DateUtils.DEFAULT_SIMPLE_8__FORMATTER));
+        if (StringUtils.isNoneEmpty(vo.getReleaseDate())) {
+            projectInfo.setPublishDate(DateUtils.parseDate(vo.getReleaseDate(), DateUtils.DEFAULT_SIMPLE_8__FORMATTER));
+        }
         projectInfo.setPeriod(vo.getProjectCycle());
         projectInfo.setContractPerson(vo.getContactName());
         projectInfo.setContractPhone(vo.getContact());

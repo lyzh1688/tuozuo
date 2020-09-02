@@ -196,9 +196,11 @@ public class ProjectInfoEndpoint {
     public TavernResponse modifyProject(@PathVariable("projectId") String projectId,
                                         @ModelAttribute ProjectModifyVO vo,
                                         @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId,
-                                        @RequestParam(name = "projectFile") MultipartFile projectFile) {
+                                        @RequestParam(name = "projectFile", required = false) MultipartFile projectFile) {
         try {
-            vo.setProjectFile(projectFile);
+            if (projectFile != null) {
+                vo.setProjectFile(projectFile);
+            }
             vo.setProjectId(projectId);
             this.projectInfoService.modifyProjectInfo(vo, companyId);
             return TavernResponse.OK;
@@ -213,9 +215,9 @@ public class ProjectInfoEndpoint {
      */
     @PutMapping("/status/{projectId}")
     public TavernResponse modifyProjectStatus(@PathVariable("projectId") String projectId,
-                                              @RequestParam("status") String status) {
+                                              @RequestBody @Valid ProjecStatusVO vo) {
         try {
-            this.projectInfoService.modifyProjectStatus(status, projectId);
+            this.projectInfoService.modifyProjectStatus(vo.getStatus(), projectId);
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[项目状态修改] failed", e);
