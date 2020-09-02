@@ -28,7 +28,6 @@ public class ProjectStaff {
 
     private String quitReason;
 
-    private String staffName;
 
     public String getProjectId() {
         return projectId;
@@ -110,11 +109,4 @@ public class ProjectStaff {
         this.quitReason = quitReason == null ? null : quitReason.trim();
     }
 
-    public String getStaffName() {
-        return staffName;
-    }
-
-    public void setStaffName(String staffName) {
-        this.staffName = staffName == null ? null : staffName.trim();
-    }
 }

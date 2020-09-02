@@ -12,7 +12,6 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="is_settled" jdbcType="VARCHAR" property="isSettled" />
     <result column="quit_reason" jdbcType="VARCHAR" property="quitReason" />
-    <result column="staff_name" jdbcType="VARCHAR" property="staffName" />
   </resultMap>
   <resultMap id="BaseProjectStaffMap" type="com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo">
     <result column="staff_id" jdbcType="VARCHAR" property="id" />
@@ -51,5 +50,6 @@
     and t2.project_id = #{projectId}
     and t1.company_id = #{companyId}
     and t2.status = '2'
+    order by enter_date desc
   </select>
 </mapper>
