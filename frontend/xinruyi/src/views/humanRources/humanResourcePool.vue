@@ -156,9 +156,8 @@ export default {
     },
     methods: {
         handleSalaryList (record) {
-            this.refreshSalary = !this.refreshSalary
-            this.picStaffId = record.id
             this.salaryVisible = true
+            this.picStaffId = record.id
         },
          handleCancel () {
              if (!this.isShowOnly) {

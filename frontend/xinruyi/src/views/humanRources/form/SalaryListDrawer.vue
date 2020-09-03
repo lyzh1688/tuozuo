@@ -5,6 +5,7 @@
     placement="right"
     :closable="false"
     :visible="visible"
+    :afterVisibleChange="visibleChange"
     @close="() => { $emit('onClose') }"
   >
     <a-spin :spinning="infoLoading">
@@ -25,7 +26,7 @@
                 @search="handleCustomSearch"
                 @change="handleCustomChange"
               >
-                <a-select-option v-for="d in fuzzyCompanyList" :key="d.value">{{ d.text }}</a-select-option>
+                <a-select-option v-for="d in fuzzyProjectList" :key="d.value">{{ d.text }}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -68,7 +69,7 @@
           <s-table
             ref="salaryTable"
             size="default"
-            rowKey="no"
+            rowKey="key"
             :pageSize="20"
             :columns="salaryColumns"
             :data="salaryData"
@@ -90,7 +91,7 @@ import { getSalaryList } from '@/api/humanResource'
 // 表单字段
 const columns = [
   {
-    title: '员工姓名',
+    title: '编号',
     scopedSlots: { customRender: 'no' }
   },
   {
@@ -189,19 +190,22 @@ export default {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
         console.log('loadData request parameters:', requestParameters)
         this.infoLoading = true
-        return getSalaryList(this.projectId, this.staffId, requestParameters.beginDate, requestParameters.endDate, requestParameters.pageNo, requestParameters.pageSize)
+        return getSalaryList(requestParameters.projectId, this.staffId, requestParameters.beginDate, requestParameters.endDate, requestParameters.pageNo, requestParameters.pageSize)
           .then(Response => {
             const result = Response
             // console.log('getTradeflow', result)
             if (success(result)) {
-              const ans = result.data.payment
+              const ans = []
+              for (const i in result.data.payment) {
+                ans.push({ ...result.data.payment[i], key: i })
+              }
               setTimeout(() => {
               this.infoLoading = false
             }, 600)
               return {
                 pageSize: requestParameters.pageSize,
                 pageNo: requestParameters.pageNo,
-                totalCount: result.data.total,
+                totalCount: Number.parseInt(result.data.total),
                 data: ans
               }
             } else {
@@ -233,18 +237,30 @@ export default {
        fetch('', (data) => (this.fuzzyProjectList = data))
   },
   methods: {
+      visibleChange (data) {
+          if (data) {
+              this.queryParam = {
+                  projectId: '',
+                  beginDate: '',
+                  endDate: '',
+                  pageNo: 1,
+                  pageSize: 20
+                }
+              this.$refs.salaryTable.refresh(true)
+          }
+      },
        handleCustomSearch (value) {
       fetch(value, (data) => (this.fuzzyProjectList = data))
     },
     handleCustomChange (value) {
       // console.log(value)
-      this.queryParam.companyId = value
+      this.queryParam.projectId = value
       fetch(value, (data) => (this.fuzzyProjectList = data))
     }
   },
   watch: {
     refresh: function (newVal, oldVal) {
-          this.$refs.salaryTable.refresh(true)
+          this.$refs.salaryTable && this.$refs.salaryTable.refresh(true)
     }
   }
 }
