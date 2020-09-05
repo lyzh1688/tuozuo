@@ -1,6 +1,12 @@
 package com.tuozuo.tavern.xinruyi.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
+@TableName("company_info")
 public class CompanyInfo {
+    @TableId
     private String registerId;
 
     private String companyId;
@@ -11,9 +17,23 @@ public class CompanyInfo {
 
     private String companyIndustry;
 
-    private String area;
+
+    private String province;
+    private String city;
+    private String district;
 
     private String status;
+
+    @TableField(exist = false)
+    private String contact;
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
 
     public String getRegisterId() {
         return registerId;
@@ -55,12 +75,28 @@ public class CompanyInfo {
         this.companyIndustry = companyIndustry == null ? null : companyIndustry.trim();
     }
 
-    public String getArea() {
-        return area;
+    public String getProvince() {
+        return province;
     }
 
-    public void setArea(String area) {
-        this.area = area == null ? null : area.trim();
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
     public String getStatus() {

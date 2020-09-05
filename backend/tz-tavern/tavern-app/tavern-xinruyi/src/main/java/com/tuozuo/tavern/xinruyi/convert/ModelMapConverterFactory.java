@@ -1,12 +1,10 @@
 package com.tuozuo.tavern.xinruyi.convert;
 
 import com.tuozuo.tavern.xinruyi.dto.BusinessDictDTO;
+import com.tuozuo.tavern.xinruyi.dto.CompanyInfoDTO;
 import com.tuozuo.tavern.xinruyi.dto.ProjectInfoDTO;
 import com.tuozuo.tavern.xinruyi.dto.StaffResourcePoolDTO;
-import com.tuozuo.tavern.xinruyi.model.BusinessDict;
-import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
-import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
-import com.tuozuo.tavern.xinruyi.model.StaffResourcePool;
+import com.tuozuo.tavern.xinruyi.model.*;
 import com.tuozuo.tavern.xinruyi.vo.ProjectStaffAddVO;
 import com.tuozuo.tavern.xinruyi.vo.StaffInfoVO;
 import com.tuozuo.tavern.xinruyi.vo.StaffModifyVO;
@@ -63,7 +61,11 @@ public interface ModelMapConverterFactory {
     })
     BusinessDictDTO staffPoolToBusinessDict(StaffResourcePool pool);
 
-
+    @Mappings({
+            @Mapping(source = "status", target = "authStatus"),
+            @Mapping(source = "companyIndustry", target = "industryType")
+    })
+    CompanyInfoDTO modelToCompanyInfoDTO(CompanyInfo companyInfo);
 
 
 }

@@ -7,7 +7,7 @@
     <result column="legal_person_identity" jdbcType="VARCHAR" property="legalPersonIdentity" />
     <result column="legal_person_name" jdbcType="VARCHAR" property="legalPersonName" />
     <result column="file_legal_person_idcard_up" jdbcType="VARCHAR" property="fileLegalPersonIdcardUp" />
-    <result column="file_legal_persion_idcard_back" jdbcType="VARCHAR" property="fileLegalPersionIdcardBack" />
+    <result column="file_legal_person_idcard_back" jdbcType="VARCHAR" property="fileLegalPersonIdcardBack" />
     <result column="company_bank_account" jdbcType="VARCHAR" property="companyBankAccount" />
     <result column="company_bank" jdbcType="VARCHAR" property="companyBank" />
     <result column="contact_name" jdbcType="VARCHAR" property="contactName" />
@@ -21,12 +21,12 @@
   <insert id="insert" parameterType="com.tuozuo.tavern.xinruyi.model.CompanyInfoExt">
     insert into company_info_ext (company_id, file_biz_license, legal_person_identity, 
       legal_person_name, file_legal_person_idcard_up, 
-      file_legal_persion_idcard_back, company_bank_account, 
+      file_legal_person_idcard_back, company_bank_account, 
       company_bank, contact_name, contact_phone, 
       remark)
     values (#{companyId,jdbcType=VARCHAR}, #{fileBizLicense,jdbcType=VARCHAR}, #{legalPersonIdentity,jdbcType=VARCHAR}, 
       #{legalPersonName,jdbcType=VARCHAR}, #{fileLegalPersonIdcardUp,jdbcType=VARCHAR}, 
-      #{fileLegalPersionIdcardBack,jdbcType=VARCHAR}, #{companyBankAccount,jdbcType=VARCHAR}, 
+      #{fileLegalPersonIdcardBack,jdbcType=VARCHAR}, #{companyBankAccount,jdbcType=VARCHAR},
       #{companyBank,jdbcType=VARCHAR}, #{contactName,jdbcType=VARCHAR}, #{contactPhone,jdbcType=VARCHAR}, 
       #{remark,jdbcType=VARCHAR})
   </insert>
@@ -36,7 +36,7 @@
       legal_person_identity = #{legalPersonIdentity,jdbcType=VARCHAR},
       legal_person_name = #{legalPersonName,jdbcType=VARCHAR},
       file_legal_person_idcard_up = #{fileLegalPersonIdcardUp,jdbcType=VARCHAR},
-      file_legal_persion_idcard_back = #{fileLegalPersionIdcardBack,jdbcType=VARCHAR},
+      file_legal_person_idcard_back = #{fileLegalPersonIdcardBack,jdbcType=VARCHAR},
       company_bank_account = #{companyBankAccount,jdbcType=VARCHAR},
       company_bank = #{companyBank,jdbcType=VARCHAR},
       contact_name = #{contactName,jdbcType=VARCHAR},
@@ -46,14 +46,14 @@
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select company_id, file_biz_license, legal_person_identity, legal_person_name, file_legal_person_idcard_up, 
-    file_legal_persion_idcard_back, company_bank_account, company_bank, contact_name, 
+    file_legal_person_idcard_back, company_bank_account, company_bank, contact_name, 
     contact_phone, remark
     from company_info_ext
     where company_id = #{companyId,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select company_id, file_biz_license, legal_person_identity, legal_person_name, file_legal_person_idcard_up, 
-    file_legal_persion_idcard_back, company_bank_account, company_bank, contact_name, 
+    file_legal_person_idcard_back, company_bank_account, company_bank, contact_name, 
     contact_phone, remark
     from company_info_ext
   </select>

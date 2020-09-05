@@ -10,9 +10,9 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>tavern-libs</module>
+        <module>tavern-protocol</module>
         <module>tavern-maingate</module>
         <module>tavern-app</module>
-        <module>tavern-protocol</module>
     </modules>
 
 

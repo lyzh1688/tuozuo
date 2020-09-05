@@ -1,16 +1,13 @@
 package com.tuozuo.tavern.xinruyi.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfo;
-import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
-public interface CompanyInfoMapper {
-    int deleteByPrimaryKey(String registerId);
+@Mapper
+public interface CompanyInfoMapper extends BaseMapper<CompanyInfo> {
 
-    int insert(CompanyInfo record);
+    CompanyInfo select(@Param("companyId") String companyId);
 
-    CompanyInfo selectByPrimaryKey(String registerId);
-
-    List<CompanyInfo> selectAll();
-
-    int updateByPrimaryKey(CompanyInfo record);
 }

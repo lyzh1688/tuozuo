@@ -1,6 +1,11 @@
 package com.tuozuo.tavern.xinruyi.model;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
+@TableName("company_info_ext")
 public class CompanyInfoExt {
+    @TableId
     private String companyId;
 
     private String fileBizLicense;
@@ -11,7 +16,7 @@ public class CompanyInfoExt {
 
     private String fileLegalPersonIdcardUp;
 
-    private String fileLegalPersionIdcardBack;
+    private String fileLegalPersonIdcardBack;
 
     private String companyBankAccount;
 
@@ -63,12 +68,12 @@ public class CompanyInfoExt {
         this.fileLegalPersonIdcardUp = fileLegalPersonIdcardUp == null ? null : fileLegalPersonIdcardUp.trim();
     }
 
-    public String getFileLegalPersionIdcardBack() {
-        return fileLegalPersionIdcardBack;
+    public String getFileLegalPersonIdcardBack() {
+        return fileLegalPersonIdcardBack;
     }
 
-    public void setFileLegalPersionIdcardBack(String fileLegalPersionIdcardBack) {
-        this.fileLegalPersionIdcardBack = fileLegalPersionIdcardBack == null ? null : fileLegalPersionIdcardBack.trim();
+    public void setFileLegalPersonIdcardBack(String fileLegalPersonIdcardBack) {
+        this.fileLegalPersonIdcardBack = fileLegalPersonIdcardBack == null ? null : fileLegalPersonIdcardBack.trim();
     }
 
     public String getCompanyBankAccount() {
