@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * Code Monkey: 何彪 <br>
  * Dev Time: 2020/9/4 <br>
@@ -55,6 +57,11 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     @Override
     public CompanyInfoExt queryCompanyDetailInfo(String companyId) {
         return this.companyInfoDao.selectCompanyDetailInfo(companyId);
+    }
+
+    @Override
+    public List<CompanyInfo> queryCompanyList(String companyName, int queryCnt) {
+        return this.companyInfoDao.selectCompanyList(companyName, queryCnt);
     }
 
 

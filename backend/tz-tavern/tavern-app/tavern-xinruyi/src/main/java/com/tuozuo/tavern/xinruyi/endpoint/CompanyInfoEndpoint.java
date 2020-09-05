@@ -3,6 +3,7 @@ package com.tuozuo.tavern.xinruyi.endpoint;
 import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
+import com.tuozuo.tavern.xinruyi.dto.BusinessDictDTO;
 import com.tuozuo.tavern.xinruyi.dto.CompanyDetailInfoDTO;
 import com.tuozuo.tavern.xinruyi.dto.CompanyInfoDTO;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfo;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -70,13 +73,36 @@ public class CompanyInfoEndpoint {
      * 我的企业详情
      */
     @GetMapping("/detail/{companyId}")
-    public TavernResponse queryCompanyDetail(@PathVariable("companyId")String companyId) {
+    public TavernResponse queryCompanyDetail(@PathVariable("companyId") String companyId) {
         try {
             CompanyInfoExt companyInfo = this.companyInfoService.queryCompanyDetailInfo(companyId);
             CompanyDetailInfoDTO dto = factory.modelToCompanyDetailInfoDTO(companyInfo);
             return TavernResponse.ok(dto);
         } catch (Exception e) {
             LOGGER.error("[我的企业详情] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+
+    /**
+     * 企业模糊查询
+     */
+    @GetMapping("")
+    public TavernResponse queryCompanyList(@RequestParam(name = "companyName") String companyName,
+                                           @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt) {
+        try {
+            List<BusinessDictDTO> businessDictList = this.companyInfoService.queryCompanyList(companyName, queryCnt)
+                    .stream()
+                    .map(companyInfo -> {
+                        BusinessDictDTO dict = new BusinessDictDTO();
+                        dict.setId(companyInfo.getCompanyId());
+                        dict.setName(companyInfo.getCompanyName());
+                        return dict;
+                    }).collect(Collectors.toList());
+            return TavernResponse.ok(businessDictList);
+        } catch (Exception e) {
+            LOGGER.error("[企业模糊查询] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }
