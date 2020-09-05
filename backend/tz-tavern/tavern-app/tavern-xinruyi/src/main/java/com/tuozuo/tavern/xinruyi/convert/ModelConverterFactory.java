@@ -2,17 +2,13 @@ package com.tuozuo.tavern.xinruyi.convert;
 
 import com.tuozuo.tavern.xinruyi.dto.ProjectDetailDTO;
 import com.tuozuo.tavern.xinruyi.dto.ProjectInfoDTO;
+import com.tuozuo.tavern.xinruyi.model.CompanyInfoExt;
 import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
 import com.tuozuo.tavern.xinruyi.utils.DateUtils;
 import com.tuozuo.tavern.xinruyi.utils.UUIDUtil;
-import com.tuozuo.tavern.xinruyi.vo.ProjectAddVO;
-import com.tuozuo.tavern.xinruyi.vo.ProjectModifyVO;
-import com.tuozuo.tavern.xinruyi.vo.ProjectStaffAddVO;
-import com.tuozuo.tavern.xinruyi.vo.ProjectStaffModifyVO;
+import com.tuozuo.tavern.xinruyi.vo.*;
 import org.apache.commons.lang3.StringUtils;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -116,9 +112,19 @@ public class ModelConverterFactory {
         projectInfoDTO.setContactName(projectInfo.getContractPerson());
         projectInfoDTO.setContact(projectInfo.getContractPhone());
         projectInfoDTO.setProjectFile(projectInfo.getFileMaterial());
-
-
         return projectInfoDTO;
+    }
+
+    public static CompanyInfoExt authVOToCompanyInfoExt(CompanyAuthInfoVO vo) {
+        CompanyInfoExt ext = new CompanyInfoExt();
+        ext.setCompanyId(vo.getCompanyId());
+        ext.setLegalPersonName(vo.getBossName());
+        ext.setLegalPersonIdentity(vo.getBossId());
+        ext.setCompanyBankAccount(vo.getCompanyAccount());
+        ext.setCompanyBank(vo.getCompanyAccountBank());
+        ext.setContactName(vo.getContactName());
+        ext.setContactPhone(vo.getContact());
+        return ext;
     }
 
 

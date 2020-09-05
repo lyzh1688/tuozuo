@@ -1,6 +1,7 @@
 package com.tuozuo.tavern.xinruyi.dao;
 
 import com.tuozuo.tavern.xinruyi.model.CompanyInfo;
+import com.tuozuo.tavern.xinruyi.model.CompanyInfoExt;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -9,5 +10,9 @@ import com.tuozuo.tavern.xinruyi.model.CompanyInfo;
 public interface CompanyInfoDao {
 
     CompanyInfo selectCompanyInfo(String companyId);
+
+    void insertCompanyAuthInfo(CompanyInfoExt companyInfoExt);
+
+    CompanyInfoExt selectCompanyDetailInfo(String companyId);
 
 }

@@ -3,16 +3,19 @@ package com.tuozuo.tavern.xinruyi.endpoint;
 import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
+import com.tuozuo.tavern.xinruyi.dto.CompanyDetailInfoDTO;
 import com.tuozuo.tavern.xinruyi.dto.CompanyInfoDTO;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfo;
+import com.tuozuo.tavern.xinruyi.model.CompanyInfoExt;
 import com.tuozuo.tavern.xinruyi.service.CompanyInfoService;
+import com.tuozuo.tavern.xinruyi.vo.CompanyAuthInfoVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -43,4 +46,50 @@ public class CompanyInfoEndpoint {
         }
     }
 
+    /**
+     * 企业认证申请
+     */
+    @PostMapping("/authentication")
+    public TavernResponse companyAuthentication(@ModelAttribute @Valid CompanyAuthInfoVO vo,
+                                                @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId,
+                                                @RequestParam(name = "businessLicense") MultipartFile businessLicense,
+                                                @RequestParam(name = "bossIdPicUp") MultipartFile bossIdPicUp,
+                                                @RequestParam(name = "bossIdPicBack") MultipartFile bossIdPicBack
+    ) {
+        try {
+            this.setCompanyAuthInfo(vo, companyId, businessLicense, bossIdPicUp, bossIdPicBack);
+            this.companyInfoService.applyForCompanyAuth(vo);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[企业认证申请] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 我的企业详情
+     */
+    @GetMapping("/detail/{companyId}")
+    public TavernResponse queryCompanyDetail(@PathVariable("companyId")String companyId) {
+        try {
+            CompanyInfoExt companyInfo = this.companyInfoService.queryCompanyDetailInfo(companyId);
+            CompanyDetailInfoDTO dto = factory.modelToCompanyDetailInfoDTO(companyInfo);
+            return TavernResponse.ok(dto);
+        } catch (Exception e) {
+            LOGGER.error("[我的企业详情] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    private CompanyAuthInfoVO setCompanyAuthInfo(CompanyAuthInfoVO vo,
+                                                 String companyId,
+                                                 MultipartFile businessLicense,
+                                                 MultipartFile bossIdPicUp,
+                                                 MultipartFile bossIdPicBack) {
+        vo.setCompanyId(companyId);
+        vo.setBusinessLicense(businessLicense);
+        vo.setBossIdPicUp(bossIdPicUp);
+        vo.setBossIdPicBack(bossIdPicBack);
+        return vo;
+    }
 }

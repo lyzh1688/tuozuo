@@ -1,10 +1,17 @@
 package com.tuozuo.tavern.xinruyi.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 @TableName("company_info_ext")
 public class CompanyInfoExt {
+
+    @TableField(exist = false)
+    private String registerId;
+    @TableField(exist = false)
+    private String companyName;
+
     @TableId
     private String companyId;
 
@@ -28,12 +35,28 @@ public class CompanyInfoExt {
 
     private String remark;
 
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getRegisterId() {
+        return registerId;
+    }
+
+    public void setRegisterId(String registerId) {
+        this.registerId = registerId;
+    }
+
     public String getCompanyId() {
         return companyId;
     }
 
     public void setCompanyId(String companyId) {
-        this.companyId = companyId == null ? null : companyId.trim();
+        this.companyId = companyId;
     }
 
     public String getFileBizLicense() {
@@ -41,7 +64,7 @@ public class CompanyInfoExt {
     }
 
     public void setFileBizLicense(String fileBizLicense) {
-        this.fileBizLicense = fileBizLicense == null ? null : fileBizLicense.trim();
+        this.fileBizLicense = fileBizLicense;
     }
 
     public String getLegalPersonIdentity() {
@@ -49,7 +72,7 @@ public class CompanyInfoExt {
     }
 
     public void setLegalPersonIdentity(String legalPersonIdentity) {
-        this.legalPersonIdentity = legalPersonIdentity == null ? null : legalPersonIdentity.trim();
+        this.legalPersonIdentity = legalPersonIdentity;
     }
 
     public String getLegalPersonName() {
@@ -57,7 +80,7 @@ public class CompanyInfoExt {
     }
 
     public void setLegalPersonName(String legalPersonName) {
-        this.legalPersonName = legalPersonName == null ? null : legalPersonName.trim();
+        this.legalPersonName = legalPersonName;
     }
 
     public String getFileLegalPersonIdcardUp() {
@@ -65,7 +88,7 @@ public class CompanyInfoExt {
     }
 
     public void setFileLegalPersonIdcardUp(String fileLegalPersonIdcardUp) {
-        this.fileLegalPersonIdcardUp = fileLegalPersonIdcardUp == null ? null : fileLegalPersonIdcardUp.trim();
+        this.fileLegalPersonIdcardUp = fileLegalPersonIdcardUp;
     }
 
     public String getFileLegalPersonIdcardBack() {
@@ -73,7 +96,7 @@ public class CompanyInfoExt {
     }
 
     public void setFileLegalPersonIdcardBack(String fileLegalPersonIdcardBack) {
-        this.fileLegalPersonIdcardBack = fileLegalPersonIdcardBack == null ? null : fileLegalPersonIdcardBack.trim();
+        this.fileLegalPersonIdcardBack = fileLegalPersonIdcardBack;
     }
 
     public String getCompanyBankAccount() {
@@ -81,7 +104,7 @@ public class CompanyInfoExt {
     }
 
     public void setCompanyBankAccount(String companyBankAccount) {
-        this.companyBankAccount = companyBankAccount == null ? null : companyBankAccount.trim();
+        this.companyBankAccount = companyBankAccount;
     }
 
     public String getCompanyBank() {
@@ -89,7 +112,7 @@ public class CompanyInfoExt {
     }
 
     public void setCompanyBank(String companyBank) {
-        this.companyBank = companyBank == null ? null : companyBank.trim();
+        this.companyBank = companyBank;
     }
 
     public String getContactName() {
@@ -97,7 +120,7 @@ public class CompanyInfoExt {
     }
 
     public void setContactName(String contactName) {
-        this.contactName = contactName == null ? null : contactName.trim();
+        this.contactName = contactName;
     }
 
     public String getContactPhone() {
@@ -105,7 +128,7 @@ public class CompanyInfoExt {
     }
 
     public void setContactPhone(String contactPhone) {
-        this.contactPhone = contactPhone == null ? null : contactPhone.trim();
+        this.contactPhone = contactPhone;
     }
 
     public String getRemark() {
@@ -113,6 +136,6 @@ public class CompanyInfoExt {
     }
 
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
     }
 }

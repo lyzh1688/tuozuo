@@ -1,9 +1,6 @@
 package com.tuozuo.tavern.xinruyi.convert;
 
-import com.tuozuo.tavern.xinruyi.dto.BusinessDictDTO;
-import com.tuozuo.tavern.xinruyi.dto.CompanyInfoDTO;
-import com.tuozuo.tavern.xinruyi.dto.ProjectInfoDTO;
-import com.tuozuo.tavern.xinruyi.dto.StaffResourcePoolDTO;
+import com.tuozuo.tavern.xinruyi.dto.*;
 import com.tuozuo.tavern.xinruyi.model.*;
 import com.tuozuo.tavern.xinruyi.vo.ProjectStaffAddVO;
 import com.tuozuo.tavern.xinruyi.vo.StaffInfoVO;
@@ -66,6 +63,18 @@ public interface ModelMapConverterFactory {
             @Mapping(source = "companyIndustry", target = "industryType")
     })
     CompanyInfoDTO modelToCompanyInfoDTO(CompanyInfo companyInfo);
+
+    @Mappings({
+            @Mapping(source = "fileBizLicense", target = "businessLicense"),
+            @Mapping(source = "legalPersonName", target = "bossName"),
+            @Mapping(source = "legalPersonIdentity", target = "bossId"),
+            @Mapping(source = "fileLegalPersonIdcardUp", target = "bossIdPicUp"),
+            @Mapping(source = "fileLegalPersonIdcardBack", target = "bossIdPicBack"),
+            @Mapping(source = "companyBankAccount", target = "companyAccount"),
+            @Mapping(source = "companyBank", target = "companyAccountBank"),
+            @Mapping(source = "contactPhone", target = "contact"),
+    })
+    CompanyDetailInfoDTO modelToCompanyDetailInfoDTO(CompanyInfoExt companyInfoExt);
 
 
 }
