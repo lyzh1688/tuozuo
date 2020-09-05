@@ -17,10 +17,12 @@ public interface CompanyInfoService {
 
     void applyForCompanyAuth(CompanyAuthInfoVO companyAuthInfoVO) throws Exception;
 
+    void modifyCompanyInfo(CompanyAuthInfoVO companyAuthInfoVO) throws Exception;
+
 
     CompanyInfoExt queryCompanyDetailInfo(String companyId);
 
-    List<CompanyInfo> queryCompanyList(String companyName,int queryCnt);
+    List<CompanyInfo> queryCompanyList(String companyName, int queryCnt);
 
 
 }

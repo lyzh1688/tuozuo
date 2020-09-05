@@ -34,6 +34,11 @@ public class CompanyInfoDaoImpl implements CompanyInfoDao {
     }
 
     @Override
+    public void updateCompanyAuthInfo(CompanyInfoExt companyInfoExt) {
+        this.companyInfoExtMapper.updateById(companyInfoExt);
+    }
+
+    @Override
     public CompanyInfoExt selectCompanyDetailInfo(String companyId) {
         return this.companyInfoExtMapper.select(companyId);
     }

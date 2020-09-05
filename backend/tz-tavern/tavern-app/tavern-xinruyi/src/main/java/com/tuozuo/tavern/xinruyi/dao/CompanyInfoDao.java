@@ -15,8 +15,10 @@ public interface CompanyInfoDao {
 
     void insertCompanyAuthInfo(CompanyInfoExt companyInfoExt);
 
+    void updateCompanyAuthInfo(CompanyInfoExt companyInfoExt);
+
     CompanyInfoExt selectCompanyDetailInfo(String companyId);
 
-    List<CompanyInfo> selectCompanyList(String companyName,int queryCnt);
+    List<CompanyInfo> selectCompanyList(String companyName, int queryCnt);
 
 }

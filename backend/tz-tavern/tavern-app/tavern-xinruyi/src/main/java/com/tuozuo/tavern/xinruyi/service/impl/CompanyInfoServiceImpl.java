@@ -55,6 +55,16 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     }
 
     @Override
+    public void modifyCompanyInfo(CompanyAuthInfoVO companyAuthInfoVO) throws Exception {
+        CompanyInfoExt companyInfoExt = ModelConverterFactory.authVOToCompanyInfoExt(companyAuthInfoVO);
+        this.setCompanyInfoFiles(companyAuthInfoVO.getBusinessLicense(),
+                companyAuthInfoVO.getBossIdPicUp(),
+                companyAuthInfoVO.getBossIdPicBack(),
+                companyInfoExt);
+        this.companyInfoDao.updateCompanyAuthInfo(companyInfoExt);
+    }
+
+    @Override
     public CompanyInfoExt queryCompanyDetailInfo(String companyId) {
         return this.companyInfoDao.selectCompanyDetailInfo(companyId);
     }

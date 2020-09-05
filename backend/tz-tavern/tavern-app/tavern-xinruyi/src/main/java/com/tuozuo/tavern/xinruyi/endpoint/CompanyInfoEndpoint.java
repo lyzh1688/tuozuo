@@ -70,6 +70,26 @@ public class CompanyInfoEndpoint {
     }
 
     /**
+     * 企业信息修改
+     */
+    @PutMapping("")
+    public TavernResponse modifyCompanyInfo(@ModelAttribute CompanyAuthInfoVO vo,
+                                            @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId,
+                                            @RequestParam(name = "businessLicense",required = false) MultipartFile businessLicense,
+                                            @RequestParam(name = "bossIdPicUp",required = false) MultipartFile bossIdPicUp,
+                                            @RequestParam(name = "bossIdPicBack",required = false) MultipartFile bossIdPicBack
+    ) {
+        try {
+            this.setCompanyAuthInfo(vo, companyId, businessLicense, bossIdPicUp, bossIdPicBack);
+            this.companyInfoService.modifyCompanyInfo(vo);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[企业信息修改] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
      * 我的企业详情
      */
     @GetMapping("/detail/{companyId}")
