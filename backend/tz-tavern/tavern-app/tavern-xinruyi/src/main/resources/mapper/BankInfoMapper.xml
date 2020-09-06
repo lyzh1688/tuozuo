@@ -9,13 +9,12 @@
   <select id="selectList" resultMap="BaseResultMap">
     select  bank_code, bank_name, bank_parent_code
     from bank_info
-    <where>
+    where
       <if test="bankCode != null and bankCode != ''">
-        and bank_parent_code = #{bankCode}
+         bank_parent_code = #{bankCode}
       </if>
-      <if test="bankCode == null ">
-        and bank_parent_code is null
+      <if test="bankCode == null or  bankCode == '' ">
+        length(bank_parent_code) = 0
       </if>
-    </where>
   </select>
 </mapper>
