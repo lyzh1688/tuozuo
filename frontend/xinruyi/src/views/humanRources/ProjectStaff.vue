@@ -1,55 +1,55 @@
 <template>
   <page-header-wrapper>
     <a-card style="margin-top: 24px" :bordered="false" class="card-container">
-      <a-skeleton :loading="projectListLoading" active title>
-        <a-tabs
-          :style="{ height: '700px' }"
-          ref="tabsa"
-          :default-active-key="projectList.length>0?projectList[0].id:''"
-          tab-position="left"
-          @tabClick="fetchProlectStaffList"
-        >
-          <a-tab-pane class="tab-pane-self" v-for="item in projectList" :key="item.id">
-            <template v-slot:tab>
-              <span style="text-align:left;display:block;">{{ item.name }}</span>
-            </template>
-            <a-skeleton :loading="infoLoading" active title>
-              <a-row>
-                <a-col :sm="8" :xs="24">
-                  <a-button type="dashed" size="small" @click="handleProjectStaffOpsDrawer()">新增人员</a-button>
-                  <a-button type="primary" size="small" @click="refresh=!refresh">刷新</a-button>
-                </a-col>
-              </a-row>
-            </a-skeleton>
-            <s-table
-              :ref="item.id"
-              id="1"
-              size="default"
-              rowKey="id"
-              :pageSize="20"
-              :columns="columns"
-              :data="loadData"
-              showPagination="true"
-            >
-              <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
-              <span slot="name" slot-scope="text, record">
-                <a-button type=" dashed" size="small" @click="handleDetail(record)">{{ text }}</a-button>
-              </span>
-              <span slot="gender" slot-scope="text">{{ genderMap[text] }}</span>
-              <span slot="status" slot-scope="text">
-                <a-tag :color="text=='0'?'gray':text=='1'?'orange':'green'">{{ staffStatusMap[text] }}</a-tag>
-              </span>
-              <span slot="ops" slot-scope="text, record">
-                <a-button type="primary" size="small" @click="handleUpdate(record)">修改</a-button>
-                <a-divider type="vertical" />
-                <a-button type="danger" size="small" @click="handleDelete(record)">裁员</a-button>
-                <a-divider type="vertical" />
-                <a-button type="dashed" size="small" @click="handleSalaryList(record)">历史工资单</a-button>
-              </span>
-            </s-table>
-          </a-tab-pane>
-        </a-tabs>
-      </a-skeleton>
+      <a-tabs
+        :style="{ height: '700px' }"
+        ref="tabsa"
+        :default-active-key="projectList.length>0?projectList[0].id:''"
+        tab-position="left"
+        @tabClick="fetchProlectStaffList"
+      >
+        <a-tab-pane class="tab-pane-self" v-for="item in projectList" :key="item.id">
+          <template v-slot:tab>
+            <span style="text-align:left;display:block;">{{ item.name }}</span>
+          </template>
+          <a-skeleton :loading="infoLoading" active title>
+            <a-row>
+              <a-col :sm="8" :xs="24">
+                <a-button type="dashed" size="small" @click="handleProjectStaffOpsDrawer()">新增人员</a-button>
+                <a-button type="primary" size="small" @click="refresh=!refresh">刷新</a-button>
+              </a-col>
+            </a-row>
+          </a-skeleton>
+          <s-table
+            :ref="item.id"
+            id="1"
+            size="default"
+            rowKey="id"
+            :pageSize="20"
+            :columns="columns"
+            :data="loadData"
+            showPagination="true"
+          >
+            <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
+            <span slot="name" slot-scope="text, record">
+              <a-button type=" dashed" size="small" @click="handleDetail(record)">{{ text }}</a-button>
+            </span>
+            <span slot="gender" slot-scope="text">{{ genderMap[text] }}</span>
+            <span slot="status" slot-scope="text">
+              <a-tag
+                :color="text=='0'?'gray':text=='1'?'orange':'green'"
+              >{{ staffStatusMap[text] }}</a-tag>
+            </span>
+            <span slot="ops" slot-scope="text, record">
+              <a-button type="primary" size="small" @click="handleUpdate(record)">修改</a-button>
+              <a-divider type="vertical" />
+              <a-button type="danger" size="small" @click="handleDelete(record)">裁员</a-button>
+              <a-divider type="vertical" />
+              <a-button type="dashed" size="small" @click="handleSalaryList(record)">历史工资单</a-button>
+            </span>
+          </s-table>
+        </a-tab-pane>
+      </a-tabs>
     </a-card>
     <staffDetail
       formTitle="人员详情"
@@ -74,14 +74,13 @@
       :projectId="queryParam.projectID"
       :staffInProjectList="inProjectMap"
       @onclose="projectStaffOpsDrawerVisible = false"
-      @refreshlist="refresh=!refresh">
-    </projectstaffopsdrawer>
+      @refreshlist="refresh=!refresh"
+    ></projectstaffopsdrawer>
     <projectstaffopssubdrawer
       ref="projectstaffopssubdrawer"
       :subvisible="projectstaffopssubdrawerVisible"
-      :projectId="projectId"
+      :projectId="queryParam.projectID"
       :model="staffMdl"
-      :staffId="staffid"
       :isUpdate="true"
       :drawerTitle="drawerTitle"
       @onclose="projectstaffopssubdrawerVisible = false"
@@ -224,7 +223,7 @@ export default {
               const ans = result.data.staffs
               this.inProjectMap = {}
               for (const i of ans) {
-                  this.inProjectMap[i.id] = i.name
+                this.inProjectMap[i.id] = i.name
               }
               setTimeout(() => {
                 this.infoLoading = false
@@ -278,6 +277,7 @@ export default {
     projectstaffopssubdrawer
   },
   created () {
+      this.fetchProlectList()
     this.getDict('gender').then((response) => {
       this.genderMap = {}
       for (const i of response) {
@@ -297,25 +297,27 @@ export default {
       this.$refs[this.currentTableId][0].refresh(true)
     }
   },
-  activated () {
-    this.fetchProlectList()
-    // this.$refs[this.currentTableId][0].refresh(true)
+  async activated () {
+//    await this.fetchProlectList()
+   this.$nextTick(() => {
+    this.$refs[this.currentTableId][0].refresh(true)
+   })
   },
   methods: {
-      handleUpdate (record) {
-      this.drawerTitle = '修改项目人员：' + record.name + ':' + record.id
+    handleUpdate (record) {
+      this.drawerTitle = '修改项目人员：' + record.name + ':' + record.idNo
       const form = this.$refs.projectstaffopssubdrawer.form
       form.resetFields() // 清理表单数据（可不做）
       this.staffMdl = {
         staffId: record.id,
         projectId: this.currentTableId,
-salary: record.salary,
-enterDate: record.beginDate,
-quitDate: record.endDate
+        salary: record.salary,
+        enterDate: record.beginDate,
+        quitDate: record.endDate
       }
       this.projectstaffopssubdrawerVisible = true
     },
-      handleDelete (record) {
+    handleDelete (record) {
       Modal.confirm({
         title: '删除人员',
         content: '是否确认删除？该操作将发起审核！',
@@ -354,11 +356,11 @@ quitDate: record.endDate
         onCancel () {}
       })
     },
-      handleSalaryList (record) {
+    handleSalaryList (record) {
       this.salaryVisible = true
       this.picStaffId = record.id
     },
-       handleProjectStaffOpsDrawer (record) {
+    handleProjectStaffOpsDrawer (record) {
       this.projectStaffOpsDrawerVisible = true
     },
     async handleDetail (record) {
@@ -427,14 +429,7 @@ quitDate: record.endDate
             if (this.projectList.length > 0) {
               this.queryParam.projectID = this.projectList[0].id
               this.currentTableId = this.projectList[0].id
-              if (this.$refs[this.currentTableId] === undefined) {
-                setTimeout(() => {
-                  this.$refs[this.currentTableId][0].refresh(true)
-                }, 600)
-              } else {
-                this.$refs[this.currentTableId][0].refresh(true)
-              }
-            }
+}
           } else {
             this.$notification.error({
               message: errorMessage(result),
@@ -445,6 +440,7 @@ quitDate: record.endDate
             this.projectListLoading = false
           }
           setTimeout(() => {
+              this.refresh = !this.refresh
             this.projectListLoading = false
           }, 600)
         })
@@ -472,7 +468,7 @@ quitDate: record.endDate
 </script>
 
 <style>
-.a{
-    background-color: gray;
+.a {
+  background-color: gray;
 }
 </style>

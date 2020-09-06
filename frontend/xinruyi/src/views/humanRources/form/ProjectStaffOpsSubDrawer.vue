@@ -97,14 +97,6 @@ export default {
     isUpdate: {
       type: Boolean,
       default: () => false
-    },
-    projectId: {
-      type: String,
-      default: () => ''
-    },
-    staffId: {
-      type: String,
-      default: () => ''
     }
   },
   components: {},
@@ -123,11 +115,6 @@ export default {
       // city: citiesHepler[0].label,
       salaryList: [],
       staffListLoading: false,
-      queryParam: {
-        beginDate: '',
-        endData: '',
-        projectId: ''
-      },
       form: this.$form.createForm(this),
       staffList: []
     }

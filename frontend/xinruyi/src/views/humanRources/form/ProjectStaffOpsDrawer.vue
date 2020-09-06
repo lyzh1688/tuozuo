@@ -33,9 +33,7 @@
     <projectstaffopssubdrawer
       ref="projectstaffopssubdrawer"
       :subvisible="projectstaffopssubdrawerVisible"
-      :projectId="projectId"
       :model="staffMdl"
-      :staffId="staffid"
       :drawerTitle="drawerTitle"
       @onclose="projectstaffopssubdrawerVisible = false"
       @refreshlist="$emit('refreshlist')"
@@ -52,10 +50,6 @@ export default {
     visible: {
       type: Boolean,
       required: true
-    },
-    refresh: {
-      type: Boolean,
-      default: () => false
     },
     staffInProjectList: {
       type: Object,
