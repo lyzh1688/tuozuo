@@ -16,9 +16,17 @@ public class ProjectStaffInfo {
     private String beginDate;
     private String endDate;
     private String isValid;
-    private String quit;
     private String remark;
     private String isSigned;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getId() {
         return id;
@@ -84,13 +92,6 @@ public class ProjectStaffInfo {
         this.isValid = isValid;
     }
 
-    public String getQuit() {
-        return quit;
-    }
-
-    public void setQuit(String quit) {
-        this.quit = quit;
-    }
 
     public String getRemark() {
         return remark;

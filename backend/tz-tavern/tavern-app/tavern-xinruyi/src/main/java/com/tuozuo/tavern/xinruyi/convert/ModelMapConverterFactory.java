@@ -53,10 +53,9 @@ public interface ModelMapConverterFactory {
     StaffResourcePoolDTO modelToStaffResourcePoolDTO(StaffResourcePool staffResourcePool);
 
     @Mappings({
-            @Mapping(source = "staffId", target = "id"),
-            @Mapping(source = "staffName", target = "name")
+            @Mapping(source = "idNumber", target = "idNo")
     })
-    BusinessDictDTO staffPoolToBusinessDict(StaffResourcePool pool);
+    StaffDictDTO staffPoolToBusinessDict(StaffResourcePool pool);
 
     @Mappings({
             @Mapping(source = "status", target = "authStatus"),

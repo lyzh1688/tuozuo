@@ -7,6 +7,7 @@ import com.tuozuo.tavern.xinruyi.dao.StaffInfoDao;
 import com.tuozuo.tavern.xinruyi.mapper.StaffResourcePoolMapper;
 import com.tuozuo.tavern.xinruyi.model.StaffResourcePool;
 import com.tuozuo.tavern.xinruyi.model.StaffSalaryInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -46,13 +47,38 @@ public class StaffInfoDaoImpl implements StaffInfoDao {
     }
 
     @Override
-    public List<StaffResourcePool> selectByName(String name, String companyId, int queryCnt) {
+    public List<StaffResourcePool> selectAllStaff(String name) {
+        return this.staffResourcePoolMapper.selectList(Wrappers.<StaffResourcePool>query().lambda()
+                .eq(StaffResourcePool::getIsValid, "1")
+                .like(StringUtils.isNoneEmpty(name), StaffResourcePool::getStaffName, name));
+    }
+
+    @Override
+    public List<StaffResourcePool> selectAllCustomStaff(String name, String companyId) {
         return this.staffResourcePoolMapper.selectList(Wrappers.<StaffResourcePool>query().lambda()
                 .eq(StaffResourcePool::getIsValid, "1")
                 .eq(StaffResourcePool::getCompanyId, companyId)
-                .like(StaffResourcePool::getStaffName, name)
+                .like(StringUtils.isNoneEmpty(name), StaffResourcePool::getStaffName, name));
+    }
+
+    @Override
+    public List<StaffResourcePool> selectStaff(String name, int queryCnt) {
+        return this.staffResourcePoolMapper.selectList(Wrappers.<StaffResourcePool>query().lambda()
+                .eq(StaffResourcePool::getIsValid, "1")
+                .like(StringUtils.isNoneEmpty(name), StaffResourcePool::getStaffName, name)
+                .last("limit " + queryCnt));
+
+    }
+
+    @Override
+    public List<StaffResourcePool> selectCustomStaff(String name, String companyId, int queryCnt) {
+        return this.staffResourcePoolMapper.selectList(Wrappers.<StaffResourcePool>query().lambda()
+                .eq(StaffResourcePool::getIsValid, "1")
+                .eq(StaffResourcePool::getCompanyId, companyId)
+                .like(StringUtils.isNoneEmpty(name), StaffResourcePool::getStaffName, name)
                 .last("limit " + queryCnt));
     }
+
 
     @Override
     public IPage<StaffSalaryInfo> selectStaffSalaryInfo(int pageNo, int pageSize, String companyId, String staffId, String projectId, String beginDate, String endDate) {

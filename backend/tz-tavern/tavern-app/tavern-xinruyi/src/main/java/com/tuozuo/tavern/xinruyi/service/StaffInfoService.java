@@ -20,7 +20,7 @@ public interface StaffInfoService {
 
     void removeStaff(String staffId);
 
-    List<StaffResourcePool> queryStaffByName(String name,String companyId,int queryCnt);
+    List<StaffResourcePool> queryStaffByName(String companyId, String name, int queryCnt, Boolean all, String roleGroup);
 
     IPage<StaffSalaryInfo> queryStaffSalaryInfo(int pageNo, int pageSize,
                                                  String companyId,

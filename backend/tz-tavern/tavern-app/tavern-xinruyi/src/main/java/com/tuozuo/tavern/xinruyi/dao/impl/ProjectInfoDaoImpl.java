@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tuozuo.tavern.xinruyi.dao.ProjectInfoDao;
 import com.tuozuo.tavern.xinruyi.mapper.ProjectInfoMapper;
 import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -25,7 +26,7 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
     public List<ProjectInfo> selectAllProjectInfo(String projectName) {
         return this.projectInfoMapper.selectList(Wrappers.<ProjectInfo>query()
                 .lambda()
-                .like(projectName != null,ProjectInfo::getProjectName, projectName)
+                .like(StringUtils.isNoneEmpty(projectName),ProjectInfo::getProjectName, projectName)
                 .orderByAsc(ProjectInfo::getProjectName));
     }
 
@@ -33,7 +34,7 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
     public List<ProjectInfo> selectAllCustomProjectInfo(String companyId, String projectName) {
         return this.projectInfoMapper.selectList(Wrappers.<ProjectInfo>query()
                 .lambda()
-                .like(projectName != null,ProjectInfo::getProjectName, projectName)
+                .like(StringUtils.isNoneEmpty(projectName),ProjectInfo::getProjectName, projectName)
                 .eq(ProjectInfo::getCompanyId, companyId)
                 .orderByAsc(ProjectInfo::getProjectName));
     }
@@ -42,7 +43,7 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
     public List<ProjectInfo> selectProjectInfo(String projectName, int queryCnt) {
         return this.projectInfoMapper.selectList(Wrappers.<ProjectInfo>query()
                 .lambda()
-                .like(projectName != null,ProjectInfo::getProjectName, projectName)
+                .like(StringUtils.isNoneEmpty(projectName),ProjectInfo::getProjectName, projectName)
                 .orderByAsc(ProjectInfo::getProjectName)
                 .last("limit " + queryCnt));
     }
@@ -51,7 +52,7 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
     public List<ProjectInfo> selectCustomProjectInfo(String companyId, String projectName, int queryCnt) {
         return this.projectInfoMapper.selectList(Wrappers.<ProjectInfo>query()
                 .lambda()
-                .like(projectName != null,ProjectInfo::getProjectName, projectName)
+                .like(StringUtils.isNoneEmpty(projectName),ProjectInfo::getProjectName, projectName)
                 .eq(ProjectInfo::getCompanyId, companyId)
                 .orderByAsc(ProjectInfo::getProjectName)
                 .last("limit " + queryCnt));

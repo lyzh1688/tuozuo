@@ -1,6 +1,7 @@
 package com.tuozuo.tavern.xinruyi.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.tuozuo.tavern.common.protocol.UserTypeDict;
 import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.xinruyi.dao.StaffInfoDao;
 import com.tuozuo.tavern.xinruyi.model.StaffResourcePool;
@@ -44,8 +45,25 @@ public class StaffInfoServiceImpl implements StaffInfoService {
     }
 
     @Override
-    public List<StaffResourcePool> queryStaffByName(String name,String companyId,int queryCnt) {
-        return this.staffInfoDao.selectByName(name, companyId, queryCnt);
+    public List<StaffResourcePool> queryStaffByName (String companyId, String name, int queryCnt, Boolean all, String roleGroup){
+
+            if (roleGroup.equals(UserTypeDict.custom)) {
+
+                if (all) {
+                    return this.staffInfoDao.selectAllCustomStaff( name,companyId);
+                } else {
+                    return this.staffInfoDao.selectCustomStaff(name,companyId,queryCnt);
+                }
+
+            } else {
+                if (all) {
+                    return this.staffInfoDao.selectAllStaff(name);
+                } else {
+                    return this.staffInfoDao.selectStaff(name, queryCnt);
+                }
+            }
+
+
     }
 
     @Override

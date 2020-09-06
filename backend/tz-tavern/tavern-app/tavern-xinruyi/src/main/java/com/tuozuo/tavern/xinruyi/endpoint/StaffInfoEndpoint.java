@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
-import com.tuozuo.tavern.xinruyi.dto.BusinessDictDTO;
+import com.tuozuo.tavern.xinruyi.dto.StaffDictDTO;
 import com.tuozuo.tavern.xinruyi.dto.StaffResourcePoolDTO;
 import com.tuozuo.tavern.xinruyi.dto.StaffResourcePoolListDTO;
 import com.tuozuo.tavern.xinruyi.dto.StaffSalaryListDTO;
@@ -148,11 +148,13 @@ public class StaffInfoEndpoint {
      * 员工模糊查询
      */
     @GetMapping("")
-    public TavernResponse queryStaff(@RequestParam(name = "staffName") String staffName,
+    public TavernResponse queryStaff(@RequestParam(name = "staffName", required = false, defaultValue = "") String staffName,
                                      @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt,
-                                     @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId) {
+                                     @RequestParam(value = "all", required = false) boolean all,
+                                     @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId,
+                                     @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
         try {
-            List<BusinessDictDTO> dictList = this.staffInfoService.queryStaffByName(staffName, companyId, queryCnt)
+            List<StaffDictDTO> dictList = this.staffInfoService.queryStaffByName(companyId, staffName, queryCnt, all, roleGroup)
                     .stream()
                     .map(this.converter::staffPoolToBusinessDict)
                     .collect(Collectors.toList());

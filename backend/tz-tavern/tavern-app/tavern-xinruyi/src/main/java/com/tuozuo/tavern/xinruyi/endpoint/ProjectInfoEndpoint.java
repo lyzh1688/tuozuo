@@ -64,7 +64,7 @@ public class ProjectInfoEndpoint {
      * 我的项目模糊搜索
      */
     @GetMapping("")
-    public TavernResponse queryProjectDict(@RequestParam(value = "projectName", required = false) String projectName,
+    public TavernResponse queryProjectDict(@RequestParam(value = "projectName", required = false,defaultValue = "") String projectName,
                                            @RequestParam(value = "queryCnt", required = false, defaultValue = "20") int queryCnt,
                                            @RequestParam(value = "all", required = false) boolean all,
                                            @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId,

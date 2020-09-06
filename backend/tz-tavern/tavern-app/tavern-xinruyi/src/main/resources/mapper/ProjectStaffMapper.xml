@@ -22,9 +22,9 @@
     <result column="enter_date" jdbcType="VARCHAR" property="beginDate" />
     <result column="quit_date" jdbcType="VARCHAR" property="endDate" />
     <result column="is_valid" jdbcType="VARCHAR" property="isValid" />
-    <result column="status" jdbcType="VARCHAR" property="quit" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="is_signed" jdbcType="VARCHAR" property="isSigned" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
   </resultMap>
   <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
     select project_id, staff_id, is_signed, enter_date, quit_date, salary, status, remark, 
@@ -43,13 +43,11 @@
     t1.staff_id,t1.id_number,t1.staff_name,t1.gender,
     t2.salary,date_format(t2.enter_date ,'%Y-%m-%d') enter_date,
     date_format(t2.quit_date ,'%Y-%m-%d') quit_date,is_valid,
-    case t2.`status` when '2' then '0' when '1' then '1' else '1' end status ,
-    t2.remark,t2.is_signed
+    t2.remark,t2.is_signed,t2.status
     from staff_resource_pool t1,project_staff t2
     where t1.staff_id = t2.staff_id
     and t2.project_id = #{projectId}
     and t1.company_id = #{companyId}
-    and t2.status = '2'
     order by enter_date desc
   </select>
 </mapper>

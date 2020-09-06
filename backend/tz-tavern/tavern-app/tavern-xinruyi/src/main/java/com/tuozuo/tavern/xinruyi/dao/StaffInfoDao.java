@@ -20,7 +20,11 @@ public interface StaffInfoDao {
 
     void delete(String staffId);
 
-    List<StaffResourcePool> selectByName(String name, String companyId, int queryCnt);
+
+    List<StaffResourcePool> selectAllStaff(String name);
+    List<StaffResourcePool> selectAllCustomStaff(String name, String companyId);
+    List<StaffResourcePool> selectStaff(String name, int queryCnt);
+    List<StaffResourcePool> selectCustomStaff(String name, String companyId, int queryCnt);
 
     IPage<StaffSalaryInfo> selectStaffSalaryInfo(int pageNo, int pageSize,
                                                  String companyId,
