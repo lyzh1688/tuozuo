@@ -6,14 +6,14 @@
     :closable="false"
     :visible="visible"
     :afterVisibleChange="visibleChange"
-    @close="() => { $emit('onClose') }"
+    @close="() => { $emit('onclose') }"
   >
     <a-spin :spinning="infoLoading">
       <a-form >
         <!-- 检查是否有 id 并且大于0，大于0是修改。其他是新增，新增不显示主键ID -->
         <a-row>
-          <a-col :md="7" :sm="8">
-            <a-form-item label="项目名称">
+          <a-col :md="7" :sm="8" v-if="projectId==''">
+            <a-form-item label="项目名称" >
               <a-select
                 show-search
                 :value="queryParam.projectId"
@@ -188,6 +188,9 @@ export default {
       fuzzyProjectList: [],
       salaryData: parameter => {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
+        if (this.projectId !== '') {
+          requestParameters.projectId = this.projectId
+        }
         console.log('loadData request parameters:', requestParameters)
         this.infoLoading = true
         return getSalaryList(requestParameters.projectId, this.staffId, requestParameters.beginDate, requestParameters.endDate, requestParameters.pageNo, requestParameters.pageSize)

@@ -60,12 +60,11 @@ export const asyncRouterMap = [
         meta: { title: '人力资源池', keepAlive: true, permission: ['admin', 'xinruyi.custom.normal'] }
       },
       {
-        path: '/customService/customInfo',
-        name: 'CustomInfo',
-        hidden: true,
-        component: resolve => require(['@/views/user/CustomInfo'], resolve),
+        path: '/humanResourceService/projectStaffList',
+        name: 'ProjectStaff',
+        component: resolve => require(['@/views/humanRources/ProjectStaff'], resolve),
         // component: () => import('@/views/user/CustomInfo'),
-        meta: { title: '客户详情', keepAlive: true, permission: ['admin', 'shuiruyi.staff.normal'] }
+        meta: { title: '项目人员管理', keepAlive: true, permission: ['admin', 'xinruyi.custom.normal'] }
       }
     ]
   },

@@ -9,7 +9,8 @@ const CompanyApi = {
   staffFuzzyQuery: process.env.VUE_APP_SYSTEM_URL + '/v1/staff',
   projectStaffList: process.env.VUE_APP_SYSTEM_URL + '/v1/project/staff/',
   addprojectStaff: process.env.VUE_APP_SYSTEM_URL + '/v1/project/staff/',
-  updateprojectStaff: process.env.VUE_APP_SYSTEM_URL + '/v1/project/staff/'
+  updateprojectStaff: process.env.VUE_APP_SYSTEM_URL + '/v1/project/staff/',
+  dropStaffFromProject: process.env.VUE_APP_SYSTEM_URL + '/v1/project/staff/'
 }
 /**
  * 获取人力资源池列表
@@ -79,9 +80,9 @@ export function addStaff (parameter) {
    * @param {String} staffName 人员名称
    * @param {String} queryCnt 查询条数
    */
-  export function fuzzyQueryStaff (staffName, queryCnt) {
+  export function fuzzyQueryStaff (staffName, queryCnt, all) {
     return request({
-      url: CompanyApi.staffFuzzyQuery + '?staffName=' + staffName + '&queryCnt=' + queryCnt,
+      url: CompanyApi.staffFuzzyQuery + '?staffName=' + staffName + '&queryCnt=' + queryCnt + '&all=' + all,
       method: 'GET'
     })
   }
@@ -108,7 +109,7 @@ export function addStaff (parameter) {
    */
   export function getProjectStaffList (projectId, pageNo, pageSize) {
     return request({
-      url: CompanyApi.projectStaffList + projectId + pageNo + '&pageSize=' + pageSize,
+      url: CompanyApi.projectStaffList + projectId + '?pageNo=' + pageNo + '&pageSize=' + pageSize,
       method: 'GET'
     })
   }
@@ -137,8 +138,22 @@ export function addStaff (parameter) {
    */
   export function updateProjectStaff (parameter) {
     return request({
-      url: CompanyApi.addprojectStaff + parameter.staffId,
+      url: CompanyApi.updateprojectStaff + parameter.staffId,
       method: 'PUT',
       data: parameter
+    })
+  }
+  /**
+   * 项目裁员
+   * @param {String} staffId 员工ID
+   * @param {String} projectId 项目ID
+   */
+  export function delectStaffFromProject (staffId, projectId) {
+    return request({
+      url: CompanyApi.addprojectStaff + staffId,
+      method: 'DELETE',
+      data: {
+        projectId: projectId
+      }
     })
   }

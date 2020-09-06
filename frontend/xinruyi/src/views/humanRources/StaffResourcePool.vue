@@ -27,11 +27,10 @@
         <span slot="gender" slot-scope="text">{{ genderMap[text] }}</span>
         <span slot="ops" slot-scope="text, record">
           <a-button type="primary" size="small" @click="handleUpdate(record)">修改</a-button>
+          <a-divider type="vertical" />
           <a-button type="danger" size="small" @click="handleDelete(record)">删除</a-button>
-          <a-button
-            type="dashed"
-            size="small"
-            @click="handleSalaryList(record)">历史工资单</a-button>
+          <a-divider type="vertical" />
+          <a-button type="dashed" size="small" @click="handleSalaryList(record)">历史工资单</a-button>
         </span>
       </s-table>
     </a-card>
@@ -51,7 +50,7 @@
       :staffId="picStaffId"
       :visible="salaryVisible"
       :refresh="refreshSalary"
-      @onClose="handleSalaryClose"
+      @onclose="handleSalaryClose"
     ></SalaryListDrawer>
   </page-header-wrapper>
 </template>
@@ -63,7 +62,7 @@ import SalaryListDrawer from './form/SalaryListDrawer'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 import { getStaffList, addStaff, updateStaff, getStaffDetail, deleteStaff } from '@/api/humanResource'
 import { getCommonDict } from '@/api/dictionary'
-import staffDetail from './form/StaffDetail'
+import staffDetail from './form/StaffDetails'
 const columns = [
   {
     title: '编号',
@@ -96,36 +95,36 @@ const columns = [
   }
 ]
 export default {
-    name: 'HumanResourcePool',
-    data () {
-        this.columns = columns
-        return {
-            picStaffId: '',
-            staffDetailVisible: false,
-            salaryVisible: false,
-            confirmLoading: false,
-            staffDetailMdl: {},
-            isupdate: false,
-            isShowOnly: false,
-            genderMap: {},
-            refresh: false,
-            queryParam: {},
-            infoLoading: false,
-            formTitle: '',
-            refreshSalary: false,
- loadData: parameter => {
+  name: 'HumanResourcePool',
+  data () {
+    this.columns = columns
+    return {
+      picStaffId: '',
+      staffDetailVisible: false,
+      salaryVisible: false,
+      confirmLoading: false,
+      staffDetailMdl: {},
+      isupdate: false,
+      isShowOnly: false,
+      genderMap: {},
+      refresh: false,
+      queryParam: {},
+      infoLoading: false,
+      formTitle: '',
+      refreshSalary: false,
+      loadData: (parameter) => {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
         console.log('loadData request parameters:', requestParameters)
         this.infoLoading = true
         return getStaffList(requestParameters.pageNo, requestParameters.pageSize)
-          .then(Response => {
+          .then((Response) => {
             const result = Response
             // console.log('getTradeflow', result)
             if (success(result)) {
               const ans = result.data.staffs
               setTimeout(() => {
-              this.infoLoading = false
-            }, 600)
+                this.infoLoading = false
+              }, 600)
               return {
                 pageSize: requestParameters.pageSize,
                 pageNo: requestParameters.pageNo,
@@ -137,12 +136,12 @@ export default {
                 message: errorMessage(result),
                 description: '查询资源池列表失败，请稍后再试'
               })
-               setTimeout(() => {
-              this.infoLoading = false
-            }, 600)
+              setTimeout(() => {
+                this.infoLoading = false
+              }, 600)
             }
           })
-          .catch(error => {
+          .catch((error) => {
             setTimeout(() => {
               this.infoLoading = false
             }, 600)
@@ -152,65 +151,65 @@ export default {
             })
           })
       }
-        }
+    }
+  },
+  methods: {
+    handleSalaryList (record) {
+      this.salaryVisible = true
+      this.picStaffId = record.id
     },
-    methods: {
-        handleSalaryList (record) {
-            this.salaryVisible = true
-            this.picStaffId = record.id
-        },
-         handleCancel () {
-             if (!this.isShowOnly) {
-    Modal.confirm({
-        title: '取消操作',
-        content: '是否确认取消操作？所做的修改将会丢失！',
-        onOk: () => {
-           this.staffDetailVisible = false
-        },
-        onCancel () {}
-      })
-             } else {
-                  this.staffDetailVisible = false
-             }
+    handleCancel () {
+      if (!this.isShowOnly) {
+        Modal.confirm({
+          title: '取消操作',
+          content: '是否确认取消操作？所做的修改将会丢失！',
+          onOk: () => {
+            this.staffDetailVisible = false
+          },
+          onCancel () {}
+        })
+      } else {
+        this.staffDetailVisible = false
+      }
     },
     handleSalaryClose () {
-        this.salaryVisible = false
+      this.salaryVisible = false
     },
     handleDelete (record) {
-        Modal.confirm({
+      Modal.confirm({
         title: '删除人员',
         content: '是否确认删除？该操作不可逆！',
         onOk: () => {
-           this.confirmLoading = true
-      deleteStaff(record.id)
-        .then((response) => {
-          const result = response
-          if (success(result)) {
-            this.$notification.success({
-              message: errorMessage(result),
-              description: '删除成功'
+          this.confirmLoading = true
+          deleteStaff(record.id)
+            .then((response) => {
+              const result = response
+              if (success(result)) {
+                this.$notification.success({
+                  message: errorMessage(result),
+                  description: '删除成功'
+                })
+                this.$refs.table.refresh(true)
+                this.confirmLoading = false
+              } else {
+                this.confirmLoading = false
+                this.$notification.error({
+                  message: errorMessage(result),
+                  description: '删除失败'
+                })
+              }
+              if (needLogin(result)) {
+                this.staffDetailVisible = false
+                this.confirmLoading = false
+              }
             })
-            this.$refs.table.refresh(true)
-            this.confirmLoading = false
-          } else {
-            this.confirmLoading = false
-            this.$notification.error({
-              message: errorMessage(result),
-              description: '删除失败'
+            .catch((error) => {
+              this.$notification.error({
+                message: '删除失败',
+                description: error
+              })
+              this.confirmLoading = false
             })
-          }
-          if (needLogin(result)) {
-                  this.staffDetailVisible = false
-                  this.confirmLoading = false
-                }
-        })
-        .catch((error) => {
-          this.$notification.error({
-            message: '删除失败',
-            description: error
-          })
-          this.confirmLoading = false
-        })
         },
         onCancel () {}
       })
@@ -314,7 +313,7 @@ export default {
     },
     async handleUpdate (record) {
       await this.getDetail(record)
-this.formTitle = '修改人员详情'
+      this.formTitle = '修改人员详情'
       this.isupdate = true
       this.staffDetailVisible = true
       this.isShowOnly = false
@@ -340,9 +339,9 @@ this.formTitle = '修改人员详情'
             })
           }
           if (needLogin(result)) {
-                  this.staffDetailVisible = false
-                  this.confirmLoading = false
-                }
+            this.staffDetailVisible = false
+            this.confirmLoading = false
+          }
         })
         .catch((error) => {
           this.$notification.error({
@@ -352,7 +351,7 @@ this.formTitle = '修改人员详情'
           this.confirmLoading = false
         })
     },
-        getDict (keyword) {
+    getDict (keyword) {
       return new Promise((resolve, reject) => {
         getCommonDict(keyword).then((Response) => {
           const result = Response
@@ -371,16 +370,16 @@ this.formTitle = '修改人员详情'
         })
       })
     }
-    },
-    created () {
-this.getDict('gender').then((response) => {
+  },
+  created () {
+    this.getDict('gender').then((response) => {
       this.genderMap = {}
-            for (const i of response) {
-              this.genderMap[i.id] = i.name
-            }
+      for (const i of response) {
+        this.genderMap[i.id] = i.name
+      }
     })
-    },
-    activated () {
+  },
+  activated () {
     this.$refs.table.refresh(true)
   },
   components: {
@@ -390,12 +389,11 @@ this.getDict('gender').then((response) => {
   },
   watch: {
     refresh: function (newVal, oldVal) {
-          this.$refs.table.refresh(true)
+      this.$refs.table.refresh(true)
     }
   }
 }
 </script>
 
 <style>
-
 </style>
