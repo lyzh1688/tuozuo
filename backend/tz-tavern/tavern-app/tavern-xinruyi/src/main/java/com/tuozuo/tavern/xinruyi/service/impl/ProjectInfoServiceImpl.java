@@ -51,7 +51,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         if (roleGroup.equals(UserTypeDict.custom)) {
 
             if (all) {
-                return this.projectInfoDao.selectAllCustomProjectInfo(projectName, companyId);
+                return this.projectInfoDao.selectAllCustomProjectInfo(companyId, projectName);
             } else {
                 return this.projectInfoDao.selectCustomProjectInfo(companyId, projectName, queryCnt);
             }
