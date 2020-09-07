@@ -509,6 +509,7 @@ export default {
       this.clearUpload = !this.clearUpload
       form.resetFields() // 清理表单数据（可不做）
       this.isupdate = false
+      this.isShowOnly = false
       this.companyVisible = true
     },
     async handleUpdate (record) {
