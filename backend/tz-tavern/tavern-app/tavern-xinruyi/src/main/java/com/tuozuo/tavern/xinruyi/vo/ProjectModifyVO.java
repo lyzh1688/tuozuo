@@ -24,6 +24,15 @@ public class ProjectModifyVO {
     private String contact;
     private MultipartFile projectFile;
     private String desc;
+    private BigDecimal budget;
+
+    public BigDecimal getBudget() {
+        return budget;
+    }
+
+    public void setBudget(BigDecimal budget) {
+        this.budget = budget;
+    }
 
     public String getProjectId() {
         return projectId;

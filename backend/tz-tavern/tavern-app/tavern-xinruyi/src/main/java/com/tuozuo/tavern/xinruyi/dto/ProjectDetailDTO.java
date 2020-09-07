@@ -1,5 +1,7 @@
 package com.tuozuo.tavern.xinruyi.dto;
 
+import java.math.BigDecimal;
+
 /**
  * Code Monkey: 何彪 <br>
  * Dev Time: 2020/9/2 <br>
@@ -17,6 +19,33 @@ public class ProjectDetailDTO {
     private String contactName;
     private String contact;
     private String projectFile;
+    private String desc;
+    private String remark;
+    private BigDecimal budget;
+
+    public BigDecimal getBudget() {
+        return budget;
+    }
+
+    public void setBudget(BigDecimal budget) {
+        this.budget = budget;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     public String getProjectName() {
         return projectName;

@@ -10,6 +10,33 @@ public class ProjectListVo extends PageVO {
     private String industryType;
     private String budget;
     private String requirementStatus;
+    private String companyId;
+    private String beginDate;
+    private String endDate;
+
+    public String getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getBeginDate() {
+        return beginDate;
+    }
+
+    public void setBeginDate(String beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
 
     public String getProjectId() {
         return projectId;

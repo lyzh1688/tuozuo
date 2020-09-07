@@ -31,7 +31,9 @@
         from project_info t1 ,company_info t2
         <where>
             t1.company_id = t2.company_id
-            and t1.company_id = #{companyId}
+            <if test="companyId != null and companyId != ''">
+                and t1.company_id = #{companyId}
+            </if>
             <if test="projectId != null and projectId != ''">
               and  t1.project_id = #{projectId}
             </if>
@@ -46,6 +48,12 @@
             </if>
             <if test="requirementStatus != null and requirementStatus != ''">
                 and  t1.status = #{requirementStatus}
+            </if>
+            <if test="beginDate != null and beginDate != ''">
+                and t1. publish_date >= STR_TO_DATE(#{beginDate}, '%Y%m%d')
+            </if>
+            <if test="endDate != null and endDate != ''">
+                and t1.publish_date <![CDATA[ <= ]]> STR_TO_DATE(#{endDate}, '%Y%m%d')
             </if>
         </where>
     </select>

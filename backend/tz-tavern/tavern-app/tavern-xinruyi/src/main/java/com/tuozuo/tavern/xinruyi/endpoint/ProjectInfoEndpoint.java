@@ -41,10 +41,11 @@ public class ProjectInfoEndpoint {
      */
     @GetMapping("/list")
     public TavernResponse queryProjectList(@ModelAttribute @Valid ProjectListVo vo,
-                                           @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId) {
+                                           @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId,
+                                           @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
         try {
             ProjectInfoListDTO dto = new ProjectInfoListDTO();
-            IPage<ProjectInfo> page = this.projectInfoService.queryProjectInfo(vo, companyId);
+            IPage<ProjectInfo> page = this.projectInfoService.queryProjectInfo(vo, companyId,roleGroup);
             List<ProjectInfoDTO> list = page.getRecords()
                     .stream()
                     .map(ModelConverterFactory::modelToProjectInfoDTO)

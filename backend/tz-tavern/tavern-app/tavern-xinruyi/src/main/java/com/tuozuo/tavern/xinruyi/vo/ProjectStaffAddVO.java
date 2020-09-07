@@ -12,7 +12,6 @@ public class ProjectStaffAddVO {
     private String staffId;
     @NotNull(message = "salary is not null")
     private BigDecimal salary;
-    @NotNull(message = "gender is not null")
     private String gender;
     @NotNull(message = "enterDate is not null")
     private String enterDate;

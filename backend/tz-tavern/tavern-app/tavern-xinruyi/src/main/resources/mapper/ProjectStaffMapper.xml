@@ -41,8 +41,8 @@
   <select id="selectProjectStaffInfo" resultMap="BaseProjectStaffMap">
     select
     t1.staff_id,t1.id_number,t1.staff_name,t1.gender,
-    t2.salary,date_format(t2.enter_date ,'%Y-%m-%d') enter_date,
-    date_format(t2.quit_date ,'%Y-%m-%d') quit_date,is_valid,
+    t2.salary,date_format(t2.enter_date ,'%Y%m%d') enter_date,
+    date_format(t2.quit_date ,'%Y%m%d') quit_date,is_valid,
     t2.remark,t2.is_signed,t2.status
     from staff_resource_pool t1,project_staff t2
     where t1.staff_id = t2.staff_id

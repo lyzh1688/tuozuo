@@ -36,6 +36,16 @@ public class ProjectAddVO {
     private MultipartFile projectFile;
     @NotNull(message = "desc is not null")
     private String desc;
+    @NotNull(message = "budget is not null")
+    private BigDecimal budget;
+
+    public BigDecimal getBudget() {
+        return budget;
+    }
+
+    public void setBudget(BigDecimal budget) {
+        this.budget = budget;
+    }
 
     public String getProjectName() {
         return projectName;

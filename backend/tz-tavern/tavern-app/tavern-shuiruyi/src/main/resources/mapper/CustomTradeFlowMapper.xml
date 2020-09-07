@@ -10,7 +10,7 @@
     <result column="balance" jdbcType="DECIMAL" property="balance" />
     <result column="trade_snapshot" jdbcType="VARCHAR" property="tradeSnapshot" />
     <result column="trade_file" jdbcType="VARCHAR" property="tradeFile" />
-    <result column="event" jdbcType="VARCHAR" property="event" />
+    <result column="event" jdbcType="VARCHAR" property="status" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
 </mapper>

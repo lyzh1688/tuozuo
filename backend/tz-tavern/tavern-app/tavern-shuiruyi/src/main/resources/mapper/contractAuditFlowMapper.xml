@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.tuozuo.tavern.shuiruyi.model.ContractAuditFlow">
     <id column="flow_id" jdbcType="VARCHAR" property="flowId" />
     <result column="contract_id" jdbcType="VARCHAR" property="contractId" />
-    <result column="event" jdbcType="VARCHAR" property="event" />
+    <result column="event" jdbcType="VARCHAR" property="status" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="user_type" jdbcType="VARCHAR" property="userType" />
     <result column="result_snapshot" jdbcType="VARCHAR" property="resultSnapshot" />
@@ -25,7 +25,7 @@
   <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.shuiruyi.model.ContractAuditFlow">
     update contract_audit_flow
     set contract_id = #{contractId,jdbcType=VARCHAR},
-      event = #{event,jdbcType=VARCHAR},
+      event = #{status,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=VARCHAR},
       user_type = #{userType,jdbcType=VARCHAR},
       result_snapshot = #{resultSnapshot,jdbcType=VARCHAR},

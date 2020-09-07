@@ -25,7 +25,10 @@ public interface ProjectInfoDao {
                                          String industryType,
                                          String limitBudget,
                                          String upperBudget,
-                                         String requirementStatus);
+                                         String requirementStatus,
+                                         String beginDate,
+                                         String endDate
+                                         );
 
     void insertProject(ProjectInfo projectInfo);
 

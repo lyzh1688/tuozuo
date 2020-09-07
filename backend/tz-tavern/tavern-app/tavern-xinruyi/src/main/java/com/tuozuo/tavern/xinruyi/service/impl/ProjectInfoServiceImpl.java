@@ -5,6 +5,7 @@ import com.tuozuo.tavern.common.protocol.UserTypeDict;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
 import com.tuozuo.tavern.xinruyi.dao.ProjectInfoDao;
 import com.tuozuo.tavern.xinruyi.dao.ProjectStaffInfoDao;
+import com.tuozuo.tavern.xinruyi.dict.ProjectStatus;
 import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo;
@@ -37,7 +38,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     @Value("${xinruyi.file.url.path:http://119.3.19.171/xinruyi/file/project/file/}")
     private String fileUrlPath;
-    @Value("${xinruyi.company.file.path:/mnt/file/project/file/}")
+    @Value("${xinruyi.project.file.path:/mnt/file/xinruyi/project/file/}")
     private String filePath;
 
     @Autowired
@@ -99,7 +100,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     }
 
     @Override
-    public IPage<ProjectInfo> queryProjectInfo(ProjectListVo vo, String companyId) {
+    public IPage<ProjectInfo> queryProjectInfo(ProjectListVo vo, String companyId, String roleGroup) {
         String downLimitBudget = null, upperLimitBudget = null;
         if (StringUtils.isNoneEmpty(vo.getBudget())) {
             downLimitBudget = StringUtils.substringBefore(vo.getBudget(), "~");
@@ -108,14 +109,30 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
                 upperLimitBudget = null;
             }
         }
-        return this.projectInfoDao.selectProjectPage(vo.getPageNo(),
-                vo.getPageSize(),
-                companyId,
-                vo.getProjectId(),
-                vo.getIndustryType(),
-                downLimitBudget,
-                upperLimitBudget,
-                vo.getRequirementStatus());
+        if (roleGroup.equals(UserTypeDict.custom)) {
+            return this.projectInfoDao.selectProjectPage(vo.getPageNo(),
+                    vo.getPageSize(),
+                    companyId,
+                    vo.getProjectId(),
+                    vo.getIndustryType(),
+                    downLimitBudget,
+                    upperLimitBudget,
+                    vo.getRequirementStatus(),
+                    vo.getBeginDate(),
+                    vo.getEndDate());
+        } else {
+            return this.projectInfoDao.selectProjectPage(vo.getPageNo(),
+                    vo.getPageSize(),
+                    null,
+                    vo.getProjectId(),
+                    vo.getIndustryType(),
+                    downLimitBudget,
+                    upperLimitBudget,
+                    vo.getRequirementStatus(),
+                    vo.getBeginDate(),
+                    vo.getEndDate());
+        }
+
     }
 
     @Override
@@ -129,11 +146,13 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     @Override
     public void modifyProjectInfo(ProjectModifyVO vo, String companyId) throws Exception {
-        String today = DateUtils.formatDate(LocalDate.now(), DateUtils.SIMPLE_8_FORMATTER);
-        if (vo.getReleaseDate().compareTo(today) > 0) {
-            throw new Exception("项目已发布，修改失败");
+
+        ProjectInfo projectInfo = this.projectInfoDao.selectProjectInfo(vo.getProjectId());
+        if(projectInfo.getStatus().equals(ProjectStatus.AUDITED.getStatus()) || projectInfo.getStatus().equals(ProjectStatus.DONE.getStatus())){
+            throw new Exception("项目已完成审核，修改失败");
         }
-        ProjectInfo projectInfo = ModelConverterFactory.modifyVoToProjectInfo(vo, companyId);
+//        String today = DateUtils.formatDate(LocalDate.now(), DateUtils.SIMPLE_8_FORMATTER);
+        projectInfo = ModelConverterFactory.modifyVoToProjectInfo(vo, companyId);
         this.setProjectInfoFiles(vo.getProjectFile(), projectInfo);
         this.projectInfoDao.modifyProject(projectInfo);
 

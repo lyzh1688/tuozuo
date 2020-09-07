@@ -26,7 +26,7 @@ public interface ProjectInfoService {
 
     void delProjectStaff(String projectId, String staffId) throws Exception;
 
-    IPage<ProjectInfo> queryProjectInfo(ProjectListVo vo,String companyId);
+    IPage<ProjectInfo> queryProjectInfo(ProjectListVo vo,String companyId,String roleGroup);
 
     void addProjectInfo(ProjectAddVO vo, String companyId) throws Exception;
 

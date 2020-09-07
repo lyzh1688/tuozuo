@@ -59,9 +59,11 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
     }
 
     @Override
-    public IPage<ProjectInfo> selectProjectPage(int pageNo, int pageSize, String companyId, String projectId, String industryType, String limitBudget, String upperBudget, String requirementStatus) {
+    public IPage<ProjectInfo> selectProjectPage(int pageNo, int pageSize, String companyId, String projectId, String industryType, String limitBudget, String upperBudget, String requirementStatus ,String beginDate,
+                                                String endDate) {
         Page page = new Page(pageNo, pageSize);
-        return this.projectInfoMapper.selectProjectPage(page, companyId, projectId, industryType, limitBudget, upperBudget, requirementStatus);
+        return this.projectInfoMapper.selectProjectPage(page, companyId, projectId, industryType, limitBudget, upperBudget, requirementStatus , beginDate,
+                 endDate);
     }
 
     @Override

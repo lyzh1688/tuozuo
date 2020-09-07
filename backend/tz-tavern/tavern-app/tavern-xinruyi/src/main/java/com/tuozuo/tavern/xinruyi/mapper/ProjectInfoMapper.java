@@ -15,6 +15,8 @@ public interface ProjectInfoMapper extends BaseMapper<ProjectInfo> {
                                          @Param("industryType") String industryType,
                                          @Param("downLimitBudget") String downLimitBudget,
                                          @Param("upperLimitBudget") String upperLimitBudget,
-                                         @Param("requirementStatus") String requirementStatus);
+                                         @Param("requirementStatus") String requirementStatus,
+                                         @Param("beginDate") String beginDate,
+                                         @Param("endDate") String endDate);
 
 }

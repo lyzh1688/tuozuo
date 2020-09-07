@@ -50,10 +50,10 @@ public class ModelConverterFactory {
             dto.setBudget(new BigDecimal(projectInfo.getBudget()));
         }
         dto.setStaffNum(new BigDecimal(projectInfo.getProjectMemberCount()));
-        dto.setBeginDate(DateUtils.formatDate(projectInfo.getPublishDate(), DateUtils.DEFAULT_DATE_FORMATTER));
+        dto.setBeginDate(DateUtils.formatDate(projectInfo.getPublishDate(), DateUtils.SIMPLE_8_FORMATTER));
         int days = projectInfo.getPeriod().multiply(new BigDecimal(30)).intValue();
         LocalDate endDate = projectInfo.getPublishDate().plusDays(days);
-        dto.setEndDate(DateUtils.formatDate(endDate, DateUtils.DEFAULT_DATE_FORMATTER));
+        dto.setEndDate(DateUtils.formatDate(endDate, DateUtils.SIMPLE_8_FORMATTER));
         dto.setProjectStatus(projectInfo.getStatus());
         return dto;
     }
@@ -74,6 +74,9 @@ public class ModelConverterFactory {
         projectInfo.setDistrict(vo.getDistrict());
         projectInfo.setOnSpot(vo.getIsResident());
         projectInfo.setProjectDesc(vo.getDesc());
+        if(vo.getBudget() != null){
+            projectInfo.setBudget(vo.getBudget().toPlainString());
+        }
         return projectInfo;
     }
 
@@ -95,6 +98,9 @@ public class ModelConverterFactory {
         projectInfo.setDistrict(vo.getDistrict());
         projectInfo.setOnSpot(vo.getIsResident());
         projectInfo.setProjectDesc(vo.getDesc());
+        if(vo.getBudget() != null){
+            projectInfo.setBudget(vo.getBudget().toPlainString());
+        }
         return projectInfo;
     }
 
@@ -102,7 +108,7 @@ public class ModelConverterFactory {
         ProjectDetailDTO projectInfoDTO = new ProjectDetailDTO();
         projectInfoDTO.setProjectName(projectInfo.getProjectName());
         projectInfoDTO.setIndustryType(projectInfo.getProjectIndustry());
-        projectInfoDTO.setReleaseDate(DateUtils.formatDate(projectInfo.getPublishDate(), DateUtils.DEFAULT_DATE_FORMATTER));
+        projectInfoDTO.setReleaseDate(DateUtils.formatDate(projectInfo.getPublishDate(), DateUtils.SIMPLE_8_FORMATTER));
         projectInfoDTO.setProjectCycle(projectInfo.getPeriod().toPlainString());
         projectInfoDTO.setStaffNum(projectInfo.getProjectMemberCount());
         projectInfoDTO.setProvince(projectInfo.getProvince());
@@ -112,6 +118,11 @@ public class ModelConverterFactory {
         projectInfoDTO.setContactName(projectInfo.getContractPerson());
         projectInfoDTO.setContact(projectInfo.getContractPhone());
         projectInfoDTO.setProjectFile(projectInfo.getFileMaterial());
+        projectInfoDTO.setDesc(projectInfo.getProjectDesc());
+        projectInfoDTO.setRemark(projectInfo.getRemark());
+        if(StringUtils.isNotEmpty(projectInfo.getBudget())){
+            projectInfoDTO.setBudget(new BigDecimal(projectInfo.getBudget()));
+        }
         return projectInfoDTO;
     }
 
