@@ -41,11 +41,20 @@
               >{{ staffStatusMap[text] }}</a-tag>
             </span>
             <span slot="ops" slot-scope="text, record">
-              <a-button type="primary" size="small" @click="handleUpdate(record)">修改</a-button>
-              <a-divider type="vertical" />
-              <a-button type="danger" size="small" @click="handleDelete(record)">裁员</a-button>
-              <a-divider type="vertical" />
-              <a-button type="dashed" size="small" @click="handleSalaryList(record)">历史工资单</a-button>
+              <a-button
+                :disabled="record.status!=='2'"
+                type="primary"
+                size="small"
+                shape="circle"
+                icon="edit"
+                @click="handleUpdate(record)"></a-button>
+              <a-button
+                :disabled="record.status!=='2'"
+                size="small"
+                shape="circle"
+                icon="delete"
+                @click="handleDelete(record)"></a-button>
+              <a-button type="dashed" size="small" @click="handleSalaryList(record)">工资单</a-button>
             </span>
           </s-table>
         </a-tab-pane>

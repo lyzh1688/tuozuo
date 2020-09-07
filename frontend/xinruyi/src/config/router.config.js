@@ -28,20 +28,6 @@ export const asyncRouterMap = [
         component: resolve => require(['@/views/user/MyInfo'], resolve),
         // component: () => import('@/views/user/MyInfo'),
         meta: { title: '我的', keepAlive: true, permission: ['admin', 'shuiruyi.custom.normal'] }
-      },
-      {
-        path: '/financialServices/InvoiceStatistics',
-        name: 'InvoiceStatistics',
-        component: resolve => require(['@/views/user/InvoiceStatistics'], resolve),
-        // component: () => import('@/views/user/MyInfo'),
-        meta: { title: '开票统计', keepAlive: true, permission: ['admin', 'shuiruyi.custom.normal'] }
-      },
-      {
-        path: '/financialServices/InvoiceList',
-        name: 'InvoiceList',
-        component: resolve => require(['@/views/user/InvoiceList'], resolve),
-        // component: () => import('@/views/user/MyInfo'),
-        meta: { title: '缴税统计', keepAlive: true, permission: ['admin', 'shuiruyi.custom.normal'] }
       }
     ]
   },
@@ -69,18 +55,18 @@ export const asyncRouterMap = [
     ]
   },
   {
-    path: '/customcompanyControl',
-    name: 'customcompanyControl',
-    redirect: '/customcompanyControl/MycompanyList',
+    path: '/projectContorl',
+    name: 'ProjectContorl',
+    redirect: '/projectContorl/projectList',
     component: BasicLayout,
-    meta: { title: '公司管理', keepAlive: true, icon: 'account-book', permission: ['admin', 'shuiruyi.custom.normal'] },
+    meta: { title: '项目人员管理', keepAlive: true, icon: 'account-book', permission: ['admin', 'xinruyi.custom.normal'] },
     children: [
       {
-        path: '/customcompanyControl/MycompanyList',
-        name: 'MycompanyList',
-        component: resolve => require(['@/views/company/MycompanyList'], resolve),
+        path: '/projectContorl/projectList',
+        name: 'ProjectList',
+        component: resolve => require(['@/views/projects/ProjectList'], resolve),
         // component: () => import('@/views/company/MycompanyList'),
-        meta: { title: '公司列表', keepAlive: true, permission: ['admin', 'shuiruyi.custom.normal'] }
+        meta: { title: '项目列表', keepAlive: true, permission: ['admin', 'xinruyi.custom.normal'] }
       }
     ]
   },

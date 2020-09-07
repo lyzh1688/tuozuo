@@ -26,7 +26,7 @@
           <a-form-item label="工资">
             <a-input-number
               :min="0"
-              v-decorator="['salary', {rules: [{required: true, message: '请输入入团时间！'}], validateTrigger: 'blur'}]"
+              v-decorator="['salary', {rules: [{required: true, message: '请输入工资！'}], validateTrigger: 'blur'}]"
             />
           </a-form-item>
         </a-col>
@@ -62,7 +62,6 @@
         }"
       >
         <a-button style="marginRight: 8px" @click="handleCancel">取消</a-button>
-        <a-button style="marginRight: 8px" @click="$emit('refreshlist')">取222消</a-button>
         <a-button type="primary" @click="handleOk">提交</a-button>
       </div>
     </a-spin>
