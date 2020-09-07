@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    :title="model && model.customId!=undefined&&model.customId!==''?'修改客户':'新建客户'"
+    :title="title"
     :width="740"
     :visible="visible"
     :confirmLoading="loading"
@@ -20,23 +20,25 @@
         </a-form-item>
         <a-form-item label="项目名称">
           <a-input
+            :disabled="isShowOnly"
             v-decorator="['projectName', {rules: [{required: true, message: '请输入项目名称！'}], validateTrigger: 'blur'}]"
           />
         </a-form-item>
         <a-form-item label="行业类型">
           <a-select
+            :disabled="isShowOnly"
             v-decorator="['industryType', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
             style="width: 120px"
           >
             <a-select-option
               v-for="province in industryTypeList"
-              :key="province.areaCode"
-            >{{ province.areaName }}</a-select-option>
+              :key="province.id"
+            >{{ province.name }}</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="项目开始时间">
           <a-date-picker
-            :disabled="isUpdate"
+            :disabled="isShowOnly"
             valueFormat="YYYYMMDD"
             format="YYYY-MM-DD"
             v-decorator="['releaseDate', {rules: [{required: true, message: '请输入项目开始时间！'}], validateTrigger: ['change', 'blur']}]"
@@ -44,18 +46,28 @@
         </a-form-item>
         <a-form-item label="项目周期(月)">
           <a-input-number
+            :disabled="isShowOnly"
             :min="0"
             v-decorator="['projectCycle', {rules: [{required: true, message: '请输入入团时间！'}], validateTrigger: 'blur'}]"
           />
         </a-form-item>
-        <a-form-item label="项目人员">
+        <a-form-item label="项目人数">
           <a-input-number
+            :disabled="isShowOnly"
             :min="0"
             v-decorator="['staffNum', {rules: [{required: true, message: '请输入人员！'}], validateTrigger: 'blur'}]"
           />
         </a-form-item>
+        <a-form-item label="预算金额（万）">
+          <a-input-number
+            :disabled="isShowOnly"
+            :min="0"
+            v-decorator="['budget', {rules: [{required: true, message: '请输入预算金额！'}], validateTrigger: 'blur'}]"
+          />
+        </a-form-item>
         <a-form-item label="所在城市">
           <a-select
+            :disabled="isShowOnly"
             v-decorator="['province', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
             style="width: 120px"
             @change="handleChane"
@@ -66,6 +78,7 @@
             >{{ province.areaName }}</a-select-option>
           </a-select>
           <a-select
+            :disabled="isShowOnly"
             v-decorator="['city', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
             style="width: 120px"
             @change="handleChane2"
@@ -76,6 +89,7 @@
             >{{ cityItem.areaName }}</a-select-option>
           </a-select>
           <a-select
+            :disabled="isShowOnly"
             v-decorator="['district', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
             style="width: 120px"
           >
@@ -87,6 +101,7 @@
         </a-form-item>
         <a-form-item label="是否驻场">
           <a-select
+            :disabled="isShowOnly"
             v-decorator="['isResident', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
             style="width: 120px"
           >
@@ -100,29 +115,31 @@
         </a-form-item>
         <a-form-item label="联系人">
           <a-input
+            :disabled="isShowOnly"
             v-decorator="['contactName', {rules: [{required: true, message: '请输入联系人！'}], validateTrigger: 'blur'}]"
           />
         </a-form-item>
         <a-form-item label="联系方式">
           <a-input
+            :disabled="isShowOnly"
             v-decorator="['contact', {rules: [{required: true, message: '请输入联系方式！'}], validateTrigger: 'blur'}]"
           />
         </a-form-item>
         <a-form-item label="项目文件" key="项目文件">
           <a-button
             type="text"
-            v-if="model&&typeof model.bossIdPicUp === 'string'"
-            @click="()=>{jumpToFile(model.bossIdPicUp)}"
+            v-if="model&&typeof model.projectFile === 'string'"
+            @click="()=>{jumpToFile(model.projectFile)}"
           >已上传的文件</a-button>
           <a-upload
             :beforeUpload="beforeUpload"
             v-show="!isShowOnly"
             name="projectFile"
-            :file-list="bossIdPicUpList"
+            :file-list="projectFileList"
             list-type="picture-card"
             v-decorator="['projectFile', {rules: [{required: true, message: '请输入项目文件！'}], validateTrigger: 'blur'}]"
             :showUploadList="{ showPreviewIcon: false, showRemoveIcon: true }"
-            @change="handleBossIdPicUpChange"
+            @change="handleProjectFileChange"
           >
             <a-button v-show="!isShowOnly" :v-if="showUpload">
               <a-icon :v-if="showUpload" type="upload" />上传
@@ -160,6 +177,8 @@ const fields = [
 'contactName',
 'contact',
 'projectFile',
+'budget',
+'remark',
 'desc'
 ]
 
@@ -177,9 +196,17 @@ export default {
       type: Object,
       default: () => null
     },
-    customTypemap: {
-      type: Array,
-      default: () => []
+   isShowOnly: {
+      type: Boolean,
+      default: false
+    },
+    isUpdate: {
+      type: Boolean,
+      default: false
+    },
+    title: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -195,6 +222,8 @@ export default {
     }
     return {
       // city: citiesHepler[0].label,
+       showUpload: true,
+       projectFileList: [],
       provinceList: [],
       cityList: [],
       districtList: [],
@@ -229,6 +258,27 @@ export default {
     })
   },
   methods: {
+    jumpToFile (link) {
+      window.open(link, '_blank')
+    },
+    handleProjectFileChange (info) {
+      let fileList = [...info.fileList]
+      fileList = fileList.slice(-1)
+      this.projectFileList = fileList
+      //   this.fileList = [info]
+    },
+    beforeUpload (file) {
+      return new Promise((resolve, reject) => {
+        console.log('beforeUpload', file)
+        if (file.size / (1024 * 1024) > 30) {
+          this.$notification.error({
+            message: '文件大小不能超过30M'
+          })
+          reject(new Error('文件大小不能超过30M'))
+        }
+        resolve()
+      })
+    },
     getDict (keyword) {
       return new Promise((resolve, reject) => {
         getCommonDict(keyword).then((Response) => {

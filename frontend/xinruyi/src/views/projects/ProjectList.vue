@@ -1,6 +1,6 @@
 <template>
   <page-header-wrapper>
-    <a-card :bordered="false" >
+    <a-card :bordered="false">
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="10" :sm="8">
@@ -33,7 +33,12 @@
           </a-col>
           <a-col :md="6" :sm="8">
             <a-form-item>
-              <a-button :disabled="projectListLoading" type="primary" size="small" @click="$refs.table.refresh(true)">查询</a-button>
+              <a-button
+                :disabled="projectListLoading"
+                type="primary"
+                size="small"
+                @click="$refs.table.refresh(true)"
+              >查询</a-button>
               <a-button
                 :disabled="projectListLoading"
                 size="small"
@@ -75,13 +80,12 @@
             @click="handleUpdate(record)"
             :loading="confirmLoading"
           >修改</a-button>
-          <a-button size="small" @click="fetchCompanyDetail(record)" :loading="confirmLoading">详情</a-button>
+          <a-button size="small" @click="fetchProjectDetail(record)" :loading="confirmLoading">详情</a-button>
         </span>
-        <a slot="customName" slot-scope="text,record" @click="toCustomInfo(record)">{{ text }}</a>
       </s-table>
-      <companyInfoform
+      <projectform
         :title="formTitle"
-        ref="companyInfoform"
+        ref="projectform"
         :clearUpload="clearUpload"
         :visible="projectVisible"
         :loading="confirmLoading"
@@ -90,17 +94,18 @@
         :isShowOnly="isShowOnly"
         @cancel="handleCancel"
         @ok="handleOk"
-      >
-      </companyInfoform>
+      ></projectform>
     </a-card>
   </page-header-wrapper>
 </template>
 
 <script>
+import { Modal } from 'ant-design-vue'
 import { STable } from '@/components'
-import { fuzzyQueryProject, getProjectList, addNewProject, updateProject } from '@/api/projects'
+import { fuzzyQueryProject, getProjectList, addNewProject, updateProject, getProjectDetail } from '@/api/projects'
 import { getCommonDict } from '@/api/dictionary'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
+import projectform from './form/ProjectForm'
 const columns = [
   {
     title: '编号',
@@ -200,25 +205,26 @@ function fetch (value, callback) {
   timeout = setTimeout(fake, 300)
 }
 export default {
-    name: 'ProjectList',
-    data () {
-        this.columns = columns
-        return {
-            clearUpload: false,
-            projectVisible: false,
-            confirmLoading: false,
-            projectMdl: {},
-            isupdate: false,
-            isShowOnly: false,
-            queryParam1: {
-                projectStatus: '',
-                projectId: ''
-            },
-            projectListLoading: false,
-            fuzzyProjectList: [],
-            projectStatusList: [],
-            projectStatusMap: {},
-            loadData: (parameter) => {
+  name: 'ProjectList',
+  data () {
+    this.columns = columns
+    return {
+      clearUpload: false,
+      projectVisible: false,
+      confirmLoading: false,
+      projectMdl: {},
+      isupdate: false,
+      isShowOnly: false,
+      formTitle: '',
+      queryParam1: {
+        projectStatus: '',
+        projectId: ''
+      },
+      projectListLoading: false,
+      fuzzyProjectList: [],
+      projectStatusList: [],
+      projectStatusMap: {},
+      loadData: (parameter) => {
         const requestParameters = Object.assign({}, parameter, this.queryParam1)
         console.log('loadData request parameters:', requestParameters)
         return getProjectList(
@@ -261,13 +267,14 @@ export default {
             })
           })
       }
-        }
-    },
-    components: {
-        STable
-    },
-      created () {
-          fetch('', (data) => (this.fuzzyProjectList = data))
+    }
+  },
+  components: {
+    STable,
+    projectform
+  },
+  created () {
+    fetch('', (data) => (this.fuzzyProjectList = data))
     this.getDict('projectStatus').then((response) => {
       this.projectStatusList = response
       this.projectStatusMap = {}
@@ -276,17 +283,47 @@ export default {
       }
     })
   },
-    methods: {
-        handleOk () {
+  methods: {
+    fetchProjectDetail (record) {
+      this.formTitle = '公司详情'
+      this.isShowOnly = true
+      this.confirmLoading = true
+      getProjectDetail(record.projectId)
+        .then((response) => {
+          const result = response
+          if (success(result)) {
+            this.projectMdl = {
+              ...result.data,
+              projectId: record.projectId
+            }
+            this.projectVisible = true
+            this.confirmLoading = false
+          } else {
+            this.confirmLoading = false
+            this.$notification.error({
+              message: errorMessage(result),
+              description: '获取项目详情失败'
+            })
+          }
+        })
+        .catch((error) => {
+          this.$notification.error({
+            message: '获取项目详情失败',
+            description: error
+          })
+          this.confirmLoading = false
+        })
+    },
+    handleOk () {
       if (this.isShowOnly) {
-        const form = this.$refs.companyInfoform.form
+        const form = this.$refs.projectform.form
         this.clearUpload = !this.clearUpload
         form.resetFields() // 清理表单数据（可不做）
         this.$refs.table.refresh(true)
-        this.companyVisible = false
+        this.projectVisible = false
         return
       }
-      const form = this.$refs.companyInfoform.form
+      const form = this.$refs.projectform.form
       form.validateFields((errors, values) => {
         if (!errors) {
           this.confirmLoading = true
@@ -300,11 +337,11 @@ export default {
                   this.$notification.success({
                     message: '修改成功'
                   })
-                  const form = this.$refs.companyInfoform.form
+                  const form = this.$refs.projectform.form
                   this.clearUpload = !this.clearUpload
                   form.resetFields() // 清理表单数据（可不做）
                   this.$refs.table.refresh(true)
-                  this.companyVisible = false
+                  this.projectVisible = false
                   this.confirmLoading = false
                 } else {
                   this.confirmLoading = false
@@ -314,7 +351,7 @@ export default {
                   })
                 }
                 if (needLogin(result)) {
-                  this.companyVisible = false
+                  this.projectVisible = false
                   this.confirmLoading = false
                 }
               })
@@ -333,7 +370,7 @@ export default {
                   this.$notification.success({
                     message: '新增成功'
                   })
-                  const form = this.$refs.companyInfoform.form
+                  const form = this.$refs.projectform.form
                   this.clearUpload = !this.clearUpload
                   form.resetFields() // 清理表单数据（可不做）
                   this.$refs.table.refresh(true)
@@ -347,7 +384,7 @@ export default {
                   })
                 }
                 if (needLogin(result)) {
-                  this.companyVisible = false
+                  this.projectVisible = false
                   this.confirmLoading = false
                 }
               })
@@ -362,13 +399,38 @@ export default {
         }
       })
     },
-    handleCancel () {
-      this.projectVisible = false
-
-      // const form = this.$refs.createModal.form
-      // form.resetFields() // 清理表单数据（可不做）
+    handleAdd () {
+      this.formTitle = '新建项目'
+      this.projectMdl = {}
+      const form = this.$refs.projectform.form
+      this.clearUpload = !this.clearUpload
+      form.resetFields() // 清理表单数据（可不做）
+      this.isupdate = false
+       this.isShowOnly = false
+      this.projectVisible = true
     },
-handleCustomSearch (value) {
+    async handleUpdate (record) {
+      await this.fetchProjectDetail(record)
+      this.formTitle = '修改项目'
+      this.isupdate = true
+      this.projectVisible = true
+      this.isShowOnly = false
+    },
+    handleCancel () {
+      if (!this.isShowOnly) {
+        Modal.confirm({
+          title: '取消操作',
+          content: '是否确认取消操作？所做的修改将会丢失！',
+          onOk: () => {
+                  this.projectVisible = false
+          },
+          onCancel () {}
+        })
+      } else {
+        this.projectVisible = false
+      }
+    },
+    handleCustomSearch (value) {
       fetch(value, (data) => (this.fuzzyProjectList = data))
     },
     handleCustomChange (value) {
@@ -395,10 +457,9 @@ handleCustomSearch (value) {
         })
       })
     }
-    }
+  }
 }
 </script>
 
 <style>
-
 </style>

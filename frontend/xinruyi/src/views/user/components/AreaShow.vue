@@ -2,7 +2,7 @@
   <span>{{ area }}</span>
 </template>
 <script>
-import { getAreaCode } from '@/api/company'
+import { getAreaCode } from '@/api/dictionary'
 import { success, errorMessage } from '@/utils/helper/responseHelper'
 export default {
   name: 'AreaShow',

@@ -50,6 +50,7 @@
                 @click="handleUpdate(record)"></a-button>
               <a-button
                 :disabled="record.status!=='2'"
+                type="danger"
                 size="small"
                 shape="circle"
                 icon="delete"

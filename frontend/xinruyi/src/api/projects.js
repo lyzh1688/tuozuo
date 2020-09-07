@@ -14,11 +14,11 @@ const apiList = {
  * @param {Boolean} all 是否全量查询，用于项目tab
  */
 export function fuzzyQueryProject (projectName, queryCnt, all) {
-    return request({
-      url: apiList.fuzzyProject + '?projectName=' + projectName + '&queryCnt=' + queryCnt + '&all=' + all,
-      method: 'GET'
-    })
-  }
+  return request({
+    url: apiList.fuzzyProject + '?projectName=' + projectName + '&queryCnt=' + queryCnt + '&all=' + all,
+    method: 'GET'
+  })
+}
 /**
  * 获取项目列表
  * @param {String} projectId 项目Id
@@ -52,21 +52,32 @@ export function getProjectList (projectId, industryType, budget, requirementStat
  * desc	是	String	项目描述
  */
 export function addNewProject (form) {
-    return request({
-        url: apiList.newProject,
-        method: 'POST',
-        data: form
-      })
+  const formData = new FormData()
+  for (const i in form) {
+    if (i.includes('File')) {
+      formData.append(i, form[i].file.originFileObj)
+    } else {
+      formData.append(i, form[i])
+    }
+  }
+  return request({
+    url: apiList.newProject,
+    method: 'POST',
+    data: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data;charset=UTF-8'
+    }
+  })
 }
 /**
  * 查询项目详情
  * @param {String} projectId 项目id
  */
 export function getProjectDetail (projectId) {
-    return request({
-        url: apiList.projectDetail + '?projectId=' + projectId,
-        method: 'GET'
-    })
+  return request({
+    url: apiList.projectDetail + projectId,
+    method: 'GET'
+  })
 }
 /**
  * 更像项目信息
@@ -86,9 +97,24 @@ export function getProjectDetail (projectId) {
  * desc	是	String	项目描述
  */
 export function updateProject (form) {
-    return request({
-        url: apiList.projectModify,
-        method: 'PUT',
-        data: form
-      })
+  const formData = new FormData()
+  for (const i in form) {
+    if (i.includes('File')) {
+      if (typeof form[i] === 'string') {
+        // formData.append(i, null)
+      } else {
+        formData.append(i, form[i].file.originFileObj)
+      }
+    } else {
+      formData.append(i, form[i])
+    }
+  }
+  return request({
+    url: apiList.projectModify + form.projectId,
+    method: 'PUT',
+    data: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data;charset=UTF-8'
+    }
+  })
 }
