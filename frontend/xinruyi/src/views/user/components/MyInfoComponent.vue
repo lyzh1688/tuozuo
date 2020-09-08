@@ -1,37 +1,35 @@
 <template>
-  <page-header-wrapper>
-    <a-card :bordered="false">
-      <a-skeleton :loading="infoLoading" active title>
-        <slot name="freshButton"></slot>
-        <a-row>
-          <a-col :sm="8" :xs="24">
-            <userInfo title="公司名称" :value="handleDefault(customInfo.companyName)" :bordered="true" />
-          </a-col>
-          <a-col :sm="8" :xs="24">
-            <userInfo
-              title="联系方式"
-              :value="handleDefault(customInfo.contact)"
-              :bordered="true"
-            />
-          </a-col>
-          <a-col :sm="8" :xs="24">
-            <userInfo title="所在城市" >
-              <template v-slot:value>
-                <areashow :provinceCode="customInfo.province" :cityCode="customInfo.city" :districtCode="customInfo.district"/>
-              </template>
-            </userInfo>
-          </a-col>
-          <a-col :sm="8" :xs="24">
-            <userInfo title="行业类型" :value="handleDefault(industryTypeMap[customInfo.industryType])" :bordered="true" />
-          </a-col>
-          <a-col :sm="8" :xs="24">
-            <userInfo title="认证状态" :value="handleDefault(statusMap[customInfo.authStatus])" />
-          </a-col>
 
-        </a-row>
-      </a-skeleton>
-    </a-card>
-  </page-header-wrapper>
+  <a-skeleton :loading="infoLoading" active title>
+    <slot name="freshButton"></slot>
+    <a-row>
+      <a-col :sm="8" :xs="24">
+        <userInfo title="公司名称" :value="handleDefault(customInfo.companyName)" :bordered="true" />
+      </a-col>
+      <a-col :sm="8" :xs="24">
+        <userInfo
+          title="联系方式"
+          :value="handleDefault(customInfo.contact)"
+          :bordered="true"
+        />
+      </a-col>
+      <a-col :sm="8" :xs="24">
+        <userInfo title="所在城市" >
+          <template v-slot:value>
+            <areashow :provinceCode="customInfo.province" :cityCode="customInfo.city" :districtCode="customInfo.district"/>
+          </template>
+        </userInfo>
+      </a-col>
+      <a-col :sm="8" :xs="24">
+        <userInfo title="行业类型" :value="handleDefault(industryTypeMap[customInfo.industryType])" :bordered="true" />
+      </a-col>
+      <a-col :sm="8" :xs="24">
+        <userInfo title="认证状态" :value="handleDefault(statusMap[customInfo.authStatus])" />
+      </a-col>
+
+    </a-row>
+  </a-skeleton>
+
 </template>
 <script>
 import { getCompanyInfo } from '@/api/company'
@@ -110,9 +108,10 @@ export default {
       getCompanyInfo()
         .then(Response => {
           const result = Response
-          // console.log('getCompanyInfo', result)
+          // console.log('getCompanyInfo', result)this
           if (success(result)) {
             this.customInfo = result.data
+            this.$emit('mystatus', result.data)
           } else {
             this.$notification.error({
               message: errorMessage(result),

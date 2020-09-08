@@ -81,6 +81,13 @@
             :loading="confirmLoading"
           >修改</a-button>
           <a-button size="small" @click="fetchProjectDetail(record)" :loading="confirmLoading">详情</a-button>
+          <a-button
+            :disabled="projectStatusMap[record.projectStatus].search('完成')>=0"
+            size="small"
+            type="primary"
+            @click="handleComplete(record)"
+            :loading="confirmLoading"
+          >完成</a-button>
         </span>
       </s-table>
       <projectform
@@ -94,7 +101,16 @@
         :isShowOnly="isShowOnly"
         @cancel="handleCancel"
         @ok="handleOk"
-      ></projectform>
+      >
+        <template v-slot:other v-if="isShowOnly">
+          <a-form-item label="备注" >
+            <a-textarea
+              :disabled="isShowOnly"
+              v-decorator="['remark', { validateTrigger: 'blur'}]"
+            />
+          </a-form-item>
+        </template>
+      </projectform>
     </a-card>
   </page-header-wrapper>
 </template>
@@ -102,7 +118,7 @@
 <script>
 import { Modal } from 'ant-design-vue'
 import { STable } from '@/components'
-import { fuzzyQueryProject, getProjectList, addNewProject, updateProject, getProjectDetail } from '@/api/projects'
+import { fuzzyQueryProject, getProjectList, addNewProject, updateProject, getProjectDetail, completeProjects } from '@/api/projects'
 import { getCommonDict } from '@/api/dictionary'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 import projectform from './form/ProjectForm'
@@ -327,10 +343,8 @@ export default {
       form.validateFields((errors, values) => {
         if (!errors) {
           this.confirmLoading = true
-          delete values.ctiy
-          delete values.area
           if (this.isupdate) {
-            updateProject(values, values.customId)
+            updateProject(values)
               .then((response) => {
                 const result = response
                 if (success(result)) {
@@ -415,6 +429,33 @@ export default {
       this.isupdate = true
       this.projectVisible = true
       this.isShowOnly = false
+    },
+    handleComplete (record) {
+        this.confirmLoading = true
+completeProjects(record.projectId)
+        .then((response) => {
+          const result = response
+          if (success(result)) {
+            this.$notification.success({
+              message: errorMessage(result),
+              description: '发起项目完成审核成功'
+            })
+            this.confirmLoading = false
+          } else {
+            this.confirmLoading = false
+            this.$notification.error({
+              message: errorMessage(result),
+              description: '发起项目完成审核失败'
+            })
+          }
+        })
+        .catch((error) => {
+          this.$notification.error({
+            message: '发起项目完成审核失败',
+            description: error
+          })
+          this.confirmLoading = false
+        })
     },
     handleCancel () {
       if (!this.isShowOnly) {

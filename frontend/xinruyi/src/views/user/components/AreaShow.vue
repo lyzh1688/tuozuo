@@ -33,7 +33,7 @@ export default {
   },
   computed: {
       area () {
-          console.log(this.districtCode, this.districtList[this.districtCode])
+          // console.log(this.districtCode, this.districtList[this.districtCode])
           return (this.provinceList[this.provinceCode] === undefined ? '' : this.provinceList[this.provinceCode]) + '-' + (this.cityList[this.cityCode] === undefined ? '' : this.cityList[this.cityCode]) + '-' + (this.districtList[this.districtCode] === undefined ? '' : this.districtList[this.districtCode])
       }
   },

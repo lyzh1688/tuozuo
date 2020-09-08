@@ -19,6 +19,12 @@ export function fuzzyQueryProject (projectName, queryCnt, all) {
     method: 'GET'
   })
 }
+export function completeProjects (projectId) {
+    return request({
+      url: apiList.projectDone + projectId,
+      method: 'GET'
+    })
+  }
 /**
  * 获取项目列表
  * @param {String} projectId 项目Id
