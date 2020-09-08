@@ -16,9 +16,18 @@ public class CompanyDetailInfoDTO {
     private String bossIdPicBack;
     private String companyAccount;
     private String companyAccountBank;
+    private String companyAccountBranchBank;
     private String contactName;
     private String contact;
     private String remark;
+
+    public String getCompanyAccountBranchBank() {
+        return companyAccountBranchBank;
+    }
+
+    public void setCompanyAccountBranchBank(String companyAccountBranchBank) {
+        this.companyAccountBranchBank = companyAccountBranchBank;
+    }
 
     public String getRegisterId() {
         return registerId;

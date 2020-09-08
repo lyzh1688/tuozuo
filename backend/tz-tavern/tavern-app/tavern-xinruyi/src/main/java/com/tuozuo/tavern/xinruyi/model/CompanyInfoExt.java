@@ -29,11 +29,21 @@ public class CompanyInfoExt {
 
     private String companyBank;
 
+    private String companyBranchBank;
+
     private String contactName;
 
     private String contactPhone;
 
     private String remark;
+
+    public String getCompanyBranchBank() {
+        return companyBranchBank;
+    }
+
+    public void setCompanyBranchBank(String companyBranchBank) {
+        this.companyBranchBank = companyBranchBank;
+    }
 
     public String getCompanyName() {
         return companyName;

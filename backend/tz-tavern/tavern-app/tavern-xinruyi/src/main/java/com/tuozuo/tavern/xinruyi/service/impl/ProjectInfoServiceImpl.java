@@ -159,10 +159,10 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     }
 
     @Override
-    public void modifyProjectStatus(String status, String project) {
+    public void endProject(String project) {
         ProjectInfo projectInfo = new ProjectInfo();
         projectInfo.setProjectId(project);
-        projectInfo.setStatus(status);
+        projectInfo.setStatus(ProjectStatus.AUDITED.getStatus());
         this.projectInfoDao.modifyProject(projectInfo);
         //TODO 项目完成事件确认
 

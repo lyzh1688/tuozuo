@@ -32,7 +32,7 @@ public interface ProjectInfoService {
 
     void modifyProjectInfo(ProjectModifyVO vo, String companyId) throws Exception;
 
-    void modifyProjectStatus(String  status, String project);
+    void endProject( String project);
 
     ProjectInfo queryProjectDetail(String projectId);
 

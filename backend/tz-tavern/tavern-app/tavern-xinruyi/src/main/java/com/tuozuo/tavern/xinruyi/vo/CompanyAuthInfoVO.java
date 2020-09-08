@@ -24,10 +24,20 @@ public class CompanyAuthInfoVO {
     private String companyAccount;
     @NotNull(message = "companyAccountBank is not null")
     private String companyAccountBank;
+    @NotNull(message = "companyAccountBranchBank is not null")
+    private String companyAccountBranchBank;
     @NotNull(message = "contactName is not null")
     private String contactName;
     @NotNull(message = "contact is not null")
     private String contact;
+
+    public String getCompanyAccountBranchBank() {
+        return companyAccountBranchBank;
+    }
+
+    public void setCompanyAccountBranchBank(String companyAccountBranchBank) {
+        this.companyAccountBranchBank = companyAccountBranchBank;
+    }
 
     public String getCompanyId() {
         return companyId;

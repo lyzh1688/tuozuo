@@ -133,6 +133,7 @@ public class ModelConverterFactory {
         ext.setLegalPersonIdentity(vo.getBossId());
         ext.setCompanyBankAccount(vo.getCompanyAccount());
         ext.setCompanyBank(vo.getCompanyAccountBank());
+        ext.setCompanyBranchBank(vo.getCompanyAccountBranchBank());
         ext.setContactName(vo.getContactName());
         ext.setContactPhone(vo.getContact());
         return ext;

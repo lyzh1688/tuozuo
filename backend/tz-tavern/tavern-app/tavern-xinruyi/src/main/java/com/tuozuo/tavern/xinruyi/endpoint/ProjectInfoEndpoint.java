@@ -212,16 +212,15 @@ public class ProjectInfoEndpoint {
     }
 
     /**
-     * 项目状态修改
+     * 项目完结
      */
     @PutMapping("/status/{projectId}")
-    public TavernResponse modifyProjectStatus(@PathVariable("projectId") String projectId,
-                                              @RequestBody @Valid ProjecStatusVO vo) {
+    public TavernResponse modifyProjectStatus(@PathVariable("projectId") String projectId) {
         try {
-            this.projectInfoService.modifyProjectStatus(vo.getStatus(), projectId);
+            this.projectInfoService.endProject( projectId);
             return TavernResponse.OK;
         } catch (Exception e) {
-            LOGGER.error("[项目状态修改] failed", e);
+            LOGGER.error("[项目完结] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }

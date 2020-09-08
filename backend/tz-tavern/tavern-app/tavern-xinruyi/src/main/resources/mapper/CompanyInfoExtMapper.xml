@@ -10,6 +10,7 @@
     <result column="file_legal_person_idcard_back" jdbcType="VARCHAR" property="fileLegalPersonIdcardBack" />
     <result column="company_bank_account" jdbcType="VARCHAR" property="companyBankAccount" />
     <result column="company_bank" jdbcType="VARCHAR" property="companyBank" />
+    <result column="company_branch_bank" jdbcType="VARCHAR" property="companyBranchBank" />
     <result column="contact_name" jdbcType="VARCHAR" property="contactName" />
     <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
@@ -25,6 +26,7 @@
     <result column="file_legal_person_idcard_back" jdbcType="VARCHAR" property="fileLegalPersonIdcardBack" />
     <result column="company_bank_account" jdbcType="VARCHAR" property="companyBankAccount" />
     <result column="company_bank" jdbcType="VARCHAR" property="companyBank" />
+    <result column="company_branch_bank" jdbcType="VARCHAR" property="companyBranchBank" />
     <result column="contact_name" jdbcType="VARCHAR" property="contactName" />
     <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
@@ -33,12 +35,12 @@
     insert into company_info_ext (company_id, file_biz_license, legal_person_identity, 
       legal_person_name, file_legal_person_idcard_up, 
       file_legal_person_idcard_back, company_bank_account, 
-      company_bank, contact_name, contact_phone, 
+      company_bank,company_branch_bank, contact_name, contact_phone,
       remark)
     values (#{companyId,jdbcType=VARCHAR}, #{fileBizLicense,jdbcType=VARCHAR}, #{legalPersonIdentity,jdbcType=VARCHAR}, 
       #{legalPersonName,jdbcType=VARCHAR}, #{fileLegalPersonIdcardUp,jdbcType=VARCHAR}, 
       #{fileLegalPersonIdcardBack,jdbcType=VARCHAR}, #{companyBankAccount,jdbcType=VARCHAR},
-      #{companyBank,jdbcType=VARCHAR}, #{contactName,jdbcType=VARCHAR}, #{contactPhone,jdbcType=VARCHAR}, 
+      #{companyBank,jdbcType=VARCHAR},#{companyBranchBank,jdbcType=VARCHAR}, #{contactName,jdbcType=VARCHAR}, #{contactPhone,jdbcType=VARCHAR},
       #{remark,jdbcType=VARCHAR})
 
     ON DUPLICATE KEY UPDATE
@@ -63,6 +65,9 @@
     <if test="companyBank != null and companyBank != ''">
       company_bank=VALUES(company_bank),
     </if>
+    <if test="companyBranchBank != null and companyBranchBank != ''">
+      company_branch_bank=VALUES(company_branch_bank),
+    </if>
     <if test="contactName != null and contactName != ''">
       contact_name=VALUES(contact_name),
     </if>
@@ -75,7 +80,7 @@
   </insert>
   <select id="select" resultMap="BaseDetailMap">
     select t1.company_id, t1.file_biz_license, t1.legal_person_identity, t1.legal_person_name, t1.file_legal_person_idcard_up,
-    t1.file_legal_person_idcard_back, t1.company_bank_account, t1.company_bank, t1.contact_name,
+    t1.file_legal_person_idcard_back, t1.company_bank_account, t1.company_bank,t1.company_branch_bank, t1.contact_name,
     t1.contact_phone, t1.remark,t2.register_id,t2.company_name
     from company_info_ext t1,company_info t2
     where t1.company_id = t2.company_id

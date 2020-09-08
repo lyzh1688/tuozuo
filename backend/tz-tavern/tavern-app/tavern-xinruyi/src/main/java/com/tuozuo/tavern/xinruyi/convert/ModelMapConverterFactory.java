@@ -63,6 +63,7 @@ public interface ModelMapConverterFactory {
     })
     CompanyInfoDTO modelToCompanyInfoDTO(CompanyInfo companyInfo);
 
+
     @Mappings({
             @Mapping(source = "fileBizLicense", target = "businessLicense"),
             @Mapping(source = "legalPersonName", target = "bossName"),
@@ -70,11 +71,11 @@ public interface ModelMapConverterFactory {
             @Mapping(source = "fileLegalPersonIdcardUp", target = "bossIdPicUp"),
             @Mapping(source = "fileLegalPersonIdcardBack", target = "bossIdPicBack"),
             @Mapping(source = "companyBankAccount", target = "companyAccount"),
+            @Mapping(source = "companyBranchBank", target = "companyAccountBranchBank"),
             @Mapping(source = "companyBank", target = "companyAccountBank"),
             @Mapping(source = "contactPhone", target = "contact"),
             @Mapping(source = "companyName", target = "companyName"),
     })
     CompanyDetailInfoDTO modelToCompanyDetailInfoDTO(CompanyInfoExt companyInfoExt);
-
 
 }
