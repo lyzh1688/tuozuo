@@ -35,7 +35,9 @@ public class CompanyInfoDaoImpl implements CompanyInfoDao {
 
     @Override
     public void updateCompanyAuthInfo(CompanyInfoExt companyInfoExt) {
-        this.companyInfoExtMapper.updateById(companyInfoExt);
+        this.companyInfoExtMapper.update(companyInfoExt, Wrappers.<CompanyInfoExt>query()
+                .lambda()
+                .eq(CompanyInfoExt::getCompanyId, companyInfoExt.getCompanyId()));
     }
 
     @Override
@@ -47,7 +49,7 @@ public class CompanyInfoDaoImpl implements CompanyInfoDao {
     public List<CompanyInfo> selectCompanyList(String companyName, int queryCnt) {
         return this.companyInfoMapper.selectList(Wrappers.<CompanyInfo>query()
                 .lambda()
-                .like(companyName != null,CompanyInfo::getCompanyName, companyName)
+                .like(companyName != null, CompanyInfo::getCompanyName, companyName)
                 .last("limit " + queryCnt));
     }
 }
