@@ -41,11 +41,10 @@ public class ProjectInfoEndpoint {
      */
     @GetMapping("/list")
     public TavernResponse queryProjectList(@ModelAttribute @Valid ProjectListVo vo,
-                                           @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId,
-                                           @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
+                                           @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId) {
         try {
             ProjectInfoListDTO dto = new ProjectInfoListDTO();
-            IPage<ProjectInfo> page = this.projectInfoService.queryProjectInfo(vo, companyId,roleGroup);
+            IPage<ProjectInfo> page = this.projectInfoService.queryProjectInfo(vo, companyId);
             List<ProjectInfoDTO> list = page.getRecords()
                     .stream()
                     .map(ModelConverterFactory::modelToProjectInfoDTO)
@@ -69,14 +68,14 @@ public class ProjectInfoEndpoint {
                                            @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
         try {
             ProjectInfoListDTO dto = new ProjectInfoListDTO();
-            IPage<ProjectInfo> page = this.projectInfoService.queryProjectInfo(vo, companyId,roleGroup);
-            List<ProjectInfoDTO> list = page.getRecords()
-                    .stream()
-                    .map(ModelConverterFactory::modelToProjectInfoDTO)
-                    .collect(Collectors.toList());
-
-            dto.setProjects(list);
-            dto.setTotal((int) page.getTotal());
+//            IPage<ProjectInfo> page = this.projectInfoService.queryProjectInfo(vo, companyId,roleGroup);
+//            List<ProjectInfoDTO> list = page.getRecords()
+//                    .stream()
+//                    .map(ModelConverterFactory::modelToProjectInfoDTO)
+//                    .collect(Collectors.toList());
+//
+//            dto.setProjects(list);
+//            dto.setTotal((int) page.getTotal());
 
             return TavernResponse.ok(dto);
         } catch (Exception e) {

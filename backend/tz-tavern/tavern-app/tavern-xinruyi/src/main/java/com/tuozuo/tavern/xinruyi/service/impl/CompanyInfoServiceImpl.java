@@ -2,6 +2,7 @@ package com.tuozuo.tavern.xinruyi.service.impl;
 
 import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
 import com.tuozuo.tavern.xinruyi.dao.CompanyInfoDao;
+import com.tuozuo.tavern.xinruyi.dto.CompanyDetailInfoDTO;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfo;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfoExt;
 import com.tuozuo.tavern.xinruyi.service.CompanyInfoService;
@@ -54,6 +55,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         this.companyInfoDao.insertCompanyAuthInfo(companyInfoExt);
     }
 
+    @Transactional
     @Override
     public void modifyCompanyInfo(CompanyAuthInfoVO companyAuthInfoVO) throws Exception {
         CompanyInfoExt companyInfoExt = ModelConverterFactory.authVOToCompanyInfoExt(companyAuthInfoVO);
@@ -61,6 +63,10 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
                 companyAuthInfoVO.getBossIdPicUp(),
                 companyAuthInfoVO.getBossIdPicBack(),
                 companyInfoExt);
+        CompanyInfo companyInfo = new CompanyInfo();
+        companyInfo.setCompanyId(companyAuthInfoVO.getCompanyId());
+        companyInfo.setCompanyName(companyAuthInfoVO.getCompanyName());
+        this.companyInfoDao.updateCompanyInfo(companyInfo);
         this.companyInfoDao.updateCompanyAuthInfo(companyInfoExt);
     }
 

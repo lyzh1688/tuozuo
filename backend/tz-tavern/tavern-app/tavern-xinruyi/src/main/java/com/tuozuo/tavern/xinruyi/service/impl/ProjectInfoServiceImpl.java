@@ -100,7 +100,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     }
 
     @Override
-    public IPage<ProjectInfo> queryProjectInfo(ProjectListVo vo, String companyId, String roleGroup) {
+    public IPage<ProjectInfo> queryProjectInfo(ProjectListVo vo, String companyId) {
         String downLimitBudget = null, upperLimitBudget = null;
         if (StringUtils.isNoneEmpty(vo.getBudget())) {
             downLimitBudget = StringUtils.substringBefore(vo.getBudget(), "~");
@@ -109,29 +109,16 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
                 upperLimitBudget = null;
             }
         }
-        if (roleGroup.equals(UserTypeDict.custom)) {
-            return this.projectInfoDao.selectProjectPage(vo.getPageNo(),
-                    vo.getPageSize(),
-                    companyId,
-                    vo.getProjectId(),
-                    vo.getIndustryType(),
-                    downLimitBudget,
-                    upperLimitBudget,
-                    vo.getRequirementStatus(),
-                    vo.getBeginDate(),
-                    vo.getEndDate());
-        } else {
-            return this.projectInfoDao.selectProjectPage(vo.getPageNo(),
-                    vo.getPageSize(),
-                    null,
-                    vo.getProjectId(),
-                    vo.getIndustryType(),
-                    downLimitBudget,
-                    upperLimitBudget,
-                    vo.getRequirementStatus(),
-                    vo.getBeginDate(),
-                    vo.getEndDate());
-        }
+        return this.projectInfoDao.selectProjectPage(vo.getPageNo(),
+                vo.getPageSize(),
+                companyId,
+                vo.getProjectId(),
+                vo.getIndustryType(),
+                downLimitBudget,
+                upperLimitBudget,
+                vo.getRequirementStatus(),
+                vo.getBeginDate(),
+                vo.getEndDate());
 
     }
 
@@ -148,7 +135,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     public void modifyProjectInfo(ProjectModifyVO vo, String companyId) throws Exception {
 
         ProjectInfo projectInfo = this.projectInfoDao.selectProjectInfo(vo.getProjectId());
-        if(projectInfo.getStatus().equals(ProjectStatus.AUDITED.getStatus()) || projectInfo.getStatus().equals(ProjectStatus.DONE.getStatus())){
+        if (projectInfo.getStatus().equals(ProjectStatus.AUDITED.getStatus()) || projectInfo.getStatus().equals(ProjectStatus.DONE.getStatus())) {
             throw new Exception("项目已完成审核，修改失败");
         }
 //        String today = DateUtils.formatDate(LocalDate.now(), DateUtils.SIMPLE_8_FORMATTER);
