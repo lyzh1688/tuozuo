@@ -10,10 +10,7 @@
     <a-spin :spinning="loading">
       <a-form :form="form" v-bind="formLayout">
         <!-- 检查是否有 id 并且大于0，大于0是修改。其他是新增，新增不显示主键ID -->
-        <a-form-item
-          v-show="false"
-          label="人员id"
-        >
+        <a-form-item v-show="false" label="人员id">
           <a-input
             v-decorator="['id', {rules: [{validateTrigger: 'blur'}
             ], validateTrigger: 'blur'}]"
@@ -81,15 +78,7 @@ import pick from 'lodash.pick'
 import { getBankDict, getCommonDict } from '@/api/dictionary'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 // 表单字段
-const fields = [
-  'id',
-  'name',
-  'idNo',
-  'gender',
-  'bankCard',
-  'bank',
-  'accntBank'
-]
+const fields = ['id', 'name', 'idNo', 'gender', 'bankCard', 'bank', 'accntBank']
 
 export default {
   props: {
@@ -106,7 +95,7 @@ export default {
       default: () => null
     },
     formTitle: {
-        type: String,
+      type: String,
       default: () => ''
     },
     isShowOnly: {
@@ -141,14 +130,14 @@ export default {
   },
   created () {
     console.log('custom modal created')
- this.getBankDict('').then((response) => {
+    this.getBankDict('').then((response) => {
       this.bankList = response
     })
     this.getGenderDict('').then((response) => {
       this.genderList = response
     })
     // 防止表单未注册
-    fields.forEach(v => this.form.getFieldDecorator(v))
+    fields.forEach((v) => this.form.getFieldDecorator(v))
 
     // 当 model 发生改变时，为表单设置值
     this.$watch('model', () => {
@@ -159,7 +148,7 @@ export default {
     })
   },
   methods: {
-     getBankDict (code) {
+    getBankDict (code) {
       return new Promise((resolve, reject) => {
         getBankDict(code).then((Response) => {
           const result = Response
@@ -172,13 +161,13 @@ export default {
               description: '查询字典信息失败'
             })
           }
-           if (needLogin(result)) {
+          if (needLogin(result)) {
             this.visible = false
           }
         })
       })
     },
-     getGenderDict () {
+    getGenderDict () {
       return new Promise((resolve, reject) => {
         getCommonDict('gender').then((Response) => {
           const result = Response
@@ -191,24 +180,24 @@ export default {
               description: '查询字典信息失败'
             })
           }
-           if (needLogin(result)) {
+          if (needLogin(result)) {
             this.visible = false
           }
         })
       })
     },
-        handleChane (index) {
-     this.getBankDict(index).then((response) => {
+    handleChane (index) {
+      this.getBankDict(index).then((response) => {
         this.bankAreaList = response
       })
       if (this.model.bank !== index) {
- this.form.setFieldsValue({ accntBank: '' })
+        this.form.setFieldsValue({ accntBank: '' })
       }
     },
-     handleChane2 (index) {
-    //   await this.getBankDict(index).then((response) => {
-    //     this.bankAreaList = response
-    //   })
+    handleChane2 (index) {
+      //   await this.getBankDict(index).then((response) => {
+      //     this.bankAreaList = response
+      //   })
     }
   }
 }

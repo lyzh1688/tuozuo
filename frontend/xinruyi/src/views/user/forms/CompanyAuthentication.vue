@@ -10,21 +10,11 @@
     <a-spin :spinning="loading">
       <a-form :form="form" v-bind="formLayout">
         <!-- 检查是否有 id 并且大于0，大于0是修改。其他是新增，新增不显示主键ID -->
-        <a-form-item
-          v-show="false"
-          label="注册Id"
-        >
-          <a-input
-            v-decorator="['registerId', { validateTrigger: 'blur'}]"
-          />
+        <a-form-item v-show="false" label="注册Id">
+          <a-input v-decorator="['registerId', { validateTrigger: 'blur'}]" />
         </a-form-item>
-        <a-form-item
-          v-show="false"
-          label="公司Id"
-        >
-          <a-input
-            v-decorator="['companyId', { validateTrigger: 'blur'}]"
-          />
+        <a-form-item v-show="false" label="公司Id">
+          <a-input v-decorator="['companyId', { validateTrigger: 'blur'}]" />
         </a-form-item>
         <a-form-item label="公司名称">
           <a-input
@@ -117,7 +107,7 @@
         <a-form-item label="银行">
           <a-select
             :disabled="isShowOnly"
-            v-decorator="['bank', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
+            v-decorator="['companyAccountBank', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
             @change="handleChane"
           >
             <a-select-option
@@ -127,7 +117,7 @@
           </a-select>
           <a-select
             :disabled="isShowOnly"
-            v-decorator="['accntBank', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
+            v-decorator="['companyAccountBranchBank', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
             @change="handleChane2"
           >
             <a-select-option
@@ -160,19 +150,20 @@ import { getBankDict, getCommonDict } from '@/api/dictionary'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 // 表单字段
 const fields = [
-'registerId',	// String	注册Id
-'companyId',	// String	企业Id
-'companyName',	// String	企业名称
-'businessLicense', //	String	营业执照
-'bossName', //	String	法人姓名
-'bossId', //	法人身份证号
-'bossIdPicUp', //	String	法人身份证正面照片
-'bossIdPicBack', //	String	法人身份证背面照片
-'companyAccount', //	String	企业对公账号
-'companyAccountBank', //	String	企业对公账号所在银行
-'contactName', //	String	联系人姓名
-'contact', //	String	联系人电话
-'remark'//	String	备注
+  'registerId', // String	注册Id
+  'companyId', // String	企业Id
+  'companyName', // String	企业名称
+  'businessLicense', //	String	营业执照
+  'bossName', //	String	法人姓名
+  'bossId', //	法人身份证号
+  'bossIdPicUp', //	String	法人身份证正面照片
+  'bossIdPicBack', //	String	法人身份证背面照片
+  'companyAccount', //	String	企业对公账号
+  'companyAccountBank', //	String	企业对公账号所在银行
+  'companyAccountBranchBank', //	String	企业对公账号所在银行
+  'contactName', //	String	联系人姓名
+  'contact', //	String	联系人电话
+  'remark' //	String	备注
 ]
 
 export default {
@@ -189,7 +180,7 @@ export default {
       type: Object,
       default: () => null
     },
-   isShowOnly: {
+    isShowOnly: {
       type: Boolean,
       default: false
     },
@@ -215,10 +206,10 @@ export default {
     }
     return {
       // city: citiesHepler[0].label,
-       showUpload: true,
-       businessLicenseList: [],
-       bossIdPicUpList: [],
-       bossIdPicBackList: [],
+      showUpload: true,
+      businessLicenseList: [],
+      bossIdPicUpList: [],
+      bossIdPicBackList: [],
       provinceList: [],
       bankAreaList: [],
       bankList: [],
@@ -234,17 +225,17 @@ export default {
   },
   created () {
     console.log('custom modal created')
-    this.getDict('industryType').then((response) => {
-      this.industryTypeList = response
+    this.getBankDict('').then((response) => {
+      this.bankList = response
     })
     // 防止表单未注册
-    fields.forEach(v => this.form.getFieldDecorator(v))
+    fields.forEach((v) => this.form.getFieldDecorator(v))
 
     // 当 model 发生改变时，为表单设置值
     this.$watch('model', () => {
       this.model && this.form.setFieldsValue(pick(this.model, fields))
-     if (this.model.bank !== '') {
-        this.handleChane(this.model.bank)
+      if (this.model.companyAccountBank !== '') {
+        this.handleChane(this.model.companyAccountBank)
       }
     })
   },
@@ -301,7 +292,7 @@ export default {
         })
       })
     },
-     getBankDict (code) {
+    getBankDict (code) {
       return new Promise((resolve, reject) => {
         getBankDict(code).then((Response) => {
           const result = Response
@@ -314,24 +305,24 @@ export default {
               description: '查询字典信息失败'
             })
           }
-           if (needLogin(result)) {
+          if (needLogin(result)) {
             this.visible = false
           }
         })
       })
     },
-        handleChane (index) {
-     this.getBankDict(index).then((response) => {
+    handleChane (index) {
+      this.getBankDict(index).then((response) => {
         this.bankAreaList = response
       })
-      if (this.model.bank !== index) {
- this.form.setFieldsValue({ accntBank: '' })
+      if (this.model.companyAccountBank !== index) {
+        this.form.setFieldsValue({ accntBank: '' })
       }
     },
-     handleChane2 (index) {
-    //   await this.getBankDict(index).then((response) => {
-    //     this.bankAreaList = response
-    //   })
+    handleChane2 (index) {
+      //   await this.getBankDict(index).then((response) => {
+      //     this.bankAreaList = response
+      //   })
     }
   }
 }

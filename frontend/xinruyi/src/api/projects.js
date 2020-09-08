@@ -5,7 +5,7 @@ const apiList = {
   newProject: process.env.VUE_APP_SYSTEM_URL + '/v1/project',
   projectDetail: process.env.VUE_APP_SYSTEM_URL + '/v1/project/detail/',
   projectModify: process.env.VUE_APP_SYSTEM_URL + '/v1/project/',
-  projectDone: process.env.VUE_APP_SYSTEM_URL + '/v1/project/'
+  projectDone: process.env.VUE_APP_SYSTEM_URL + '/v1/project/status/'
 }
 /**
  * 模糊查询项目列表
@@ -19,10 +19,14 @@ export function fuzzyQueryProject (projectName, queryCnt, all) {
     method: 'GET'
   })
 }
+/**
+ * 完成项目
+ * @param {String} projectId 项目Id
+ */
 export function completeProjects (projectId) {
     return request({
       url: apiList.projectDone + projectId,
-      method: 'GET'
+      method: 'PUT'
     })
   }
 /**

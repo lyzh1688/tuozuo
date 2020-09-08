@@ -103,7 +103,7 @@
         @ok="handleOk"
       >
         <template v-slot:other v-if="isShowOnly">
-          <a-form-item label="备注" >
+          <a-form-item label="备注">
             <a-textarea
               :disabled="isShowOnly"
               v-decorator="['remark', { validateTrigger: 'blur'}]"
@@ -118,7 +118,14 @@
 <script>
 import { Modal } from 'ant-design-vue'
 import { STable } from '@/components'
-import { fuzzyQueryProject, getProjectList, addNewProject, updateProject, getProjectDetail, completeProjects } from '@/api/projects'
+import {
+  fuzzyQueryProject,
+  getProjectList,
+  addNewProject,
+  updateProject,
+  getProjectDetail,
+  completeProjects
+} from '@/api/projects'
 import { getCommonDict } from '@/api/dictionary'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 import projectform from './form/ProjectForm'
@@ -420,7 +427,7 @@ export default {
       this.clearUpload = !this.clearUpload
       form.resetFields() // 清理表单数据（可不做）
       this.isupdate = false
-       this.isShowOnly = false
+      this.isShowOnly = false
       this.projectVisible = true
     },
     async handleUpdate (record) {
@@ -431,31 +438,39 @@ export default {
       this.isShowOnly = false
     },
     handleComplete (record) {
-        this.confirmLoading = true
-completeProjects(record.projectId)
-        .then((response) => {
-          const result = response
-          if (success(result)) {
-            this.$notification.success({
-              message: errorMessage(result),
-              description: '发起项目完成审核成功'
+      Modal.confirm({
+        title: '提交项目完成申请',
+        content: '是否确认完成该项目？',
+        onOk: () => {
+          this.confirmLoading = true
+          completeProjects(record.projectId)
+            .then((response) => {
+              const result = response
+              if (success(result)) {
+                this.$notification.success({
+                  message: errorMessage(result),
+                  description: '发起项目完成审核成功'
+                })
+                this.confirmLoading = false
+                this.$refs.table.refresh(true)
+              } else {
+                this.confirmLoading = false
+                this.$notification.error({
+                  message: errorMessage(result),
+                  description: '发起项目完成审核失败'
+                })
+              }
             })
-            this.confirmLoading = false
-          } else {
-            this.confirmLoading = false
-            this.$notification.error({
-              message: errorMessage(result),
-              description: '发起项目完成审核失败'
+            .catch((error) => {
+              this.$notification.error({
+                message: '发起项目完成审核失败',
+                description: error
+              })
+              this.confirmLoading = false
             })
-          }
-        })
-        .catch((error) => {
-          this.$notification.error({
-            message: '发起项目完成审核失败',
-            description: error
-          })
-          this.confirmLoading = false
-        })
+        },
+        onCancel () {}
+      })
     },
     handleCancel () {
       if (!this.isShowOnly) {
@@ -463,7 +478,7 @@ completeProjects(record.projectId)
           title: '取消操作',
           content: '是否确认取消操作？所做的修改将会丢失！',
           onOk: () => {
-                  this.projectVisible = false
+            this.projectVisible = false
           },
           onCancel () {}
         })

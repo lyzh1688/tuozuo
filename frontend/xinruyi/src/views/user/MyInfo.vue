@@ -134,6 +134,7 @@ export default {
                   form.resetFields() // 清理表单数据（可不做）
                   this.companyVisible = false
                   this.confirmLoading = false
+                  this.refresh = !this.refresh
                 } else {
                   this.confirmLoading = false
                   this.$notification.error({
@@ -166,6 +167,7 @@ export default {
                   form.resetFields() // 清理表单数据（可不做）
                   this.companyVisible = false
                   this.confirmLoading = false
+                  this.refresh = !this.refresh
                 } else {
                   this.confirmLoading = false
                   this.$notification.error({
@@ -191,7 +193,10 @@ export default {
     },
     handleAdd () {
       this.formTitle = '新建认证申请'
-      this.companyMdl = {}
+      this.companyMdl = {
+        registerId: this.registerId,
+              companyId: this.companyId
+      }
       const form = this.$refs.companyauthenticationform.form
       this.clearUpload = !this.clearUpload
       form.resetFields() // 清理表单数据（可不做）
