@@ -46,7 +46,7 @@
             <if test="upperLimitBudget != null and upperLimitBudget != ''">
                 and t1.budget <![CDATA[ <= ]]> #{upperLimitBudget}
             </if>
-            <if test="requirementStatus != null and requirementStatus != ''">
+            <if test="requirementStatus != null and status != ''">
                 and  t1.status = #{requirementStatus}
             </if>
             <if test="beginDate != null and beginDate != ''">

@@ -1,10 +1,12 @@
 package com.tuozuo.tavern.xinruyi.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.tuozuo.tavern.xinruyi.model.ProjectEventInfo;
 import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo;
 import com.tuozuo.tavern.xinruyi.vo.ProjectAddVO;
+import com.tuozuo.tavern.xinruyi.vo.ProjectEventVO;
 import com.tuozuo.tavern.xinruyi.vo.ProjectListVo;
 import com.tuozuo.tavern.xinruyi.vo.ProjectModifyVO;
 
@@ -35,5 +37,7 @@ public interface ProjectInfoService {
     void endProject( String project);
 
     ProjectInfo queryProjectDetail(String projectId);
+
+    IPage<ProjectEventInfo> queryProjectEvents(ProjectEventVO vo);
 
 }

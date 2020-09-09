@@ -8,31 +8,55 @@
     <result column="event_date" jdbcType="DATE" property="eventDate" />
     <result column="snapshot" jdbcType="VARCHAR" property="snapshot" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from event_todo_list
-    where event_id = #{eventId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.tuozuo.tavern.xinruyi.model.EventTodoList">
-    insert into event_todo_list (event_id, event_type, event_owner, 
-      event_date, snapshot)
-    values (#{eventId,jdbcType=VARCHAR}, #{eventType,jdbcType=VARCHAR}, #{eventOwner,jdbcType=VARCHAR}, 
-      #{eventDate,jdbcType=DATE}, #{snapshot,jdbcType=VARCHAR})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.xinruyi.model.EventTodoList">
-    update event_todo_list
-    set event_type = #{eventType,jdbcType=VARCHAR},
-      event_owner = #{eventOwner,jdbcType=VARCHAR},
-      event_date = #{eventDate,jdbcType=DATE},
-      snapshot = #{snapshot,jdbcType=VARCHAR}
-    where event_id = #{eventId,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select event_id, event_type, event_owner, event_date, snapshot
-    from event_todo_list
-    where event_id = #{eventId,jdbcType=VARCHAR}
-  </select>
+  <resultMap id="BaseProjectResultMap" type="com.tuozuo.tavern.xinruyi.model.ProjectEventInfo">
+
+    <result column="company_id" jdbcType="VARCHAR" property="companyId" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="event_date" jdbcType="VARCHAR" property="applyDate" />
+    <result column="status" jdbcType="VARCHAR" property="projectStatus" />
+    <result column="fee" jdbcType="DECIMAL" property="rate" />
+    <result column="project_industry" jdbcType="VARCHAR" property="industryType" />
+    <result column="period" jdbcType="VARCHAR" property="projectCycle" />
+    <result column="publish_date" jdbcType="VARCHAR" property="releaseDate" />
+    <result column="project_member_count" jdbcType="DECIMAL" property="staffNum" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="district" jdbcType="VARCHAR" property="district" />
+    <result column="on_spot" jdbcType="VARCHAR" property="isOnSite" />
+    <result column="contract_person" jdbcType="VARCHAR" property="contactName" />
+    <result column="contract_phone" jdbcType="VARCHAR" property="contact" />
+    <result column="file_material" jdbcType="VARCHAR" property="projectFile" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
   <select id="selectAll" resultMap="BaseResultMap">
     select event_id, event_type, event_owner, event_date, snapshot
     from event_todo_list
+  </select>
+
+  <select id="selectProjects" resultMap="BaseProjectResultMap">
+    select t1.company_id,t3.company_name,t2.project_id,t2.project_name,
+    date_format(t1.event_date ,'%Y%m%d') event_date,t2.`status`,t2.fee,t2.project_industry,
+    t2.period,date_format(t2.publish_date ,'%Y%m%d') publish_date,t2.project_member_count,
+    t2.province,t2.city,t2.district,t2.contract_phone,t2.contract_person,t2.on_spot,t2.file_material,t2.remark
+
+    from event_todo_list t1,project_info t2,company_info t3
+    <where>
+      t1.project_id = t2.project_id
+      and t1.company_id = t3.company_id
+      <if test="companyId != null and companyId != ''">
+        and  t1.company_id = #{companyId}
+      </if>
+      <if test="status != null and status != ''">
+        and  t1.status = #{status}
+      </if>
+      <if test="beginDate != null and beginDate != ''">
+        and  t1.event_date >= STR_TO_DATE(#{beginDate}, '%Y%m%d')
+      </if>
+      <if test="endDate != null and endDate != ''">
+        and  t1.event_date <![CDATA[ <= ]]> STR_TO_DATE(#{endDate}, '%Y%m%d')
+      </if>
+    </where>
   </select>
 </mapper>

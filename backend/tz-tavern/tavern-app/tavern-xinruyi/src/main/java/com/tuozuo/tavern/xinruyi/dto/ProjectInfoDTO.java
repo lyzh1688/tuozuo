@@ -7,7 +7,6 @@ import java.math.BigDecimal;
  * Dev Time: 2020/8/30 <br>
  */
 public class ProjectInfoDTO {
-    private String companyId;
     private String companyName;
     private String projectId;
     private String projectName;

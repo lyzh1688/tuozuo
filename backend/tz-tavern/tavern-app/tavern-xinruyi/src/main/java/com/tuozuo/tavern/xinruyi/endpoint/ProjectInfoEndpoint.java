@@ -6,6 +6,7 @@ import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
 import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.xinruyi.dto.*;
+import com.tuozuo.tavern.xinruyi.model.ProjectEventInfo;
 import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo;
@@ -60,26 +61,19 @@ public class ProjectInfoEndpoint {
         }
     }
     /**
-     * 项目列表
+     * 项目事件列表
      */
     @GetMapping("/event/list")
-    public TavernResponse queryProjectEventList(@ModelAttribute @Valid ProjectListVo vo,
-                                           @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId,
-                                           @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
+    public TavernResponse queryProjectEventList(@ModelAttribute @Valid ProjectEventVO vo) {
         try {
-            ProjectInfoListDTO dto = new ProjectInfoListDTO();
-//            IPage<ProjectInfo> page = this.projectInfoService.queryProjectInfo(vo, companyId,roleGroup);
-//            List<ProjectInfoDTO> list = page.getRecords()
-//                    .stream()
-//                    .map(ModelConverterFactory::modelToProjectInfoDTO)
-//                    .collect(Collectors.toList());
-//
-//            dto.setProjects(list);
-//            dto.setTotal((int) page.getTotal());
+           IPage<ProjectEventInfo> page = this.projectInfoService.queryProjectEvents(vo);
+            ProjectEventListDTO dto = new ProjectEventListDTO();
+            dto.setProjects(page.getRecords());
+            dto.setTotal((int) page.getTotal());
 
             return TavernResponse.ok(dto);
         } catch (Exception e) {
-            LOGGER.error("[项目列表查询] failed", e);
+            LOGGER.error("[项目事件列表] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }

@@ -3,9 +3,11 @@ package com.tuozuo.tavern.xinruyi.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.UserTypeDict;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
+import com.tuozuo.tavern.xinruyi.dao.EventTodoListDao;
 import com.tuozuo.tavern.xinruyi.dao.ProjectInfoDao;
 import com.tuozuo.tavern.xinruyi.dao.ProjectStaffInfoDao;
 import com.tuozuo.tavern.xinruyi.dict.ProjectStatus;
+import com.tuozuo.tavern.xinruyi.model.ProjectEventInfo;
 import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo;
@@ -14,6 +16,7 @@ import com.tuozuo.tavern.xinruyi.utils.DateUtils;
 import com.tuozuo.tavern.xinruyi.utils.FileUtils;
 import com.tuozuo.tavern.xinruyi.utils.ValidateUtils;
 import com.tuozuo.tavern.xinruyi.vo.ProjectAddVO;
+import com.tuozuo.tavern.xinruyi.vo.ProjectEventVO;
 import com.tuozuo.tavern.xinruyi.vo.ProjectListVo;
 import com.tuozuo.tavern.xinruyi.vo.ProjectModifyVO;
 import org.apache.commons.lang3.StringUtils;
@@ -45,6 +48,8 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     private ProjectInfoDao projectInfoDao;
     @Autowired
     private ProjectStaffInfoDao projectStaffInfoDao;
+    @Autowired
+    private EventTodoListDao eventTodoListDao;
 
 
     @Override
@@ -159,6 +164,11 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     @Override
     public ProjectInfo queryProjectDetail(String projectId) {
         return this.projectInfoDao.selectProjectInfo(projectId);
+    }
+
+    @Override
+    public IPage<ProjectEventInfo> queryProjectEvents(ProjectEventVO vo) {
+        return this.eventTodoListDao.selectProjects(vo.getPageNo(), vo.getPageSize(), vo.getCompanyId(), vo.getProjectId(), vo.getStatus(), vo.getBeginDate(), vo.getEndDate());
     }
 
 

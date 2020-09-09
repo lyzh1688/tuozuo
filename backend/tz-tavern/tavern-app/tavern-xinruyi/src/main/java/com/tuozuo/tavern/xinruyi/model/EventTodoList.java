@@ -1,8 +1,12 @@
 package com.tuozuo.tavern.xinruyi.model;
 
-import java.util.Date;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 
+import java.util.Date;
+@TableName("event_todo_list")
 public class EventTodoList {
+    @TableId
     private String eventId;
 
     private String eventType;
