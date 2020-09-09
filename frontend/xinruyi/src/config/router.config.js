@@ -59,7 +59,7 @@ export const asyncRouterMap = [
     name: 'ProjectContorl',
     redirect: '/projectContorl/projectList',
     component: BasicLayout,
-    meta: { title: '项目人员管理', keepAlive: true, icon: 'account-book', permission: ['admin', 'xinruyi.custom.normal'] },
+    meta: { title: '项目管理', keepAlive: true, icon: 'account-book', permission: ['admin', 'xinruyi.custom.normal'] },
     children: [
       {
         path: '/projectContorl/projectList',

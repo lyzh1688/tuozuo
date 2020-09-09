@@ -11,7 +11,6 @@
           <a-divider type="vertical" />
           <a-button type="primary" size="small" @click="fetchCompanyDetail">详情</a-button>
         </template>
-
       </myinfo>
       <companyauthentication
         :title="formTitle"
@@ -23,10 +22,10 @@
         :isUpdate="isupdate"
         :isShowOnly="isShowOnly"
         @cancel="handleCancel"
-        @ok="handleOk"
+        @ok="handleContractOk"
       >
         <template v-slot:other v-if="isShowOnly">
-          <a-form-item label="备注" >
+          <a-form-item label="备注">
             <a-textarea
               :disabled="isShowOnly"
               v-decorator="['remark', { validateTrigger: 'blur'}]"
@@ -34,6 +33,7 @@
           </a-form-item>
         </template>
       </companyauthentication>
+      <contract :visible="contractVisible" @cancel="handleContractCancel" @ok="handleOk" />
     </a-card>
   </page-header-wrapper>
 </template>
@@ -44,11 +44,13 @@ import { getCompanyDetail, addCompanyAuthentication, updateCompany } from '@/api
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 import { mapState } from 'vuex'
 import companyauthentication from './forms/CompanyAuthentication'
+import contract from './components/contract'
 export default {
   name: 'MyInfo',
   components: {
     myinfo,
-    companyauthentication
+    companyauthentication,
+    contract
   },
   data: function () {
     return {
@@ -58,18 +60,18 @@ export default {
       registerId: '',
       companyId: '',
       formTitle: '',
+      contractVisible: false,
       clearUpload: false,
       companyVisible: false,
       confirmLoading: false,
       companyMdl: {},
       isupdate: false,
       isShowOnly: false
-
     }
   },
   computed: {
     ...mapState({
-      username: state => state.user.name
+      username: (state) => state.user.name
     })
   },
   methods: {
@@ -108,6 +110,21 @@ export default {
           })
           this.confirmLoading = false
         })
+    },
+    handleContractOk () {
+      const form = this.$refs.companyauthenticationform.form
+      form.validateFields((errors, values) => {
+        if (!errors) {
+          if (this.isupdate || this.isShowOnly) {
+            this.handleOk()
+          } else {
+            this.contractVisible = true
+          }
+        }
+      })
+    },
+    handleContractCancel () {
+      this.contractVisible = false
     },
     handleOk () {
       if (this.isShowOnly) {
@@ -195,13 +212,13 @@ export default {
       this.formTitle = '新建认证申请'
       this.companyMdl = {
         registerId: this.registerId,
-              companyId: this.companyId
+        companyId: this.companyId
       }
       const form = this.$refs.companyauthenticationform.form
       this.clearUpload = !this.clearUpload
       form.resetFields() // 清理表单数据（可不做）
       this.isupdate = false
-       this.isShowOnly = false
+      this.isShowOnly = false
       this.companyVisible = true
     },
     async handleUpdate (record) {
@@ -217,7 +234,7 @@ export default {
           title: '取消操作',
           content: '是否确认取消操作？所做的修改将会丢失！',
           onOk: () => {
-                  this.companyVisible = false
+            this.companyVisible = false
           },
           onCancel () {}
         })
@@ -227,7 +244,7 @@ export default {
     }
   },
   activated () {
-      this.refresh = !this.refresh
+    this.refresh = !this.refresh
   }
 }
 </script>

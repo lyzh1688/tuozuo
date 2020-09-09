@@ -59,13 +59,18 @@
           </a-select>
           <a-select
             :disabled="isShowOnly"
+            show-search
             v-decorator="['accntBank', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
-            @change="handleChane2"
+            placeholder="请输入支行名称"
+            style="width: 200px"
+            :default-active-first-option="false"
+            :show-arrow="false"
+            :filter-option="false"
+            :not-found-content="null"
+            @search="handleCustomSearch"
+            @change="handleCustomChange"
           >
-            <a-select-option
-              v-for="bankAreaItem in bankAreaList"
-              :key="bankAreaItem.bankCode"
-            >{{ bankAreaItem.bankName }}</a-select-option>
+            <a-select-option v-for="d in bankAreaList" :key="d.value">{{ d.text }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-form>
@@ -79,7 +84,40 @@ import { getBankDict, getCommonDict } from '@/api/dictionary'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 // 表单字段
 const fields = ['id', 'name', 'idNo', 'gender', 'bankCard', 'bank', 'accntBank']
+let timeout
+let currentValue
 
+function fetch (code, value, callback) {
+  if (timeout) {
+    clearTimeout(timeout)
+    timeout = null
+  }
+  currentValue = value
+
+  function fake () {
+    if (code !== '') {
+      getBankDict(code, value, 20).then((d) => {
+        if (currentValue === value) {
+          const result = d.data
+          const data = []
+          result.forEach((r) => {
+            data.push({
+              value: r['bankCode'],
+              text: r['bankName']
+            })
+          })
+          data.push({
+            value: '',
+            text: ''
+          })
+          callback(data)
+        }
+      })
+    }
+  }
+
+  timeout = setTimeout(fake, 300)
+}
 export default {
   props: {
     visible: {
@@ -130,7 +168,7 @@ export default {
   },
   created () {
     console.log('custom modal created')
-    this.getBankDict('').then((response) => {
+    this.getBankDict().then((response) => {
       this.bankList = response
     })
     this.getGenderDict('').then((response) => {
@@ -143,14 +181,22 @@ export default {
     this.$watch('model', () => {
       this.model && this.form.setFieldsValue(pick(this.model, fields))
       if (this.model.bank !== '') {
-        this.handleChane(this.model.bank)
+        fetch(this.model.bank, this.model.bankBranchName, (data) => (this.bankAreaList = data))
       }
     })
   },
   methods: {
-    getBankDict (code) {
+    handleCustomSearch (value) {
+      fetch(this.form.getFieldValue('bank'), value, (data) => (this.bankAreaList = data))
+    },
+    handleCustomChange (value) {
+      // console.log(value)
+      this.form.accntBank = value
+      fetch(this.form.getFieldValue('bank'), value, (data) => (this.bankAreaList = data))
+    },
+    getBankDict () {
       return new Promise((resolve, reject) => {
-        getBankDict(code).then((Response) => {
+        getBankDict('', '', '').then((Response) => {
           const result = Response
           // console.log('dictQuery', result)
           if (success(result)) {
@@ -187,9 +233,7 @@ export default {
       })
     },
     handleChane (index) {
-      this.getBankDict(index).then((response) => {
-        this.bankAreaList = response
-      })
+      fetch(index, '', (data) => (this.bankAreaList = data))
       if (this.model.bank !== index) {
         this.form.setFieldsValue({ accntBank: '' })
       }

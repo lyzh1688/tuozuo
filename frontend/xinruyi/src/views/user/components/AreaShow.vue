@@ -1,5 +1,5 @@
 <template>
-  <span>{{ area }}</span>
+  <p>{{ area }}</p>
 </template>
 <script>
 import { getAreaCode } from '@/api/dictionary'

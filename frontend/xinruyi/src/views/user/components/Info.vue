@@ -49,7 +49,7 @@ export default {
   & > span {
     margin: 0;
     color: @heading-color;
-    font-size: 24px;
+    font-size: 18px;
     line-height: 32px;
   }
   & > em {

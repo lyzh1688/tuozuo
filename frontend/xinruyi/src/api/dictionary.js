@@ -28,9 +28,9 @@ export function getAreaCode (areaLevel, areaCode) {
 /**
  * @param {String} bankCode 银行code，查银行code时不传
  */
-export function getBankDict (bankCode) {
+export function getBankDict (bankCode, bankName, queryCnt) {
   return request({
-    url: apiList.bankDict + '?bankCode=' + bankCode,
+    url: apiList.bankDict + '?bankCode=' + bankCode + '&bankName=' + bankName + '&queryCnt=' + queryCnt,
     method: 'GET'
   })
 }
