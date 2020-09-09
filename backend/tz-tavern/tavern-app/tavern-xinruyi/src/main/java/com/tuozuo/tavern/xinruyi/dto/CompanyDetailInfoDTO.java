@@ -17,9 +17,27 @@ public class CompanyDetailInfoDTO {
     private String companyAccount;
     private String companyAccountBank;
     private String companyAccountBranchBank;
+    private String bankName;
+    private String bankBranchName;
     private String contactName;
     private String contact;
     private String remark;
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getBankBranchName() {
+        return bankBranchName;
+    }
+
+    public void setBankBranchName(String bankBranchName) {
+        this.bankBranchName = bankBranchName;
+    }
 
     public String getCompanyAccountBranchBank() {
         return companyAccountBranchBank;

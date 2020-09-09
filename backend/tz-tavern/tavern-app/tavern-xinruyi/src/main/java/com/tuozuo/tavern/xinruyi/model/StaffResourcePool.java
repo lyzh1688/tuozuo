@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.xinruyi.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -26,6 +27,27 @@ public class StaffResourcePool {
     private String isValid;
 
     private LocalDateTime updateDate;
+
+    @TableField(exist = false)
+    private String bankName;
+    @TableField(exist = false)
+    private String bankBranchName;
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getBankBranchName() {
+        return bankBranchName;
+    }
+
+    public void setBankBranchName(String bankBranchName) {
+        this.bankBranchName = bankBranchName;
+    }
 
     public String getStaffName() {
         return staffName;

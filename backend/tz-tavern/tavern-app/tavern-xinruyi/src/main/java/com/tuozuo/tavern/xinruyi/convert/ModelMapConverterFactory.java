@@ -75,6 +75,8 @@ public interface ModelMapConverterFactory {
             @Mapping(source = "companyBank", target = "companyAccountBank"),
             @Mapping(source = "contactPhone", target = "contact"),
             @Mapping(source = "companyName", target = "companyName"),
+            @Mapping(source = "bankName", target = "bankName"),
+            @Mapping(source = "bankBranchName", target = "bankBranchName"),
     })
     CompanyDetailInfoDTO modelToCompanyDetailInfoDTO(CompanyInfoExt companyInfoExt);
 

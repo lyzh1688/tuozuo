@@ -8,8 +8,6 @@ import com.tuozuo.tavern.xinruyi.model.StaffSalaryInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
-
 @Mapper
 public interface StaffResourcePoolMapper extends BaseMapper<StaffResourcePool> {
 
@@ -24,5 +22,7 @@ public interface StaffResourcePoolMapper extends BaseMapper<StaffResourcePool> {
                                         @Param("projectId") String projectId,
                                         @Param("beginDate") String beginDate,
                                         @Param("endDate") String endDate);
+
+    StaffResourcePool select(@Param("staffId") String staffId);
 
 }

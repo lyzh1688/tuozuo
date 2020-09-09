@@ -88,8 +88,7 @@ public class StaffInfoDaoImpl implements StaffInfoDao {
 
     @Override
     public StaffResourcePool selectStaffInfo(String staffId) {
-        return this.staffResourcePoolMapper.selectOne(Wrappers.<StaffResourcePool>query().lambda()
-                .eq(StaffResourcePool::getStaffId, staffId));
+        return this.staffResourcePoolMapper.select(staffId);
     }
 
 

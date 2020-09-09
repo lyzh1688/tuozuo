@@ -27,6 +27,8 @@
     <result column="company_bank_account" jdbcType="VARCHAR" property="companyBankAccount" />
     <result column="company_bank" jdbcType="VARCHAR" property="companyBank" />
     <result column="company_branch_bank" jdbcType="VARCHAR" property="companyBranchBank" />
+    <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
+    <result column="bank_branch_name" jdbcType="VARCHAR" property="bankBranchName" />
     <result column="contact_name" jdbcType="VARCHAR" property="contactName" />
     <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
@@ -81,8 +83,8 @@
   <select id="select" resultMap="BaseDetailMap">
     select t1.company_id, t1.file_biz_license, t1.legal_person_identity, t1.legal_person_name, t1.file_legal_person_idcard_up,
     t1.file_legal_person_idcard_back, t1.company_bank_account, t1.company_bank,t1.company_branch_bank, t1.contact_name,
-    t1.contact_phone, t1.remark,t2.register_id,t2.company_name
-    from company_info_ext t1,company_info t2
+    t1.contact_phone, t1.remark,t2.register_id,t2.company_name,t3.bank_name,t4.bank_name bank_branch_name
+    from company_info_ext t1 LEFT JOIN bank_info t3 on t1.company_bank = t3.bank_code LEFT JOIN bank_info t4 on t1.company_branch_bank = t4.bank_code,company_info t2
     where t1.company_id = t2.company_id
     and t1.company_id = #{companyId}
   </select>

@@ -1,5 +1,7 @@
 package com.tuozuo.tavern.xinruyi.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+
 /**
  * Code Monkey: 何彪 <br>
  * Dev Time: 2020/8/28 <br>
@@ -12,6 +14,24 @@ public class StaffResourcePoolDTO {
     private String bankCard;
     private String bank;
     private String accntBank;
+    private String bankName;
+    private String bankBranchName;
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getBankBranchName() {
+        return bankBranchName;
+    }
+
+    public void setBankBranchName(String bankBranchName) {
+        this.bankBranchName = bankBranchName;
+    }
 
     public String getBank() {
         return bank;

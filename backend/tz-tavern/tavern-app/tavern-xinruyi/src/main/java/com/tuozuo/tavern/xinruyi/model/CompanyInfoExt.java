@@ -11,6 +11,10 @@ public class CompanyInfoExt {
     private String registerId;
     @TableField(exist = false)
     private String companyName;
+    @TableField(exist = false)
+    private String bankName;
+    @TableField(exist = false)
+    private String bankBranchName;
 
     @TableId
     private String companyId;
@@ -36,6 +40,22 @@ public class CompanyInfoExt {
     private String contactPhone;
 
     private String remark;
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getBankBranchName() {
+        return bankBranchName;
+    }
+
+    public void setBankBranchName(String bankBranchName) {
+        this.bankBranchName = bankBranchName;
+    }
 
     public String getCompanyBranchBank() {
         return companyBranchBank;
