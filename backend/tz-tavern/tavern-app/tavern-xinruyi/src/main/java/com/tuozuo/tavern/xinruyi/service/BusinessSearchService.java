@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface BusinessSearchService {
 
-    List<BankInfo> queryBankInfo(String bankCode);
+    List<BankInfo> queryBankInfo(String bankCode,String bankName,int queryCnt);
 
     List<AreaInfo> queryAreaInfo(String areaCode, String areaLevel);
 }

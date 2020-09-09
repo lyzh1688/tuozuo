@@ -27,7 +27,7 @@ public class BusinessSearchDaoImpl implements BusinessSearchDao {
         return this.areaInfoMapper.selectList(areaCode,areaLevel);
     }
     @Override
-    public List<BankInfo> selectBankInfo(String bankCode) {
-        return this.bankInfoMapper.selectList(bankCode);
+    public List<BankInfo> selectBankInfo(String bankCode,String bankName,int queryCnt) {
+        return this.bankInfoMapper.selectList(bankCode,bankName,queryCnt);
     }
 }

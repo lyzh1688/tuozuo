@@ -55,9 +55,11 @@ public class BusinessSearchEndpoint {
      * 银行搜索
      */
     @GetMapping("/bank")
-    public TavernResponse queryBank(@RequestParam(value = "bankCode",required = false) String bankCode) {
+    public TavernResponse queryBank(@RequestParam(value = "bankCode", required = false) String bankCode,
+                                    @RequestParam(value = "bankName", required = false) String bankName,
+                                    @RequestParam(value = "queryCnt", required = false,defaultValue = "20") int queryCnt) {
         try {
-            List<BankInfoDTO> bankInfoDTOList = this.businessSearchService.queryBankInfo(bankCode)
+            List<BankInfoDTO> bankInfoDTOList = this.businessSearchService.queryBankInfo(bankCode,bankName,queryCnt)
                     .stream()
                     .map(bankInfo -> {
                         BankInfoDTO bankInfoDTO = new BankInfoDTO();

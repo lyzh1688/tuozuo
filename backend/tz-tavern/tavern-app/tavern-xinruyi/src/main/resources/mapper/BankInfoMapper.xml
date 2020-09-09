@@ -9,12 +9,18 @@
   <select id="selectList" resultMap="BaseResultMap">
     select  bank_code, bank_name, bank_parent_code
     from bank_info
-    where
+    <where>
       <if test="bankCode != null and bankCode != ''">
-         bank_parent_code = #{bankCode}
+        and bank_parent_code = #{bankCode}
       </if>
       <if test="bankCode == null or  bankCode == '' ">
-        length(bank_parent_code) = 0
+       and length(bank_parent_code) = 0
       </if>
+    <if test="bankName != null and bankName != ''">
+     and bank_name like concat('%', #{bankName}, '%')
+    </if>
+    </where>
+    limit #{queryCnt}
+
   </select>
 </mapper>

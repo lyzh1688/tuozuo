@@ -25,7 +25,7 @@ public class BusinessSearchServiceImpl implements BusinessSearchService {
     }
 
     @Override
-    public List<BankInfo> queryBankInfo(String bankCode) {
-        return this.businessSearchDao.selectBankInfo(bankCode);
+    public List<BankInfo> queryBankInfo(String bankCode,String bankName,int queryCnt) {
+        return this.businessSearchDao.selectBankInfo(bankCode,bankName,queryCnt);
     }
 }

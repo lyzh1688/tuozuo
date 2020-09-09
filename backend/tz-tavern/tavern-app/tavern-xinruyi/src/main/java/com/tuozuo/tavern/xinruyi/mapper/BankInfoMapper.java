@@ -9,6 +9,8 @@ import java.util.List;
 @Mapper
 public interface BankInfoMapper extends BaseMapper<BankInfo> {
 
-    List<BankInfo> selectList(@Param("bankCode") String bankCode);
+    List<BankInfo> selectList(@Param("bankCode") String bankCode,
+                              @Param("bankName") String bankName,
+                              @Param("queryCnt") int queryCnt);
 
 }
