@@ -29,6 +29,8 @@
     <result column="contract_phone" jdbcType="VARCHAR" property="contact" />
     <result column="file_material" jdbcType="VARCHAR" property="projectFile" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="event_type" jdbcType="VARCHAR" property="eventType" />
+    <result column="snapshot" jdbcType="VARCHAR" property="snapshot" />
   </resultMap>
   <select id="selectAll" resultMap="BaseResultMap">
     select event_id, event_type, event_owner, event_date, snapshot
@@ -39,7 +41,8 @@
     select t1.company_id,t3.company_name,t2.project_id,t2.project_name,
     date_format(t1.event_date ,'%Y%m%d') event_date,t2.`status`,t2.fee,t2.project_industry,
     t2.period,date_format(t2.publish_date ,'%Y%m%d') publish_date,t2.project_member_count,
-    t2.province,t2.city,t2.district,t2.contract_phone,t2.contract_person,t2.on_spot,t2.file_material,t2.remark
+    t2.province,t2.city,t2.district,t2.contract_phone,t2.contract_person,t2.on_spot,t2.file_material,t2.remark,
+    t1.event_type,t1.snapshot
 
     from event_todo_list t1,project_info t2,company_info t3
     <where>

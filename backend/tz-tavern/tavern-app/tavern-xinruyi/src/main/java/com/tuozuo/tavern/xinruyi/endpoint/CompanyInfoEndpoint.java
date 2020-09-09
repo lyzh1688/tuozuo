@@ -54,11 +54,11 @@ public class CompanyInfoEndpoint {
      */
     @PostMapping("/authentication")
     public TavernResponse companyAuthentication(@ModelAttribute @Valid CompanyAuthInfoVO vo,
-                                                @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId,
                                                 @RequestParam(name = "businessLicense") MultipartFile businessLicense,
                                                 @RequestParam(name = "bossIdPicUp") MultipartFile bossIdPicUp,
-                                                @RequestParam(name = "bossIdPicBack") MultipartFile bossIdPicBack
-    ) {
+                                                @RequestParam(name = "bossIdPicBack") MultipartFile bossIdPicBack,
+                                                @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId
+                                                ) {
         try {
             this.setCompanyAuthInfo(vo, companyId, businessLicense, bossIdPicUp, bossIdPicBack);
             this.companyInfoService.applyForCompanyAuth(vo);

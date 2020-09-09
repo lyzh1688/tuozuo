@@ -26,6 +26,24 @@ public class ProjectEventInfo {
     private String contactName;
     private String projectFile;
     private String remark;
+    private String eventType;
+    private String snapshot;
+
+    public String getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
+    }
+
+    public String getSnapshot() {
+        return snapshot;
+    }
+
+    public void setSnapshot(String snapshot) {
+        this.snapshot = snapshot;
+    }
 
     public String getCompanyId() {
         return companyId;
