@@ -2,6 +2,7 @@ package com.tuozuo.tavern.xinruyi.service.impl;
 
 import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
 import com.tuozuo.tavern.xinruyi.dao.CompanyInfoDao;
+import com.tuozuo.tavern.xinruyi.dict.CompanyStatus;
 import com.tuozuo.tavern.xinruyi.dto.CompanyDetailInfoDTO;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfo;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfoExt;
@@ -53,6 +54,10 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
                 companyAuthInfoVO.getBossIdPicBack(),
                 companyInfoExt);
         this.companyInfoDao.insertCompanyAuthInfo(companyInfoExt);
+        CompanyInfo companyInfo = new CompanyInfo();
+        companyInfo.setCompanyId(companyAuthInfoVO.getCompanyId());
+        companyInfo.setStatus(CompanyStatus.AUTH_APPLYING.getStatus());
+        this.companyInfoDao.updateCompanyInfo(companyInfo);
     }
 
     @Transactional
