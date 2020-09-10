@@ -48,11 +48,14 @@
     <where>
       t1.project_id = t2.project_id
       and t1.company_id = t3.company_id
+      <if test="projectId != null and projectId != ''">
+        and  t1.project_id = #{projectId}
+      </if>
       <if test="companyId != null and companyId != ''">
         and  t1.company_id = #{companyId}
       </if>
       <if test="status != null and status != ''">
-        and  t1.status = #{status}
+        and  t2.status = #{status}
       </if>
       <if test="beginDate != null and beginDate != ''">
         and  t1.event_date >= STR_TO_DATE(#{beginDate}, '%Y%m%d')
