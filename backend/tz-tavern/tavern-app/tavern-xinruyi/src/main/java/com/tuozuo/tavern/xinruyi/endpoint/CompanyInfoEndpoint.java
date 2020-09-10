@@ -52,7 +52,7 @@ public class CompanyInfoEndpoint {
     /**
      * 企业认证申请
      */
-    @PostMapping("/authentication")
+    @PostMapping("/identification")
     public TavernResponse companyAuthentication(@ModelAttribute @Valid CompanyAuthInfoVO vo,
                                                 @RequestParam(name = "businessLicense") MultipartFile businessLicense,
                                                 @RequestParam(name = "bossIdPicUp") MultipartFile bossIdPicUp,
