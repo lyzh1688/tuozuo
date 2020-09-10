@@ -1,15 +1,19 @@
 package com.tuozuo.tavern.xinruyi.endpoint;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.xinruyi.dto.BusinessDictDTO;
 import com.tuozuo.tavern.xinruyi.dto.CompanyDetailInfoDTO;
+import com.tuozuo.tavern.xinruyi.dto.CompanyEventListDTO;
 import com.tuozuo.tavern.xinruyi.dto.CompanyInfoDTO;
+import com.tuozuo.tavern.xinruyi.model.CompanyEventInfo;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfo;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfoExt;
 import com.tuozuo.tavern.xinruyi.service.CompanyInfoService;
 import com.tuozuo.tavern.xinruyi.vo.CompanyAuthInfoVO;
+import com.tuozuo.tavern.xinruyi.vo.CompanyEventVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +62,7 @@ public class CompanyInfoEndpoint {
                                                 @RequestParam(name = "bossIdPicUp") MultipartFile bossIdPicUp,
                                                 @RequestParam(name = "bossIdPicBack") MultipartFile bossIdPicBack,
                                                 @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId
-                                                ) {
+    ) {
         try {
             this.setCompanyAuthInfo(vo, companyId, businessLicense, bossIdPicUp, bossIdPicBack);
             this.companyInfoService.applyForCompanyAuth(vo);
@@ -75,9 +79,9 @@ public class CompanyInfoEndpoint {
     @PutMapping("")
     public TavernResponse modifyCompanyInfo(@ModelAttribute CompanyAuthInfoVO vo,
                                             @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId,
-                                            @RequestParam(name = "businessLicense",required = false) MultipartFile businessLicense,
-                                            @RequestParam(name = "bossIdPicUp",required = false) MultipartFile bossIdPicUp,
-                                            @RequestParam(name = "bossIdPicBack",required = false) MultipartFile bossIdPicBack
+                                            @RequestParam(name = "businessLicense", required = false) MultipartFile businessLicense,
+                                            @RequestParam(name = "bossIdPicUp", required = false) MultipartFile bossIdPicUp,
+                                            @RequestParam(name = "bossIdPicBack", required = false) MultipartFile bossIdPicBack
     ) {
         try {
             this.setCompanyAuthInfo(vo, companyId, businessLicense, bossIdPicUp, bossIdPicBack);
@@ -123,6 +127,24 @@ public class CompanyInfoEndpoint {
             return TavernResponse.ok(businessDictList);
         } catch (Exception e) {
             LOGGER.error("[企业模糊查询] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 公司事件列表
+     */
+    @GetMapping("/event/list")
+    public TavernResponse queryCompanyEventList(@ModelAttribute @Valid CompanyEventVO vo) {
+        try {
+            IPage<CompanyEventInfo> page = this.companyInfoService.queryCompanyEvents(vo);
+            CompanyEventListDTO dto = new CompanyEventListDTO();
+            dto.setCompanies(page.getRecords());
+            dto.setTotal((int) page.getTotal());
+
+            return TavernResponse.ok(dto);
+        } catch (Exception e) {
+            LOGGER.error("[公司事件列表] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }

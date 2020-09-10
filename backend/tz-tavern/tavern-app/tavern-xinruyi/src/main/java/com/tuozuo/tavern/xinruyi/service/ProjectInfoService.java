@@ -1,14 +1,8 @@
 package com.tuozuo.tavern.xinruyi.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.tuozuo.tavern.xinruyi.model.ProjectEventInfo;
-import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
-import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
-import com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo;
-import com.tuozuo.tavern.xinruyi.vo.ProjectAddVO;
-import com.tuozuo.tavern.xinruyi.vo.ProjectEventVO;
-import com.tuozuo.tavern.xinruyi.vo.ProjectListVo;
-import com.tuozuo.tavern.xinruyi.vo.ProjectModifyVO;
+import com.tuozuo.tavern.xinruyi.model.*;
+import com.tuozuo.tavern.xinruyi.vo.*;
 
 import java.util.List;
 
@@ -18,7 +12,7 @@ import java.util.List;
  */
 public interface ProjectInfoService {
 
-    List<ProjectInfo> queryProjectInfo(String companyId, String projectName, int queryCnt, Boolean all,String roleGroup);
+    List<ProjectInfo> queryProjectInfo(String companyId, String projectName, int queryCnt, Boolean all, String roleGroup);
 
     IPage<ProjectStaffInfo> queryProjectStaffInfo(int pageNo, int pageSize, String companyId, String projectId);
 
@@ -28,16 +22,18 @@ public interface ProjectInfoService {
 
     void delProjectStaff(String projectId, String staffId) throws Exception;
 
-    IPage<ProjectInfo> queryProjectInfo(ProjectListVo vo,String companyId);
+    IPage<ProjectInfo> queryProjectInfo(ProjectListVo vo, String companyId);
 
     void addProjectInfo(ProjectAddVO vo, String companyId) throws Exception;
 
     void modifyProjectInfo(ProjectModifyVO vo, String companyId) throws Exception;
 
-    void endProject( String project);
+    void endProject(String project);
 
     ProjectInfo queryProjectDetail(String projectId);
 
     IPage<ProjectEventInfo> queryProjectEvents(ProjectEventVO vo);
+
+
 
 }

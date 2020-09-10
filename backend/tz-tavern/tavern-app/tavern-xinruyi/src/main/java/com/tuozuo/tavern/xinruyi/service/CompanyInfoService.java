@@ -1,8 +1,11 @@
 package com.tuozuo.tavern.xinruyi.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.tuozuo.tavern.xinruyi.model.CompanyEventInfo;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfo;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfoExt;
 import com.tuozuo.tavern.xinruyi.vo.CompanyAuthInfoVO;
+import com.tuozuo.tavern.xinruyi.vo.CompanyEventVO;
 
 import java.util.List;
 
@@ -24,5 +27,5 @@ public interface CompanyInfoService {
 
     List<CompanyInfo> queryCompanyList(String companyName, int queryCnt);
 
-
+    IPage<CompanyEventInfo> queryCompanyEvents(CompanyEventVO vo);
 }

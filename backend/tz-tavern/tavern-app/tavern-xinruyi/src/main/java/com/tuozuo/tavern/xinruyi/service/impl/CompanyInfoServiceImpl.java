@@ -1,14 +1,17 @@
 package com.tuozuo.tavern.xinruyi.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
 import com.tuozuo.tavern.xinruyi.dao.CompanyInfoDao;
+import com.tuozuo.tavern.xinruyi.dao.EventTodoListDao;
 import com.tuozuo.tavern.xinruyi.dict.CompanyStatus;
-import com.tuozuo.tavern.xinruyi.dto.CompanyDetailInfoDTO;
+import com.tuozuo.tavern.xinruyi.model.CompanyEventInfo;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfo;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfoExt;
 import com.tuozuo.tavern.xinruyi.service.CompanyInfoService;
 import com.tuozuo.tavern.xinruyi.utils.FileUtils;
 import com.tuozuo.tavern.xinruyi.vo.CompanyAuthInfoVO;
+import com.tuozuo.tavern.xinruyi.vo.CompanyEventVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +39,8 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
 
     @Autowired
     private CompanyInfoDao companyInfoDao;
+    @Autowired
+    private EventTodoListDao eventTodoListDao;
 
 
     @Override
@@ -55,6 +60,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
                 companyInfoExt);
         this.companyInfoDao.insertCompanyAuthInfo(companyInfoExt);
         CompanyInfo companyInfo = new CompanyInfo();
+        companyInfo.setCompanyName(companyAuthInfoVO.getCompanyName());
         companyInfo.setCompanyId(companyAuthInfoVO.getCompanyId());
         companyInfo.setStatus(CompanyStatus.AUTH_APPLYING.getStatus());
         this.companyInfoDao.updateCompanyInfo(companyInfo);
@@ -84,6 +90,20 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     public List<CompanyInfo> queryCompanyList(String companyName, int queryCnt) {
         return this.companyInfoDao.selectCompanyList(companyName, queryCnt);
     }
+
+    @Override
+    public IPage<CompanyEventInfo> queryCompanyEvents(CompanyEventVO vo) {
+        return this.eventTodoListDao.selectCompanies(vo.getPageNo(),vo.getPageSize(),
+                vo.getCompanyId(),
+                vo.getIndustryId(),
+                vo.getProvince(),
+                vo.getCity(),
+                vo.getDistrict(),
+                vo.getStatus(),
+                vo.getBeginDate(),
+                vo.getEndDate());
+    }
+
 
 
     private void setCompanyInfoFiles(MultipartFile businessLicense,

@@ -32,6 +32,26 @@
     <result column="event_type" jdbcType="VARCHAR" property="eventType" />
     <result column="snapshot" jdbcType="VARCHAR" property="snapshot" />
   </resultMap>
+  <resultMap id="BaseCompanyResultMap" type="com.tuozuo.tavern.xinruyi.model.CompanyEventInfo">
+    <result column="company_id" jdbcType="VARCHAR" property="companyId" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="company_industry" jdbcType="VARCHAR" property="industryType" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="district" jdbcType="VARCHAR" property="district" />
+    <result column="contact_phone" jdbcType="VARCHAR" property="contact" />
+    <result column="event_date" jdbcType="VARCHAR" property="applyDate" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="file_biz_license" jdbcType="VARCHAR" property="businessLicense" />
+    <result column="legal_person_name" jdbcType="VARCHAR" property="bossName" />
+    <result column="legal_person_identity" jdbcType="VARCHAR" property="bossId" />
+    <result column="file_legal_person_idcard_up" jdbcType="VARCHAR" property="bossIdPicUp" />
+    <result column="file_legal_person_idcard_back" jdbcType="VARCHAR" property="bossIdPicBack" />
+    <result column="company_bank_account" jdbcType="VARCHAR" property="companyAccount" />
+    <result column="company_branch_bank" jdbcType="VARCHAR" property="companyAccountBank" />
+    <result column="contact_name" jdbcType="VARCHAR" property="contactName" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
   <select id="selectAll" resultMap="BaseResultMap">
     select event_id, event_type, event_owner, event_date, snapshot
     from event_todo_list
@@ -44,10 +64,9 @@
     t2.province,t2.city,t2.district,t2.contract_phone,t2.contract_person,t2.on_spot,t2.file_material,t2.remark,
     t1.event_type,t1.snapshot
 
-    from event_todo_list t1,project_info t2,company_info t3
+    from project_info t2 LEFT JOIN event_todo_list t1 on  t1.project_id = t2.project_id,company_info t3
     <where>
-      t1.project_id = t2.project_id
-      and t1.company_id = t3.company_id
+      t1.company_id = t3.company_id
       <if test="projectId != null and projectId != ''">
         and  t1.project_id = #{projectId}
       </if>
@@ -62,6 +81,58 @@
       </if>
       <if test="endDate != null and endDate != ''">
         and  t1.event_date <![CDATA[ <= ]]> STR_TO_DATE(#{endDate}, '%Y%m%d')
+      </if>
+    </where>
+  </select>
+  <select id="selectCompanies" resultMap="BaseCompanyResultMap">
+    select
+    t1.company_id,
+    t1.company_name,
+    t1.company_industry,
+    t1.province,
+    t1.city,
+    t1.district,
+    t2.contact_phone,
+    date_format(t3.event_date ,'%Y%m%d') event_date,
+    t1.`status`,
+    t2.file_biz_license,
+    t2.legal_person_name,
+    t2.legal_person_identity,
+    t2.file_legal_person_idcard_up,
+    t2.file_legal_person_idcard_back,
+    t2.company_bank_account,
+    t2.company_branch_bank,
+    t2.contact_name,
+    t2.remark
+
+    from company_info t1,company_info_ext t2 LEFT JOIN event_todo_list t3 on t2.company_id = t3.company_id
+
+  <where>
+    t1.company_id = t2.company_id
+    and length(t3.project_id) = 0
+    <if test="industryId != null and industryId != ''">
+        and  t1.company_industry = #{industryId}
+      </if>
+      <if test="companyId != null and companyId != ''">
+        and  t1.company_id = #{companyId}
+      </if>
+      <if test="province != null and province != ''">
+        and  t1.province = #{province}
+      </if>
+      <if test="city != null and city != ''">
+        and  t1.city = #{city}
+      </if>
+      <if test="district != null and district != ''">
+        and  t1.district = #{district}
+      </if>
+      <if test="status != null and status != ''">
+        and  t1.status = #{status}
+      </if>
+      <if test="beginDate != null and beginDate != ''">
+        and  t3.event_date >= STR_TO_DATE(#{beginDate}, '%Y%m%d')
+      </if>
+      <if test="endDate != null and endDate != ''">
+        and  t3.event_date <![CDATA[ <= ]]> STR_TO_DATE(#{endDate}, '%Y%m%d')
       </if>
     </where>
   </select>
