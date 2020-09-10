@@ -179,6 +179,8 @@ const fields = [
 'projectFile',
 'budget',
 'remark',
+'status',
+'fee',
 'desc'
 ]
 

@@ -71,6 +71,23 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/eventControl',
+    name: 'EventControl',
+    redirect: '/eventControl/projectVerificationList',
+    component: BasicLayout,
+    meta: { title: '审核管理', keepAlive: true, icon: 'account-book', permission: ['admin', 'xinruyi.staff.normal'] },
+    children: [
+      {
+        path: '/eventControl/projectVerificationList',
+        name: 'ProjectVerificationList',
+        component: resolve => require(['@/views/verifications/ProjectList'], resolve),
+        // component: () => import('@/views/company/MycompanyList'),
+        meta: { title: '项目列表', keepAlive: true, permission: ['admin', 'xinruyi.staff.normal'] }
+      }
+    ]
+  },
+
+  {
     path: '/',
     name: 'index',
     component: BasicLayout,
