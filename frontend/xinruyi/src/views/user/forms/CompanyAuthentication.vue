@@ -229,6 +229,10 @@ export default {
     title: {
       type: String,
       default: ''
+    },
+    clearUpload: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -276,6 +280,13 @@ export default {
         fetch(this.model.companyAccountBank, this.model.bankBranchName, (data) => (this.bankAreaList = data))
       }
     })
+  },
+  watch: {
+    clearUpload: function (newVal, oldVal) {
+      this.businessLicenseList = []
+      this.bossIdPicUpList = []
+      this.bossIdPicBackList = []
+    }
   },
   methods: {
      handleCustomSearch (value) {

@@ -4,10 +4,10 @@
       <myinfo :customId="customId" :refresh="refresh" @mystatus="handlemystatus">
         <template v-slot:freshButton style="padding:5px;">
           <a-button type="primary" size="small" @click="refresh=!refresh">刷新</a-button>
-          <a-divider type="vertical" />
-          <a-button type="primary" size="small" @click="handleAdd">认证申请</a-button>
-          <a-divider type="vertical" />
-          <a-button type="primary" size="small" @click="handleUpdate">修改申请</a-button>
+          <a-divider type="vertical" v-if="status=='2'"/>
+          <a-button type="primary" size="small" v-if="status=='2'" @click="handleAdd">认证申请</a-button>
+          <a-divider type="vertical" v-if="status=='5'"/>
+          <a-button type="primary" size="small" v-if="status=='5'" @click="handleUpdate">修改申请</a-button>
           <a-divider type="vertical" />
           <a-button type="primary" size="small" @click="fetchCompanyDetail">详情</a-button>
         </template>
@@ -150,6 +150,7 @@ export default {
                   this.clearUpload = !this.clearUpload
                   form.resetFields() // 清理表单数据（可不做）
                   this.companyVisible = false
+                  this.contractVisible = false
                   this.confirmLoading = false
                   this.refresh = !this.refresh
                 } else {
@@ -183,6 +184,7 @@ export default {
                   this.clearUpload = !this.clearUpload
                   form.resetFields() // 清理表单数据（可不做）
                   this.companyVisible = false
+                  this.contractVisible = false
                   this.confirmLoading = false
                   this.refresh = !this.refresh
                 } else {

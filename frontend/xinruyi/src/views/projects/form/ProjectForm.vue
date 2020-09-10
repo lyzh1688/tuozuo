@@ -209,6 +209,10 @@ export default {
     title: {
       type: String,
       default: ''
+    },
+    clearUpload: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -235,6 +239,11 @@ export default {
       // secondCity: citiesHepler[0].children[0].label,
       // secondCities: citiesHepler[0].children,
       form: this.$form.createForm(this)
+    }
+  },
+  watch: {
+    clearUpload: function (newVal, oldVal) {
+      this.projectFileList = []
     }
   },
   created () {

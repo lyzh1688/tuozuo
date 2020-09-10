@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 const CompanyApi = {
   companyInfo: process.env.VUE_APP_SYSTEM_URL + '/v1/company/profile',
-  companyAuthentication: process.env.VUE_APP_SYSTEM_URL + '/v1/company/authentication',
+  companyAuthentication: process.env.VUE_APP_SYSTEM_URL + '/v1/company/identification',
   companyDetail: process.env.VUE_APP_SYSTEM_URL + '/v1/company/detail/',
   companyFuzzy: process.env.VUE_APP_SYSTEM_URL + '/v1/company',
   companyupdate: process.env.VUE_APP_SYSTEM_URL + '/v1/company'
