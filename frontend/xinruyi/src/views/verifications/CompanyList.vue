@@ -4,27 +4,36 @@
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="8" :sm="8">
-            <a-form-item label="项目名称">
+            <a-form-item label="公司名称">
               <a-select
                 show-search
-                v-model="queryParam1.projectId"
-                placeholder="请输入项目名称"
+                v-model="queryParam1.companyId"
+                placeholder="请输入公司名称"
                 style="width: 200px"
                 :default-active-first-option="false"
                 :show-arrow="false"
                 :filter-option="false"
                 :not-found-content="null"
-                @search="handleCustomSearch"
-                @change="handleCustomChange"
+                @search="handleCustomSearch2"
+                @change="handleCustomChange2"
               >
-                <a-select-option v-for="d in fuzzyProjectList" :key="d.value">{{ d.text }}</a-select-option>
+                <a-select-option v-for="d in fuzzyCompanyList" :key="d.value">{{ d.text }}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="8">
+            <a-form-item label="公司状态">
+              <a-select style="width:200px;" v-model="queryParam1.companyStatus" placeholder="请选择">
+                <a-select-option
+                  v-for=" projectStatusItem in companyStatusList"
+                  :key="projectStatusItem.id"
+                >{{ projectStatusItem.name }}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="8">
             <a-form-item label="行业类型">
               <a-select
-                :disabled="isShowOnly"
                 v-model="queryParam1.industryType"
                 style="width: 200px"
               >
@@ -35,14 +44,49 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col :md="8" :sm="8">
-            <a-form-item label="项目状态">
-              <a-select style="width:200px;" v-model="queryParam1.projectStatus" placeholder="请选择">
+          <a-col :span="10">
+            <a-form-item label="地区">
+              <a-select
+                v-model="queryParam1.province"
+                style="width: 120px"
+                @change="handleChane"
+              >
                 <a-select-option
-                  v-for=" projectStatusItem in projectStatusList"
-                  :key="projectStatusItem.id"
-                >{{ projectStatusItem.name }}</a-select-option>
+                  v-for="province in provinceList"
+                  :key="province.areaCode"
+                >{{ province.areaName }}</a-select-option>
               </a-select>
+              <a-select
+                v-model="queryParam1.city"
+                style="width: 120px"
+                @change="handleChane2"
+              >
+                <a-select-option
+                  v-for="cityItem in cityList"
+                  :key="cityItem.areaCode"
+                >{{ cityItem.areaName }}</a-select-option>
+              </a-select>
+              <a-select
+                v-model="queryParam1.district"
+                style="width: 120px"
+              >
+                <a-select-option
+                  v-for="cityItem in districtList"
+                  :key="cityItem.areaCode"
+                >{{ cityItem.areaName }}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="10" :sm="8">
+            <a-form-item label="申请时间">
+              <a-date-picker
+                valueFormat="YYYYMMDD"
+                format="YYYY-MM-DD"
+                v-model="queryParam1.beginDate" />
+              <a-date-picker
+                valueFormat="YYYYMMDD"
+                format="YYYY-MM-DD"
+                v-model="queryParam1.endDate" />
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="8">
@@ -58,20 +102,18 @@
                 size="small"
                 type="primary"
                 @click="()=>{ queryParam1= {
-                  projectId: '',
-                  projectStatus: '',
-                  industryType:'',
+                  companyStatus: '',
+                  industryType: '',
+                  beginDate: '',
+                  endDate: '',
+                  companyId: '',
+                  province: '',
+                  city: '',
+                  district: '',
                   pageNo: 1,
                   pageSize: 20
                 }}"
               >重置</a-button>
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-row>
-          <a-col :md="12" :sm="24">
-            <a-form-item>
-              <a-button size="small" @click="handleAdd">发布项目</a-button>
             </a-form-item>
           </a-col>
         </a-row>
@@ -86,47 +128,59 @@
         :showPagination="true"
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
-        <span slot="projectStatus" slot-scope="text">{{ projectStatusMap[text] }}</span>
+        <span slot="status" slot-scope="text">{{ companyStatusMap[text] }}</span>
         <span slot="industryType" slot-scope="text">{{ industryTypeMap[text] }}</span>
+        <span slot="area" slot-scope="text, record">
+          <areashow :provinceCode="record.province" :cityCode="record.city" :districtCode="record.district"/>
+        </span>
         <span slot="ops" slot-scope="text, record">
           <a-button
-            :disabled="projectStatusMap[record.projectStatus].search('完成')>=0"
+            :disabled="record.projectStatus!='1'&&record.projectStatus!='4'"
             size="small"
             type="primary"
-            @click="handleUpdate(record)"
+            @click="handleverify(record)"
             :loading="confirmLoading"
-          >修改</a-button>
-          <a-button size="small" @click="fetchProjectDetail(record)" :loading="confirmLoading">详情</a-button>
+          >审核</a-button>
           <a-button
-            :disabled="projectStatusMap[record.projectStatus].search('完成')>=0"
+            :disabled="record.projectStatus=='1'||record.projectStatus=='3'"
             size="small"
-            type="primary"
-            @click="handleComplete(record)"
+            @click="fetchCompanyDetail(record)"
             :loading="confirmLoading"
-          >完成</a-button>
+          >详情</a-button>
         </span>
       </s-table>
-      <projectform
+      <companyform
         :title="formTitle"
-        ref="projectform"
+        ref="companyform"
         :clearUpload="clearUpload"
-        :visible="projectVisible"
+        :visible="companyVisible"
         :loading="confirmLoading"
-        :model="projectMdl"
-        :isUpdate="isupdate"
+        :model="companyMdl"
         :isShowOnly="isShowOnly"
         @cancel="handleCancel"
         @ok="handleOk"
       >
         <template v-slot:other v-if="isShowOnly">
+          <a-form-item label="公司状态">
+            <a-select
+              :disabled="isShowOnly&&!isverify"
+              style="width:200px;"
+              v-decorator="['status', {rules: [{required: true, message: '请选择状态！'}], validateTrigger: 'blur'}]"
+              placeholder="请选择">
+              <a-select-option
+                v-for=" projectStatusItem in companyStatusList"
+                :key="projectStatusItem.id"
+              >{{ projectStatusItem.name }}</a-select-option>
+            </a-select>
+          </a-form-item>
           <a-form-item label="备注">
             <a-textarea
-              :disabled="isShowOnly"
-              v-decorator="['remark', { validateTrigger: 'blur'}]"
+              :disabled="isShowOnly&&!isverify"
+              v-decorator="['remark', {rules: [{required: true, message: '请输备注！'}], validateTrigger: 'blur'}]"
             />
           </a-form-item>
         </template>
-      </projectform>
+      </companyform>
     </a-card>
   </page-header-wrapper>
 </template>
@@ -134,26 +188,27 @@
 <script>
 import { Modal } from 'ant-design-vue'
 import { STable } from '@/components'
+import areashow from './AreaShow'
 import {
-  fuzzyQueryProject,
-  getProjectList,
-  addNewProject,
-  updateProject,
-  getProjectDetail,
-  completeProjects
-} from '@/api/projects'
-import { getCommonDict } from '@/api/dictionary'
+  fuzzyQueryCompany,
+  getCompanyDetail
+} from '@/api/company'
+import {
+  getCompanyEventList,
+  doprojectRelease
+} from '@/api/events'
+import { getCommonDict, getAreaCode } from '@/api/dictionary'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
-import projectform from './form/ProjectForm'
+import companyform from '@/views/user/forms/CompanyAuthentication'
 const columns = [
   {
     title: '编号',
     scopedSlots: { customRender: 'no' }
   },
   {
-    title: '项目名称',
-    dataIndex: 'projectName',
-    scopedSlots: { customRender: 'projectName' }
+    title: '公司名称',
+    dataIndex: 'companyName',
+    scopedSlots: { customRender: 'companyName' }
   },
 {
     title: '行业类型',
@@ -161,34 +216,29 @@ const columns = [
     scopedSlots: { customRender: 'industryType' }
   },
   {
-    title: '项目周期',
-    dataIndex: 'projectCycle',
-    scopedSlots: { customRender: 'projectCycle' }
+    title: '地区',
+    dataIndex: 'area',
+    scopedSlots: { customRender: 'area' }
   },
   {
-    title: '预算金额',
-    dataIndex: 'budget',
-    scopedSlots: { customRender: 'budget' }
+    title: '申请日期',
+    dataIndex: 'applyDate',
+    scopedSlots: { customRender: 'applyDate' }
   },
   {
-    title: '项目人数',
-    dataIndex: 'staffNum',
-    scopedSlots: { customRender: 'staffNum' }
+    title: '申请状态',
+    dataIndex: 'status',
+    scopedSlots: { customRender: 'status' }
   },
   {
-    title: '开始时间',
-    dataIndex: 'beginDate',
-    scopedSlots: { customRender: 'beginDate' }
+    title: '联系方式',
+    dataIndex: 'contact',
+    scopedSlots: { customRender: 'contact' }
   },
   {
-    title: '结束时间',
-    dataIndex: 'endDate',
-    scopedSlots: { customRender: 'endDate' }
-  },
-  {
-    title: '项目状态',
-    dataIndex: 'projectStatus',
-    scopedSlots: { customRender: 'projectStatus' }
+    title: '备注',
+    dataIndex: 'remark',
+    scopedSlots: { customRender: 'remark' }
   },
   {
     title: '操作',
@@ -215,19 +265,19 @@ const columns = [
 //   }
 // }
 
-let timeout
-let currentValue
+let timeout2
+let currentValue2
 
-function fetch (value, callback) {
-  if (timeout) {
-    clearTimeout(timeout)
-    timeout = null
+function fetch2 (value, callback) {
+  if (timeout2) {
+    clearTimeout(timeout2)
+    timeout2 = null
   }
-  currentValue = value
+  currentValue2 = value
 
-  function fake () {
-    fuzzyQueryProject(value, 20, false).then((d) => {
-      if (currentValue === value) {
+  function fake2 () {
+    fuzzyQueryCompany(value, 20).then((d) => {
+      if (currentValue2 === value) {
         const result = d.data
         const data = []
         result.forEach((r) => {
@@ -245,39 +295,51 @@ function fetch (value, callback) {
     })
   }
 
-  timeout = setTimeout(fake, 300)
+  timeout2 = setTimeout(fake2, 300)
 }
 export default {
-  name: 'ProjectList',
+  name: 'CompanyVerificationList',
   data () {
     this.columns = columns
     return {
       clearUpload: false,
-      projectVisible: false,
+      companyVisible: false,
       confirmLoading: false,
-      projectMdl: {},
-      isupdate: false,
+      companyMdl: {},
+      isverify: false,
       isShowOnly: false,
       formTitle: '',
-      industryTypeList: [],
-      industryTypeMap: {},
       queryParam1: {
-        projectStatus: '',
-        projectId: '',
-        industryType: ''
+        companyStatus: '',
+        industryType: '',
+        beginDate: '',
+        endDate: '',
+        companyId: '',
+        province: '',
+        city: '',
+        district: ''
       },
       projectListLoading: false,
-      fuzzyProjectList: [],
-      projectStatusList: [],
-      projectStatusMap: {},
+      provinceList: [],
+      cityList: [],
+      districtList: [],
+      fuzzyCompanyList: [],
+      industryTypeList: [],
+      industryTypeMap: {},
+      companyStatusList: [],
+      companyStatusMap: {},
       loadData: (parameter) => {
         const requestParameters = Object.assign({}, parameter, this.queryParam1)
         console.log('loadData request parameters:', requestParameters)
-        return getProjectList(
-          requestParameters.projectId,
+        return getCompanyEventList(
+          requestParameters.companyId,
           requestParameters.industryType,
-          '',
-          requestParameters.projectStatus,
+          requestParameters.province,
+          requestParameters.city,
+          requestParameters.district,
+          requestParameters.companyStatus,
+          requestParameters.beginDate,
+          requestParameters.endDate,
           requestParameters.pageNo,
           requestParameters.pageSize
         )
@@ -285,7 +347,7 @@ export default {
             const result = Response
             // console.log('getTradeflow', result)
             if (success(result)) {
-              const ans = result.data.projects
+              const ans = result.data.companies
               return {
                 pageSize: requestParameters.pageSize,
                 pageNo: requestParameters.pageNo,
@@ -317,18 +379,23 @@ export default {
   },
   components: {
     STable,
-    projectform
+    companyform,
+    areashow
   },
   created () {
     fetch('', (data) => (this.fuzzyProjectList = data))
-    this.getDict('projectStatus').then((response) => {
-      this.projectStatusList = response
-      this.projectStatusMap = {}
+    fetch2('', (data) => (this.fuzzyCompanyList = data))
+     this.getAreaCode('province', '').then((response) => {
+      this.provinceList = response
+    })
+    this.getDict('companyStatus').then((response) => {
+      this.companyStatusList = response
+      this.companyStatusMap = {}
       for (const i of response) {
-        this.projectStatusMap[i.id] = i.name
+        this.companyStatusMap[i.id] = i.name
       }
     })
-    this.getDict('industryType').then((response) => {
+     this.getDict('industryType').then((response) => {
       this.industryTypeList = response
       this.industryTypeMap = {}
       for (const i of response) {
@@ -337,19 +404,38 @@ export default {
     })
   },
   methods: {
-    fetchProjectDetail (record) {
-      this.formTitle = '项目详情'
+     getAreaCode (level, code) {
+      return new Promise((resolve, reject) => {
+        getAreaCode(level, code).then((Response) => {
+          const result = Response
+          // console.log('dictQuery', result)
+          if (success(result)) {
+            resolve(result.data)
+          } else {
+            this.$notification.error({
+              message: errorMessage(result),
+              description: '查询区域信息失败'
+            })
+          }
+        })
+      })
+    },
+    fetchCompanyDetail (record) {
+      this.formTitle = '公司详情'
       this.isShowOnly = true
+      this.isverify = false
       this.confirmLoading = true
-      getProjectDetail(record.projectId)
+      getCompanyDetail(record.companyId)
         .then((response) => {
           const result = response
           if (success(result)) {
-            this.projectMdl = {
+            this.companyMdl = {
               ...result.data,
-              projectId: record.projectId
+              projectId: record.projectId,
+              fee: record.rate,
+              status: record.projectStatus
             }
-            this.projectVisible = true
+            this.companyVisible = true
             this.confirmLoading = false
           } else {
             this.confirmLoading = false
@@ -367,32 +453,44 @@ export default {
           this.confirmLoading = false
         })
     },
+    async handleChane (index) {
+      await this.getAreaCode('city', index).then((response) => {
+        this.cityList = response
+      })
+      this.queryParam1.city = ''
+      this.queryParam1.district = ''
+    },
+    async handleChane2 (index) {
+      await this.getAreaCode('district', index).then((response) => {
+        this.districtList = response
+      })
+      this.queryParam1.district = ''
+    },
     handleOk () {
       if (this.isShowOnly) {
-        const form = this.$refs.projectform.form
+        const form = this.$refs.companyform.form
         this.clearUpload = !this.clearUpload
         form.resetFields() // 清理表单数据（可不做）
         this.$refs.table.refresh(true)
-        this.projectVisible = false
+        this.companyVisible = false
         return
       }
-      const form = this.$refs.projectform.form
+      const form = this.$refs.companyform.form
       form.validateFields((errors, values) => {
         if (!errors) {
           this.confirmLoading = true
-          if (this.isupdate) {
-            updateProject(values)
+          doprojectRelease(values)
               .then((response) => {
                 const result = response
                 if (success(result)) {
                   this.$notification.success({
                     message: '修改成功'
                   })
-                  const form = this.$refs.projectform.form
+                  const form = this.$refs.companyform.form
                   this.clearUpload = !this.clearUpload
                   form.resetFields() // 清理表单数据（可不做）
                   this.$refs.table.refresh(true)
-                  this.projectVisible = false
+                  this.companyVisible = false
                   this.confirmLoading = false
                 } else {
                   this.confirmLoading = false
@@ -402,7 +500,7 @@ export default {
                   })
                 }
                 if (needLogin(result)) {
-                  this.projectVisible = false
+                  this.companyVisible = false
                   this.confirmLoading = false
                 }
               })
@@ -413,116 +511,47 @@ export default {
                 })
                 this.confirmLoading = false
               })
-          } else {
-            addNewProject(values)
-              .then((response) => {
-                const result = response
-                if (success(result)) {
-                  this.$notification.success({
-                    message: '新增成功'
-                  })
-                  const form = this.$refs.projectform.form
-                  this.clearUpload = !this.clearUpload
-                  form.resetFields() // 清理表单数据（可不做）
-                  this.$refs.table.refresh(true)
-                  this.projectVisible = false
-                  this.confirmLoading = false
-                } else {
-                  this.confirmLoading = false
-                  this.$notification.error({
-                    message: errorMessage(result),
-                    description: '新增失败。请稍后再试'
-                  })
-                }
-                if (needLogin(result)) {
-                  this.projectVisible = false
-                  this.confirmLoading = false
-                }
-              })
-              .catch((error) => {
-                this.$notification.error({
-                  message: '新增失败。请稍后再试',
-                  description: error
-                })
-                this.confirmLoading = false
-              })
-          }
         }
       })
     },
     handleAdd () {
       this.formTitle = '新建项目'
-      this.projectMdl = {}
-      const form = this.$refs.projectform.form
+      this.companyMdl = {}
+      const form = this.$refs.companyform.form
       this.clearUpload = !this.clearUpload
       form.resetFields() // 清理表单数据（可不做）
-      this.isupdate = false
+      this.isverify = false
       this.isShowOnly = false
-      this.projectVisible = true
+      this.companyVisible = true
     },
-    async handleUpdate (record) {
-      await this.fetchProjectDetail(record)
-      this.formTitle = '修改项目'
-      this.isupdate = true
-      this.projectVisible = true
-      this.isShowOnly = false
-    },
-    handleComplete (record) {
-      Modal.confirm({
-        title: '提交项目完成申请',
-        content: '是否确认完成该项目？',
-        onOk: () => {
-          this.confirmLoading = true
-          completeProjects(record.projectId)
-            .then((response) => {
-              const result = response
-              if (success(result)) {
-                this.$notification.success({
-                  message: errorMessage(result),
-                  description: '发起项目完成审核成功'
-                })
-                this.confirmLoading = false
-                this.$refs.table.refresh(true)
-              } else {
-                this.confirmLoading = false
-                this.$notification.error({
-                  message: errorMessage(result),
-                  description: '发起项目完成审核失败'
-                })
-              }
-            })
-            .catch((error) => {
-              this.$notification.error({
-                message: '发起项目完成审核失败',
-                description: error
-              })
-              this.confirmLoading = false
-            })
-        },
-        onCancel () {}
-      })
+    async handleverify (record) {
+      await this.fetchCompanyDetail(record)
+      this.formTitle = '审核项目发布申请'
+      this.companyVisible = true
+      this.isverify = true
+      this.isShowOnly = true
     },
     handleCancel () {
-      if (!this.isShowOnly) {
-        Modal.confirm({
+        if (this.isverify) {
+   Modal.confirm({
           title: '取消操作',
           content: '是否确认取消操作？所做的修改将会丢失！',
           onOk: () => {
-            this.projectVisible = false
+            this.companyVisible = false
           },
           onCancel () {}
         })
-      } else {
-        this.projectVisible = false
-      }
+        } else {
+             this.companyVisible = false
+        }
     },
-    handleCustomSearch (value) {
-      fetch(value, (data) => (this.fuzzyProjectList = data))
+    handleCustomSearch2 (value) {
+      fetch(value, (data) => (this.fuzzyCompanyList = data))
     },
-    handleCustomChange (value) {
+    handleCustomChange2 (value) {
       // console.log(value)
-      this.queryParam1.projectId = value
-      fetch(value, (data) => (this.fuzzyProjectList = data))
+      this.queryParam1.companyId = value
+      fetch2(value, (data) => (this.fuzzyCompanyList = data))
     },
     getDict (keyword) {
       return new Promise((resolve, reject) => {

@@ -28,7 +28,7 @@
           <a-select
             :disabled="isShowOnly"
             v-decorator="['industryType', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
-            style="width: 120px"
+            style="width: 200px"
           >
             <a-select-option
               v-for="province in industryTypeList"

@@ -3,7 +3,7 @@
     <a-card :bordered="false">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="10" :sm="8">
+          <a-col :md="8" :sm="8">
             <a-form-item label="公司名称">
               <a-select
                 show-search
@@ -21,7 +21,7 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col :md="10" :sm="8">
+          <a-col :md="8" :sm="8">
             <a-form-item label="项目名称">
               <a-select
                 show-search
@@ -39,7 +39,20 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col :md="10" :sm="8">
+          <a-col :md="8" :sm="8">
+            <a-form-item label="行业类型">
+              <a-select
+                v-model="queryParam1.industryType"
+                style="width: 200px"
+              >
+                <a-select-option
+                  v-for="province in industryTypeList"
+                  :key="province.id"
+                >{{ province.name }}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="8">
             <a-form-item label="项目状态">
               <a-select style="width:200px;" v-model="queryParam1.projectStatus" placeholder="请选择">
                 <a-select-option
@@ -86,13 +99,6 @@
             </a-form-item>
           </a-col>
         </a-row>
-        <a-row>
-          <a-col :md="12" :sm="24">
-            <a-form-item>
-              <a-button size="small" @click="handleAdd">发布项目</a-button>
-            </a-form-item>
-          </a-col>
-        </a-row>
       </a-form>
       <s-table
         ref="table"
@@ -105,14 +111,20 @@
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="projectStatus" slot-scope="text">{{ projectStatusMap[text] }}</span>
+        <span slot="industryType" slot-scope="text">{{ industryTypeMap[text] }}</span>
         <span slot="ops" slot-scope="text, record">
           <a-button
-            :disabled="projectStatusMap[record.projectStatus].search('完成')>=0"
+            :disabled="record.projectStatus!='1'&&record.projectStatus!='6'"
             size="small"
             type="primary"
             @click="handleverify(record)"
             :loading="confirmLoading"
           >审核</a-button>
+          <a-button
+            size="small"
+            @click="fetchProjectDetail(record)"
+            :loading="confirmLoading"
+          >详情</a-button>
         </span>
       </s-table>
       <projectform
@@ -122,7 +134,6 @@
         :visible="projectVisible"
         :loading="confirmLoading"
         :model="projectMdl"
-        :isUpdate="isupdate"
         :isShowOnly="isShowOnly"
         @cancel="handleCancel"
         @ok="handleOk"
@@ -130,12 +141,14 @@
         <template v-slot:other v-if="isShowOnly">
           <a-form-item label="服务费率">
             <a-input-number
+              :disabled="isShowOnly&&!isverify"
               :min="0"
               v-decorator="['fee', {rules: [{required: true, message: '请输入服务费率！'}], validateTrigger: 'blur'}]"
             />
           </a-form-item>
           <a-form-item label="项目状态">
             <a-select
+              :disabled="isShowOnly&&!isverify"
               style="width:200px;"
               v-decorator="['status', {rules: [{required: true, message: '请选择状态！'}], validateTrigger: 'blur'}]"
               placeholder="请选择">
@@ -147,6 +160,7 @@
           </a-form-item>
           <a-form-item label="备注">
             <a-textarea
+              :disabled="isShowOnly&&!isverify"
               v-decorator="['remark', {rules: [{required: true, message: '请输备注！'}], validateTrigger: 'blur'}]"
             />
           </a-form-item>
@@ -188,6 +202,11 @@ const columns = [
     title: '项目名称',
     dataIndex: 'projectName',
     scopedSlots: { customRender: 'projectName' }
+  },
+  {
+    title: '行业类型',
+    dataIndex: 'industryType',
+    scopedSlots: { customRender: 'industryType' }
   },
   {
     title: '申请日期',
@@ -307,8 +326,10 @@ export default {
       projectVisible: false,
       confirmLoading: false,
       projectMdl: {},
-      isupdate: false,
+      isverify: false,
       isShowOnly: false,
+      industryTypeList: [],
+      industryTypeMap: {},
       formTitle: '',
       queryParam1: {
         projectStatus: '',
@@ -382,11 +403,19 @@ export default {
         this.projectStatusMap[i.id] = i.name
       }
     })
+     this.getDict('industryType').then((response) => {
+      this.industryTypeList = response
+      this.industryTypeMap = {}
+      for (const i of response) {
+        this.industryTypeMap[i.id] = i.name
+      }
+    })
   },
   methods: {
     fetchProjectDetail (record) {
-      this.formTitle = '公司详情'
+      this.formTitle = '项目详情'
       this.isShowOnly = true
+      this.isverify = false
       this.confirmLoading = true
       getProjectDetail(record.projectId)
         .then((response) => {
@@ -470,7 +499,7 @@ export default {
       const form = this.$refs.projectform.form
       this.clearUpload = !this.clearUpload
       form.resetFields() // 清理表单数据（可不做）
-      this.isupdate = false
+      this.isverify = false
       this.isShowOnly = false
       this.projectVisible = true
     },
@@ -478,10 +507,12 @@ export default {
       await this.fetchProjectDetail(record)
       this.formTitle = '审核项目发布申请'
       this.projectVisible = true
+      this.isverify = true
       this.isShowOnly = true
     },
     handleCancel () {
-        Modal.confirm({
+        if (this.isverify) {
+   Modal.confirm({
           title: '取消操作',
           content: '是否确认取消操作？所做的修改将会丢失！',
           onOk: () => {
@@ -489,6 +520,9 @@ export default {
           },
           onCancel () {}
         })
+        } else {
+             this.projectVisible = false
+        }
     },
     handleCustomSearch (value) {
       fetch(value, (data) => (this.fuzzyProjectList = data))
