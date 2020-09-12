@@ -163,9 +163,10 @@ public class ProjectInfoEndpoint {
      */
     @DeleteMapping("/staff/{staffId}")
     public TavernResponse delProjectStaff(@PathVariable("staffId") String staffId,
-                                          @RequestBody ProjectStaffDelVO vo) {
+                                          @RequestBody ProjectStaffDelVO vo,
+                                          @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId) {
         try {
-            this.projectInfoService.delProjectStaff(vo.getProjectId(), staffId);
+            this.projectInfoService.delProjectStaff(vo.getProjectId(), staffId,companyId);
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[项目人员修改] failed", e);

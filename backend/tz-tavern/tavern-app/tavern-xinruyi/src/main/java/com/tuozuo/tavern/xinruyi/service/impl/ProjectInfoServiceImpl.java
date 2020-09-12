@@ -97,13 +97,31 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     @Transactional
     @Override
-    public void delProjectStaff(String projectId, String staffId) throws Exception {
+    public void delProjectStaff(String projectId, String staffId, String companyId) throws Exception {
         ProjectStaff projectStaff = new ProjectStaff();
         projectStaff.setProjectId(projectId);
         projectStaff.setStaffId(staffId);
         projectStaff.setStatus("1");
         this.projectStaffInfoDao.delProjectStaff(projectStaff);
-        //TODO 增加裁员变动事件
+        //裁员变动事件
+        CompanyInfo companyInfo = this.companyInfoDao.selectCompanyInfo(companyId);
+        EventTodoList eventTodoList = new EventTodoList();
+        //构造snapshot
+        JSONObject snapshot = new JSONObject();
+        snapshot.put("projectId", projectId);
+        snapshot.put("companyId", companyId);
+        snapshot.put("staffId", staffId);
+        eventTodoList.setSnapshot(snapshot.toJSONString());
+        eventTodoList.setEventOwnerId(companyId);
+        eventTodoList.setApplicant(companyInfo.getCompanyName());
+        eventTodoList.setEventId(UUIDUtil.randomUUID32());
+        eventTodoList.setEventType(EventType.STAFF_FIRE.getStatus());
+        eventTodoList.setRole(UserTypeDict.custom);
+        eventTodoList.setEventOwnerName(companyInfo.getCompanyName());
+        eventTodoList.setEventDate(LocalDateTime.now());
+        eventTodoList.setProjectId(projectId);
+        eventTodoList.setCompanyId(companyId);
+        this.eventInfoDao.insertEventTodo(eventTodoList);
 
     }
 

@@ -20,7 +20,7 @@ public interface ProjectInfoService {
 
     void modifyProjectStaff(ProjectStaff projectStaff) throws Exception;
 
-    void delProjectStaff(String projectId, String staffId) throws Exception;
+    void delProjectStaff(String projectId, String staffId,String companyId) throws Exception;
 
     IPage<ProjectInfo> queryProjectInfo(ProjectListVo vo, String companyId);
 
