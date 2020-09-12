@@ -13,6 +13,7 @@ import com.tuozuo.tavern.xinruyi.model.*;
 import com.tuozuo.tavern.xinruyi.service.CompanyInfoService;
 import com.tuozuo.tavern.xinruyi.utils.FileUtils;
 import com.tuozuo.tavern.xinruyi.utils.UUIDUtil;
+import com.tuozuo.tavern.xinruyi.vo.AuditCompanySettledVO;
 import com.tuozuo.tavern.xinruyi.vo.CompanyApplyVO;
 import com.tuozuo.tavern.xinruyi.vo.CompanyAuthInfoVO;
 import com.tuozuo.tavern.xinruyi.vo.CompanyEventVO;
@@ -170,6 +171,17 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         eventFinishList.setUpdateDate(LocalDateTime.now());
         this.eventInfoDao.delEventTodo(eventTodoList.getEventId());
         this.eventInfoDao.insertEventFinish(eventFinishList);
+
+    }
+
+    @Transactional
+    @Override
+    public void auditCompanySettled(AuditCompanySettledVO vo) {
+        //1、更新账户
+        //2、新增账户
+        //3、移除事件
+        
+
 
     }
 

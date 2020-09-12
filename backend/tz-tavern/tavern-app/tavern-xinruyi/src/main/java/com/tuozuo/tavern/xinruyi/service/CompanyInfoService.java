@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.xinruyi.model.CompanyEventInfo;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfo;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfoExt;
+import com.tuozuo.tavern.xinruyi.vo.AuditCompanySettledVO;
 import com.tuozuo.tavern.xinruyi.vo.CompanyApplyVO;
 import com.tuozuo.tavern.xinruyi.vo.CompanyAuthInfoVO;
 import com.tuozuo.tavern.xinruyi.vo.CompanyEventVO;
@@ -31,4 +32,6 @@ public interface CompanyInfoService {
     IPage<CompanyEventInfo> queryCompanyEvents(CompanyEventVO vo);
 
     void auditCompanyAuth(String companyId,String status,String remark);
+
+    void auditCompanySettled(AuditCompanySettledVO vo);
 }

@@ -12,9 +12,7 @@ import com.tuozuo.tavern.xinruyi.model.CompanyEventInfo;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfo;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfoExt;
 import com.tuozuo.tavern.xinruyi.service.CompanyInfoService;
-import com.tuozuo.tavern.xinruyi.vo.CompanyApplyVO;
-import com.tuozuo.tavern.xinruyi.vo.CompanyAuthInfoVO;
-import com.tuozuo.tavern.xinruyi.vo.CompanyEventVO;
+import com.tuozuo.tavern.xinruyi.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -171,13 +169,25 @@ public class CompanyInfoEndpoint {
      */
     @PutMapping("/status/{companyId}")
     public TavernResponse auditCompanyAuth(@PathVariable("companyId") String companyId,
-                                           @RequestParam(name = "status") String status,
-                                           @RequestParam(name = "remark") String remark) {
+                                           @RequestBody @Valid AuditCompanyAuthVO vo) {
         try {
-            this.companyInfoService.auditCompanyAuth(companyId, status, remark);
+            this.companyInfoService.auditCompanyAuth(companyId, vo.getStatus(), vo.getRemark());
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[企业认证审核] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 企业入驻审核
+     */
+    @PutMapping("/company/spot")
+    public TavernResponse auditCompanySettled(@RequestBody @Valid AuditCompanySettledVO vo) {
+        try {
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[企业入驻审核] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }
