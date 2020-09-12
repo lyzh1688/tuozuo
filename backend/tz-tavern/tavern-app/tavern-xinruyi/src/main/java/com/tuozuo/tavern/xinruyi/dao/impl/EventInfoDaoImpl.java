@@ -47,4 +47,14 @@ public class EventInfoDaoImpl implements EventInfoDao {
         Page page = new Page(pageNo, pageSize);
         return this.eventFinishListMapper.selectList(page,companyId,projectId,eventId);
     }
+
+    @Override
+    public void insertEventTodo(EventTodoList eventTodoList) {
+        this.eventTodoListMapper.insert(eventTodoList);
+    }
+
+    @Override
+    public void insertEventFinish(EventFinishList eventFinishList) {
+        this.eventFinishListMapper.insert(eventFinishList);
+    }
 }

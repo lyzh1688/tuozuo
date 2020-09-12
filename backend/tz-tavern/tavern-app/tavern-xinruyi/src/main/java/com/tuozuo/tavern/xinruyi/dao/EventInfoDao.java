@@ -39,5 +39,8 @@ public interface EventInfoDao {
                                                  String projectId,
                                                  String eventId);
 
+    void insertEventTodo(EventTodoList eventTodoList);
+
+    void insertEventFinish(EventFinishList eventFinishList);
 
 }

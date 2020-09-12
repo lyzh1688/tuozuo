@@ -2,6 +2,7 @@ package com.tuozuo.tavern.xinruyi.convert;
 
 import com.tuozuo.tavern.xinruyi.dto.*;
 import com.tuozuo.tavern.xinruyi.model.*;
+import com.tuozuo.tavern.xinruyi.vo.CompanyApplyVO;
 import com.tuozuo.tavern.xinruyi.vo.ProjectStaffAddVO;
 import com.tuozuo.tavern.xinruyi.vo.StaffInfoVO;
 import com.tuozuo.tavern.xinruyi.vo.StaffModifyVO;
@@ -83,6 +84,13 @@ public interface ModelMapConverterFactory {
     EventInfoDTO modelToEventInfoDTO(EventTodoList eventTodoList);
 
     EventInfoDTO modelToEventInfoDTO(EventFinishList eventFinishList);
+
+    @Mappings({
+            @Mapping(target = "registerId", expression = "java(com.tuozuo.tavern.xinruyi.utils.UUIDUtil.randomUUID32())"),
+            @Mapping(target = "companyIndustry",source = "industryType"),
+
+    })
+    CompanyInfo voToCompanyInfo(CompanyApplyVO vo);
 
 
 }

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @TableName("event_todo_list")
 public class EventTodoList {
@@ -15,7 +16,7 @@ public class EventTodoList {
 
     private String eventOwnerId;
 
-    private LocalDate eventDate;
+    private LocalDateTime eventDate;
 
     private String snapshot;
 
@@ -121,11 +122,12 @@ public class EventTodoList {
         this.eventOwnerId = eventOwnerId == null ? null : eventOwnerId.trim();
     }
 
-    public LocalDate getEventDate() {
+    public LocalDateTime getEventDate() {
         return eventDate;
     }
 
-    public void setEventDate(LocalDate eventDate) {
+    public void setEventDate(LocalDateTime eventDate) {
+
         this.eventDate = eventDate;
     }
 

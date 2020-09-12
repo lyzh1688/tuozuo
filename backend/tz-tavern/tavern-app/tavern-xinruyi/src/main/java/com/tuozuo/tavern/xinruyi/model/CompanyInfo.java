@@ -1,6 +1,5 @@
 package com.tuozuo.tavern.xinruyi.model;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -8,20 +7,13 @@ import com.baomidou.mybatisplus.annotation.TableName;
 public class CompanyInfo {
     @TableId
     private String registerId;
-
     private String companyId;
-
     private String companyName;
-
     private String companyIndustry;
-
-
     private String province;
     private String city;
     private String district;
-
     private String status;
-
     private String contact;
 
     public String getContact() {

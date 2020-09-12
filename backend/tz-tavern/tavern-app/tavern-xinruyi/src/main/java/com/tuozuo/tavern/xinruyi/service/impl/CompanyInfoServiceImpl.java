@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.UserTypeDict;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
+import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.xinruyi.dao.CompanyInfoDao;
 import com.tuozuo.tavern.xinruyi.dao.EventInfoDao;
 import com.tuozuo.tavern.xinruyi.dict.CompanyStatus;
@@ -27,6 +28,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -47,16 +50,29 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     private CompanyInfoDao companyInfoDao;
     @Autowired
     private EventInfoDao eventInfoDao;
+    @Autowired
+    private ModelMapConverterFactory factory;
 
-
+    @Transactional
     @Override
     public void companyApply(CompanyApplyVO vo) {
         //企业申请
+        CompanyInfo companyInfo = this.factory.voToCompanyInfo(vo);
+        companyInfo.setStatus(CompanyStatus.APPLYING.getStatus());
+        this.companyInfoDao.insertCompanyInfo(companyInfo);
         //企业申请事件
-
-
-
-
+        EventTodoList eventTodoList = new EventTodoList();
+        //构造snapshot
+        JSONObject snapshot = new JSONObject();
+        snapshot.put("registerId",companyInfo.getRegisterId());
+        eventTodoList.setSnapshot(snapshot.toJSONString());
+        eventTodoList.setApplicant(vo.getCompanyName());
+        eventTodoList.setEventId(UUIDUtil.randomUUID32());
+        eventTodoList.setEventType(EventType.ENTERPISE_APPLY.getStatus());
+        eventTodoList.setRole(UserTypeDict.custom);
+        eventTodoList.setEventOwnerName(vo.getCompanyName());
+        eventTodoList.setEventDate(LocalDateTime.now());
+        this.eventInfoDao.insertEventTodo(eventTodoList);
     }
 
     @Override
