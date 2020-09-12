@@ -1,15 +1,20 @@
 package com.tuozuo.tavern.xinruyi.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.UserTypeDict;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
+import com.tuozuo.tavern.xinruyi.dao.CompanyInfoDao;
 import com.tuozuo.tavern.xinruyi.dao.EventInfoDao;
 import com.tuozuo.tavern.xinruyi.dao.ProjectInfoDao;
 import com.tuozuo.tavern.xinruyi.dao.ProjectStaffInfoDao;
+import com.tuozuo.tavern.xinruyi.dict.EventType;
 import com.tuozuo.tavern.xinruyi.dict.ProjectStatus;
+import com.tuozuo.tavern.xinruyi.dto.CompanyInfoDTO;
 import com.tuozuo.tavern.xinruyi.model.*;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
 import com.tuozuo.tavern.xinruyi.utils.FileUtils;
+import com.tuozuo.tavern.xinruyi.utils.UUIDUtil;
 import com.tuozuo.tavern.xinruyi.utils.ValidateUtils;
 import com.tuozuo.tavern.xinruyi.vo.*;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -43,6 +49,8 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     private ProjectStaffInfoDao projectStaffInfoDao;
     @Autowired
     private EventInfoDao eventInfoDao;
+    @Autowired
+    private CompanyInfoDao companyInfoDao;
 
 
     @Override
@@ -125,7 +133,24 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         ProjectInfo projectInfo = ModelConverterFactory.addVoToProjectInfo(vo, companyId);
         this.setProjectInfoFiles(vo.getProjectFile(), projectInfo);
         this.projectInfoDao.insertProject(projectInfo);
-        //TODO 项目发布事件
+
+        CompanyInfo companyInfo = this.companyInfoDao.selectCompanyInfo(companyId);
+        //项目发布事件
+        EventTodoList eventTodoList = new EventTodoList();
+        //构造snapshot
+        JSONObject snapshot = new JSONObject();
+        snapshot.put("projectId",projectInfo.getProjectId());
+        eventTodoList.setSnapshot(snapshot.toJSONString());
+        eventTodoList.setEventOwnerId(companyId);
+        eventTodoList.setApplicant(companyInfo.getCompanyName());
+        eventTodoList.setEventId(UUIDUtil.randomUUID32());
+        eventTodoList.setEventType(EventType.PROJECT_RELEASE.getStatus());
+        eventTodoList.setRole(UserTypeDict.custom);
+        eventTodoList.setEventOwnerName(companyInfo.getCompanyName());
+        eventTodoList.setEventDate(LocalDateTime.now());
+        eventTodoList.setProjectId(projectInfo.getProjectId());
+        eventTodoList.setCompanyId(companyId);
+        this.eventInfoDao.insertEventTodo(eventTodoList);
 
     }
 
