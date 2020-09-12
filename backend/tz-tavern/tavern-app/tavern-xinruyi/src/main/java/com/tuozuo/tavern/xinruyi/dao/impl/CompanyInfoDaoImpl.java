@@ -25,7 +25,9 @@ public class CompanyInfoDaoImpl implements CompanyInfoDao {
 
     @Override
     public CompanyInfo selectCompanyInfo(String companyId) {
-        return this.companyInfoMapper.select(companyId);
+        return this.companyInfoMapper.selectOne(Wrappers.<CompanyInfo>query()
+                .lambda()
+                .eq(CompanyInfo::getCompanyId, companyId));
     }
 
     @Override
@@ -58,5 +60,10 @@ public class CompanyInfoDaoImpl implements CompanyInfoDao {
                 .lambda()
                 .like(companyName != null, CompanyInfo::getCompanyName, companyName)
                 .last("limit " + queryCnt));
+    }
+
+    @Override
+    public void insertCompanyInfo(CompanyInfo companyInfo) {
+        this.companyInfoMapper.insert(companyInfo);
     }
 }

@@ -12,6 +12,7 @@ import com.tuozuo.tavern.xinruyi.model.CompanyEventInfo;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfo;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfoExt;
 import com.tuozuo.tavern.xinruyi.service.CompanyInfoService;
+import com.tuozuo.tavern.xinruyi.vo.CompanyApplyVO;
 import com.tuozuo.tavern.xinruyi.vo.CompanyAuthInfoVO;
 import com.tuozuo.tavern.xinruyi.vo.CompanyEventVO;
 import org.slf4j.Logger;
@@ -38,6 +39,20 @@ public class CompanyInfoEndpoint {
     @Autowired
     private ModelMapConverterFactory factory;
 
+
+    /**
+     * 企业入驻申请
+     */
+    @PostMapping("/cooperation")
+    public TavernResponse companycooperation(@ModelAttribute @Valid CompanyApplyVO vo) {
+        try {
+            this.companyInfoService.companyApply(vo);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[企业入驻申请] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
     /**
      * 我的企业信息
      */

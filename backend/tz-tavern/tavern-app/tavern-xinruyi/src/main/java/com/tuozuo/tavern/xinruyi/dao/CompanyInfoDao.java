@@ -23,4 +23,6 @@ public interface CompanyInfoDao {
 
     List<CompanyInfo> selectCompanyList(String companyName, int queryCnt);
 
+    void insertCompanyInfo(CompanyInfo companyInfo);
+
 }

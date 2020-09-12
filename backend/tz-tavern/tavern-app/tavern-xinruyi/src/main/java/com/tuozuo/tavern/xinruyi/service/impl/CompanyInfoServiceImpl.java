@@ -1,15 +1,21 @@
 package com.tuozuo.tavern.xinruyi.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.tuozuo.tavern.common.protocol.UserTypeDict;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
 import com.tuozuo.tavern.xinruyi.dao.CompanyInfoDao;
 import com.tuozuo.tavern.xinruyi.dao.EventInfoDao;
 import com.tuozuo.tavern.xinruyi.dict.CompanyStatus;
+import com.tuozuo.tavern.xinruyi.dict.EventType;
 import com.tuozuo.tavern.xinruyi.model.CompanyEventInfo;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfo;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfoExt;
+import com.tuozuo.tavern.xinruyi.model.EventTodoList;
 import com.tuozuo.tavern.xinruyi.service.CompanyInfoService;
 import com.tuozuo.tavern.xinruyi.utils.FileUtils;
+import com.tuozuo.tavern.xinruyi.utils.UUIDUtil;
+import com.tuozuo.tavern.xinruyi.vo.CompanyApplyVO;
 import com.tuozuo.tavern.xinruyi.vo.CompanyAuthInfoVO;
 import com.tuozuo.tavern.xinruyi.vo.CompanyEventVO;
 import org.apache.commons.lang3.StringUtils;
@@ -44,6 +50,16 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
 
 
     @Override
+    public void companyApply(CompanyApplyVO vo) {
+        //企业申请
+        //企业申请事件
+
+
+
+
+    }
+
+    @Override
     public CompanyInfo queryCompanyInfo(String companyId) {
         return this.companyInfoDao.selectCompanyInfo(companyId);
     }
@@ -52,7 +68,6 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     @Override
     public void applyForCompanyAuth(CompanyAuthInfoVO companyAuthInfoVO) throws Exception {
         //1、companyInfoExt表
-        //TODO 2、发出事件
         CompanyInfoExt companyInfoExt = ModelConverterFactory.authVOToCompanyInfoExt(companyAuthInfoVO);
         this.setCompanyInfoFiles(companyAuthInfoVO.getBusinessLicense(),
                 companyAuthInfoVO.getBossIdPicUp(),
@@ -64,6 +79,22 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         companyInfo.setCompanyId(companyAuthInfoVO.getCompanyId());
         companyInfo.setStatus(CompanyStatus.AUTH_APPLYING.getStatus());
         this.companyInfoDao.updateCompanyInfo(companyInfo);
+
+
+        EventTodoList eventTodoList = new EventTodoList();
+        //构造snapshot
+        JSONObject snapshot = new JSONObject();
+        snapshot.put("companyId",companyAuthInfoVO.getCompanyId());
+        eventTodoList.setSnapshot(snapshot.toJSONString());
+        eventTodoList.setApplicant(companyAuthInfoVO.getCompanyName());
+        eventTodoList.setEventId(UUIDUtil.randomUUID32());
+        eventTodoList.setEventType(EventType.ENTERPISE_AUTH.getStatus());
+        eventTodoList.setEventOwnerId(companyAuthInfoVO.getCompanyId());
+        eventTodoList.setCompanyId(companyAuthInfoVO.getCompanyId());
+        eventTodoList.setRole(UserTypeDict.custom);
+        eventTodoList.setEventOwnerName(companyAuthInfoVO.getCompanyName());
+        this.eventInfoDao.insertEventTodo(eventTodoList);
+
     }
 
     @Transactional

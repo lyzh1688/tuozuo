@@ -13,8 +13,6 @@ public class CompanyInfo {
 
     private String companyName;
 
-    private String companyInfocol;
-
     private String companyIndustry;
 
 
@@ -24,7 +22,6 @@ public class CompanyInfo {
 
     private String status;
 
-    @TableField(exist = false)
     private String contact;
 
     public String getContact() {
@@ -57,14 +54,6 @@ public class CompanyInfo {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName == null ? null : companyName.trim();
-    }
-
-    public String getCompanyInfocol() {
-        return companyInfocol;
-    }
-
-    public void setCompanyInfocol(String companyInfocol) {
-        this.companyInfocol = companyInfocol == null ? null : companyInfocol.trim();
     }
 
     public String getCompanyIndustry() {
