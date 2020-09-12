@@ -43,4 +43,6 @@ public interface EventInfoDao {
 
     void insertEventFinish(EventFinishList eventFinishList);
 
+    void updateEventTodoByProject(EventTodoList eventTodoList);
+
 }

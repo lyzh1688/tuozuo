@@ -10,13 +10,15 @@ import com.tuozuo.tavern.xinruyi.dao.ProjectInfoDao;
 import com.tuozuo.tavern.xinruyi.dao.ProjectStaffInfoDao;
 import com.tuozuo.tavern.xinruyi.dict.EventType;
 import com.tuozuo.tavern.xinruyi.dict.ProjectStatus;
-import com.tuozuo.tavern.xinruyi.dto.CompanyInfoDTO;
 import com.tuozuo.tavern.xinruyi.model.*;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
 import com.tuozuo.tavern.xinruyi.utils.FileUtils;
 import com.tuozuo.tavern.xinruyi.utils.UUIDUtil;
 import com.tuozuo.tavern.xinruyi.utils.ValidateUtils;
-import com.tuozuo.tavern.xinruyi.vo.*;
+import com.tuozuo.tavern.xinruyi.vo.ProjectAddVO;
+import com.tuozuo.tavern.xinruyi.vo.ProjectEventVO;
+import com.tuozuo.tavern.xinruyi.vo.ProjectListVo;
+import com.tuozuo.tavern.xinruyi.vo.ProjectModifyVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -128,6 +130,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     }
 
+    @Transactional
     @Override
     public void addProjectInfo(ProjectAddVO vo, String companyId) throws Exception {
         ProjectInfo projectInfo = ModelConverterFactory.addVoToProjectInfo(vo, companyId);
@@ -139,7 +142,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         EventTodoList eventTodoList = new EventTodoList();
         //构造snapshot
         JSONObject snapshot = new JSONObject();
-        snapshot.put("projectId",projectInfo.getProjectId());
+        snapshot.put("projectId", projectInfo.getProjectId());
         eventTodoList.setSnapshot(snapshot.toJSONString());
         eventTodoList.setEventOwnerId(companyId);
         eventTodoList.setApplicant(companyInfo.getCompanyName());
@@ -168,14 +171,19 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     }
 
+    @Transactional
     @Override
     public void endProject(String project) {
         ProjectInfo projectInfo = new ProjectInfo();
         projectInfo.setProjectId(project);
         projectInfo.setStatus(ProjectStatus.AUDITED.getStatus());
         this.projectInfoDao.modifyProject(projectInfo);
-        //TODO 项目完成事件确认
-
+        //项目完成事件确认
+        EventTodoList eventTodoList = new EventTodoList();
+        eventTodoList.setEventType(EventType.PROJECT_DONE.getStatus());
+        eventTodoList.setEventDate(LocalDateTime.now());
+        eventTodoList.setProjectId(projectInfo.getProjectId());
+        this.eventInfoDao.updateEventTodoByProject(eventTodoList);
 
     }
 

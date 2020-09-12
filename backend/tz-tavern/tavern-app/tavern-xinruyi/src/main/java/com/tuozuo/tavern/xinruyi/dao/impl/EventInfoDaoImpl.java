@@ -1,6 +1,7 @@
 package com.tuozuo.tavern.xinruyi.dao.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tuozuo.tavern.xinruyi.dao.EventInfoDao;
 import com.tuozuo.tavern.xinruyi.mapper.EventFinishListMapper;
@@ -56,5 +57,12 @@ public class EventInfoDaoImpl implements EventInfoDao {
     @Override
     public void insertEventFinish(EventFinishList eventFinishList) {
         this.eventFinishListMapper.insert(eventFinishList);
+    }
+
+    @Override
+    public void updateEventTodoByProject(EventTodoList eventTodoList) {
+        this.eventTodoListMapper.update(eventTodoList, Wrappers.<EventTodoList>query()
+                .lambda()
+                .eq(EventTodoList::getProjectId, eventTodoList.getProjectId()));
     }
 }
