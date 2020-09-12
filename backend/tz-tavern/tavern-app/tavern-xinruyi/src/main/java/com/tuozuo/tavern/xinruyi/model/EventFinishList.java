@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @TableName("event_finish_list")
 public class EventFinishList {
     @TableId
@@ -22,6 +24,15 @@ public class EventFinishList {
     private String projectId;
     private String role;
     private String eventOwnerName;
+    private LocalDateTime updateDate;
+
+    public LocalDateTime getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(LocalDateTime updateDate) {
+        this.updateDate = updateDate;
+    }
 
     public String getEventOwnerName() {
         return eventOwnerName;

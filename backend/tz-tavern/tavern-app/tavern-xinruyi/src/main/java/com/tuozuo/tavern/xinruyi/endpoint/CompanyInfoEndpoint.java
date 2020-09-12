@@ -53,6 +53,7 @@ public class CompanyInfoEndpoint {
             return TavernResponse.bizFailure(e.getMessage());
         }
     }
+
     /**
      * 我的企业信息
      */
@@ -163,6 +164,24 @@ public class CompanyInfoEndpoint {
             return TavernResponse.bizFailure(e.getMessage());
         }
     }
+
+
+    /**
+     * 企业认证审核
+     */
+    @PutMapping("/status/{companyId}")
+    public TavernResponse auditCompanyAuth(@PathVariable("companyId") String companyId,
+                                           @RequestParam(name = "status") String status,
+                                           @RequestParam(name = "remark") String remark) {
+        try {
+            this.companyInfoService.auditCompanyAuth(companyId, status, remark);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[企业认证审核] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
 
     private CompanyAuthInfoVO setCompanyAuthInfo(CompanyAuthInfoVO vo,
                                                  String companyId,

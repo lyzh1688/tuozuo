@@ -34,19 +34,19 @@ public class EventInfoDaoImpl implements EventInfoDao {
     @Override
     public IPage<CompanyEventInfo> selectCompanies(int pageNo, int pageSize, String companyId, String industryId, String province, String city, String district, String status, String beginDate, String endDate) {
         Page page = new Page(pageNo, pageSize);
-        return this.eventTodoListMapper.selectCompanies(page,companyId,industryId,province,city,district,status,beginDate,endDate);
+        return this.eventTodoListMapper.selectCompanies(page, companyId, industryId, province, city, district, status, beginDate, endDate);
     }
 
     @Override
-    public IPage<EventTodoList> selectEventTodoList(int pageNo, int pageSize, String companyId, String projectId, String eventId) {
+    public IPage<EventTodoList> selectEventTodoList(int pageNo, int pageSize, String companyId, String projectId, String eventId,String customType) {
         Page page = new Page(pageNo, pageSize);
-        return this.eventTodoListMapper.selectList(page,companyId,projectId,eventId);
+        return this.eventTodoListMapper.selectList(page, companyId, projectId, eventId,customType);
     }
 
     @Override
-    public IPage<EventFinishList> selectEventFinishList(int pageNo, int pageSize, String companyId, String projectId, String eventId) {
+    public IPage<EventFinishList> selectEventFinishList(int pageNo, int pageSize, String companyId, String projectId, String eventId,String customType) {
         Page page = new Page(pageNo, pageSize);
-        return this.eventFinishListMapper.selectList(page,companyId,projectId,eventId);
+        return this.eventFinishListMapper.selectList(page, companyId, projectId, eventId,customType);
     }
 
     @Override
@@ -64,5 +64,18 @@ public class EventInfoDaoImpl implements EventInfoDao {
         this.eventTodoListMapper.update(eventTodoList, Wrappers.<EventTodoList>query()
                 .lambda()
                 .eq(EventTodoList::getProjectId, eventTodoList.getProjectId()));
+    }
+
+    @Override
+    public void delEventTodo(String eventId) {
+        this.eventTodoListMapper.deleteById(eventId);
+    }
+
+    @Override
+    public EventTodoList selectCompanyAuthTodo(String companyId, String eventType) {
+        return this.eventTodoListMapper.selectOne(Wrappers.<EventTodoList>query()
+                .lambda()
+                .eq(EventTodoList::getCompanyId, companyId)
+                .eq(EventTodoList::getEventType, eventType));
     }
 }

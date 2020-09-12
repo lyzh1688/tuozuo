@@ -13,7 +13,7 @@ public enum EventType {
 6	人员实名	eventType
 1	企业入驻	eventType*/
 
-    ENTERPISE_APPLY("1"), ENTERPISE_AUTH("2"), PROJECT_RELEASE("3"), PROJECT_DONE("4"), STAFF_JOIN("5"), STAFF_AUTH("6"), STAFF_FIRE("7");
+    ENTERPRISE_APPLY("1"), ENTERPRISE_AUTH("2"), PROJECT_RELEASE("3"), PROJECT_DONE("4"), STAFF_JOIN("5"), STAFF_AUTH("6"), STAFF_FIRE("7");
     private String status;
 
     public String getStatus() {

@@ -13,6 +13,7 @@ public interface EventInfoService {
                                        String companyId,
                                        String projectId,
                                        String eventId,
-                                       String status);
+                                       String status,
+                                       String customType);
 
 }

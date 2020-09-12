@@ -116,7 +116,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         eventTodoList.setApplicant(companyInfo.getCompanyName());
         eventTodoList.setEventId(UUIDUtil.randomUUID32());
         eventTodoList.setEventType(EventType.STAFF_FIRE.getStatus());
-        eventTodoList.setRole(UserTypeDict.custom);
+        eventTodoList.setRole(UserTypeDict.staff);
         eventTodoList.setEventOwnerName(companyInfo.getCompanyName());
         eventTodoList.setEventDate(LocalDateTime.now());
         eventTodoList.setProjectId(projectId);
@@ -166,7 +166,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         eventTodoList.setApplicant(companyInfo.getCompanyName());
         eventTodoList.setEventId(UUIDUtil.randomUUID32());
         eventTodoList.setEventType(EventType.PROJECT_RELEASE.getStatus());
-        eventTodoList.setRole(UserTypeDict.custom);
+        eventTodoList.setRole(UserTypeDict.staff);
         eventTodoList.setEventOwnerName(companyInfo.getCompanyName());
         eventTodoList.setEventDate(LocalDateTime.now());
         eventTodoList.setProjectId(projectInfo.getProjectId());

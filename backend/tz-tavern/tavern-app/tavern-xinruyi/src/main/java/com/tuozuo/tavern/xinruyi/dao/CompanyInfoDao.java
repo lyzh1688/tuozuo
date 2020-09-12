@@ -19,6 +19,8 @@ public interface CompanyInfoDao {
 
     void updateCompanyInfo(CompanyInfo companyInfo);
 
+    void updateCompanyInfoExt(CompanyInfoExt companyInfoExt);
+
     CompanyInfoExt selectCompanyDetailInfo(String companyId);
 
     List<CompanyInfo> selectCompanyList(String companyName, int queryCnt);

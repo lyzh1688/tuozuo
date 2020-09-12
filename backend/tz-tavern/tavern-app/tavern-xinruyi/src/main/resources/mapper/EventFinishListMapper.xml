@@ -15,6 +15,7 @@
     <result column="project_name" jdbcType="VARCHAR" property="projectName" />
     <result column="applicant" jdbcType="VARCHAR" property="applicant" />
     <result column="applyDate" jdbcType="VARCHAR" property="applyDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <select id="selectList" resultMap="BaseResultMap">
     select t1.event_id,
@@ -30,6 +31,7 @@
     t3.project_name,t1.event_owner_name ,date_format(t1.event_date ,'%Y%m%d') applyDate,t1.event_owner_name applicant
     from event_finish_list t1 LEFT JOIN project_info t3 on t1.project_id = t3.project_id left JOIN company_info t2 on t1.company_id = t2.company_id
     <where>
+      t1.role = #{role}
       <if test="companyId != null and companyId != ''">
         and t1.company_id = #{companyId}
       </if>

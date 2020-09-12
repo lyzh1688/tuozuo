@@ -9,10 +9,7 @@ import com.tuozuo.tavern.xinruyi.dao.CompanyInfoDao;
 import com.tuozuo.tavern.xinruyi.dao.EventInfoDao;
 import com.tuozuo.tavern.xinruyi.dict.CompanyStatus;
 import com.tuozuo.tavern.xinruyi.dict.EventType;
-import com.tuozuo.tavern.xinruyi.model.CompanyEventInfo;
-import com.tuozuo.tavern.xinruyi.model.CompanyInfo;
-import com.tuozuo.tavern.xinruyi.model.CompanyInfoExt;
-import com.tuozuo.tavern.xinruyi.model.EventTodoList;
+import com.tuozuo.tavern.xinruyi.model.*;
 import com.tuozuo.tavern.xinruyi.service.CompanyInfoService;
 import com.tuozuo.tavern.xinruyi.utils.FileUtils;
 import com.tuozuo.tavern.xinruyi.utils.UUIDUtil;
@@ -22,13 +19,13 @@ import com.tuozuo.tavern.xinruyi.vo.CompanyEventVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -64,12 +61,12 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         EventTodoList eventTodoList = new EventTodoList();
         //构造snapshot
         JSONObject snapshot = new JSONObject();
-        snapshot.put("registerId",companyInfo.getRegisterId());
+        snapshot.put("registerId", companyInfo.getRegisterId());
         eventTodoList.setSnapshot(snapshot.toJSONString());
         eventTodoList.setApplicant(vo.getCompanyName());
         eventTodoList.setEventId(UUIDUtil.randomUUID32());
-        eventTodoList.setEventType(EventType.ENTERPISE_APPLY.getStatus());
-        eventTodoList.setRole(UserTypeDict.custom);
+        eventTodoList.setEventType(EventType.ENTERPRISE_APPLY.getStatus());
+        eventTodoList.setRole(UserTypeDict.staff);
         eventTodoList.setEventOwnerName(vo.getCompanyName());
         eventTodoList.setEventDate(LocalDateTime.now());
         this.eventInfoDao.insertEventTodo(eventTodoList);
@@ -100,15 +97,16 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         EventTodoList eventTodoList = new EventTodoList();
         //构造snapshot
         JSONObject snapshot = new JSONObject();
-        snapshot.put("companyId",companyAuthInfoVO.getCompanyId());
+        snapshot.put("companyId", companyAuthInfoVO.getCompanyId());
         eventTodoList.setSnapshot(snapshot.toJSONString());
         eventTodoList.setApplicant(companyAuthInfoVO.getCompanyName());
         eventTodoList.setEventId(UUIDUtil.randomUUID32());
-        eventTodoList.setEventType(EventType.ENTERPISE_AUTH.getStatus());
+        eventTodoList.setEventType(EventType.ENTERPRISE_AUTH.getStatus());
         eventTodoList.setEventOwnerId(companyAuthInfoVO.getCompanyId());
         eventTodoList.setCompanyId(companyAuthInfoVO.getCompanyId());
-        eventTodoList.setRole(UserTypeDict.custom);
+        eventTodoList.setRole(UserTypeDict.staff);
         eventTodoList.setEventOwnerName(companyAuthInfoVO.getCompanyName());
+        eventTodoList.setEventDate(LocalDateTime.now());
         this.eventInfoDao.insertEventTodo(eventTodoList);
 
     }
@@ -140,7 +138,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
 
     @Override
     public IPage<CompanyEventInfo> queryCompanyEvents(CompanyEventVO vo) {
-        return this.eventInfoDao.selectCompanies(vo.getPageNo(),vo.getPageSize(),
+        return this.eventInfoDao.selectCompanies(vo.getPageNo(), vo.getPageSize(),
                 vo.getCompanyId(),
                 vo.getIndustryId(),
                 vo.getProvince(),
@@ -151,6 +149,29 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
                 vo.getEndDate());
     }
 
+    @Transactional
+    @Override
+    public void auditCompanyAuth(String companyId, String status, String remark) {
+        //1、认证成功，修改公司状态
+        //2、认证失败，修改公司状态
+        //3、移动事件至历史
+        CompanyInfo companyInfo = new CompanyInfo();
+        companyInfo.setCompanyId(companyId);
+        companyInfo.setStatus(status);
+        this.companyInfoDao.updateCompanyInfo(companyInfo);
+        CompanyInfoExt companyInfoExt = new CompanyInfoExt();
+        companyInfoExt.setCompanyId(companyId);
+        companyInfoExt.setRemark(remark);
+        this.companyInfoDao.updateCompanyInfoExt(companyInfoExt);
+
+        EventTodoList eventTodoList = this.eventInfoDao.selectCompanyAuthTodo(companyId, EventType.ENTERPRISE_AUTH.getStatus());
+        EventFinishList eventFinishList = new EventFinishList();
+        BeanUtils.copyProperties(eventTodoList, eventFinishList);
+        eventFinishList.setUpdateDate(LocalDateTime.now());
+        this.eventInfoDao.delEventTodo(eventTodoList.getEventId());
+        this.eventInfoDao.insertEventFinish(eventFinishList);
+
+    }
 
 
     private void setCompanyInfoFiles(MultipartFile businessLicense,

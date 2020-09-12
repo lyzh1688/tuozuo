@@ -29,4 +29,6 @@ public interface CompanyInfoService {
     List<CompanyInfo> queryCompanyList(String companyName, int queryCnt);
 
     IPage<CompanyEventInfo> queryCompanyEvents(CompanyEventVO vo);
+
+    void auditCompanyAuth(String companyId,String status,String remark);
 }

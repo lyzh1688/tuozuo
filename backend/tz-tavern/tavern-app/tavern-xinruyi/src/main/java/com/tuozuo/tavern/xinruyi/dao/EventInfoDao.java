@@ -32,12 +32,14 @@ public interface EventInfoDao {
     IPage<EventTodoList> selectEventTodoList(int pageNo, int pageSize,
                                              String companyId,
                                              String projectId,
-                                             String eventId);
+                                             String eventId,
+                                             String customType);
 
     IPage<EventFinishList> selectEventFinishList(int pageNo, int pageSize,
                                                  String companyId,
                                                  String projectId,
-                                                 String eventId);
+                                                 String eventId,
+                                                 String customType);
 
     void insertEventTodo(EventTodoList eventTodoList);
 
@@ -45,4 +47,7 @@ public interface EventInfoDao {
 
     void updateEventTodoByProject(EventTodoList eventTodoList);
 
+    void delEventTodo(String eventId);
+
+    EventTodoList selectCompanyAuthTodo(String companyId,String eventType);
 }

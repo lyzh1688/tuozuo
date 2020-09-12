@@ -27,10 +27,10 @@ public class EventInfoServiceImpl implements EventInfoService {
 
 
     @Override
-    public IPage<EventInfoDTO> queryEventList(int pageNo, int pageSize, String companyId, String projectId, String eventId, String status) {
+    public IPage<EventInfoDTO> queryEventList(int pageNo, int pageSize, String companyId, String projectId, String eventId, String status,String customType) {
 
         if (status.equals("0")) {
-            IPage<EventTodoList> page = this.eventInfoDao.selectEventTodoList(pageNo, pageSize, companyId, projectId, eventId);
+            IPage<EventTodoList> page = this.eventInfoDao.selectEventTodoList(pageNo, pageSize, companyId, projectId, eventId,customType);
             List<EventInfoDTO> list = page.getRecords().stream()
                     .map(this.factory::modelToEventInfoDTO)
                     .collect(Collectors.toList());
@@ -41,7 +41,7 @@ public class EventInfoServiceImpl implements EventInfoService {
             return dtoIPage;
 
         } else {
-            IPage<EventFinishList> page = this.eventInfoDao.selectEventFinishList(pageNo, pageSize, companyId, projectId, eventId);
+            IPage<EventFinishList> page = this.eventInfoDao.selectEventFinishList(pageNo, pageSize, companyId, projectId, eventId,customType);
             List<EventInfoDTO> list = page.getRecords().stream()
                     .map(this.factory::modelToEventInfoDTO)
                     .collect(Collectors.toList());

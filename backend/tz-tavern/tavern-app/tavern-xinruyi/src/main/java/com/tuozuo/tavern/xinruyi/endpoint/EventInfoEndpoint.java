@@ -41,7 +41,7 @@ public class EventInfoEndpoint {
                 companyId = vo.getCompanyId();
             }
             EventListDTO dto = new EventListDTO();
-            IPage<EventInfoDTO> page = this.eventInfoService.queryEventList(vo.getPageNo(), vo.getPageSize(), companyId, vo.getProjectId(), vo.getEventId(), vo.getStatus());
+            IPage<EventInfoDTO> page = this.eventInfoService.queryEventList(vo.getPageNo(), vo.getPageSize(), companyId, vo.getProjectId(), vo.getEventId(), vo.getStatus(),customType);
             dto.setEvents(page.getRecords());
             dto.setTotal(page.getTotal());
             return TavernResponse.ok(dto);
