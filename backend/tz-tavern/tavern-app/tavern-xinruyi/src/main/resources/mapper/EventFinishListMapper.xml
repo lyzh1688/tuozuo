@@ -2,26 +2,44 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuozuo.tavern.xinruyi.mapper.EventFinishListMapper">
   <resultMap id="BaseResultMap" type="com.tuozuo.tavern.xinruyi.model.EventFinishList">
-    <result column="event_id" jdbcType="VARCHAR" property="eventId" />
+    <id column="event_id" jdbcType="VARCHAR" property="eventId" />
     <result column="event_type" jdbcType="VARCHAR" property="eventType" />
-    <result column="event_owner" jdbcType="VARCHAR" property="eventOwner" />
-    <result column="event_date" jdbcType="DATE" property="eventDate" />
+    <result column="event_owner_id" jdbcType="VARCHAR" property="eventOwnerId" />
+    <result column="event_date" jdbcType="TIMESTAMP" property="eventDate" />
+    <result column="snapshot" jdbcType="VARCHAR" property="snapshot" />
     <result column="company_id" jdbcType="VARCHAR" property="companyId" />
     <result column="project_id" jdbcType="VARCHAR" property="projectId" />
-    <result column="staff_id" jdbcType="VARCHAR" property="staffId" />
-    <result column="payment_id" jdbcType="VARCHAR" property="paymentId" />
+    <result column="role" jdbcType="VARCHAR" property="role" />
+    <result column="event_owner_name" jdbcType="VARCHAR" property="eventOwnerName" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="applicant" jdbcType="VARCHAR" property="applicant" />
+    <result column="applyDate" jdbcType="VARCHAR" property="applyDate" />
   </resultMap>
-  <insert id="insert" parameterType="com.tuozuo.tavern.xinruyi.model.EventFinishList">
-    insert into event_finish_list (event_id, event_type, event_owner, 
-      event_date, company_id, project_id, 
-      staff_id, payment_id)
-    values (#{eventId,jdbcType=VARCHAR}, #{eventType,jdbcType=VARCHAR}, #{eventOwner,jdbcType=VARCHAR}, 
-      #{eventDate,jdbcType=DATE}, #{companyId,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, 
-      #{staffId,jdbcType=VARCHAR}, #{paymentId,jdbcType=VARCHAR})
-  </insert>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select event_id, event_type, event_owner, event_date, company_id, project_id, staff_id, 
-    payment_id
-    from event_finish_list
+  <select id="selectList" resultMap="BaseResultMap">
+    select t1.event_id,
+    t1.event_type,
+    t1.event_owner_id,
+    t1.event_date,
+    t1.snapshot,
+    t1.company_id,
+    t1. project_id,
+    t1.role,
+    t1.event_owner_name,
+    t2.company_id,t2.company_name,
+    t3.project_name,t1.event_owner_name ,date_format(t1.event_date ,'%Y%m%d') applyDate,t1.event_owner_name applicant
+    from event_finish_list t1 LEFT JOIN project_info t3 on t1.project_id = t3.project_id,company_info t2
+    <where>
+      t1.company_id = t2.company_id
+      <if test="companyId != null and companyId != ''">
+        and t1.company_id = #{companyId}
+      </if>
+      <if test="projectId != null and projectId != ''">
+        and t1.project_id = #{projectId}
+      </if>
+      <if test="eventId != null and eventId != ''">
+        and t1.event_type = #{eventId}
+      </if>
+    </where>
   </select>
 </mapper>

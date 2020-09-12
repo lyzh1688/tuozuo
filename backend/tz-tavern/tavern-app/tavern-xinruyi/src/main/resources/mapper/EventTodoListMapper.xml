@@ -4,9 +4,17 @@
   <resultMap id="BaseResultMap" type="com.tuozuo.tavern.xinruyi.model.EventTodoList">
     <id column="event_id" jdbcType="VARCHAR" property="eventId" />
     <result column="event_type" jdbcType="VARCHAR" property="eventType" />
-    <result column="event_owner" jdbcType="VARCHAR" property="eventOwner" />
-    <result column="event_date" jdbcType="DATE" property="eventDate" />
+    <result column="event_owner_id" jdbcType="VARCHAR" property="eventOwnerId" />
+    <result column="event_date" jdbcType="TIMESTAMP" property="eventDate" />
     <result column="snapshot" jdbcType="VARCHAR" property="snapshot" />
+    <result column="company_id" jdbcType="VARCHAR" property="companyId" />
+    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="role" jdbcType="VARCHAR" property="role" />
+    <result column="event_owner_name" jdbcType="VARCHAR" property="eventOwnerName" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="applicant" jdbcType="VARCHAR" property="applicant" />
+    <result column="applyDate" jdbcType="VARCHAR" property="applyDate" />
   </resultMap>
   <resultMap id="BaseProjectResultMap" type="com.tuozuo.tavern.xinruyi.model.ProjectEventInfo">
 
@@ -52,9 +60,31 @@
     <result column="contact_name" jdbcType="VARCHAR" property="contactName" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select event_id, event_type, event_owner, event_date, snapshot
-    from event_todo_list
+  <select id="selectList" resultMap="BaseResultMap">
+    select t1.event_id,
+      t1.event_type,
+      t1.event_owner_id,
+      t1.event_date,
+      t1.snapshot,
+      t1.company_id,
+      t1. project_id,
+      t1.role,
+      t1.event_owner_name,
+      t2.company_id,t2.company_name,
+      t3.project_name,t1.event_owner_name ,date_format(t1.event_date ,'%Y%m%d') applyDate,t1.event_owner_name applicant
+      from event_todo_list t1 LEFT JOIN project_info t3 on t1.project_id = t3.project_id,company_info t2
+      <where>
+          t1.company_id = t2.company_id
+          <if test="companyId != null and companyId != ''">
+             and t1.company_id = #{companyId}
+          </if>
+          <if test="projectId != null and projectId != ''">
+            and t1.project_id = #{projectId}
+          </if>
+          <if test="eventId != null and eventId != ''">
+            and  t1.event_type = #{eventId}
+          </if>
+      </where>
   </select>
 
   <select id="selectProjects" resultMap="BaseProjectResultMap">
@@ -136,4 +166,11 @@
       </if>
     </where>
   </select>
+  <select id="">
+    select t2.company_id,t2.company_name,t1.event_type,
+    t3.project_name,t1.event_owner_name applicant,date_format(t1.event_date ,'%Y%m%d') event_date,t1.`snapshot`
+    from event_todo_list t1 LEFT JOIN project_info t3 on t1.project_id = t3.project_id,company_info t2
+    where t1.company_id = t2.company_id
+  </select>
+
 </mapper>

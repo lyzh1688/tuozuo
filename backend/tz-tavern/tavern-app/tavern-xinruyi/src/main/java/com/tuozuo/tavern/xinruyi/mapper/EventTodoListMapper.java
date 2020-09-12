@@ -10,23 +10,29 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+
 @Mapper
 public interface EventTodoListMapper extends BaseMapper<EventTodoList> {
     IPage<ProjectEventInfo> selectProjects(Page page,
-                                           @Param("companyId")String companyId,
-                                           @Param("projectId")String projectId,
-                                           @Param("status")String status,
-                                           @Param("beginDate")String beginDate,
-                                           @Param("endDate")String endDate);
+                                           @Param("companyId") String companyId,
+                                           @Param("projectId") String projectId,
+                                           @Param("status") String status,
+                                           @Param("beginDate") String beginDate,
+                                           @Param("endDate") String endDate);
 
     IPage<CompanyEventInfo> selectCompanies(Page page,
-                                            @Param("companyId")String companyId,
-                                            @Param("industryId")String industryId,
-                                            @Param("province")String province,
-                                            @Param("city")String city,
-                                            @Param("district")String district,
-                                            @Param("status")String status,
-                                            @Param("beginDate")String beginDate,
-                                            @Param("endDate")String endDate);
+                                            @Param("companyId") String companyId,
+                                            @Param("industryId") String industryId,
+                                            @Param("province") String province,
+                                            @Param("city") String city,
+                                            @Param("district") String district,
+                                            @Param("status") String status,
+                                            @Param("beginDate") String beginDate,
+                                            @Param("endDate") String endDate);
+
+    IPage<EventTodoList> selectList(Page page,
+                                    @Param("companyId") String companyId,
+                                    @Param("projectId") String projectId,
+                                    @Param("eventId") String eventId);
 
 }

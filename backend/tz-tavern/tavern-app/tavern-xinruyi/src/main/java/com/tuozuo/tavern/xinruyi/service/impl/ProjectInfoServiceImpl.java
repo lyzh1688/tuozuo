@@ -3,13 +3,12 @@ package com.tuozuo.tavern.xinruyi.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.UserTypeDict;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
-import com.tuozuo.tavern.xinruyi.dao.EventTodoListDao;
+import com.tuozuo.tavern.xinruyi.dao.EventInfoDao;
 import com.tuozuo.tavern.xinruyi.dao.ProjectInfoDao;
 import com.tuozuo.tavern.xinruyi.dao.ProjectStaffInfoDao;
 import com.tuozuo.tavern.xinruyi.dict.ProjectStatus;
 import com.tuozuo.tavern.xinruyi.model.*;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
-import com.tuozuo.tavern.xinruyi.utils.DateUtils;
 import com.tuozuo.tavern.xinruyi.utils.FileUtils;
 import com.tuozuo.tavern.xinruyi.utils.ValidateUtils;
 import com.tuozuo.tavern.xinruyi.vo.*;
@@ -43,7 +42,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     @Autowired
     private ProjectStaffInfoDao projectStaffInfoDao;
     @Autowired
-    private EventTodoListDao eventTodoListDao;
+    private EventInfoDao eventInfoDao;
 
 
     @Override
@@ -162,7 +161,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     @Override
     public IPage<ProjectEventInfo> queryProjectEvents(ProjectEventVO vo) {
-        return this.eventTodoListDao.selectProjects(vo.getPageNo(), vo.getPageSize(), vo.getCompanyId(), vo.getProjectId(), vo.getStatus(), vo.getBeginDate(), vo.getEndDate());
+        return this.eventInfoDao.selectProjects(vo.getPageNo(), vo.getPageSize(), vo.getCompanyId(), vo.getProjectId(), vo.getStatus(), vo.getBeginDate(), vo.getEndDate());
     }
 
 

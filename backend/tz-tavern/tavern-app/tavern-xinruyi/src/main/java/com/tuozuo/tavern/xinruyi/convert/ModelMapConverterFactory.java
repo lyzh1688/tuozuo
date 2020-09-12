@@ -80,4 +80,9 @@ public interface ModelMapConverterFactory {
     })
     CompanyDetailInfoDTO modelToCompanyDetailInfoDTO(CompanyInfoExt companyInfoExt);
 
+    EventInfoDTO modelToEventInfoDTO(EventTodoList eventTodoList);
+
+    EventInfoDTO modelToEventInfoDTO(EventFinishList eventFinishList);
+
+
 }

@@ -3,7 +3,7 @@ package com.tuozuo.tavern.xinruyi.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
 import com.tuozuo.tavern.xinruyi.dao.CompanyInfoDao;
-import com.tuozuo.tavern.xinruyi.dao.EventTodoListDao;
+import com.tuozuo.tavern.xinruyi.dao.EventInfoDao;
 import com.tuozuo.tavern.xinruyi.dict.CompanyStatus;
 import com.tuozuo.tavern.xinruyi.model.CompanyEventInfo;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfo;
@@ -40,7 +40,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     @Autowired
     private CompanyInfoDao companyInfoDao;
     @Autowired
-    private EventTodoListDao eventTodoListDao;
+    private EventInfoDao eventInfoDao;
 
 
     @Override
@@ -93,7 +93,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
 
     @Override
     public IPage<CompanyEventInfo> queryCompanyEvents(CompanyEventVO vo) {
-        return this.eventTodoListDao.selectCompanies(vo.getPageNo(),vo.getPageSize(),
+        return this.eventInfoDao.selectCompanies(vo.getPageNo(),vo.getPageSize(),
                 vo.getCompanyId(),
                 vo.getIndustryId(),
                 vo.getProvince(),
