@@ -7,7 +7,7 @@ package com.tuozuo.tavern.xinruyi.dict;
 public enum ProjectStatus {
 
 //    1:申请中，2:申请失败,3:申请成功,4:发布中,5:进行中6:完成审核中7:完成
-    APPLYING("1"), APPLY_FAILUER("2"), APPLY_SUCCESS("3"), RELEASE("4"), PROCESSING("5"), AUDITED("6"), DONE("7");
+    APPLYING("1"), APPLY_FAILURE("2"), APPLY_SUCCESS("3"), RELEASE("4"), PROCESSING("5"), AUDITED("6"), DONE("7");
     private String status;
 
     public String getStatus() {

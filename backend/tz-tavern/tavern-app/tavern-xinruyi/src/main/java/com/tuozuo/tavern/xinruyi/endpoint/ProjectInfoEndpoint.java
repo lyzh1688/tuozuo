@@ -248,13 +248,25 @@ public class ProjectInfoEndpoint {
      * 项目发布审核
      */
     @PutMapping("/release")
-    public TavernResponse releaseProjectAuth(@RequestBody @Valid AuditProjectReleaseVO vo,
-                                             @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId) {
+    public TavernResponse releaseProjectAuth(@RequestBody @Valid AuditProjectReleaseVO vo) {
         try {
-            this.projectInfoService.auditProjectRelease(vo, companyId);
+            this.projectInfoService.auditProjectRelease(vo);
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[项目发布审核] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+    /**
+     * 项目完结审核
+     */
+    @PutMapping("/confirmation")
+    public TavernResponse releaseProjectAuth(@RequestBody @Valid AuditProjectDoneVO vo) {
+        try {
+            this.projectInfoService.auditProjectDone(vo);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[项目完结审核] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }

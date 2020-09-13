@@ -34,7 +34,8 @@ public interface ProjectInfoService {
 
     IPage<ProjectEventInfo> queryProjectEvents(ProjectEventVO vo);
 
-    void auditProjectRelease(AuditProjectReleaseVO vo, String companyId);
+    void auditProjectRelease(AuditProjectReleaseVO vo);
 
+    void auditProjectDone(AuditProjectDoneVO vo);
 
 }

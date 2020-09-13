@@ -215,18 +215,18 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     @Transactional
     @Override
-    public void auditProjectRelease(AuditProjectReleaseVO vo, String companyId) {
+    public void auditProjectRelease(AuditProjectReleaseVO vo) {
         //1、修改工程状态
         ProjectInfo projectInfo = new ProjectInfo();
         projectInfo.setProjectId(vo.getProjectId());
         projectInfo.setRemark(vo.getRemark());
         if (vo.getStatus().equals("1")) {
-            projectInfo.setStatus(ProjectStatus.RELEASE.getStatus());
+            projectInfo.setStatus(ProjectStatus.APPLY_SUCCESS.getStatus());
         } else {
-            projectInfo.setStatus(ProjectStatus.APPLY_FAILUER.getStatus());
+            projectInfo.setStatus(ProjectStatus.APPLY_FAILURE.getStatus());
         }
         //2、处理事件
-        EventTodoList eventTodoList = this.eventInfoDao.selectProjectTodo(companyId, vo.getProjectId(), EventType.PROJECT_RELEASE.getStatus());
+        EventTodoList eventTodoList = this.eventInfoDao.selectProjectTodo(vo.getProjectId(), EventType.PROJECT_RELEASE.getStatus());
         EventFinishList eventFinishList = new EventFinishList();
         BeanUtils.copyProperties(eventTodoList, eventFinishList);
         eventFinishList.setUpdateDate(LocalDateTime.now());
@@ -234,6 +234,28 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         this.eventInfoDao.insertEventFinish(eventFinishList);
         this.projectInfoDao.modifyProject(projectInfo);
 
+    }
+
+    @Transactional
+    @Override
+    public void auditProjectDone(AuditProjectDoneVO vo) {
+        //1、修改工程状态
+        ProjectInfo projectInfo = new ProjectInfo();
+        projectInfo.setProjectId(vo.getProjectId());
+        projectInfo.setRemark(vo.getRemark());
+        if (vo.getStatus().equals("1")) {
+            projectInfo.setStatus(ProjectStatus.DONE.getStatus());
+        } else {
+            projectInfo.setStatus(ProjectStatus.APPLY_FAILURE.getStatus());
+        }
+        //2、处理事件
+        EventTodoList eventTodoList = this.eventInfoDao.selectProjectTodo(vo.getProjectId(), EventType.PROJECT_DONE.getStatus());
+        EventFinishList eventFinishList = new EventFinishList();
+        BeanUtils.copyProperties(eventTodoList, eventFinishList);
+        eventFinishList.setUpdateDate(LocalDateTime.now());
+        this.eventInfoDao.delEventTodo(eventTodoList.getEventId());
+        this.eventInfoDao.insertEventFinish(eventFinishList);
+        this.projectInfoDao.modifyProject(projectInfo);
     }
 
 

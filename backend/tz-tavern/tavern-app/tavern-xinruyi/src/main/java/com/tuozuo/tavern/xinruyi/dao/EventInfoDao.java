@@ -53,7 +53,7 @@ public interface EventInfoDao {
 
     EventTodoList selectCompanyTodo(String companyId, String eventType);
 
-    EventTodoList selectProjectTodo(String companyId,String projectId, String eventType);
+    EventTodoList selectProjectTodo(String projectId, String eventType);
 
     List<EventTodoList> selectEventTodo(String eventType);
 }
