@@ -189,18 +189,29 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     @Transactional
     @Override
-    public void endProject(String project) {
+    public void endProject(String project,String companyId) {
         ProjectInfo projectInfo = new ProjectInfo();
         projectInfo.setProjectId(project);
         projectInfo.setStatus(ProjectStatus.AUDITED.getStatus());
         this.projectInfoDao.modifyProject(projectInfo);
+
+        CompanyInfo companyInfo = this.companyInfoDao.selectCompanyInfo(companyId);
         //项目完成事件确认
         EventTodoList eventTodoList = new EventTodoList();
+        //构造snapshot
+        JSONObject snapshot = new JSONObject();
+        snapshot.put("projectId", projectInfo.getProjectId());
+        eventTodoList.setSnapshot(snapshot.toJSONString());
+        eventTodoList.setEventOwnerId(companyId);
+        eventTodoList.setApplicant(companyInfo.getCompanyName());
+        eventTodoList.setEventId(UUIDUtil.randomUUID32());
         eventTodoList.setEventType(EventType.PROJECT_DONE.getStatus());
+        eventTodoList.setRole(UserTypeDict.staff);
+        eventTodoList.setEventOwnerName(companyInfo.getCompanyName());
         eventTodoList.setEventDate(LocalDateTime.now());
         eventTodoList.setProjectId(projectInfo.getProjectId());
-        this.eventInfoDao.updateEventTodoByProject(eventTodoList);
-
+        eventTodoList.setCompanyId(companyId);
+        this.eventInfoDao.insertEventTodo(eventTodoList);
     }
 
     @Override

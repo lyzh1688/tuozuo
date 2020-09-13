@@ -28,7 +28,7 @@ public interface ProjectInfoService {
 
     void modifyProjectInfo(ProjectModifyVO vo, String companyId) throws Exception;
 
-    void endProject(String project);
+    void endProject(String project,String companyId);
 
     ProjectInfo queryProjectDetail(String projectId);
 

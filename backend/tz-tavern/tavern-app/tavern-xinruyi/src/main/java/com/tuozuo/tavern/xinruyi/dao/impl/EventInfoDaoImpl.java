@@ -65,7 +65,8 @@ public class EventInfoDaoImpl implements EventInfoDao {
     public void updateEventTodoByProject(EventTodoList eventTodoList) {
         this.eventTodoListMapper.update(eventTodoList, Wrappers.<EventTodoList>query()
                 .lambda()
-                .eq(EventTodoList::getProjectId, eventTodoList.getProjectId()));
+                .eq(EventTodoList::getProjectId, eventTodoList.getProjectId())
+                .eq(EventTodoList::getEventType, eventTodoList.getEventType()));
     }
 
     @Override

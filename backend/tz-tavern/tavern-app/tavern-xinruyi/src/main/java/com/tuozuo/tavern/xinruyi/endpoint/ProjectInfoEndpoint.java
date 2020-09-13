@@ -234,9 +234,10 @@ public class ProjectInfoEndpoint {
      * 项目完结
      */
     @PutMapping("/status/{projectId}")
-    public TavernResponse modifyProjectStatus(@PathVariable("projectId") String projectId) {
+    public TavernResponse modifyProjectStatus(@PathVariable("projectId") String projectId,
+                                              @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId) {
         try {
-            this.projectInfoService.endProject(projectId);
+            this.projectInfoService.endProject(projectId,companyId);
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[项目完结] failed", e);
