@@ -7,6 +7,7 @@ import com.tuozuo.tavern.xinruyi.model.EventTodoList;
 import com.tuozuo.tavern.xinruyi.model.ProjectEventInfo;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -54,6 +55,8 @@ public interface EventInfoDao {
     EventTodoList selectCompanyTodo(String companyId, String eventType);
 
     EventTodoList selectProjectTodo(String projectId, String eventType);
+
+    Optional<EventTodoList> selectStaffFiredTodo(String projectId, String staffId, String eventType);
 
     List<EventTodoList> selectEventTodo(String eventType);
 }

@@ -271,4 +271,17 @@ public class ProjectInfoEndpoint {
             return TavernResponse.bizFailure(e.getMessage());
         }
     }
+    /**
+     * 裁员变动审核审核
+     */
+    @PutMapping("/staff/decruitment")
+    public TavernResponse staffDecruitmentAuth(@RequestBody @Valid AuditStaffFiredVO vo) {
+        try {
+            this.projectInfoService.auditProjectStaffFired(vo);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[裁员变动审核审核] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
 }

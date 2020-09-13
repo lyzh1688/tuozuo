@@ -10,6 +10,7 @@ import com.tuozuo.tavern.xinruyi.dao.ProjectInfoDao;
 import com.tuozuo.tavern.xinruyi.dao.ProjectStaffInfoDao;
 import com.tuozuo.tavern.xinruyi.dict.EventType;
 import com.tuozuo.tavern.xinruyi.dict.ProjectStatus;
+import com.tuozuo.tavern.xinruyi.dict.StaffStatus;
 import com.tuozuo.tavern.xinruyi.model.*;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
 import com.tuozuo.tavern.xinruyi.utils.FileUtils;
@@ -29,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -99,7 +101,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         ProjectStaff projectStaff = new ProjectStaff();
         projectStaff.setProjectId(projectId);
         projectStaff.setStaffId(staffId);
-        projectStaff.setStatus("1");
+        projectStaff.setStatus(StaffStatus.FROZEN.getStatus());
         this.projectStaffInfoDao.delProjectStaff(projectStaff);
         //裁员变动事件
         CompanyInfo companyInfo = this.companyInfoDao.selectCompanyInfo(companyId);
@@ -189,7 +191,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     @Transactional
     @Override
-    public void endProject(String project,String companyId) {
+    public void endProject(String project, String companyId) {
         ProjectInfo projectInfo = new ProjectInfo();
         projectInfo.setProjectId(project);
         projectInfo.setStatus(ProjectStatus.AUDITED.getStatus());
@@ -267,6 +269,34 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         this.eventInfoDao.delEventTodo(eventTodoList.getEventId());
         this.eventInfoDao.insertEventFinish(eventFinishList);
         this.projectInfoDao.modifyProject(projectInfo);
+    }
+
+    @Transactional
+    @Override
+    public void auditProjectStaffFired(AuditStaffFiredVO vo) throws Exception {
+        ProjectStaff projectStaff = new ProjectStaff();
+        projectStaff.setStaffId(vo.getStaffId());
+        projectStaff.setProjectId(vo.getProjectId());
+        projectStaff.setStatus(vo.getPayStatus());
+        projectStaff.setRemark(vo.getRemark());
+        if (vo.getAuditResult().equals("1")) {
+            projectStaff.setStatus(StaffStatus.LEAVE.getStatus());
+        } else {
+            projectStaff.setStatus(StaffStatus.IN_SERVICE.getStatus());
+        }
+        this.projectStaffInfoDao.updateProjectStaff(projectStaff);
+
+        //2、处理事件
+        Optional<EventTodoList> op = this.eventInfoDao.selectStaffFiredTodo(vo.getProjectId(), vo.getStaffId(), EventType.STAFF_FIRE.getStatus());
+        if (!op.isPresent()) {
+            throw new Exception("该成员不存在");
+        }
+        EventTodoList eventTodoList = op.get();
+        EventFinishList eventFinishList = new EventFinishList();
+        BeanUtils.copyProperties(eventTodoList, eventFinishList);
+        eventFinishList.setUpdateDate(LocalDateTime.now());
+        this.eventInfoDao.delEventTodo(eventTodoList.getEventId());
+        this.eventInfoDao.insertEventFinish(eventFinishList);
     }
 
 

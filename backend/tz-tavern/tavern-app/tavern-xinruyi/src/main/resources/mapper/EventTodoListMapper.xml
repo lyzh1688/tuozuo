@@ -60,7 +60,7 @@
     <result column="contact_name" jdbcType="VARCHAR" property="contactName" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
-  <select id="selectList" resultMap="BaseResultMap">
+  <select id="selectEventList" resultMap="BaseResultMap">
     select t1.event_id,
       t1.event_type,
       t1.event_owner_id,

@@ -1,5 +1,7 @@
 package com.tuozuo.tavern.xinruyi.dao.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -42,7 +45,7 @@ public class EventInfoDaoImpl implements EventInfoDao {
     @Override
     public IPage<EventTodoList> selectEventTodoList(int pageNo, int pageSize, String companyId, String projectId, String eventId, String customType) {
         Page page = new Page(pageNo, pageSize);
-        return this.eventTodoListMapper.selectList(page, companyId, projectId, eventId, customType);
+        return this.eventTodoListMapper.selectEventList(page, companyId, projectId, eventId, customType);
     }
 
     @Override
@@ -88,6 +91,23 @@ public class EventInfoDaoImpl implements EventInfoDao {
                 .lambda()
                 .eq(EventTodoList::getProjectId, projectId)
                 .eq(EventTodoList::getEventType, eventType));
+    }
+
+    @Override
+    public Optional<EventTodoList> selectStaffFiredTodo(String projectId, String staffId, String eventType) {
+        return this.eventTodoListMapper.selectList(Wrappers.<EventTodoList>query()
+                .lambda()
+                .eq(EventTodoList::getProjectId, projectId)
+                .eq(EventTodoList::getEventType, eventType))
+                .stream()
+                .filter(e -> {
+                    JSONObject object = JSON.parseObject(e.getSnapshot());
+                    if (object.getString("staffId") != null && object.getString("staffId").equals(staffId)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }).findFirst();
     }
 
     @Override

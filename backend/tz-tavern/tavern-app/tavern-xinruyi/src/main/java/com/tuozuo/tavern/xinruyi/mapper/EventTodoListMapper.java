@@ -30,11 +30,11 @@ public interface EventTodoListMapper extends BaseMapper<EventTodoList> {
                                             @Param("beginDate") String beginDate,
                                             @Param("endDate") String endDate);
 
-    IPage<EventTodoList> selectList(Page page,
-                                    @Param("companyId") String companyId,
-                                    @Param("projectId") String projectId,
-                                    @Param("eventId") String eventId,
-                                    @Param("role") String role);
+    IPage<EventTodoList> selectEventList(Page page,
+                                         @Param("companyId") String companyId,
+                                         @Param("projectId") String projectId,
+                                         @Param("eventId") String eventId,
+                                         @Param("role") String role);
 
     List<EventTodoList> selectByEventType(@Param("eventType")String eventType);
 

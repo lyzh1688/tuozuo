@@ -38,4 +38,6 @@ public interface ProjectInfoService {
 
     void auditProjectDone(AuditProjectDoneVO vo);
 
+    void auditProjectStaffFired(AuditStaffFiredVO vo) throws Exception;
+
 }
