@@ -12,6 +12,21 @@ const apiList = {
   projectConfirmation: process.env.VUE_APP_SYSTEM_URL + '/v1/project/confirmation'
 }
 /**
+ * 查询待办列表
+ * @param {String} companyId 公司Id
+ * @param {String} projectId 项目Id
+ * @param {String} eventId 事件Id
+ * @param {String} status 事件状态
+ * @param {String} pageNo 页码
+ * @param {String} pageSize 分页大小
+ */
+export function getAllEventList (companyId, projectId, eventId, status, pageNo, pageSize) {
+    return request({
+        url: apiList.allEventList + '?companyId=' + companyId + '&projectId=' + projectId + '&eventId=' + eventId + '&status=' + status + '&pageNo=' + pageNo + '&pageSize=' + pageSize,
+        method: 'get'
+    })
+}
+/**
  * 查询公司事件列表
  * @param {String} companyId 公司Id
  * @param {String} industryId 行业Id
@@ -40,9 +55,9 @@ export function getCompanyEventList (companyId, industryId, province, city, dist
  * @param {String} pageNo 当前页码
  * @param {String} pageSize 页数
  */
-export function getProjectEventList (companyId, projectId, status, beginDate, endDate, pageNo, pageSize) {
+export function getProjectEventList (companyId, projectId, status, industryType, beginDate, endDate, pageNo, pageSize) {
     return request({
-        url: apiList.projectEventList + '?companyId=' + companyId + '&projectId=' + projectId + '&status=' + status + '&beginDate=' + beginDate + '&endDate=' + endDate + '&pageNo=' + pageNo + '&pageSize=' + pageSize,
+        url: apiList.projectEventList + '?companyId=' + companyId + '&projectId=' + projectId + '&status=' + status + '&industryType=' + industryType + '&beginDate=' + beginDate + '&endDate=' + endDate + '&pageNo=' + pageNo + '&pageSize=' + pageSize,
         method: 'get'
     })
 }

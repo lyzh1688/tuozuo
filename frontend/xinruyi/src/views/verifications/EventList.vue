@@ -1,6 +1,6 @@
 <template>
   <page-header-wrapper>
-    <a-card :bordered="false">
+    <a-card :bordered="false" title="待处理事件">
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="8" :sm="8">
@@ -40,38 +40,13 @@
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="8">
-            <a-form-item label="行业类型">
-              <a-select
-                v-model="queryParam1.industryType"
-                style="width: 200px"
-              >
+            <a-form-item label="事件类型">
+              <a-select v-model="queryParam1.eventType" style="width: 200px">
                 <a-select-option
-                  v-for="province in industryTypeList"
+                  v-for="province in eventTypeList"
                   :key="province.id"
                 >{{ province.name }}</a-select-option>
               </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="8">
-            <a-form-item label="项目状态">
-              <a-select style="width:200px;" v-model="queryParam1.projectStatus" placeholder="请选择">
-                <a-select-option
-                  v-for=" projectStatusItem in projectStatusList"
-                  :key="projectStatusItem.id"
-                >{{ projectStatusItem.name }}</a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :md="10" :sm="8">
-            <a-form-item label="申请时间">
-              <a-date-picker
-                valueFormat="YYYYMMDD"
-                format="YYYY-MM-DD"
-                v-model="queryParam1.beginDate" />
-              <a-date-picker
-                valueFormat="YYYYMMDD"
-                format="YYYY-MM-DD"
-                v-model="queryParam1.endDate" />
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="8">
@@ -87,12 +62,9 @@
                 size="small"
                 type="primary"
                 @click="()=>{ queryParam1= {
-                  projectStatus: '',
-                  beginDate: '',
-                  endDate: '',
+                  eventType: '',
                   companyId: '',
                   projectId: '',
-                  industryType:'',
                   pageNo: 1,
                   pageSize: 20
                 }}"
@@ -111,8 +83,7 @@
         :showPagination="true"
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
-        <span slot="projectStatus" slot-scope="text">{{ projectStatusMap[text] }}</span>
-        <span slot="industryType" slot-scope="text">{{ industryTypeMap[text] }}</span>
+        <span slot="eventType" slot-scope="text">{{ eventTypeMap[text] }}</span>
         <span slot="ops" slot-scope="text, record">
           <a-button
             :disabled="record.projectStatus!='1'&&record.projectStatus!='6'"
@@ -121,70 +92,155 @@
             @click="handleverify(record)"
             :loading="confirmLoading"
           >审核</a-button>
-          <a-button
-            size="small"
-            @click="fetchProjectDetail(record)"
-            :loading="confirmLoading"
-          >详情</a-button>
+          <a-button size="small" @click="fetchProjectDetail(record)" :loading="confirmLoading">详情</a-button>
         </span>
       </s-table>
-      <projectform
-        :title="formTitle"
-        ref="projectform"
-        :clearUpload="clearUpload"
-        :visible="projectVisible"
-        :loading="confirmLoading"
-        :model="projectMdl"
-        :isShowOnly="isShowOnly"
-        @cancel="handleCancel"
-        @ok="handleOk"
-      >
-        <template v-slot:other v-if="isShowOnly">
-          <a-form-item label="服务费率">
-            <a-input-number
-              :disabled="isShowOnly&&!isverify"
-              :min="0"
-              v-decorator="['fee', {rules: [{required: true, message: '请输入服务费率！'}], validateTrigger: 'blur'}]"
-            />
-          </a-form-item>
-          <a-form-item label="项目状态">
-            <a-select
-              :disabled="isShowOnly&&!isverify"
-              style="width:200px;"
-              v-decorator="['status', {rules: [{required: true, message: '请选择状态！'}], validateTrigger: 'blur'}]"
-              placeholder="请选择">
-              <a-select-option
-                v-for=" projectStatusItem in projectStatusList"
-                :key="projectStatusItem.id"
-              >{{ projectStatusItem.name }}</a-select-option>
-            </a-select>
-          </a-form-item>
-          <a-form-item label="备注">
-            <a-textarea
-              :disabled="isShowOnly&&!isverify"
-              v-decorator="['remark', {rules: [{required: true, message: '请输备注！'}], validateTrigger: 'blur'}]"
-            />
-          </a-form-item>
-        </template>
-      </projectform>
     </a-card>
+    <a-card :bordered="false" title="已完成事件">
+      <a-form layout="inline">
+        <a-row :gutter="48">
+          <a-col :md="8" :sm="8">
+            <a-form-item label="公司名称">
+              <a-select
+                show-search
+                v-model="queryParam2.companyId"
+                placeholder="请输入公司名称"
+                style="width: 200px"
+                :default-active-first-option="false"
+                :show-arrow="false"
+                :filter-option="false"
+                :not-found-content="null"
+                @search="handleCustomSearch3"
+                @change="handleCustomChange3"
+              >
+                <a-select-option v-for="d in fuzzyCompanyList2" :key="d.value">{{ d.text }}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="8">
+            <a-form-item label="项目名称">
+              <a-select
+                show-search
+                v-model="queryParam2.projectId"
+                placeholder="请输入项目名称"
+                style="width: 200px"
+                :default-active-first-option="false"
+                :show-arrow="false"
+                :filter-option="false"
+                :not-found-content="null"
+                @search="handleCustomSearch4"
+                @change="handleCustomChange4"
+              >
+                <a-select-option v-for="d in fuzzyProjectList2" :key="d.value">{{ d.text }}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="8">
+            <a-form-item label="事件类型">
+              <a-select v-model="queryParam2.eventType" style="width: 200px">
+                <a-select-option
+                  v-for="province in eventTypeList"
+                  :key="province.id"
+                >{{ province.name }}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="8">
+            <a-form-item>
+              <a-button
+                :disabled="projectListLoading"
+                type="primary"
+                size="small"
+                @click="$refs.table2.refresh(true)"
+              >查询</a-button>
+              <a-button
+                :disabled="projectListLoading"
+                size="small"
+                type="primary"
+                @click="()=>{ queryParam2= {
+                  eventType: '',
+                  companyId: '',
+                  projectId: '',
+                  pageNo: 1,
+                  pageSize: 20
+                }}"
+              >重置</a-button>
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
+      <s-table
+        ref="table2"
+        size="default"
+        rowKey="projectId"
+        :pageSize="20"
+        :columns="columns"
+        :data="loadData2"
+        :showPagination="true"
+      >
+        <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
+        <span slot="eventType" slot-scope="text">{{ eventTypeMap[text] }}</span>
+        <span slot="ops" slot-scope="text, record">
+          <a-button
+            :disabled="record.projectStatus!='1'&&record.projectStatus!='6'"
+            size="small"
+            type="primary"
+            @click="handleverify(record)"
+            :loading="confirmLoading"
+          >审核</a-button>
+          <a-button size="small" @click="fetchProjectDetail(record)" :loading="confirmLoading">详情</a-button>
+        </span>
+      </s-table>
+    </a-card>
+    <projectform
+      :title="formTitle"
+      ref="projectform"
+      :clearUpload="clearUpload"
+      :visible="projectVisible"
+      :loading="confirmLoading"
+      :model="projectMdl"
+      :isShowOnly="isShowOnly"
+      @cancel="handleCancel"
+      @ok="handleOk"
+    >
+      <template v-slot:other v-if="isShowOnly">
+        <a-form-item label="服务费率">
+          <a-input-number
+            :disabled="isShowOnly&&!isverify"
+            :min="0"
+            v-decorator="['fee', {rules: [{required: true, message: '请输入服务费率！'}], validateTrigger: 'blur'}]"
+          />
+        </a-form-item>
+        <a-form-item label="项目状态">
+          <a-select
+            :disabled="isShowOnly&&!isverify"
+            style="width:200px;"
+            v-decorator="['status', {rules: [{required: true, message: '请选择状态！'}], validateTrigger: 'blur'}]"
+            placeholder="请选择"
+          >
+            <a-select-option
+              v-for=" projectStatusItem in projectStatusList"
+              :key="projectStatusItem.id"
+            >{{ projectStatusItem.name }}</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item label="备注">
+          <a-textarea
+            :disabled="isShowOnly&&!isverify"
+            v-decorator="['remark', {rules: [{required: true, message: '请输备注！'}], validateTrigger: 'blur'}]"
+          />
+        </a-form-item>
+      </template>
+    </projectform>
   </page-header-wrapper>
 </template>
 
 <script>
 import { Modal } from 'ant-design-vue'
 import { STable } from '@/components'
-import {
-  fuzzyQueryProject,
-  getProjectDetail
-} from '@/api/projects'
-import {
-  fuzzyQueryCompany
-} from '@/api/company'
-import {
-  getProjectEventList,
-  doprojectRelease
-} from '@/api/events'
+import { fuzzyQueryProject, getProjectDetail } from '@/api/projects'
+import { fuzzyQueryCompany } from '@/api/company'
+import { getAllEventList, doprojectRelease } from '@/api/events'
 import { getCommonDict } from '@/api/dictionary'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 import projectform from '@/views/projects/form/ProjectForm'
@@ -205,9 +261,9 @@ const columns = [
     scopedSlots: { customRender: 'projectName' }
   },
   {
-    title: '行业类型',
-    dataIndex: 'industryType',
-    scopedSlots: { customRender: 'industryType' }
+    title: '事件类型',
+    dataIndex: 'eventType',
+    scopedSlots: { customRender: 'eventType' }
   },
   {
     title: '申请日期',
@@ -215,19 +271,9 @@ const columns = [
     scopedSlots: { customRender: 'applyDate' }
   },
   {
-    title: '申请状态',
-    dataIndex: 'projectStatus',
-    scopedSlots: { customRender: 'projectStatus' }
-  },
-  {
-    title: '服务费率',
-    dataIndex: 'rate',
-    scopedSlots: { customRender: 'rate' }
-  },
-  {
-    title: '备注',
-    dataIndex: 'remark',
-    scopedSlots: { customRender: 'remark' }
+    title: '申请者',
+    dataIndex: 'applicant',
+    scopedSlots: { customRender: 'applicant' }
   },
   {
     title: '操作',
@@ -319,7 +365,7 @@ function fetch2 (value, callback) {
   timeout2 = setTimeout(fake2, 300)
 }
 export default {
-  name: 'ProjectVerificationList',
+  name: 'EventList',
   data () {
     this.columns = columns
     return {
@@ -329,32 +375,34 @@ export default {
       projectMdl: {},
       isverify: false,
       isShowOnly: false,
-      industryTypeList: [],
-      industryTypeMap: {},
+      eventTypeList: [],
+      eventTypeMap: {},
       formTitle: '',
       queryParam1: {
-        projectStatus: '',
-        industryType: '',
-        beginDate: '',
-        endDate: '',
+        eventType: '',
+        companyId: '',
+        projectId: ''
+      },
+      queryParam2: {
+        eventType: '',
         companyId: '',
         projectId: ''
       },
       projectListLoading: false,
       fuzzyProjectList: [],
       fuzzyCompanyList: [],
+      fuzzyProjectList2: [],
+      fuzzyCompanyList2: [],
       projectStatusList: [],
       projectStatusMap: {},
       loadData: (parameter) => {
         const requestParameters = Object.assign({}, parameter, this.queryParam1)
         console.log('loadData request parameters:', requestParameters)
-        return getProjectEventList(
+        return getAllEventList(
           requestParameters.companyId,
           requestParameters.projectId,
-          requestParameters.projectStatus,
-          requestParameters.industryType,
-          requestParameters.beginDate,
-          requestParameters.endDate,
+          requestParameters.eventType,
+          '0',
           requestParameters.pageNo,
           requestParameters.pageSize
         )
@@ -362,7 +410,50 @@ export default {
             const result = Response
             // console.log('getTradeflow', result)
             if (success(result)) {
-              const ans = result.data.projects
+              const ans = result.data.events
+              return {
+                pageSize: requestParameters.pageSize,
+                pageNo: requestParameters.pageNo,
+                totalCount: result.data.total,
+                data: ans
+              }
+            } else {
+              this.$notification.error({
+                message: errorMessage(result),
+                description: '查询项目列表失败，请稍后再试'
+              })
+            }
+            setTimeout(() => {
+              this.projectListLoading = false
+            }, 600)
+            return []
+          })
+          .catch((error) => {
+            setTimeout(() => {
+              this.projectListLoading = false
+            }, 600)
+            this.$notification.error({
+              message: '查询项目列表失败，请稍后再试',
+              description: error
+            })
+          })
+      },
+      loadData2: (parameter) => {
+        const requestParameters = Object.assign({}, parameter, this.queryParam2)
+        console.log('loadData request parameters:', requestParameters)
+        return getAllEventList(
+          requestParameters.companyId,
+          requestParameters.projectId,
+          requestParameters.eventType,
+          '1',
+          requestParameters.pageNo,
+          requestParameters.pageSize
+        )
+          .then((Response) => {
+            const result = Response
+            // console.log('getTradeflow', result)
+            if (success(result)) {
+              const ans = result.data.events
               return {
                 pageSize: requestParameters.pageSize,
                 pageNo: requestParameters.pageNo,
@@ -397,8 +488,14 @@ export default {
     projectform
   },
   created () {
-    fetch('', (data) => (this.fuzzyProjectList = data))
-    fetch2('', (data) => (this.fuzzyCompanyList = data))
+    fetch('', (data) => {
+      this.fuzzyProjectList = data
+      this.fuzzyProjectList2 = data
+    })
+    fetch2('', (data) => {
+      this.fuzzyCompanyList = data
+      this.fuzzyCompanyList2 = data
+    })
     this.getDict('projectStatus').then((response) => {
       this.projectStatusList = response
       this.projectStatusMap = {}
@@ -406,11 +503,11 @@ export default {
         this.projectStatusMap[i.id] = i.name
       }
     })
-     this.getDict('industryType').then((response) => {
-      this.industryTypeList = response
-      this.industryTypeMap = {}
+    this.getDict('eventType').then((response) => {
+      this.eventTypeList = response
+      this.eventTypeMap = {}
       for (const i of response) {
-        this.industryTypeMap[i.id] = i.name
+        this.eventTypeMap[i.id] = i.name
       }
     })
   },
@@ -454,6 +551,7 @@ export default {
         this.clearUpload = !this.clearUpload
         form.resetFields() // 清理表单数据（可不做）
         this.$refs.table.refresh(true)
+        this.$refs.table2.refresh(true)
         this.projectVisible = false
         return
       }
@@ -462,37 +560,38 @@ export default {
         if (!errors) {
           this.confirmLoading = true
           doprojectRelease(values)
-              .then((response) => {
-                const result = response
-                if (success(result)) {
-                  this.$notification.success({
-                    message: '修改成功'
-                  })
-                  const form = this.$refs.projectform.form
-                  this.clearUpload = !this.clearUpload
-                  form.resetFields() // 清理表单数据（可不做）
-                  this.$refs.table.refresh(true)
-                  this.projectVisible = false
-                  this.confirmLoading = false
-                } else {
-                  this.confirmLoading = false
-                  this.$notification.error({
-                    message: errorMessage(result),
-                    description: '修改失败'
-                  })
-                }
-                if (needLogin(result)) {
-                  this.projectVisible = false
-                  this.confirmLoading = false
-                }
-              })
-              .catch((error) => {
-                this.$notification.error({
-                  message: '修改失败。请稍后再试',
-                  description: error
+            .then((response) => {
+              const result = response
+              if (success(result)) {
+                this.$notification.success({
+                  message: '修改成功'
                 })
+                const form = this.$refs.projectform.form
+                this.clearUpload = !this.clearUpload
+                form.resetFields() // 清理表单数据（可不做）
+                this.$refs.table.refresh(true)
+                this.$refs.table2.refresh(true)
+                this.projectVisible = false
                 this.confirmLoading = false
+              } else {
+                this.confirmLoading = false
+                this.$notification.error({
+                  message: errorMessage(result),
+                  description: '修改失败'
+                })
+              }
+              if (needLogin(result)) {
+                this.projectVisible = false
+                this.confirmLoading = false
+              }
+            })
+            .catch((error) => {
+              this.$notification.error({
+                message: '修改失败。请稍后再试',
+                description: error
               })
+              this.confirmLoading = false
+            })
         }
       })
     },
@@ -514,8 +613,8 @@ export default {
       this.isShowOnly = true
     },
     handleCancel () {
-        if (this.isverify) {
-   Modal.confirm({
+      if (this.isverify) {
+        Modal.confirm({
           title: '取消操作',
           content: '是否确认取消操作？所做的修改将会丢失！',
           onOk: () => {
@@ -523,9 +622,9 @@ export default {
           },
           onCancel () {}
         })
-        } else {
-             this.projectVisible = false
-        }
+      } else {
+        this.projectVisible = false
+      }
     },
     handleCustomSearch (value) {
       fetch(value, (data) => (this.fuzzyProjectList = data))
@@ -542,6 +641,22 @@ export default {
       // console.log(value)
       this.queryParam1.companyId = value
       fetch2(value, (data) => (this.fuzzyCompanyList = data))
+    },
+    handleCustomSearch4 (value) {
+      fetch(value, (data) => (this.fuzzyProjectList2 = data))
+    },
+    handleCustomChange4 (value) {
+      // console.log(value)
+      this.queryParam2.projectId = value
+      fetch(value, (data) => (this.fuzzyProjectList2 = data))
+    },
+    handleCustomSearch3 (value) {
+      fetch(value, (data) => (this.fuzzyCompanyList2 = data))
+    },
+    handleCustomChange3 (value) {
+      // console.log(value)
+      this.queryParam2.companyId = value
+      fetch2(value, (data) => (this.fuzzyCompanyList2 = data))
     },
     getDict (keyword) {
       return new Promise((resolve, reject) => {
