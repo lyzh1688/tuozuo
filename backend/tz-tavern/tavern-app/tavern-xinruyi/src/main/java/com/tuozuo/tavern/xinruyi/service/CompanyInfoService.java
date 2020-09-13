@@ -31,7 +31,7 @@ public interface CompanyInfoService {
 
     IPage<CompanyEventInfo> queryCompanyEvents(CompanyEventVO vo);
 
-    void auditCompanyAuth(String companyId,String status,String remark);
+    void auditCompanyAuth(String companyId,String status,String remark) throws Exception;
 
     void auditCompanySettled(AuditCompanySettledVO vo) throws Exception;
 }

@@ -77,7 +77,7 @@ public class ModelConverterFactory {
         projectInfo.setDistrict(vo.getDistrict());
         projectInfo.setOnSpot(vo.getIsResident());
         projectInfo.setProjectDesc(vo.getDesc());
-        if(vo.getBudget() != null){
+        if (vo.getBudget() != null) {
             projectInfo.setBudget(vo.getBudget().toPlainString());
         }
         return projectInfo;
@@ -101,7 +101,7 @@ public class ModelConverterFactory {
         projectInfo.setDistrict(vo.getDistrict());
         projectInfo.setOnSpot(vo.getIsResident());
         projectInfo.setProjectDesc(vo.getDesc());
-        if(vo.getBudget() != null){
+        if (vo.getBudget() != null) {
             projectInfo.setBudget(vo.getBudget().toPlainString());
         }
         return projectInfo;
@@ -123,7 +123,7 @@ public class ModelConverterFactory {
         projectInfoDTO.setProjectFile(projectInfo.getFileMaterial());
         projectInfoDTO.setDesc(projectInfo.getProjectDesc());
         projectInfoDTO.setRemark(projectInfo.getRemark());
-        if(StringUtils.isNotEmpty(projectInfo.getBudget())){
+        if (StringUtils.isNotEmpty(projectInfo.getBudget())) {
             projectInfoDTO.setBudget(new BigDecimal(projectInfo.getBudget()));
         }
         return projectInfoDTO;
@@ -142,14 +142,18 @@ public class ModelConverterFactory {
         return ext;
     }
 
-    public static UserVO companyToVO(String userId, String customPswd) {
+    public static UserVO companyToVO(String userId, String customPswd, String privilege) {
         UserVO user = new UserVO();
         user.setUserId(userId);
         user.setSystemId(SystemID.SYS_ID_XINRUYI);
         user.setRoleGroup(UserTypeDict.custom);
         user.setUserPswd(customPswd);
-        user.setPrivilege("xinruyi.custom.visitor");
+        user.setPrivilege(privilege);
         return user;
+    }
+
+    public static UserVO companyToVO(String userId, String privilege) {
+        return companyToVO(userId, null, privilege);
     }
 
 }

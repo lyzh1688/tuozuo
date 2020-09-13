@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
+import com.tuozuo.tavern.common.protocol.UserPrivilege;
 import com.tuozuo.tavern.common.protocol.UserTypeDict;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
 import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
@@ -159,7 +160,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
 
     @Transactional
     @Override
-    public void auditCompanyAuth(String companyId, String status, String remark) {
+    public void auditCompanyAuth(String companyId, String status, String remark) throws Exception {
         //1、认证成功，修改公司状态
         //2、认证失败，修改公司状态
         //3、移动事件至历史
@@ -179,6 +180,14 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         this.eventInfoDao.delEventTodo(eventTodoList.getEventId());
         this.eventInfoDao.insertEventFinish(eventFinishList);
 
+        if(status.equals(CompanyStatus.APPLY_SUCCESS)){
+            UserVO userVO = ModelConverterFactory.companyToVO(companyId, UserPrivilege.COMMON_PRIVILEGE_XINRUYI);
+            TavernResponse response = this.authorityService.modifyUser(userVO);
+            if (response.getCode() != 0) {
+                throw new Exception("客户修改失败");
+            }
+        }
+
     }
 
     @Transactional
@@ -194,7 +203,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
             if (vo.getResult().equals("1")) {
                 companyInfo.setStatus(CompanyStatus.APPLY_SUCCESS.getStatus());
                 //创建用户
-                UserVO userVO = ModelConverterFactory.companyToVO(vo.getCompanyId(), vo.getPassword());
+                UserVO userVO = ModelConverterFactory.companyToVO(vo.getCompanyId(), vo.getPassword(), UserPrivilege.VISITOR_PRIVILEGE_XINRUYI);
                 TavernResponse response = this.authorityService.createUser(userVO);
                 if (response.getCode() != 0) {
                     throw new Exception("客户创建失败");
