@@ -11,4 +11,5 @@ public interface PrivilegeDao {
     Optional<Privilege> getPrivilege(String userId, String systemId, String roleGroup);
     boolean addPrivilege(Privilege privilege);
     boolean updatePrivilege(Privilege privilege);
+    void delPrivilege(String userId);
 }

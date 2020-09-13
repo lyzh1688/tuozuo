@@ -84,10 +84,16 @@ public class CustomInfoServiceImpl implements CustomInfoService {
         if (response.getCode() != 0) {
             throw new Exception("客户创建失败");
         }
-        CustomInfo customInfo = new CustomInfo();
-        customInfo.setCustomId(vo.getCustomId());
-        setCustomInfo(vo, customInfo);
-        this.customInfoDao.insert(customInfo);
+        try {
+            CustomInfo customInfo = new CustomInfo();
+            customInfo.setCustomId(vo.getCustomId());
+            setCustomInfo(vo, customInfo);
+            this.customInfoDao.insert(customInfo);
+
+        } catch (Exception e) {
+            this.authorityService.removeUser(vo.getCustomId());
+            throw e;
+        }
 
     }
 

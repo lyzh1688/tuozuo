@@ -6,4 +6,5 @@ package com.tuozuo.tavern.common.protocol;
  */
 public class SystemID {
     public static final String SYS_ID = "shuiruyi";
+    public static final String SYS_ID_XINRUYI = "xinruyi";
 }

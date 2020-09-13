@@ -1,14 +1,19 @@
 package com.tuozuo.tavern.xinruyi.vo;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Code Monkey: 何彪 <br>
  * Dev Time: 2020/9/12 <br>
  */
 public class AuditCompanySettledVO {
+    @NotNull(message = "registerId is not null")
     private String registerId;
     private String companyId;
     private String password;
+    @NotNull(message = "remark is not null")
     private String remark;
+    @NotNull(message = "result is not null")
     private String result;
 
     public String getRegisterId() {

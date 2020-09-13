@@ -36,4 +36,6 @@ public interface EventTodoListMapper extends BaseMapper<EventTodoList> {
                                     @Param("eventId") String eventId,
                                     @Param("role") String role);
 
+    List<EventTodoList> selectByEventType(@Param("eventType")String eventType);
+
 }

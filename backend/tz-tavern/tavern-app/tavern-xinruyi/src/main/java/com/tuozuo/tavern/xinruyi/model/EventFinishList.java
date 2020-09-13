@@ -16,7 +16,7 @@ public class EventFinishList {
 
     private String eventOwnerId;
 
-    private LocalDate eventDate;
+    private LocalDateTime eventDate;
 
     private String snapshot;
 
@@ -131,11 +131,11 @@ public class EventFinishList {
         this.eventOwnerId = eventOwnerId == null ? null : eventOwnerId.trim();
     }
 
-    public LocalDate getEventDate() {
+    public LocalDateTime getEventDate() {
         return eventDate;
     }
 
-    public void setEventDate(LocalDate eventDate) {
+    public void setEventDate(LocalDateTime eventDate) {
         this.eventDate = eventDate;
     }
 

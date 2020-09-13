@@ -9,6 +9,8 @@ import com.tuozuo.tavern.libs.auth.encrypt.RSAKeyPair;
 import com.tuozuo.tavern.libs.auth.jwt.JwtAuthenticationProperty;
 import com.tuozuo.tavern.libs.auth.session.RedisSession;
 import com.tuozuo.tavern.libs.auth.session.SessionManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,8 @@ import java.util.Optional;
  */
 @Service
 public class AuthorityServiceImpl implements AuthorityService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorityServiceImpl.class);
 
     @Autowired
     JwtAuthenticationProperty property;
@@ -106,7 +110,8 @@ public class AuthorityServiceImpl implements AuthorityService {
             this.authorityDao.createUser(user);
             return this.privilegeDao.addPrivilege(user.getPrivilege());
         } catch (Exception e) {
-            return false;
+            LOGGER.error("[创建用户失败] error: ",e);
+            throw e;
         }
     }
 
@@ -116,9 +121,11 @@ public class AuthorityServiceImpl implements AuthorityService {
         this.authorityDao.updateUser(user);
         this.privilegeDao.updatePrivilege(user.getPrivilege());
     }
-
+    
+    @Transactional
     @Override
     public void remove(String userId) {
         this.authorityDao.removeUser(userId);
+        this.privilegeDao.delPrivilege(userId);
     }
 }

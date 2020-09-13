@@ -190,6 +190,7 @@ public class BusinessConverter {
         user.setSystemId(SystemID.SYS_ID);
         user.setRoleGroup(UserTypeDict.custom);
         user.setUserPswd(customPswd);
+        user.setPrivilege("shuiruyi.custom.normal");
         return user;
     }
 

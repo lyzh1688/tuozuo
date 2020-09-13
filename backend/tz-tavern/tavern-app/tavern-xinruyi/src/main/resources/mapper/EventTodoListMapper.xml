@@ -166,11 +166,10 @@
       </if>
     </where>
   </select>
-  <select id="">
-    select t2.company_id,t2.company_name,t1.event_type,
-    t3.project_name,t1.event_owner_name applicant,date_format(t1.event_date ,'%Y%m%d') event_date,t1.`snapshot`
-    from event_todo_list t1 LEFT JOIN project_info t3 on t1.project_id = t3.project_id,company_info t2
-    where t1.company_id = t2.company_id
+  <select id="selectByEventType" resultMap="BaseResultMap">
+    select *
+    from event_todo_list t
+    where event_type = #{eventType}
   </select>
 
 </mapper>

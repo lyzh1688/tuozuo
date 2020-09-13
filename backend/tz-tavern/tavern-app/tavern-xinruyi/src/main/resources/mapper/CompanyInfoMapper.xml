@@ -11,5 +11,6 @@
     <result column="district" jdbcType="VARCHAR" property="district"/>
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
 </mapper>

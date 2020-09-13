@@ -46,4 +46,9 @@ public class PrivilegeDaoImpl implements PrivilegeDao {
         return this.privilegeMapper.update(privilege, wrapper) > 0 ? true : false;
     }
 
+    @Override
+    public void delPrivilege(String userId) {
+        this.privilegeMapper.deleteById(userId);
+    }
+
 }

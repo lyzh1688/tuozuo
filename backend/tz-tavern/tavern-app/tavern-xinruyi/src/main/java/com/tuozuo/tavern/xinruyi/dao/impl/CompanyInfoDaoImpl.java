@@ -31,6 +31,11 @@ public class CompanyInfoDaoImpl implements CompanyInfoDao {
     }
 
     @Override
+    public CompanyInfo selectCompanyInfoById(String registerId) {
+        return this.companyInfoMapper.selectById(registerId);
+    }
+
+    @Override
     public void insertCompanyAuthInfo(CompanyInfoExt companyInfoExt) {
         this.companyInfoExtMapper.insertOrUpdate(companyInfoExt);
     }
@@ -43,10 +48,15 @@ public class CompanyInfoDaoImpl implements CompanyInfoDao {
     }
 
     @Override
-    public void updateCompanyInfo(CompanyInfo companyInfo) {
+    public void updateByCompanyId(CompanyInfo companyInfo) {
         this.companyInfoMapper.update(companyInfo, Wrappers.<CompanyInfo>query()
                 .lambda()
                 .eq(CompanyInfo::getCompanyId, companyInfo.getCompanyId()));
+    }
+
+    @Override
+    public void updateById(CompanyInfo companyInfo) {
+        this.companyInfoMapper.updateById(companyInfo);
     }
 
     @Override

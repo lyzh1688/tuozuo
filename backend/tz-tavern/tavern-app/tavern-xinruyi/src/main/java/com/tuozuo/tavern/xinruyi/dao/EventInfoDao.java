@@ -6,6 +6,8 @@ import com.tuozuo.tavern.xinruyi.model.EventFinishList;
 import com.tuozuo.tavern.xinruyi.model.EventTodoList;
 import com.tuozuo.tavern.xinruyi.model.ProjectEventInfo;
 
+import java.util.List;
+
 /**
  * Code Monkey: 何彪 <br>
  * Dev Time: 2020/9/9 <br>
@@ -49,5 +51,7 @@ public interface EventInfoDao {
 
     void delEventTodo(String eventId);
 
-    EventTodoList selectCompanyAuthTodo(String companyId,String eventType);
+    EventTodoList selectCompanyTodo(String companyId, String eventType);
+
+    List<EventTodoList> selectEventTodo(String eventType);
 }

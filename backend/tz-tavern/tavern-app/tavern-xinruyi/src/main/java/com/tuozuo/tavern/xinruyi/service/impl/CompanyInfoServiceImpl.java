@@ -1,7 +1,9 @@
 package com.tuozuo.tavern.xinruyi.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.common.protocol.UserTypeDict;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
 import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
@@ -17,6 +19,8 @@ import com.tuozuo.tavern.xinruyi.vo.AuditCompanySettledVO;
 import com.tuozuo.tavern.xinruyi.vo.CompanyApplyVO;
 import com.tuozuo.tavern.xinruyi.vo.CompanyAuthInfoVO;
 import com.tuozuo.tavern.xinruyi.vo.CompanyEventVO;
+import com.tuuozuo.tavern.authority.spi.AuthorityService;
+import com.tuuozuo.tavern.authority.spi.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -50,6 +55,8 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     private EventInfoDao eventInfoDao;
     @Autowired
     private ModelMapConverterFactory factory;
+    @Autowired
+    private AuthorityService authorityService;
 
     @Transactional
     @Override
@@ -92,7 +99,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         companyInfo.setCompanyName(companyAuthInfoVO.getCompanyName());
         companyInfo.setCompanyId(companyAuthInfoVO.getCompanyId());
         companyInfo.setStatus(CompanyStatus.AUTH_APPLYING.getStatus());
-        this.companyInfoDao.updateCompanyInfo(companyInfo);
+        this.companyInfoDao.updateByCompanyId(companyInfo);
 
 
         EventTodoList eventTodoList = new EventTodoList();
@@ -123,7 +130,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         CompanyInfo companyInfo = new CompanyInfo();
         companyInfo.setCompanyId(companyAuthInfoVO.getCompanyId());
         companyInfo.setCompanyName(companyAuthInfoVO.getCompanyName());
-        this.companyInfoDao.updateCompanyInfo(companyInfo);
+        this.companyInfoDao.updateByCompanyId(companyInfo);
         this.companyInfoDao.updateCompanyAuthInfo(companyInfoExt);
     }
 
@@ -159,13 +166,13 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         CompanyInfo companyInfo = new CompanyInfo();
         companyInfo.setCompanyId(companyId);
         companyInfo.setStatus(status);
-        this.companyInfoDao.updateCompanyInfo(companyInfo);
+        this.companyInfoDao.updateByCompanyId(companyInfo);
         CompanyInfoExt companyInfoExt = new CompanyInfoExt();
         companyInfoExt.setCompanyId(companyId);
         companyInfoExt.setRemark(remark);
         this.companyInfoDao.updateCompanyInfoExt(companyInfoExt);
 
-        EventTodoList eventTodoList = this.eventInfoDao.selectCompanyAuthTodo(companyId, EventType.ENTERPRISE_AUTH.getStatus());
+        EventTodoList eventTodoList = this.eventInfoDao.selectCompanyTodo(companyId, EventType.ENTERPRISE_AUTH.getStatus());
         EventFinishList eventFinishList = new EventFinishList();
         BeanUtils.copyProperties(eventTodoList, eventFinishList);
         eventFinishList.setUpdateDate(LocalDateTime.now());
@@ -176,12 +183,57 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
 
     @Transactional
     @Override
-    public void auditCompanySettled(AuditCompanySettledVO vo) {
+    public void auditCompanySettled(AuditCompanySettledVO vo) throws Exception {
         //1、更新账户
         //2、新增账户
         //3、移除事件
-        
+        try {
+            CompanyInfo companyInfo = this.companyInfoDao.selectCompanyInfoById(vo.getRegisterId());
+            companyInfo.setCompanyId(vo.getCompanyId());
+            companyInfo.setRegisterId(vo.getRegisterId());
+            if (vo.getResult().equals("1")) {
+                companyInfo.setStatus(CompanyStatus.APPLY_SUCCESS.getStatus());
+                //创建用户
+                UserVO userVO = ModelConverterFactory.companyToVO(vo.getCompanyId(), vo.getPassword());
+                TavernResponse response = this.authorityService.createUser(userVO);
+                if (response.getCode() != 0) {
+                    throw new Exception("客户创建失败");
+                }
 
+            } else {
+                companyInfo.setStatus(CompanyStatus.APPLY_FAILED.getStatus());
+            }
+            companyInfo.setRemark(vo.getRemark());
+
+            //事件发布
+            List<EventTodoList> eventTodoList = this.eventInfoDao.selectEventTodo(EventType.ENTERPRISE_APPLY.getStatus());
+            Optional<EventTodoList> op = eventTodoList.parallelStream()
+                    .filter(e -> {
+                        JSONObject object = JSON.parseObject(e.getSnapshot());
+                        if (object.getString("registerId") != null && object.getString("registerId").equals(vo.getRegisterId())) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }).findFirst();
+            if (!op.isPresent()) {
+                throw new Exception("该申请不存在");
+            }
+            EventTodoList event = op.get();
+            EventFinishList eventFinishList = new EventFinishList();
+            BeanUtils.copyProperties(event, eventFinishList);
+            eventFinishList.setEventOwnerId(vo.getCompanyId());
+            eventFinishList.setEventOwnerName(companyInfo.getCompanyName());
+            eventFinishList.setCompanyId(companyInfo.getCompanyId());
+            eventFinishList.setUpdateDate(LocalDateTime.now());
+            this.companyInfoDao.updateById(companyInfo);
+            this.eventInfoDao.delEventTodo(event.getEventId());
+            this.eventInfoDao.insertEventFinish(eventFinishList);
+        } catch (Exception e) {
+            this.authorityService.removeUser(vo.getCompanyId());
+            LOGGER.error("[入驻申请] error: ", e);
+            throw e;
+        }
 
     }
 

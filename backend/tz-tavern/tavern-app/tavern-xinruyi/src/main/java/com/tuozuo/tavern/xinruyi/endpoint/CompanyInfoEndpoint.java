@@ -182,9 +182,10 @@ public class CompanyInfoEndpoint {
     /**
      * 企业入驻审核
      */
-    @PutMapping("/company/spot")
+    @PutMapping("/spot")
     public TavernResponse auditCompanySettled(@RequestBody @Valid AuditCompanySettledVO vo) {
         try {
+            this.companyInfoService.auditCompanySettled(vo);
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[企业入驻审核] failed", e);

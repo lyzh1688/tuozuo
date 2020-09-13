@@ -73,10 +73,14 @@ public class AuthorityEndpoint {
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     TavernResponse<Void> createUser(@RequestBody UserVO userVO) {
         User user = this.voToUser(userVO);
-        boolean ret = this.authorityService.createUser(user);
-        if (ret) {
-            return TavernResponse.OK;
-        } else {
+        try {
+            boolean ret = this.authorityService.createUser(user);
+            if (ret) {
+                return TavernResponse.OK;
+            } else {
+                return TavernResponse.bizFailure("创建用户失败");
+            }
+        } catch (Exception e) {
             return TavernResponse.bizFailure("创建用户失败");
         }
     }
@@ -110,7 +114,7 @@ public class AuthorityEndpoint {
         user.setSystemId(userVO.getSystemId());
         user.setRoleGroup(userVO.getRoleGroup());
         user.setUserPswd(userVO.getUserPswd());
-        Privilege privilege = new Privilege(userVO.getUserId(), userVO.getSystemId(),userVO.getRoleGroup(),userVO.getPrivilege());
+        Privilege privilege = new Privilege(userVO.getUserId(), userVO.getSystemId(), userVO.getRoleGroup(), userVO.getPrivilege());
         user.setPrivilege(privilege);
         return user;
     }

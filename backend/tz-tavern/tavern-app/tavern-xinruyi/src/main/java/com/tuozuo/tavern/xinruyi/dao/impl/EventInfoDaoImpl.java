@@ -13,6 +13,8 @@ import com.tuozuo.tavern.xinruyi.model.ProjectEventInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Code Monkey: 何彪 <br>
  * Dev Time: 2020/9/9 <br>
@@ -38,15 +40,15 @@ public class EventInfoDaoImpl implements EventInfoDao {
     }
 
     @Override
-    public IPage<EventTodoList> selectEventTodoList(int pageNo, int pageSize, String companyId, String projectId, String eventId,String customType) {
+    public IPage<EventTodoList> selectEventTodoList(int pageNo, int pageSize, String companyId, String projectId, String eventId, String customType) {
         Page page = new Page(pageNo, pageSize);
-        return this.eventTodoListMapper.selectList(page, companyId, projectId, eventId,customType);
+        return this.eventTodoListMapper.selectList(page, companyId, projectId, eventId, customType);
     }
 
     @Override
-    public IPage<EventFinishList> selectEventFinishList(int pageNo, int pageSize, String companyId, String projectId, String eventId,String customType) {
+    public IPage<EventFinishList> selectEventFinishList(int pageNo, int pageSize, String companyId, String projectId, String eventId, String customType) {
         Page page = new Page(pageNo, pageSize);
-        return this.eventFinishListMapper.selectList(page, companyId, projectId, eventId,customType);
+        return this.eventFinishListMapper.selectList(page, companyId, projectId, eventId, customType);
     }
 
     @Override
@@ -72,10 +74,15 @@ public class EventInfoDaoImpl implements EventInfoDao {
     }
 
     @Override
-    public EventTodoList selectCompanyAuthTodo(String companyId, String eventType) {
+    public EventTodoList selectCompanyTodo(String companyId, String eventType) {
         return this.eventTodoListMapper.selectOne(Wrappers.<EventTodoList>query()
                 .lambda()
                 .eq(EventTodoList::getCompanyId, companyId)
                 .eq(EventTodoList::getEventType, eventType));
+    }
+
+    @Override
+    public List<EventTodoList> selectEventTodo(String eventType) {
+        return this.eventTodoListMapper.selectByEventType(eventType);
     }
 }

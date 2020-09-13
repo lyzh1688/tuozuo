@@ -33,5 +33,5 @@ public interface CompanyInfoService {
 
     void auditCompanyAuth(String companyId,String status,String remark);
 
-    void auditCompanySettled(AuditCompanySettledVO vo);
+    void auditCompanySettled(AuditCompanySettledVO vo) throws Exception;
 }

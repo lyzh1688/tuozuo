@@ -1,5 +1,7 @@
 package com.tuozuo.tavern.xinruyi.convert;
 
+import com.tuozuo.tavern.common.protocol.SystemID;
+import com.tuozuo.tavern.common.protocol.UserTypeDict;
 import com.tuozuo.tavern.xinruyi.dto.ProjectDetailDTO;
 import com.tuozuo.tavern.xinruyi.dto.ProjectInfoDTO;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfoExt;
@@ -8,6 +10,7 @@ import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
 import com.tuozuo.tavern.xinruyi.utils.DateUtils;
 import com.tuozuo.tavern.xinruyi.utils.UUIDUtil;
 import com.tuozuo.tavern.xinruyi.vo.*;
+import com.tuuozuo.tavern.authority.spi.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
@@ -139,5 +142,14 @@ public class ModelConverterFactory {
         return ext;
     }
 
+    public static UserVO companyToVO(String userId, String customPswd) {
+        UserVO user = new UserVO();
+        user.setUserId(userId);
+        user.setSystemId(SystemID.SYS_ID_XINRUYI);
+        user.setRoleGroup(UserTypeDict.custom);
+        user.setUserPswd(customPswd);
+        user.setPrivilege("xinruyi.custom.visitor");
+        return user;
+    }
 
 }

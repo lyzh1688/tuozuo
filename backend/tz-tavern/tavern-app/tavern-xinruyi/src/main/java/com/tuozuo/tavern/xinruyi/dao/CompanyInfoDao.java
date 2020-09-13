@@ -13,11 +13,15 @@ public interface CompanyInfoDao {
 
     CompanyInfo selectCompanyInfo(String companyId);
 
+    CompanyInfo selectCompanyInfoById(String registerId);
+
     void insertCompanyAuthInfo(CompanyInfoExt companyInfoExt);
 
     void updateCompanyAuthInfo(CompanyInfoExt companyInfoExt);
 
-    void updateCompanyInfo(CompanyInfo companyInfo);
+    void updateByCompanyId(CompanyInfo companyInfo);
+
+    void updateById(CompanyInfo companyInfo);
 
     void updateCompanyInfoExt(CompanyInfoExt companyInfoExt);
 
