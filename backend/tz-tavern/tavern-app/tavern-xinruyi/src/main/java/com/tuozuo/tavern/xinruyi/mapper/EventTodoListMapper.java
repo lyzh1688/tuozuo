@@ -17,6 +17,7 @@ public interface EventTodoListMapper extends BaseMapper<EventTodoList> {
                                            @Param("companyId") String companyId,
                                            @Param("projectId") String projectId,
                                            @Param("status") String status,
+                                           @Param("industryType") String industryType,
                                            @Param("beginDate") String beginDate,
                                            @Param("endDate") String endDate);
 

@@ -8,8 +8,17 @@ public class ProjectEventVO extends PageVO{
     private String companyId;//公司Id
     private String projectId;//项目Id
     private String status;//
+    private String  industryType;//
     private String beginDate;//开始日期yyyyMMdd
     private String endDate;//结束日期yyyyMMdd
+
+    public String getIndustryType() {
+        return industryType;
+    }
+
+    public void setIndustryType(String industryType) {
+        this.industryType = industryType;
+    }
 
     public String getCompanyId() {
         return companyId;

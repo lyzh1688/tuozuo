@@ -19,6 +19,7 @@ public interface EventInfoDao {
                                            String companyId,
                                            String projectId,
                                            String status,
+                                           String industryType,
                                            String beginDate,
                                            String endDate);
 

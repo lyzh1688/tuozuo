@@ -223,7 +223,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     @Override
     public IPage<ProjectEventInfo> queryProjectEvents(ProjectEventVO vo) {
-        return this.eventInfoDao.selectProjects(vo.getPageNo(), vo.getPageSize(), vo.getCompanyId(), vo.getProjectId(), vo.getStatus(), vo.getBeginDate(), vo.getEndDate());
+        return this.eventInfoDao.selectProjects(vo.getPageNo(), vo.getPageSize(), vo.getCompanyId(), vo.getProjectId(), vo.getStatus(),vo.getIndustryType(), vo.getBeginDate(), vo.getEndDate());
     }
 
     @Transactional

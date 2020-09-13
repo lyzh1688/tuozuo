@@ -58,6 +58,7 @@ public class ModelConverterFactory {
         LocalDate endDate = projectInfo.getPublishDate().plusDays(days);
         dto.setEndDate(DateUtils.formatDate(endDate, DateUtils.SIMPLE_8_FORMATTER));
         dto.setProjectStatus(projectInfo.getStatus());
+        dto.setIndustryType(projectInfo.getProjectIndustry());
         return dto;
     }
 
