@@ -180,7 +180,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         this.eventInfoDao.delEventTodo(eventTodoList.getEventId());
         this.eventInfoDao.insertEventFinish(eventFinishList);
 
-        if(status.equals(CompanyStatus.APPLY_SUCCESS)){
+        if(status.equals(CompanyStatus.DONE.getStatus())){
             UserVO userVO = ModelConverterFactory.companyToVO(companyId, UserPrivilege.COMMON_PRIVILEGE_XINRUYI);
             TavernResponse response = this.authorityService.modifyUser(userVO);
             if (response.getCode() != 0) {
