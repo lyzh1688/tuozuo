@@ -60,13 +60,14 @@ public class ProjectInfoEndpoint {
             return TavernResponse.bizFailure(e.getMessage());
         }
     }
+
     /**
      * 项目事件列表
      */
     @GetMapping("/event/list")
     public TavernResponse queryProjectEventList(@ModelAttribute @Valid ProjectEventVO vo) {
         try {
-           IPage<ProjectEventInfo> page = this.projectInfoService.queryProjectEvents(vo);
+            IPage<ProjectEventInfo> page = this.projectInfoService.queryProjectEvents(vo);
             ProjectEventListDTO dto = new ProjectEventListDTO();
             dto.setProjects(page.getRecords());
             dto.setTotal((int) page.getTotal());
@@ -82,7 +83,7 @@ public class ProjectInfoEndpoint {
      * 我的项目模糊搜索
      */
     @GetMapping("")
-    public TavernResponse queryProjectDict(@RequestParam(value = "projectName", required = false,defaultValue = "") String projectName,
+    public TavernResponse queryProjectDict(@RequestParam(value = "projectName", required = false, defaultValue = "") String projectName,
                                            @RequestParam(value = "queryCnt", required = false, defaultValue = "20") int queryCnt,
                                            @RequestParam(value = "all", required = false) boolean all,
                                            @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId,
@@ -166,7 +167,7 @@ public class ProjectInfoEndpoint {
                                           @RequestBody ProjectStaffDelVO vo,
                                           @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId) {
         try {
-            this.projectInfoService.delProjectStaff(vo.getProjectId(), staffId,companyId);
+            this.projectInfoService.delProjectStaff(vo.getProjectId(), staffId, companyId);
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[项目人员修改] failed", e);
@@ -235,10 +236,25 @@ public class ProjectInfoEndpoint {
     @PutMapping("/status/{projectId}")
     public TavernResponse modifyProjectStatus(@PathVariable("projectId") String projectId) {
         try {
-            this.projectInfoService.endProject( projectId);
+            this.projectInfoService.endProject(projectId);
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[项目完结] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 项目发布审核
+     */
+    @PutMapping("/release")
+    public TavernResponse releaseProjectAuth(@RequestBody @Valid AuditProjectReleaseVO vo,
+                                             @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId) {
+        try {
+            this.projectInfoService.auditProjectRelease(vo, companyId);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[项目发布审核] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }

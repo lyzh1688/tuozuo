@@ -166,7 +166,11 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         //3、移动事件至历史
         CompanyInfo companyInfo = new CompanyInfo();
         companyInfo.setCompanyId(companyId);
-        companyInfo.setStatus(status);
+        if (status.equals("0")) {
+            companyInfo.setStatus(CompanyStatus.AUTH_FAILED.getStatus());
+        } else {
+            companyInfo.setStatus(CompanyStatus.DONE.getStatus());
+        }
         this.companyInfoDao.updateByCompanyId(companyInfo);
         CompanyInfoExt companyInfoExt = new CompanyInfoExt();
         companyInfoExt.setCompanyId(companyId);
@@ -180,7 +184,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         this.eventInfoDao.delEventTodo(eventTodoList.getEventId());
         this.eventInfoDao.insertEventFinish(eventFinishList);
 
-        if(status.equals(CompanyStatus.DONE.getStatus())){
+        if (companyInfo.getStatus().equals(CompanyStatus.DONE.getStatus())) {
             UserVO userVO = ModelConverterFactory.companyToVO(companyId, UserPrivilege.COMMON_PRIVILEGE_XINRUYI);
             TavernResponse response = this.authorityService.modifyUser(userVO);
             if (response.getCode() != 0) {

@@ -15,13 +15,11 @@ import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
 import com.tuozuo.tavern.xinruyi.utils.FileUtils;
 import com.tuozuo.tavern.xinruyi.utils.UUIDUtil;
 import com.tuozuo.tavern.xinruyi.utils.ValidateUtils;
-import com.tuozuo.tavern.xinruyi.vo.ProjectAddVO;
-import com.tuozuo.tavern.xinruyi.vo.ProjectEventVO;
-import com.tuozuo.tavern.xinruyi.vo.ProjectListVo;
-import com.tuozuo.tavern.xinruyi.vo.ProjectModifyVO;
+import com.tuozuo.tavern.xinruyi.vo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -213,6 +211,29 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     @Override
     public IPage<ProjectEventInfo> queryProjectEvents(ProjectEventVO vo) {
         return this.eventInfoDao.selectProjects(vo.getPageNo(), vo.getPageSize(), vo.getCompanyId(), vo.getProjectId(), vo.getStatus(), vo.getBeginDate(), vo.getEndDate());
+    }
+
+    @Transactional
+    @Override
+    public void auditProjectRelease(AuditProjectReleaseVO vo, String companyId) {
+        //1、修改工程状态
+        ProjectInfo projectInfo = new ProjectInfo();
+        projectInfo.setProjectId(vo.getProjectId());
+        projectInfo.setRemark(vo.getRemark());
+        if (vo.getStatus().equals("1")) {
+            projectInfo.setStatus(ProjectStatus.RELEASE.getStatus());
+        } else {
+            projectInfo.setStatus(ProjectStatus.APPLY_FAILUER.getStatus());
+        }
+        //2、处理事件
+        EventTodoList eventTodoList = this.eventInfoDao.selectProjectTodo(companyId, vo.getProjectId(), EventType.PROJECT_RELEASE.getStatus());
+        EventFinishList eventFinishList = new EventFinishList();
+        BeanUtils.copyProperties(eventTodoList, eventFinishList);
+        eventFinishList.setUpdateDate(LocalDateTime.now());
+        this.eventInfoDao.delEventTodo(eventTodoList.getEventId());
+        this.eventInfoDao.insertEventFinish(eventFinishList);
+        this.projectInfoDao.modifyProject(projectInfo);
+
     }
 
 

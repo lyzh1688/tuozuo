@@ -20,7 +20,7 @@ public interface ProjectInfoService {
 
     void modifyProjectStaff(ProjectStaff projectStaff) throws Exception;
 
-    void delProjectStaff(String projectId, String staffId,String companyId) throws Exception;
+    void delProjectStaff(String projectId, String staffId, String companyId) throws Exception;
 
     IPage<ProjectInfo> queryProjectInfo(ProjectListVo vo, String companyId);
 
@@ -34,6 +34,7 @@ public interface ProjectInfoService {
 
     IPage<ProjectEventInfo> queryProjectEvents(ProjectEventVO vo);
 
+    void auditProjectRelease(AuditProjectReleaseVO vo, String companyId);
 
 
 }
