@@ -50,4 +50,35 @@
     and t1.company_id = #{companyId}
     order by enter_date desc
   </select>
+  <select id="selectStaff" resultType="com.tuozuo.tavern.xinruyi.model.StaffBasicInfo">
+
+    select
+    t1.company_id  companyId,
+    t2.project_id projectId,
+    t3.staff_id staffId,
+    t1.company_name companyName,
+    t2.project_name projectName,
+    t4.staff_name staffName,
+    t3.is_settled payStatus,
+    t3.remark,
+    case t3.`status`
+    when '0' then '1'
+    else '0'
+    end auditResult
+
+    from company_info t1,project_info t2,project_staff t3,staff_resource_pool t4
+    <where>
+      t1.company_id = t2.company_id
+      and t2.project_id = t3.project_id
+      and t3.staff_id = t4.staff_id
+      <if test="projectId != null and projectId != ''">
+        and t2.project_id = #{projectId}
+      </if>
+      <if test="staffId != null and staffId != ''">
+       and  t3.staff_id = #{staffId}
+      </if>
+    </where>
+
+
+  </select>
 </mapper>

@@ -1,13 +1,11 @@
 package com.tuozuo.tavern.xinruyi.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.UserTypeDict;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
-import com.tuozuo.tavern.xinruyi.dao.CompanyInfoDao;
-import com.tuozuo.tavern.xinruyi.dao.EventInfoDao;
-import com.tuozuo.tavern.xinruyi.dao.ProjectInfoDao;
-import com.tuozuo.tavern.xinruyi.dao.ProjectStaffInfoDao;
+import com.tuozuo.tavern.xinruyi.dao.*;
 import com.tuozuo.tavern.xinruyi.dict.EventType;
 import com.tuozuo.tavern.xinruyi.dict.ProjectStatus;
 import com.tuozuo.tavern.xinruyi.dict.StaffStatus;
@@ -53,6 +51,8 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     private EventInfoDao eventInfoDao;
     @Autowired
     private CompanyInfoDao companyInfoDao;
+    @Autowired
+    private StaffInfoDao staffInfoDao;
 
 
     @Override
@@ -106,12 +106,9 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         //裁员变动事件
         CompanyInfo companyInfo = this.companyInfoDao.selectCompanyInfo(companyId);
         EventTodoList eventTodoList = new EventTodoList();
-        //构造snapshot
-        JSONObject snapshot = new JSONObject();
-        snapshot.put("projectId", projectId);
-        snapshot.put("companyId", companyId);
-        snapshot.put("staffId", staffId);
-        eventTodoList.setSnapshot(snapshot.toJSONString());
+        //构造snapshot companyName，projectName,staffName,staffContact,payStatus,remark,auditResult
+        StaffBasicInfo staffBasicInfo = this.projectStaffInfoDao.selectStaff(projectId, staffId);
+        eventTodoList.setSnapshot(JSON.toJSONString(staffBasicInfo));
         eventTodoList.setEventOwnerId(companyId);
         eventTodoList.setApplicant(companyInfo.getCompanyName());
         eventTodoList.setEventId(UUIDUtil.randomUUID32());
@@ -121,6 +118,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         eventTodoList.setEventDate(LocalDateTime.now());
         eventTodoList.setProjectId(projectId);
         eventTodoList.setCompanyId(companyId);
+        eventTodoList.setRegisterId(companyInfo.getRegisterId());
         this.eventInfoDao.insertEventTodo(eventTodoList);
 
     }
@@ -171,6 +169,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         eventTodoList.setEventDate(LocalDateTime.now());
         eventTodoList.setProjectId(projectInfo.getProjectId());
         eventTodoList.setCompanyId(companyId);
+        eventTodoList.setRegisterId(companyInfo.getRegisterId());
         this.eventInfoDao.insertEventTodo(eventTodoList);
 
     }
@@ -213,6 +212,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         eventTodoList.setEventDate(LocalDateTime.now());
         eventTodoList.setProjectId(projectInfo.getProjectId());
         eventTodoList.setCompanyId(companyId);
+        eventTodoList.setRegisterId(companyInfo.getRegisterId());
         this.eventInfoDao.insertEventTodo(eventTodoList);
     }
 
@@ -223,7 +223,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     @Override
     public IPage<ProjectEventInfo> queryProjectEvents(ProjectEventVO vo) {
-        return this.eventInfoDao.selectProjects(vo.getPageNo(), vo.getPageSize(), vo.getCompanyId(), vo.getProjectId(), vo.getStatus(),vo.getIndustryType(), vo.getBeginDate(), vo.getEndDate());
+        return this.eventInfoDao.selectProjects(vo.getPageNo(), vo.getPageSize(), vo.getCompanyId(), vo.getProjectId(), vo.getStatus(), vo.getIndustryType(), vo.getBeginDate(), vo.getEndDate());
     }
 
     @Transactional
@@ -277,7 +277,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         ProjectStaff projectStaff = new ProjectStaff();
         projectStaff.setStaffId(vo.getStaffId());
         projectStaff.setProjectId(vo.getProjectId());
-        projectStaff.setStatus(vo.getPayStatus());
+        projectStaff.setIsSettled(vo.getPayStatus());
         projectStaff.setRemark(vo.getRemark());
         if (vo.getAuditResult().equals("1")) {
             projectStaff.setStatus(StaffStatus.LEAVE.getStatus());

@@ -51,7 +51,7 @@ public class EventInfoDaoImpl implements EventInfoDao {
     @Override
     public IPage<EventFinishList> selectEventFinishList(int pageNo, int pageSize, String companyId, String projectId, String eventId, String customType) {
         Page page = new Page(pageNo, pageSize);
-        return this.eventFinishListMapper.selectList(page, companyId, projectId, eventId, customType);
+        return this.eventFinishListMapper.selectEventList(page, companyId, projectId, eventId, customType);
     }
 
     @Override

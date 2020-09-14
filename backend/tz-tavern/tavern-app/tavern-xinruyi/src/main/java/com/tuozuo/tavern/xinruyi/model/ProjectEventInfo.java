@@ -28,6 +28,33 @@ public class ProjectEventInfo {
     private String remark;
     private String eventType;
     private String snapshot;
+    private String provinceName;
+    private String cityName;
+    private String districtName;
+
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
+    }
 
     public String getEventType() {
         return eventType;

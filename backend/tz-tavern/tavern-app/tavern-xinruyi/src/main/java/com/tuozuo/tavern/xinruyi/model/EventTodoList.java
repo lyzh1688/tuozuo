@@ -25,6 +25,16 @@ public class EventTodoList {
     private String role;
     private String eventOwnerName;
 
+    private String registerId;
+
+    public String getRegisterId() {
+        return registerId;
+    }
+
+    public void setRegisterId(String registerId) {
+        this.registerId = registerId;
+    }
+
     public String getEventOwnerName() {
         return eventOwnerName;
     }

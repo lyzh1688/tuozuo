@@ -3,6 +3,7 @@ package com.tuozuo.tavern.xinruyi.dao;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo;
+import com.tuozuo.tavern.xinruyi.model.StaffBasicInfo;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -17,5 +18,8 @@ public interface ProjectStaffInfoDao {
 
     void delProjectStaff(ProjectStaff projectStaff);
 
+    ProjectStaff select(String projectId,String staffId);
+
+    StaffBasicInfo selectStaff(String projectId,String staffId);
 
 }

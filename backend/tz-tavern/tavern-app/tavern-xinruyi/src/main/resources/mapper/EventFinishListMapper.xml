@@ -17,7 +17,7 @@
     <result column="applyDate" jdbcType="VARCHAR" property="applyDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
-  <select id="selectList" resultMap="BaseResultMap">
+  <select id="selectEventList" resultMap="BaseResultMap">
     select t1.event_id,
     t1.event_type,
     t1.event_owner_id,
@@ -42,5 +42,6 @@
         and t1.event_type = #{eventId}
       </if>
     </where>
+    order by t1.event_date desc
   </select>
 </mapper>

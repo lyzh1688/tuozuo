@@ -90,12 +90,13 @@ public class ProjectInfoEndpoint {
                                            @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup
     ) {
         try {
-            List<BusinessDictDTO> list = this.projectInfoService.queryProjectInfo(companyId, projectName, queryCnt, all, roleGroup)
+            List<ProjectDictDTO> list = this.projectInfoService.queryProjectInfo(companyId, projectName, queryCnt, all, roleGroup)
                     .stream()
                     .map(projectInfo -> {
-                        BusinessDictDTO dictDTO = new BusinessDictDTO();
+                        ProjectDictDTO dictDTO = new ProjectDictDTO();
                         dictDTO.setId(projectInfo.getProjectId());
                         dictDTO.setName(projectInfo.getProjectName());
+                        dictDTO.setStatus(projectInfo.getStatus());
                         return dictDTO;
                     }).collect(Collectors.toList());
             return TavernResponse.ok(list);

@@ -78,6 +78,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         eventTodoList.setRole(UserTypeDict.staff);
         eventTodoList.setEventOwnerName(vo.getCompanyName());
         eventTodoList.setEventDate(LocalDateTime.now());
+        eventTodoList.setRegisterId(companyInfo.getRegisterId());
         this.eventInfoDao.insertEventTodo(eventTodoList);
     }
 
@@ -96,9 +97,8 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
                 companyAuthInfoVO.getBossIdPicBack(),
                 companyInfoExt);
         this.companyInfoDao.insertCompanyAuthInfo(companyInfoExt);
-        CompanyInfo companyInfo = new CompanyInfo();
+        CompanyInfo companyInfo = this.companyInfoDao.selectCompanyInfo(companyAuthInfoVO.getCompanyId());
         companyInfo.setCompanyName(companyAuthInfoVO.getCompanyName());
-        companyInfo.setCompanyId(companyAuthInfoVO.getCompanyId());
         companyInfo.setStatus(CompanyStatus.AUTH_APPLYING.getStatus());
         this.companyInfoDao.updateByCompanyId(companyInfo);
 
@@ -116,6 +116,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         eventTodoList.setRole(UserTypeDict.staff);
         eventTodoList.setEventOwnerName(companyAuthInfoVO.getCompanyName());
         eventTodoList.setEventDate(LocalDateTime.now());
+        eventTodoList.setRegisterId(companyInfo.getRegisterId());
         this.eventInfoDao.insertEventTodo(eventTodoList);
 
     }

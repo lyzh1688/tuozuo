@@ -8,6 +8,7 @@ import com.tuozuo.tavern.xinruyi.mapper.ProjectStaffMapper;
 import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo;
+import com.tuozuo.tavern.xinruyi.model.StaffBasicInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -47,5 +48,18 @@ public class ProjectStaffInfoDaoImpl implements ProjectStaffInfoDao {
                 .lambda()
                 .eq(ProjectStaff::getStaffId, projectStaff.getStaffId())
                 .eq(ProjectStaff::getProjectId, projectStaff.getProjectId()));
+    }
+
+    @Override
+    public ProjectStaff select(String projectId, String staffId) {
+        return this.projectStaffMapper.selectOne(Wrappers.<ProjectStaff>query()
+                .lambda()
+                .eq(ProjectStaff::getStaffId, staffId)
+                .eq(ProjectStaff::getProjectId, projectId));
+    }
+
+    @Override
+    public StaffBasicInfo selectStaff(String projectId, String staffId) {
+        return this.projectStaffMapper.selectStaff(projectId, staffId);
     }
 }

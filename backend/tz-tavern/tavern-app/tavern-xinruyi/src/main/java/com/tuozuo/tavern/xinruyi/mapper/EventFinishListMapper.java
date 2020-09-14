@@ -9,9 +9,9 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface EventFinishListMapper extends BaseMapper<EventFinishList> {
 
-    IPage<EventFinishList> selectList(Page page,
-                                    @Param("companyId") String companyId,
-                                    @Param("projectId") String projectId,
-                                    @Param("eventId") String eventId,
-                                    @Param("role") String role );
+    IPage<EventFinishList> selectEventList(Page page,
+                                           @Param("companyId") String companyId,
+                                           @Param("projectId") String projectId,
+                                           @Param("eventId") String eventId,
+                                           @Param("role") String role );
 }

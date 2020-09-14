@@ -15,6 +15,7 @@
     <result column="project_name" jdbcType="VARCHAR" property="projectName" />
     <result column="applicant" jdbcType="VARCHAR" property="applicant" />
     <result column="applyDate" jdbcType="VARCHAR" property="applyDate" />
+    <result column="register_id" jdbcType="VARCHAR" property="registerId" />
   </resultMap>
   <resultMap id="BaseProjectResultMap" type="com.tuozuo.tavern.xinruyi.model.ProjectEventInfo">
 
@@ -39,6 +40,9 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="event_type" jdbcType="VARCHAR" property="eventType" />
     <result column="snapshot" jdbcType="VARCHAR" property="snapshot" />
+    <result column="provinceName" jdbcType="VARCHAR" property="provinceName" />
+    <result column="cityName" jdbcType="VARCHAR" property="cityName" />
+    <result column="districtName" jdbcType="VARCHAR" property="districtName" />
   </resultMap>
   <resultMap id="BaseCompanyResultMap" type="com.tuozuo.tavern.xinruyi.model.CompanyEventInfo">
     <result column="company_id" jdbcType="VARCHAR" property="companyId" />
@@ -59,6 +63,9 @@
     <result column="company_branch_bank" jdbcType="VARCHAR" property="companyAccountBank" />
     <result column="contact_name" jdbcType="VARCHAR" property="contactName" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="provinceName" jdbcType="VARCHAR" property="provinceName" />
+    <result column="cityName" jdbcType="VARCHAR" property="cityName" />
+    <result column="districtName" jdbcType="VARCHAR" property="districtName" />
   </resultMap>
   <select id="selectEventList" resultMap="BaseResultMap">
     select t1.event_id,
@@ -85,6 +92,7 @@
             and  t1.event_type = #{eventId}
           </if>
       </where>
+    order by t1.event_date
   </select>
 
   <select id="selectProjects" resultMap="BaseProjectResultMap">
@@ -92,9 +100,13 @@
     date_format(t1.event_date ,'%Y%m%d') event_date,t2.`status`,t2.fee,t2.project_industry,
     t2.period,date_format(t2.publish_date ,'%Y%m%d') publish_date,t2.project_member_count,
     t2.province,t2.city,t2.district,t2.contract_phone,t2.contract_person,t2.on_spot,t2.file_material,t2.remark,
-    t1.event_type,t1.snapshot
+    t1.event_type,t1.snapshot,
+    t4.area_name provinceName,
+    t5.area_name cityName,
+    t6.area_name districtName
 
-    from project_info t2 LEFT JOIN event_todo_list t1 on  t1.project_id = t2.project_id and (t1.event_type = '3' or t1.event_type = '4' or t1.event_type is null),
+    from project_info t2 LEFT JOIN event_todo_list t1 on  t1.project_id = t2.project_id and (t1.event_type = '3' or t1.event_type = '4' or t1.event_type is null)
+    LEFT JOIN area_info t4 on t2.province = t4.area_code LEFT JOIN area_info t5 on t2.city = t5.area_code LEFT JOIN area_info t6 on t2.district = t6.area_code,
     company_info t3
     <where>
       t2.company_id = t3.company_id
@@ -137,10 +149,13 @@
     t2.company_bank_account,
     t2.company_branch_bank,
     t2.contact_name,
-    t2.remark
-
-      from company_info t1 LEFT JOIN company_info_ext t2 on t1.company_id = t2.company_id LEFT JOIN event_todo_list t3 on t1.company_id = t3.company_id
+    t2.remark,
+    t4.area_name provinceName,
+    t5.area_name cityName,
+    t6.area_name districtName
+    from company_info t1 LEFT JOIN company_info_ext t2 on t1.company_id = t2.company_id LEFT JOIN event_todo_list t3 on t1.register_id = t3.register_id
     and  (t3.event_type = '2' or t3.event_type = '1' or t3.event_type is null)
+    LEFT JOIN area_info t4 on t1.province = t4.area_code LEFT JOIN area_info t5 on t1.city = t5.area_code LEFT JOIN area_info t6 on t1.district = t6.area_code
 
       <where>
     <if test="industryId != null and industryId != ''">
