@@ -142,12 +142,22 @@
         <template v-slot:other v-if="isShowOnly">
           <a-form-item label="服务费率">
             <a-input-number
-              :disabled="isShowOnly&&!isverify"
+              :disabled="isShowOnly&&!isverify||verifyType !== '1'"
               :min="0"
               v-decorator="['fee', {rules: [{required: true, message: '请输入服务费率！'}], validateTrigger: 'blur'}]"
             />
           </a-form-item>
-          <a-form-item label="项目状态">
+          <a-form-item label="审核结果" v-if="isShowOnly&&isverify">
+            <a-select
+              :disabled="isShowOnly&&!isverify"
+              style="width:200px;"
+              v-decorator="['status', {rules: [{required: true, message: '请选择状态！'}], validateTrigger: 'blur'}]"
+              placeholder="请选择">
+              <a-select-option value="1">审核成功</a-select-option>
+              <a-select-option value="0">审核失败</a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item label="项目状态" v-if="isShowOnly&&!isverify">
             <a-select
               :disabled="isShowOnly&&!isverify"
               style="width:200px;"
@@ -183,7 +193,8 @@ import {
 } from '@/api/company'
 import {
   getProjectEventList,
-  doprojectRelease
+  doprojectRelease,
+  doprojectConfirmation
 } from '@/api/events'
 import { getCommonDict } from '@/api/dictionary'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
@@ -328,6 +339,7 @@ export default {
       confirmLoading: false,
       projectMdl: {},
       isverify: false,
+      verifyType: '',
       isShowOnly: false,
       industryTypeList: [],
       industryTypeMap: {},
@@ -415,7 +427,7 @@ export default {
     })
   },
   methods: {
-    fetchProjectDetail (record) {
+     fetchProjectDetail (record, mark) {
       this.formTitle = '项目详情'
       this.isShowOnly = true
       this.isverify = false
@@ -430,6 +442,11 @@ export default {
               fee: record.rate,
               status: record.projectStatus
             }
+            if (mark) {
+                this.projectMdl.remark = ''
+      this.projectMdl.status = ''
+            }
+            console.log(this.projectMdl)
             this.projectVisible = true
             this.confirmLoading = false
           } else {
@@ -449,7 +466,7 @@ export default {
         })
     },
     handleOk () {
-      if (this.isShowOnly) {
+      if (this.isShowOnly && !this.isverify) {
         const form = this.$refs.projectform.form
         this.clearUpload = !this.clearUpload
         form.resetFields() // 清理表单数据（可不做）
@@ -461,12 +478,14 @@ export default {
       form.validateFields((errors, values) => {
         if (!errors) {
           this.confirmLoading = true
-          doprojectRelease(values)
+          console.log('verifyType', this.verifyType)
+          if (this.verifyType === '1') {
+ doprojectRelease(values)
               .then((response) => {
                 const result = response
                 if (success(result)) {
                   this.$notification.success({
-                    message: '修改成功'
+                    message: '审核成功'
                   })
                   const form = this.$refs.projectform.form
                   this.clearUpload = !this.clearUpload
@@ -478,7 +497,7 @@ export default {
                   this.confirmLoading = false
                   this.$notification.error({
                     message: errorMessage(result),
-                    description: '修改失败'
+                    description: '审核失败'
                   })
                 }
                 if (needLogin(result)) {
@@ -488,11 +507,45 @@ export default {
               })
               .catch((error) => {
                 this.$notification.error({
-                  message: '修改失败。请稍后再试',
+                  message: '审核失败。请稍后再试',
                   description: error
                 })
                 this.confirmLoading = false
               })
+          } else if (this.verifyType === '6') {
+              doprojectConfirmation(values)
+              .then((response) => {
+                const result = response
+                if (success(result)) {
+                  this.$notification.success({
+                    message: '审核成功'
+                  })
+                  const form = this.$refs.projectform.form
+                  this.clearUpload = !this.clearUpload
+                  form.resetFields() // 清理表单数据（可不做）
+                  this.$refs.table.refresh(true)
+                  this.projectVisible = false
+                  this.confirmLoading = false
+                } else {
+                  this.confirmLoading = false
+                  this.$notification.error({
+                    message: errorMessage(result),
+                    description: '审核失败'
+                  })
+                }
+                if (needLogin(result)) {
+                  this.projectVisible = false
+                  this.confirmLoading = false
+                }
+              })
+              .catch((error) => {
+                this.$notification.error({
+                  message: '审核失败。请稍后再试',
+                  description: error
+                })
+                this.confirmLoading = false
+              })
+          }
         }
       })
     },
@@ -506,9 +559,19 @@ export default {
       this.isShowOnly = false
       this.projectVisible = true
     },
-    async handleverify (record) {
-      await this.fetchProjectDetail(record)
-      this.formTitle = '审核项目发布申请'
+   async handleverify (record) {
+       const form = this.$refs.projectform.form
+       this.verifyType = record.projectStatus
+      this.clearUpload = !this.clearUpload
+      form.resetFields() // 清理表单数据（可不做）
+    this.fetchProjectDetail(record, true)
+   if (record.projectStatus === '1') {
+this.formTitle = '审核项目发布申请'
+      } else {
+          this.formTitle = '审核项目完成申请'
+      }
+
+      console.log(this.projectMdl)
       this.projectVisible = true
       this.isverify = true
       this.isShowOnly = true

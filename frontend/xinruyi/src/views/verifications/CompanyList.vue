@@ -135,14 +135,14 @@
         </span>
         <span slot="ops" slot-scope="text, record">
           <a-button
-            :disabled="record.projectStatus!='1'&&record.projectStatus!='4'"
+            :disabled="record.status!='1'&&record.status!='4'"
             size="small"
             type="primary"
             @click="handleverify(record)"
             :loading="confirmLoading"
           >审核</a-button>
           <a-button
-            :disabled="record.projectStatus=='1'||record.projectStatus=='3'"
+            :disabled="record.status=='1'||record.status=='3'"
             size="small"
             @click="fetchCompanyDetail(record)"
             :loading="confirmLoading"

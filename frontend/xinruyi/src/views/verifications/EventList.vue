@@ -181,13 +181,6 @@
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="eventType" slot-scope="text">{{ eventTypeMap[text] }}</span>
         <span slot="ops" slot-scope="text, record">
-          <a-button
-            :disabled="record.projectStatus!='1'&&record.projectStatus!='6'"
-            size="small"
-            type="primary"
-            @click="handleverify(record)"
-            :loading="confirmLoading"
-          >审核</a-button>
           <a-button size="small" @click="fetchProjectDetail(record)" :loading="confirmLoading">详情</a-button>
         </span>
       </s-table>
