@@ -233,6 +233,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         ProjectInfo projectInfo = new ProjectInfo();
         projectInfo.setProjectId(vo.getProjectId());
         projectInfo.setRemark(vo.getRemark());
+        projectInfo.setFee(vo.getFee());
         if (vo.getStatus().equals("1")) {
             projectInfo.setStatus(ProjectStatus.APPLY_SUCCESS.getStatus());
         } else {
