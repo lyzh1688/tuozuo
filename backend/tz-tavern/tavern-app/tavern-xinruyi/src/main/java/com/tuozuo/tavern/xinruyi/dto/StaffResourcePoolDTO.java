@@ -16,6 +16,15 @@ public class StaffResourcePoolDTO {
     private String accntBank;
     private String bankName;
     private String bankBranchName;
+    private String contact;
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
 
     public String getBankName() {
         return bankName;

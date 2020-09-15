@@ -64,7 +64,8 @@
     case t3.`status`
     when '0' then '1'
     else '0'
-    end auditResult
+    end auditResult,
+    t4.contact
 
     from company_info t1,project_info t2,project_staff t3,staff_resource_pool t4
     <where>

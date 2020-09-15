@@ -20,6 +20,16 @@ public class StaffInfoVO {
     private String bank;
     @NotNull(message = "accntBank is not null")
     private String accntBank;
+    @NotNull(message = "contact is not null")
+    private String contact;
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
 
     public String getName() {
         return name;

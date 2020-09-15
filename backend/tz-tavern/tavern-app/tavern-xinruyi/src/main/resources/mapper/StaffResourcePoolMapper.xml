@@ -12,6 +12,7 @@
     <result column="id_number" jdbcType="VARCHAR" property="idNumber" />
     <result column="is_valid" jdbcType="VARCHAR" property="isValid" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
   </resultMap>
   <resultMap id="BaseResultDetailMap" type="com.tuozuo.tavern.xinruyi.model.StaffResourcePool">
     <id column="company_id" jdbcType="VARCHAR" property="companyId" />
@@ -26,6 +27,7 @@
     <result column="id_number" jdbcType="VARCHAR" property="idNumber" />
     <result column="is_valid" jdbcType="VARCHAR" property="isValid" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
   </resultMap>
   <resultMap id="SalaryMap" type="com.tuozuo.tavern.xinruyi.model.StaffSalaryInfo">
     <result column="project_name" jdbcType="VARCHAR" property="projectName" />
@@ -36,7 +38,7 @@
   </resultMap>
   <select id="selectByPage" resultMap="BaseResultMap">
     select company_id, staff_id,staff_name, gender, bank_card, bank, bank_branch, id_number, is_valid,
-    update_date
+    update_date,contact
     from staff_resource_pool
     where company_id = #{companyId}
     and is_valid = '1'
@@ -68,7 +70,7 @@
   </select>
   <select id="select" resultMap="BaseResultDetailMap">
     select company_id, staff_id,staff_name, gender, bank_card, bank, bank_branch, id_number, is_valid,
-    update_date,t3.bank_name,t4.bank_name bank_branch_name
+    update_date,t3.bank_name,t4.bank_name bank_branch_name,t1.contact
     from staff_resource_pool t1 LEFT JOIN bank_info t3 on t1.bank = t3.bank_code LEFT JOIN bank_info t4 on t1.bank_branch = t4.bank_code
     where
     staff_id = #{staffId}

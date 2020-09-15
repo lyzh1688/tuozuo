@@ -28,6 +28,16 @@ public class StaffResourcePool {
 
     private LocalDateTime updateDate;
 
+    private String contact;
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
     @TableField(exist = false)
     private String bankName;
     @TableField(exist = false)

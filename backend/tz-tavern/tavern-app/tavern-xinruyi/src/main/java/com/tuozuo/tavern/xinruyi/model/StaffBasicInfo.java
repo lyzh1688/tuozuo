@@ -16,6 +16,15 @@ public class StaffBasicInfo {
     private String payStatus;
     private String remark;
     private String auditResult;
+    private String contact;
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
 
     public String getCompanyId() {
         return companyId;
