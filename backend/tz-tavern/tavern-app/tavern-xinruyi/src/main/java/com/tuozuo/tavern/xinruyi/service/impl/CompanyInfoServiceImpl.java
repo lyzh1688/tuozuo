@@ -8,6 +8,7 @@ import com.tuozuo.tavern.common.protocol.UserPrivilege;
 import com.tuozuo.tavern.common.protocol.UserTypeDict;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
 import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
+import com.tuozuo.tavern.xinruyi.dao.BusinessSearchDao;
 import com.tuozuo.tavern.xinruyi.dao.CompanyInfoDao;
 import com.tuozuo.tavern.xinruyi.dao.EventInfoDao;
 import com.tuozuo.tavern.xinruyi.dict.CompanyStatus;
@@ -34,7 +35,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -58,10 +61,13 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     private ModelMapConverterFactory factory;
     @Autowired
     private AuthorityService authorityService;
+    @Autowired
+    private BusinessSearchDao businessSearchDao;
 
     @Transactional
     @Override
     public void companyApply(CompanyApplyVO vo) {
+
         //企业申请
         CompanyInfo companyInfo = this.factory.voToCompanyInfo(vo);
         companyInfo.setStatus(CompanyStatus.APPLYING.getStatus());
@@ -69,8 +75,23 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         //企业申请事件
         EventTodoList eventTodoList = new EventTodoList();
         //构造snapshot
+        List<AreaInfo> areaInfoList = this.businessSearchDao.selectAreaInfo(vo.getProvince(),vo.getCity(),vo.getDistrict());
+        Map<String,AreaInfo> areaInfoMap = areaInfoList.parallelStream()
+                .collect(Collectors.toMap(AreaInfo::getAreaCode,v -> v));
         JSONObject snapshot = new JSONObject();
         snapshot.put("registerId", companyInfo.getRegisterId());
+        snapshot.put("companyName", vo.getCompanyName());
+        snapshot.put("contact", vo.getContact());
+        snapshot.put("industryType", vo.getIndustryType());
+        if(areaInfoMap.containsKey(vo.getProvince())){
+            snapshot.put("provinceName", areaInfoMap.get(vo.getProvince()).getAreaName());
+        }
+        if(areaInfoMap.containsKey(vo.getCity())){
+            snapshot.put("cityName", areaInfoMap.get(vo.getCity()).getAreaName());
+        }
+        if(areaInfoMap.containsKey(vo.getDistrict())){
+            snapshot.put("districtName", areaInfoMap.get(vo.getDistrict()).getAreaName());
+        }
         eventTodoList.setSnapshot(snapshot.toJSONString());
         eventTodoList.setApplicant(vo.getCompanyName());
         eventTodoList.setEventId(UUIDUtil.randomUUID32());
@@ -129,11 +150,30 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
                 companyAuthInfoVO.getBossIdPicUp(),
                 companyAuthInfoVO.getBossIdPicBack(),
                 companyInfoExt);
-        CompanyInfo companyInfo = new CompanyInfo();
+        CompanyInfo companyInfo = this.companyInfoDao.selectCompanyInfo(companyAuthInfoVO.getCompanyId());
         companyInfo.setCompanyId(companyAuthInfoVO.getCompanyId());
         companyInfo.setCompanyName(companyAuthInfoVO.getCompanyName());
         this.companyInfoDao.updateByCompanyId(companyInfo);
         this.companyInfoDao.updateCompanyAuthInfo(companyInfoExt);
+
+        //审核失败状态发送事件
+        if(companyInfo.getStatus().equals(CompanyStatus.AUTH_FAILED.getStatus())){
+            EventTodoList eventTodoList = new EventTodoList();
+            //构造snapshot
+            JSONObject snapshot = new JSONObject();
+            snapshot.put("companyId", companyAuthInfoVO.getCompanyId());
+            eventTodoList.setSnapshot(snapshot.toJSONString());
+            eventTodoList.setApplicant(companyAuthInfoVO.getCompanyName());
+            eventTodoList.setEventId(UUIDUtil.randomUUID32());
+            eventTodoList.setEventType(EventType.ENTERPRISE_AUTH.getStatus());
+            eventTodoList.setEventOwnerId(companyAuthInfoVO.getCompanyId());
+            eventTodoList.setCompanyId(companyAuthInfoVO.getCompanyId());
+            eventTodoList.setRole(UserTypeDict.staff);
+            eventTodoList.setEventOwnerName(companyAuthInfoVO.getCompanyName());
+            eventTodoList.setEventDate(LocalDateTime.now());
+            eventTodoList.setRegisterId(companyInfo.getRegisterId());
+            this.eventInfoDao.insertEventTodo(eventTodoList);
+        }
     }
 
     @Override

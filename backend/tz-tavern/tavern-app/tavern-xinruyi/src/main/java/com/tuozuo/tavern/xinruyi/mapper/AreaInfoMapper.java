@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper
 public interface AreaInfoMapper extends BaseMapper<AreaInfo> {
 
-    List<AreaInfo> selectList(@Param("areaCode") String areaCode, @Param("areaLevel") String areaLevel);
+    List<AreaInfo> selectAreaList(@Param("areaCode") String areaCode, @Param("areaLevel") String areaLevel);
 
 
 }

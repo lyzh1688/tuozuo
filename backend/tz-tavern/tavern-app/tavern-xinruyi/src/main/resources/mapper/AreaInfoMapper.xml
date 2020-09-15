@@ -7,7 +7,7 @@
     <result column="area_level" jdbcType="VARCHAR" property="areaLevel" />
     <result column="area_parent_code" jdbcType="VARCHAR" property="areaParentCode" />
   </resultMap>
-  <select id="selectList" resultMap="BaseResultMap">
+  <select id="selectAreaList" resultMap="BaseResultMap">
     select area_code, area_name, area_level, area_parent_code
     from area_info
     <where>

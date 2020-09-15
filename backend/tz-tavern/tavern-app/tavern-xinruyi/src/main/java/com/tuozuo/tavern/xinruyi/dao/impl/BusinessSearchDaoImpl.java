@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.xinruyi.dao.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.tuozuo.tavern.xinruyi.dao.BusinessSearchDao;
 import com.tuozuo.tavern.xinruyi.mapper.AreaInfoMapper;
 import com.tuozuo.tavern.xinruyi.mapper.BankInfoMapper;
@@ -24,10 +25,18 @@ public class BusinessSearchDaoImpl implements BusinessSearchDao {
 
     @Override
     public List<AreaInfo> selectAreaInfo(String areaCode, String areaLevel) {
-        return this.areaInfoMapper.selectList(areaCode,areaLevel);
+        return this.areaInfoMapper.selectAreaList(areaCode, areaLevel);
     }
+
     @Override
-    public List<BankInfo> selectBankInfo(String bankCode,String bankName,int queryCnt) {
-        return this.bankInfoMapper.selectList(bankCode,bankName,queryCnt);
+    public List<AreaInfo> selectAreaInfo(String provinceCode, String cityCode, String districtCode) {
+        return this.areaInfoMapper.selectList(Wrappers.<AreaInfo>query()
+                .lambda()
+                .in(AreaInfo::getAreaCode, provinceCode, cityCode, districtCode));
+    }
+
+    @Override
+    public List<BankInfo> selectBankInfo(String bankCode, String bankName, int queryCnt) {
+        return this.bankInfoMapper.selectList(bankCode, bankName, queryCnt);
     }
 }

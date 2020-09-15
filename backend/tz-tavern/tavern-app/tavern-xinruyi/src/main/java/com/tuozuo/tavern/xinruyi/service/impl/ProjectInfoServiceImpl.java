@@ -186,6 +186,27 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         this.setProjectInfoFiles(vo.getProjectFile(), projectInfo);
         this.projectInfoDao.modifyProject(projectInfo);
 
+        if(projectInfo.getStatus().equals(ProjectStatus.APPLY_FAILURE.getStatus())){
+            CompanyInfo companyInfo = this.companyInfoDao.selectCompanyInfo(companyId);
+            //项目发布事件
+            EventTodoList eventTodoList = new EventTodoList();
+            //构造snapshot
+            JSONObject snapshot = new JSONObject();
+            snapshot.put("projectId", projectInfo.getProjectId());
+            eventTodoList.setSnapshot(snapshot.toJSONString());
+            eventTodoList.setEventOwnerId(companyId);
+            eventTodoList.setApplicant(companyInfo.getCompanyName());
+            eventTodoList.setEventId(UUIDUtil.randomUUID32());
+            eventTodoList.setEventType(EventType.PROJECT_RELEASE.getStatus());
+            eventTodoList.setRole(UserTypeDict.staff);
+            eventTodoList.setEventOwnerName(companyInfo.getCompanyName());
+            eventTodoList.setEventDate(LocalDateTime.now());
+            eventTodoList.setProjectId(projectInfo.getProjectId());
+            eventTodoList.setCompanyId(companyId);
+            eventTodoList.setRegisterId(companyInfo.getRegisterId());
+            this.eventInfoDao.insertEventTodo(eventTodoList);
+        }
+
     }
 
     @Transactional

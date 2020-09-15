@@ -11,8 +11,11 @@ import java.util.List;
  */
 public interface BusinessSearchDao {
 
-    List<BankInfo> selectBankInfo(String bankCode,String bankName,int queryCnt);
+    List<BankInfo> selectBankInfo(String bankCode, String bankName, int queryCnt);
 
     List<AreaInfo> selectAreaInfo(String areaCode, String areaLevel);
+
+    List<AreaInfo> selectAreaInfo(String provinceCode, String cityCode,String districtCode);
+
 
 }
