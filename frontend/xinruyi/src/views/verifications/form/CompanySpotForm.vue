@@ -95,6 +95,8 @@
 
 <script>
 import pick from 'lodash.pick'
+import { getCommonDict } from '@/api/dictionary'
+import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 // 表单字段
 const fields = [
   'registerId',
@@ -154,6 +156,13 @@ export default {
     }
   },
   created () {
+     this.getDict('industryType').then((response) => {
+      this.industryTypeList = response
+      this.industryTypeMap = {}
+      for (const i of response) {
+        this.industryTypeMap[i.id] = i.name
+      }
+    })
     // 防止表单未注册
     fields.forEach(v => this.form.getFieldDecorator(v))
 
@@ -163,6 +172,25 @@ export default {
     })
   },
   methods: {
+    getDict (keyword) {
+      return new Promise((resolve, reject) => {
+        getCommonDict(keyword).then((Response) => {
+          const result = Response
+          // console.log('dictQuery', result)
+          if (success(result)) {
+            resolve(result.data)
+          } else {
+            this.$notification.error({
+              message: errorMessage(result),
+              description: '查询字典失败'
+            })
+          }
+          if (needLogin(result)) {
+            this.visible = false
+          }
+        })
+      })
+    },
    checkData (rule, value, callback) {
       if (value) {
         if (/[\u4E00-\u9FA5]/g.test(value) || /^[0-9]+.?[0-9]*$/g.test(value)) {

@@ -73,6 +73,12 @@
             <a-select-option v-for="d in bankAreaList" :key="d.value">{{ d.text }}</a-select-option>
           </a-select>
         </a-form-item>
+        <a-form-item label="联系方式">
+          <a-input
+            :disabled="isShowOnly"
+            v-decorator="['contact', {rules: [{required: true, message: '请输入联系方式！'}], validateTrigger: 'blur'}]"
+          />
+        </a-form-item>
       </a-form>
     </a-spin>
   </a-modal>
@@ -83,7 +89,7 @@ import pick from 'lodash.pick'
 import { getBankDict, getCommonDict } from '@/api/dictionary'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 // 表单字段
-const fields = ['id', 'name', 'idNo', 'gender', 'bankCard', 'bank', 'accntBank']
+const fields = ['id', 'name', 'idNo', 'gender', 'bankCard', 'bank', 'accntBank', 'contact']
 let timeout
 let currentValue
 

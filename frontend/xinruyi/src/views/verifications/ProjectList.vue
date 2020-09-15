@@ -41,10 +41,7 @@
           </a-col>
           <a-col :md="8" :sm="8">
             <a-form-item label="行业类型">
-              <a-select
-                v-model="queryParam1.industryType"
-                style="width: 200px"
-              >
+              <a-select v-model="queryParam1.industryType" style="width: 200px">
                 <a-select-option
                   v-for="province in industryTypeList"
                   :key="province.id"
@@ -67,11 +64,13 @@
               <a-date-picker
                 valueFormat="YYYYMMDD"
                 format="YYYY-MM-DD"
-                v-model="queryParam1.beginDate" />
+                v-model="queryParam1.beginDate"
+              />
               <a-date-picker
                 valueFormat="YYYYMMDD"
                 format="YYYY-MM-DD"
-                v-model="queryParam1.endDate" />
+                v-model="queryParam1.endDate"
+              />
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="8">
@@ -121,11 +120,7 @@
             @click="handleverify(record)"
             :loading="confirmLoading"
           >审核</a-button>
-          <a-button
-            size="small"
-            @click="fetchProjectDetail(record)"
-            :loading="confirmLoading"
-          >详情</a-button>
+          <a-button size="small" @click="fetchProjectDetail(record)" :loading="confirmLoading">详情</a-button>
         </span>
       </s-table>
       <projectform
@@ -152,7 +147,8 @@
               :disabled="isShowOnly&&!isverify"
               style="width:200px;"
               v-decorator="['status', {rules: [{required: true, message: '请选择状态！'}], validateTrigger: 'blur'}]"
-              placeholder="请选择">
+              placeholder="请选择"
+            >
               <a-select-option value="1">审核成功</a-select-option>
               <a-select-option value="0">审核失败</a-select-option>
             </a-select>
@@ -162,7 +158,8 @@
               :disabled="isShowOnly&&!isverify"
               style="width:200px;"
               v-decorator="['status', {rules: [{required: true, message: '请选择状态！'}], validateTrigger: 'blur'}]"
-              placeholder="请选择">
+              placeholder="请选择"
+            >
               <a-select-option
                 v-for=" projectStatusItem in projectStatusList"
                 :key="projectStatusItem.id"
@@ -184,18 +181,9 @@
 <script>
 import { Modal } from 'ant-design-vue'
 import { STable } from '@/components'
-import {
-  fuzzyQueryProject,
-  getProjectDetail
-} from '@/api/projects'
-import {
-  fuzzyQueryCompany
-} from '@/api/company'
-import {
-  getProjectEventList,
-  doprojectRelease,
-  doprojectConfirmation
-} from '@/api/events'
+import { fuzzyQueryProject, getProjectDetail } from '@/api/projects'
+import { fuzzyQueryCompany } from '@/api/company'
+import { getProjectEventList, doprojectRelease, doprojectConfirmation } from '@/api/events'
 import { getCommonDict } from '@/api/dictionary'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 import projectform from '@/views/projects/form/ProjectForm'
@@ -418,7 +406,7 @@ export default {
         this.projectStatusMap[i.id] = i.name
       }
     })
-     this.getDict('industryType').then((response) => {
+    this.getDict('industryType').then((response) => {
       this.industryTypeList = response
       this.industryTypeMap = {}
       for (const i of response) {
@@ -427,7 +415,7 @@ export default {
     })
   },
   methods: {
-     fetchProjectDetail (record, mark) {
+    fetchProjectDetail (record, mark) {
       this.formTitle = '项目详情'
       this.isShowOnly = true
       this.isverify = false
@@ -443,8 +431,8 @@ export default {
               status: record.projectStatus
             }
             if (mark) {
-                this.projectMdl.remark = ''
-      this.projectMdl.status = ''
+              this.projectMdl.remark = ''
+              this.projectMdl.status = ''
             }
             this.projectVisible = true
             this.confirmLoading = false
@@ -479,7 +467,7 @@ export default {
           this.confirmLoading = true
           console.log('verifyType', this.verifyType)
           if (this.verifyType === '1') {
- doprojectRelease(values)
+            doprojectRelease(values)
               .then((response) => {
                 const result = response
                 if (success(result)) {
@@ -512,7 +500,7 @@ export default {
                 this.confirmLoading = false
               })
           } else if (this.verifyType === '6') {
-              doprojectConfirmation(values)
+            doprojectConfirmation(values)
               .then((response) => {
                 const result = response
                 if (success(result)) {
@@ -558,24 +546,24 @@ export default {
       this.isShowOnly = false
       this.projectVisible = true
     },
-   async handleverify (record) {
-       const form = this.$refs.projectform.form
-       this.verifyType = record.projectStatus
+    async handleverify (record) {
+      const form = this.$refs.projectform.form
+      this.verifyType = record.projectStatus
       this.clearUpload = !this.clearUpload
       form.resetFields() // 清理表单数据（可不做）
-    this.fetchProjectDetail(record, true)
-   if (record.projectStatus === '1') {
-this.formTitle = '审核项目发布申请'
+      this.fetchProjectDetail(record, true)
+      if (record.projectStatus === '1') {
+        this.formTitle = '审核项目发布申请'
       } else {
-          this.formTitle = '审核项目完成申请'
+        this.formTitle = '审核项目完成申请'
       }
       this.projectVisible = true
       this.isverify = true
       this.isShowOnly = true
     },
     handleCancel () {
-        if (this.isverify) {
-   Modal.confirm({
+      if (this.isverify) {
+        Modal.confirm({
           title: '取消操作',
           content: '是否确认取消操作？所做的修改将会丢失！',
           onOk: () => {
@@ -583,9 +571,9 @@ this.formTitle = '审核项目发布申请'
           },
           onCancel () {}
         })
-        } else {
-             this.projectVisible = false
-        }
+      } else {
+        this.projectVisible = false
+      }
     },
     handleCustomSearch (value) {
       fetch(value, (data) => (this.fuzzyProjectList = data))

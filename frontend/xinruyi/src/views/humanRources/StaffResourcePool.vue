@@ -89,6 +89,11 @@ const columns = [
     scopedSlots: { customRender: 'bankCard' }
   },
   {
+    title: '联系方式',
+    dataIndex: 'contact',
+    scopedSlots: { customRender: 'contact' }
+  },
+  {
     title: '操作',
     dataIndex: 'ops',
     scopedSlots: { customRender: 'ops' }

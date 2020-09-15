@@ -181,7 +181,7 @@
         <span slot="eventType" slot-scope="text">{{ eventTypeMap[text] }}</span>
         <!-- <span slot="ops" slot-scope="text, record">
           <a-button size="small" @click="fetchProjectDetail(record)" :loading="confirmLoading">详情</a-button>
-        </span> -->
+        </span>-->
       </s-table>
     </a-card>
     <projectform
@@ -190,7 +190,7 @@
       :clearUpload="clearUpload"
       :visible="projectVisible"
       :loading="confirmLoading"
-      :model="projectMdl"
+      :model="verificationMdl"
       :isShowOnly="isShowOnly"
       @cancel="handleCancel"
       @ok="handleOk"
@@ -208,7 +208,8 @@
             :disabled="isShowOnly&&!isverify"
             style="width:200px;"
             v-decorator="['status', {rules: [{required: true, message: '请选择状态！'}], validateTrigger: 'blur'}]"
-            placeholder="请选择">
+            placeholder="请选择"
+          >
             <a-select-option value="1">审核成功</a-select-option>
             <a-select-option value="0">审核失败</a-select-option>
           </a-select>
@@ -218,7 +219,8 @@
             :disabled="isShowOnly&&!isverify"
             style="width:200px;"
             v-decorator="['status', {rules: [{required: true, message: '请选择状态！'}], validateTrigger: 'blur'}]"
-            placeholder="请选择">
+            placeholder="请选择"
+          >
             <a-select-option
               v-for=" projectStatusItem in projectStatusList"
               :key="projectStatusItem.id"
@@ -239,7 +241,7 @@
       :clearUpload="clearUpload"
       :visible="companyVisible"
       :loading="confirmLoading"
-      :model="companyMdl"
+      :model="verificationMdl"
       :isShowOnly="isShowOnly"
       @cancel="handleCancel"
       @ok="handleOk"
@@ -250,7 +252,8 @@
             :disabled="isShowOnly&&!isverify"
             style="width:200px;"
             v-decorator="['status', {rules: [{required: true, message: '请选择状态！'}], validateTrigger: 'blur'}]"
-            placeholder="请选择">
+            placeholder="请选择"
+          >
             <a-select-option value="1">审核成功</a-select-option>
             <a-select-option value="0">审核失败</a-select-option>
           </a-select>
@@ -260,7 +263,8 @@
             :disabled="isShowOnly&&!isverify"
             style="width:200px;"
             v-decorator="['status', {rules: [{required: true, message: '请选择状态！'}], validateTrigger: 'blur'}]"
-            placeholder="请选择">
+            placeholder="请选择"
+          >
             <a-select-option
               v-for=" projectStatusItem in companyStatusList"
               :key="projectStatusItem.id"
@@ -280,12 +284,21 @@
       ref="companyspotform"
       :visible="companyspotformVisible"
       :loading="confirmLoading"
-      :model="companyMdl"
+      :model="verificationMdl"
       :isShowOnly="isShowOnly"
       @cancel="handleCancel"
       @ok="handleOk"
-    >
-    </companyspotform>
+    ></companyspotform>
+    <firestaffform
+      title="审核企业入住申请"
+      ref="firestaffform"
+      :visible="fireStaffVisible"
+      :loading="confirmLoading"
+      :model="verificationMdl"
+      :isShowOnly="isShowOnly"
+      @cancel="handleCancel"
+      @ok="handleOk"
+    ></firestaffform>
   </page-header-wrapper>
 </template>
 
@@ -294,7 +307,14 @@ import { Modal } from 'ant-design-vue'
 import { STable } from '@/components'
 import { fuzzyQueryProject, getProjectDetail } from '@/api/projects'
 import { fuzzyQueryCompany, getCompanyDetail } from '@/api/company'
-import { getAllEventList, doprojectRelease, doCompanyAuth, docompanySpot, doprojectConfirmation } from '@/api/events'
+import {
+  getAllEventList,
+  doprojectRelease,
+  doCompanyAuth,
+  docompanySpot,
+  doprojectConfirmation,
+  dodecruitment
+} from '@/api/events'
 import { getCommonDict } from '@/api/dictionary'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 import projectform from '@/views/projects/form/ProjectForm'
@@ -439,6 +459,10 @@ export default {
       isShowOnly: false,
       eventTypeList: [],
       eventTypeMap: {},
+      industryTypeList: [],
+      industryTypeMap: {},
+      companyStatusList: [],
+      companyStatusMap: {},
       formTitle: '',
       queryParam1: {
         eventType: '',
@@ -568,11 +592,25 @@ export default {
         this.projectStatusMap[i.id] = i.name
       }
     })
+    this.getDict('companyStatus').then((response) => {
+      this.companyStatusList = response
+      this.companyStatusMap = {}
+      for (const i of response) {
+        this.companyStatusMap[i.id] = i.name
+      }
+    })
     this.getDict('eventType').then((response) => {
       this.eventTypeList = response
       this.eventTypeMap = {}
       for (const i of response) {
         this.eventTypeMap[i.id] = i.name
+      }
+    })
+    this.getDict('industryType').then((response) => {
+      this.industryTypeList = response
+      this.industryTypeMap = {}
+      for (const i of response) {
+        this.industryTypeMap[i.id] = i.name
       }
     })
   },
@@ -582,29 +620,29 @@ export default {
       this.isShowOnly = true
       this.isverify = false
       this.confirmLoading = true
-      getCompanyDetail(record.companyId)
+      getCompanyDetail(JSON.parse(record.snapshot)['companyId'])
         .then((response) => {
           const result = response
           if (success(result)) {
             if (record.status !== '1') {
               this.verificationMdl = {
-              ...result.data,
-              status: record.status
-            }
-             if (mark) {
+                ...result.data,
+                status: record.status
+              }
+              if (mark) {
                 this.verificationMdl.remark = ''
-      this.verificationMdl.status = ''
-            }
-            this.companyVisible = true
+                this.verificationMdl.status = ''
+              }
+              this.companyVisible = true
             } else {
               this.verificationMdl = {
-              companyName: record.companyName,
-              province: record.provinceName,
-              city: record.cityName,
-              district: record.districtName,
-              industryType: record.industryType,
-             registerId: JSON.parse(record.snapshot)['registerId']
-            }
+                companyName: record.companyName,
+                province: record.provinceName,
+                city: record.cityName,
+                district: record.districtName,
+                industryType: record.industryType,
+                registerId: JSON.parse(record.snapshot)['registerId']
+              }
             }
             this.confirmLoading = false
           } else {
@@ -628,19 +666,19 @@ export default {
       this.isShowOnly = true
       this.isverify = false
       this.confirmLoading = true
-      getProjectDetail(record.projectId)
+      getProjectDetail(JSON.parse(record.snapshot)['projectId'])
         .then((response) => {
           const result = response
           if (success(result)) {
             this.verificationMdl = {
               ...result.data,
-              projectId: record.projectId,
+              projectId: JSON.parse(record.snapshot)['projectId'],
               fee: record.rate,
               status: record.projectStatus
             }
             if (mark) {
-                this.verificationMdl.remark = ''
-      this.verificationMdl.status = ''
+              this.verificationMdl.remark = ''
+              this.verificationMdl.status = ''
             }
             this.projectVisible = true
             this.confirmLoading = false
@@ -661,7 +699,7 @@ export default {
         })
     },
     handleOk () {
-     if (this.isShowOnly && !this.isverify) {
+      if (this.isShowOnly && !this.isverify) {
         const form = this.$refs.companyform.form
         this.clearUpload = !this.clearUpload
         form.resetFields() // 清理表单数据（可不做）
@@ -676,14 +714,19 @@ export default {
         form3.resetFields() // 清理表单数据（可不做）
         this.$refs.table.refresh(true)
         this.projectVisible = false
+        const form4 = this.$refs.firestaffform.form
+        this.clearUpload = !this.clearUpload
+        form4.resetFields() // 清理表单数据（可不做）
+        this.$refs.table.refresh(true)
+        this.fireStaffVisible = false
         return
       }
       if (this.verifyType === '1') {
-const form = this.$refs.companyspotform.form
-      form.validateFields((errors, values) => {
-        if (!errors) {
-          this.confirmLoading = true
-             values['password'] = md5(values['password'])
+        const form = this.$refs.companyspotform.form
+        form.validateFields((errors, values) => {
+          if (!errors) {
+            this.confirmLoading = true
+            values['password'] = md5(values['password'])
             docompanySpot(values)
               .then((response) => {
                 const result = response
@@ -695,6 +738,7 @@ const form = this.$refs.companyspotform.form
                   this.clearUpload = !this.clearUpload
                   form.resetFields() // 清理表单数据（可不做）
                   this.$refs.table.refresh(true)
+                  this.$refs.table2.refresh(true)
                   this.companyspotformVisible = false
                   this.confirmLoading = false
                 } else {
@@ -716,15 +760,15 @@ const form = this.$refs.companyspotform.form
                 })
                 this.confirmLoading = false
               })
-        }
-      })
+          }
+        })
       }
       if (this.verifyType === '2') {
- const form = this.$refs.companyform.form
-      form.validateFields((errors, values) => {
-        if (!errors) {
-          this.confirmLoading = true
-doCompanyAuth(values)
+        const form = this.$refs.companyform.form
+        form.validateFields((errors, values) => {
+          if (!errors) {
+            this.confirmLoading = true
+            doCompanyAuth(values)
               .then((response) => {
                 const result = response
                 if (success(result)) {
@@ -735,6 +779,7 @@ doCompanyAuth(values)
                   this.clearUpload = !this.clearUpload
                   form.resetFields() // 清理表单数据（可不做）
                   this.$refs.table.refresh(true)
+                  this.$refs.table2.refresh(true)
                   this.companyVisible = false
                   this.confirmLoading = false
                 } else {
@@ -756,15 +801,15 @@ doCompanyAuth(values)
                 })
                 this.confirmLoading = false
               })
-        }
-      })
+          }
+        })
       }
       if (this.verifyType === '3') {
- const form = this.$refs.projectform.form
-      form.validateFields((errors, values) => {
-        if (!errors) {
-          this.confirmLoading = true
-doprojectRelease(values)
+        const form = this.$refs.projectform.form
+        form.validateFields((errors, values) => {
+          if (!errors) {
+            this.confirmLoading = true
+            doprojectRelease(values)
               .then((response) => {
                 const result = response
                 if (success(result)) {
@@ -775,6 +820,7 @@ doprojectRelease(values)
                   this.clearUpload = !this.clearUpload
                   form.resetFields() // 清理表单数据（可不做）
                   this.$refs.table.refresh(true)
+                  this.$refs.table2.refresh(true)
                   this.projectVisible = false
                   this.confirmLoading = false
                 } else {
@@ -796,15 +842,15 @@ doprojectRelease(values)
                 })
                 this.confirmLoading = false
               })
-        }
-      })
+          }
+        })
       }
       if (this.verifyType === '4') {
- const form = this.$refs.projectform.form
-      form.validateFields((errors, values) => {
-        if (!errors) {
-          this.confirmLoading = true
-doprojectConfirmation(values)
+        const form = this.$refs.projectform.form
+        form.validateFields((errors, values) => {
+          if (!errors) {
+            this.confirmLoading = true
+            doprojectConfirmation(values)
               .then((response) => {
                 const result = response
                 if (success(result)) {
@@ -815,6 +861,7 @@ doprojectConfirmation(values)
                   this.clearUpload = !this.clearUpload
                   form.resetFields() // 清理表单数据（可不做）
                   this.$refs.table.refresh(true)
+                  this.$refs.table2.refresh(true)
                   this.projectVisible = false
                   this.confirmLoading = false
                 } else {
@@ -836,26 +883,27 @@ doprojectConfirmation(values)
                 })
                 this.confirmLoading = false
               })
-        }
-      })
+          }
+        })
       }
       if (this.verifyType === '7') {
- const form = this.$refs.projectform.form
-      form.validateFields((errors, values) => {
-        if (!errors) {
-          this.confirmLoading = true
-doprojectConfirmation(values)
+        const form = this.$refs.firestaffform.form
+        form.validateFields((errors, values) => {
+          if (!errors) {
+            this.confirmLoading = true
+            dodecruitment(values)
               .then((response) => {
                 const result = response
                 if (success(result)) {
                   this.$notification.success({
                     message: '审核成功'
                   })
-                  const form = this.$refs.projectform.form
+                  const form = this.$refs.firestaffform.form
                   this.clearUpload = !this.clearUpload
                   form.resetFields() // 清理表单数据（可不做）
                   this.$refs.table.refresh(true)
-                  this.projectVisible = false
+                  this.$refs.table2.refresh(true)
+                  this.fireStaffVisible = false
                   this.confirmLoading = false
                 } else {
                   this.confirmLoading = false
@@ -865,7 +913,7 @@ doprojectConfirmation(values)
                   })
                 }
                 if (needLogin(result)) {
-                  this.projectVisible = false
+                  this.fireStaffVisible = false
                   this.confirmLoading = false
                 }
               })
@@ -876,29 +924,55 @@ doprojectConfirmation(values)
                 })
                 this.confirmLoading = false
               })
-        }
-      })
+          }
+        })
       }
     },
     async handleverify (record) {
-       this.verifyType = record.eventType
-
-       if (this.verifyType === '1') {
-          await this.fetchCompanyDetail(record, true)
-this.companyspotformVisible = true
+      this.verifyType = record.eventType
+      const form = this.$refs.companyform.form
+      this.clearUpload = !this.clearUpload
+      form.resetFields() // 清理表单数据（可不做）
+      const form2 = this.$refs.companyspotform.form
+      form2.resetFields()
+      const form3 = this.$refs.projectform.form
+      form3.resetFields() // 清理表单数据（可不做）
+      const form4 = this.$refs.firestaffform.form
+      form4.resetFields() // 清理表单数据（可不做）
+      if (this.verifyType === '1') {
+        const snapshotBody = JSON.parse(record.snapshot)
+        this.verificationMdl = {
+          companyName: record.companyName,
+          province: snapshotBody.provinceName,
+          city: snapshotBody.cityName,
+          district: snapshotBody.districtName,
+          industryType: snapshotBody.industryType,
+          registerId: snapshotBody['registerId']
+        }
+        this.companyspotformVisible = true
       } else if (this.verifyType === '2') {
-         await this.fetchCompanyDetail(record, true)
-          this.companyVisible = true
+        await this.fetchCompanyDetail(record, true)
+        this.companyVisible = true
       } else if (this.verifyType === '3') {
         await this.fetchProjectDetail(record)
         this.formTitle = '审核项目发布申请'
-          this.companyVisible = true
+        this.projectVisible = true
       } else if (this.verifyType === '4') {
         await this.fetchProjectDetail(record)
         this.formTitle = '审核项目完成申请'
-          this.companyVisible = true
+        this.projectVisible = true
       } else if (this.verifyType === '7') {
-          this.fireStaffVisible = true
+        const snapshotBody = JSON.parse(record.snapshot)
+        this.verificationMdl = {
+          companyId: snapshotBody.companyId,
+          companyName: snapshotBody.companyName,
+          projectId: snapshotBody.projectId,
+          projectName: snapshotBody.projectName,
+          staffId: snapshotBody.staffId,
+          staffName: snapshotBody.staffName,
+          contact: snapshotBody.contact
+        }
+        this.fireStaffVisible = true
       }
       this.isverify = true
       this.isShowOnly = true
@@ -910,11 +984,17 @@ this.companyspotformVisible = true
           content: '是否确认取消操作？所做的修改将会丢失！',
           onOk: () => {
             this.projectVisible = false
+            this.companyVisible = false
+            this.companyspotformVisible = false
+            this.fireStaffVisible = false
           },
           onCancel () {}
         })
       } else {
         this.projectVisible = false
+        this.companyVisible = false
+        this.companyspotformVisible = false
+        this.fireStaffVisible = false
       }
     },
     handleCustomSearch (value) {

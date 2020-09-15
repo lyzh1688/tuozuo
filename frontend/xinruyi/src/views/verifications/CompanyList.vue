@@ -33,10 +33,7 @@
           </a-col>
           <a-col :md="8" :sm="8">
             <a-form-item label="行业类型">
-              <a-select
-                v-model="queryParam1.industryType"
-                style="width: 200px"
-              >
+              <a-select v-model="queryParam1.industryType" style="width: 200px">
                 <a-select-option
                   v-for="province in industryTypeList"
                   :key="province.id"
@@ -46,30 +43,19 @@
           </a-col>
           <a-col :span="10">
             <a-form-item label="地区">
-              <a-select
-                v-model="queryParam1.province"
-                style="width: 120px"
-                @change="handleChane"
-              >
+              <a-select v-model="queryParam1.province" style="width: 120px" @change="handleChane">
                 <a-select-option
                   v-for="province in provinceList"
                   :key="province.areaCode"
                 >{{ province.areaName }}</a-select-option>
               </a-select>
-              <a-select
-                v-model="queryParam1.city"
-                style="width: 120px"
-                @change="handleChane2"
-              >
+              <a-select v-model="queryParam1.city" style="width: 120px" @change="handleChane2">
                 <a-select-option
                   v-for="cityItem in cityList"
                   :key="cityItem.areaCode"
                 >{{ cityItem.areaName }}</a-select-option>
               </a-select>
-              <a-select
-                v-model="queryParam1.district"
-                style="width: 120px"
-              >
+              <a-select v-model="queryParam1.district" style="width: 120px">
                 <a-select-option
                   v-for="cityItem in districtList"
                   :key="cityItem.areaCode"
@@ -82,11 +68,13 @@
               <a-date-picker
                 valueFormat="YYYYMMDD"
                 format="YYYY-MM-DD"
-                v-model="queryParam1.beginDate" />
+                v-model="queryParam1.beginDate"
+              />
               <a-date-picker
                 valueFormat="YYYYMMDD"
                 format="YYYY-MM-DD"
-                v-model="queryParam1.endDate" />
+                v-model="queryParam1.endDate"
+              />
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="8">
@@ -130,9 +118,10 @@
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="status" slot-scope="text">{{ companyStatusMap[text] }}</span>
         <span slot="industryType" slot-scope="text">{{ industryTypeMap[text] }}</span>
-        <span slot="area" slot-scope="text, record">
-          {{ record.provinceName }}-{{ record.cityName }}-{{ record.districtName }}
-        </span>
+        <span
+          slot="area"
+          slot-scope="text, record"
+        >{{ record.provinceName }}-{{ record.cityName }}-{{ record.districtName }}</span>
         <span slot="ops" slot-scope="text, record">
           <a-button
             :disabled="record.status!='1'&&record.status!='4'"
@@ -166,7 +155,8 @@
               :disabled="isShowOnly&&!isverify"
               style="width:200px;"
               v-decorator="['status', {rules: [{required: true, message: '请选择状态！'}], validateTrigger: 'blur'}]"
-              placeholder="请选择">
+              placeholder="请选择"
+            >
               <a-select-option value="1">审核成功</a-select-option>
               <a-select-option value="0">审核失败</a-select-option>
             </a-select>
@@ -176,7 +166,8 @@
               :disabled="isShowOnly&&!isverify"
               style="width:200px;"
               v-decorator="['status', {rules: [{required: true, message: '请选择状态！'}], validateTrigger: 'blur'}]"
-              placeholder="请选择">
+              placeholder="请选择"
+            >
               <a-select-option
                 v-for=" projectStatusItem in companyStatusList"
                 :key="projectStatusItem.id"
@@ -200,8 +191,7 @@
         :isShowOnly="isShowOnly"
         @cancel="handleCancel"
         @ok="handleOk"
-      >
-      </companyspotform>
+      ></companyspotform>
     </a-card>
   </page-header-wrapper>
 </template>
@@ -209,15 +199,8 @@
 <script>
 import { Modal } from 'ant-design-vue'
 import { STable } from '@/components'
-import {
-  fuzzyQueryCompany,
-  getCompanyDetail
-} from '@/api/company'
-import {
-  getCompanyEventList,
-  doCompanyAuth,
-  docompanySpot
-} from '@/api/events'
+import { fuzzyQueryCompany, getCompanyDetail } from '@/api/company'
+import { getCompanyEventList, doCompanyAuth, docompanySpot } from '@/api/events'
 import { getCommonDict, getAreaCode } from '@/api/dictionary'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 import companyform from '@/views/user/forms/CompanyAuthentication'
@@ -233,7 +216,7 @@ const columns = [
     dataIndex: 'companyName',
     scopedSlots: { customRender: 'companyName' }
   },
-{
+  {
     title: '行业类型',
     dataIndex: 'industryType',
     scopedSlots: { customRender: 'industryType' }
@@ -410,7 +393,7 @@ export default {
   created () {
     fetch('', (data) => (this.fuzzyProjectList = data))
     fetch2('', (data) => (this.fuzzyCompanyList = data))
-     this.getAreaCode('province', '').then((response) => {
+    this.getAreaCode('province', '').then((response) => {
       this.provinceList = response
     })
     this.getDict('companyStatus').then((response) => {
@@ -420,7 +403,7 @@ export default {
         this.companyStatusMap[i.id] = i.name
       }
     })
-     this.getDict('industryType').then((response) => {
+    this.getDict('industryType').then((response) => {
       this.industryTypeList = response
       this.industryTypeMap = {}
       for (const i of response) {
@@ -429,7 +412,7 @@ export default {
     })
   },
   methods: {
-     getAreaCode (level, code) {
+    getAreaCode (level, code) {
       return new Promise((resolve, reject) => {
         getAreaCode(level, code).then((Response) => {
           const result = Response
@@ -456,23 +439,15 @@ export default {
           if (success(result)) {
             if (record.status !== '1') {
               this.companyMdl = {
-              ...result.data,
-              status: record.status
-            }
-             if (mark) {
+                ...result.data,
+                status: record.status
+              }
+              if (mark) {
                 this.companyMdl.remark = ''
-      this.companyMdl.status = ''
-            }
-            this.companyVisible = true
+                this.companyMdl.status = ''
+              }
+              this.companyVisible = true
             } else {
-              this.companyMdl = {
-              companyName: record.companyName,
-              province: record.provinceName,
-              city: record.cityName,
-              district: record.districtName,
-              industryType: record.industryType,
-             registerId: JSON.parse(record.snapshot)['registerId']
-            }
             }
             this.confirmLoading = false
           } else {
@@ -518,11 +493,11 @@ export default {
         return
       }
       if (this.verifyType === '1') {
-const form = this.$refs.companyspotform.form
-      form.validateFields((errors, values) => {
-        if (!errors) {
-          this.confirmLoading = true
-             values['password'] = md5(values['password'])
+        const form = this.$refs.companyspotform.form
+        form.validateFields((errors, values) => {
+          if (!errors) {
+            this.confirmLoading = true
+            values['password'] = md5(values['password'])
             docompanySpot(values)
               .then((response) => {
                 const result = response
@@ -555,14 +530,14 @@ const form = this.$refs.companyspotform.form
                 })
                 this.confirmLoading = false
               })
-        }
-      })
+          }
+        })
       } else {
- const form = this.$refs.companyform.form
-      form.validateFields((errors, values) => {
-        if (!errors) {
-          this.confirmLoading = true
-doCompanyAuth(values)
+        const form = this.$refs.companyform.form
+        form.validateFields((errors, values) => {
+          if (!errors) {
+            this.confirmLoading = true
+            doCompanyAuth(values)
               .then((response) => {
                 const result = response
                 if (success(result)) {
@@ -594,8 +569,8 @@ doCompanyAuth(values)
                 })
                 this.confirmLoading = false
               })
-        }
-      })
+          }
+        })
       }
     },
     handleAdd () {
@@ -610,18 +585,31 @@ doCompanyAuth(values)
     },
     async handleverify (record) {
       this.verifyType = record.status
-      await this.fetchCompanyDetail(record, true)
-       if (record.status === '1') {
-this.companyspotformVisible = true
+      const form = this.$refs.companyform.form
+      this.clearUpload = !this.clearUpload
+      form.resetFields() // 清理表单数据（可不做）
+      const form2 = this.$refs.companyspotform.form
+      form2.resetFields()
+      if (record.status === '1') {
+        this.companyMdl = {
+          companyName: record.companyName,
+          province: record.provinceName,
+          city: record.cityName,
+          district: record.districtName,
+          industryType: record.industryType,
+          registerId: JSON.parse(record.snapshot)['registerId']
+        }
+        this.companyspotformVisible = true
       } else {
-          this.companyVisible = true
+        await this.fetchCompanyDetail(record, true)
+        this.companyVisible = true
       }
       this.isverify = true
       this.isShowOnly = true
     },
     handleCancel () {
-        if (this.isverify) {
-   Modal.confirm({
+      if (this.isverify) {
+        Modal.confirm({
           title: '取消操作',
           content: '是否确认取消操作？所做的修改将会丢失！',
           onOk: () => {
@@ -630,10 +618,10 @@ this.companyspotformVisible = true
           },
           onCancel () {}
         })
-        } else {
-             this.companyVisible = false
-             this.companyspotformVisible = false
-        }
+      } else {
+        this.companyVisible = false
+        this.companyspotformVisible = false
+      }
     },
     handleCustomSearch2 (value) {
       fetch(value, (data) => (this.fuzzyCompanyList = data))

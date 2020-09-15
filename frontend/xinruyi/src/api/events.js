@@ -6,7 +6,7 @@ const apiList = {
   companyAuth: process.env.VUE_APP_SYSTEM_URL + '/v1/company/status/',
   companySpot: process.env.VUE_APP_SYSTEM_URL + '/v1/company/spot',
   projectRelease: process.env.VUE_APP_SYSTEM_URL + '/v1/project/release',
-  decruitment: process.env.VUE_APP_SYSTEM_URL + '/v1/staff/decruitment',
+  decruitment: process.env.VUE_APP_SYSTEM_URL + '/v1/project/staff/decruitment',
   staffAuthentication: process.env.VUE_APP_SYSTEM_URL + '/v1/staff/authentication',
   staffCertification: process.env.VUE_APP_SYSTEM_URL + '/v1/staff/certification',
   projectConfirmation: process.env.VUE_APP_SYSTEM_URL + '/v1/project/confirmation'

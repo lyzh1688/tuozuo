@@ -90,7 +90,7 @@
         <span slot="industryType" slot-scope="text">{{ industryTypeMap[text] }}</span>
         <span slot="ops" slot-scope="text, record">
           <a-button
-            :disabled="projectStatusMap[record.projectStatus].search('完成')>=0"
+            :disabled="record.projectStatus==='1'||record.projectStatus==='6'||record.projectStatus==='7'"
             size="small"
             type="primary"
             @click="handleUpdate(record)"
@@ -98,7 +98,7 @@
           >修改</a-button>
           <a-button size="small" @click="fetchProjectDetail(record)" :loading="confirmLoading">详情</a-button>
           <a-button
-            :disabled="projectStatusMap[record.projectStatus].search('完成')>=0"
+            :disabled="record.projectStatus==='1'||record.projectStatus==='2'||record.projectStatus==='6'||record.projectStatus==='7'"
             size="small"
             type="primary"
             @click="handleComplete(record)"

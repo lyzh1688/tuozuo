@@ -9,7 +9,7 @@
           <a-divider type="vertical" v-if="status=='5'"/>
           <a-button type="primary" size="small" v-if="status=='5'" @click="handleUpdate">修改申请</a-button>
           <a-divider type="vertical" />
-          <a-button type="primary" size="small" @click="fetchCompanyDetail">详情</a-button>
+          <a-button type="primary" size="small" v-if="status!='2'" @click="fetchCompanyDetail">详情</a-button>
         </template>
       </myinfo>
       <companyauthentication
