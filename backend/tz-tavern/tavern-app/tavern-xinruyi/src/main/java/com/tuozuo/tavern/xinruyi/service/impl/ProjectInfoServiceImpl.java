@@ -323,6 +323,11 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         this.eventInfoDao.insertEventFinish(eventFinishList);
     }
 
+    @Override
+    public void modifyProjectStatusTask() {
+        this.projectInfoDao.updateStatus();
+    }
+
 
     private void setProjectInfoFiles(MultipartFile file, ProjectInfo projectInfo) throws Exception {
         if (file != null) {

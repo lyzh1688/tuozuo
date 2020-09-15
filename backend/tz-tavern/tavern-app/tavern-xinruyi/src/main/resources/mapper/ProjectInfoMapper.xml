@@ -58,4 +58,10 @@
         </where>
     </select>
 
+    <update id="updateStatus">
+        update project_info t set t.`status` = '5' where t.publish_date <![CDATA[ <= ]]> now() and ( t.`status` = '3' or t.`status` = '6')
+        and t.`status` != '5'
+
+    </update>
+
 </mapper>

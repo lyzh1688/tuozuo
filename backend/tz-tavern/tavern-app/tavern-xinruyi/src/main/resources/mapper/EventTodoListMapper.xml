@@ -51,7 +51,7 @@
     <result column="province" jdbcType="VARCHAR" property="province" />
     <result column="city" jdbcType="VARCHAR" property="city" />
     <result column="district" jdbcType="VARCHAR" property="district" />
-    <result column="contact_phone" jdbcType="VARCHAR" property="contact" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
     <result column="event_date" jdbcType="VARCHAR" property="applyDate" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="file_biz_license" jdbcType="VARCHAR" property="businessLicense" />
@@ -66,21 +66,21 @@
     <result column="provinceName" jdbcType="VARCHAR" property="provinceName" />
     <result column="cityName" jdbcType="VARCHAR" property="cityName" />
     <result column="districtName" jdbcType="VARCHAR" property="districtName" />
+    <result column="snapshot" jdbcType="VARCHAR" property="snapshot" />
   </resultMap>
   <select id="selectEventList" resultMap="BaseResultMap">
     select t1.event_id,
-      t1.event_type,
-      t1.event_owner_id,
-      t1.event_date,
-      t1.snapshot,
-      t1.company_id,
-      t1. project_id,
-      t1.role,
-      t1.event_owner_name,
-      t2.company_id,t2.company_name,
-      t3.project_name,t1.event_owner_name ,date_format(t1.event_date ,'%Y%m%d') applyDate,t1.event_owner_name applicant
-    from event_todo_list t1 LEFT JOIN project_info t3 on t1.project_id = t3.project_id left JOIN company_info t2 on t1.company_id = t2.company_id
-      <where>
+    t1.event_type,
+    t1.event_owner_id,
+    t1.event_date,
+    t1.snapshot,
+    t1. project_id,
+    t1.role,
+    t1.event_owner_name,
+    t2.company_id,t2.company_name,
+    t3.project_name,t1.event_owner_name ,date_format(t1.event_date ,'%Y%m%d') applyDate,t1.event_owner_name applicant
+    from event_todo_list t1 LEFT JOIN project_info t3 on t1.project_id = t3.project_id left JOIN company_info t2 on t1.register_id = t2.register_id
+    <where>
         t1.role = #{role}
           <if test="companyId != null and companyId != ''">
              and t1.company_id = #{companyId}
@@ -138,7 +138,7 @@
     t1.province,
     t1.city,
     t1.district,
-    t2.contact_phone,
+      IFNULL(t2.contact_phone,t1.contact) contact,
     date_format(t3.event_date ,'%Y%m%d') event_date,
     t1.`status`,
     t2.file_biz_license,
@@ -152,7 +152,8 @@
     t2.remark,
     t4.area_name provinceName,
     t5.area_name cityName,
-    t6.area_name districtName
+    t6.area_name districtName,
+    t3.snapshot
     from company_info t1 LEFT JOIN company_info_ext t2 on t1.company_id = t2.company_id LEFT JOIN event_todo_list t3 on t1.register_id = t3.register_id
     and  (t3.event_type = '2' or t3.event_type = '1' or t3.event_type is null)
     LEFT JOIN area_info t4 on t1.province = t4.area_code LEFT JOIN area_info t5 on t1.city = t5.area_code LEFT JOIN area_info t6 on t1.district = t6.area_code

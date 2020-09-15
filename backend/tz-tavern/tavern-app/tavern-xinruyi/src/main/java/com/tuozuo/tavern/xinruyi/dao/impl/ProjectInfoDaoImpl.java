@@ -83,5 +83,10 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
                 .eq(ProjectInfo::getProjectId, projectInfo.getProjectId()));
     }
 
+    @Override
+    public void updateStatus() {
+        this.projectInfoMapper.updateStatus();
+    }
+
 
 }

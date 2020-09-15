@@ -36,5 +36,7 @@ public interface ProjectInfoDao {
 
     void modifyProject(ProjectInfo projectInfo);
 
+    void updateStatus();
+
 
 }

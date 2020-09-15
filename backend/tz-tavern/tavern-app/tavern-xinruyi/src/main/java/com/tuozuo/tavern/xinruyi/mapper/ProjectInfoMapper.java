@@ -19,4 +19,6 @@ public interface ProjectInfoMapper extends BaseMapper<ProjectInfo> {
                                          @Param("beginDate") String beginDate,
                                          @Param("endDate") String endDate);
 
+    void updateStatus();
+
 }

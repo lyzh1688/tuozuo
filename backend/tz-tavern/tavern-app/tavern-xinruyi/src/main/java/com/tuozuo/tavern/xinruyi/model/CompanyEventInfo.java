@@ -26,6 +26,15 @@ public class CompanyEventInfo {
     private String provinceName;
     private String cityName;
     private String districtName;
+    private String snapshot;
+
+    public String getSnapshot() {
+        return snapshot;
+    }
+
+    public void setSnapshot(String snapshot) {
+        this.snapshot = snapshot;
+    }
 
     public String getProvinceName() {
         return provinceName;

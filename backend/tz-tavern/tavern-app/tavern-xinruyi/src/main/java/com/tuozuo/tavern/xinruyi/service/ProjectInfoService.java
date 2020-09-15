@@ -40,4 +40,6 @@ public interface ProjectInfoService {
 
     void auditProjectStaffFired(AuditStaffFiredVO vo) throws Exception;
 
+    void modifyProjectStatusTask();
+
 }
