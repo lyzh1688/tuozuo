@@ -173,6 +173,9 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
             eventTodoList.setEventDate(LocalDateTime.now());
             eventTodoList.setRegisterId(companyInfo.getRegisterId());
             this.eventInfoDao.insertEventTodo(eventTodoList);
+            companyInfo.setCompanyId(companyAuthInfoVO.getCompanyId());
+            companyInfo.setStatus(CompanyStatus.AUTH_APPLYING.getStatus());
+            this.companyInfoDao.updateByCompanyId(companyInfo);
         }
     }
 

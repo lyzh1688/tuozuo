@@ -205,6 +205,8 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
             eventTodoList.setCompanyId(companyId);
             eventTodoList.setRegisterId(companyInfo.getRegisterId());
             this.eventInfoDao.insertEventTodo(eventTodoList);
+            projectInfo.setStatus(ProjectStatus.APPLYING.getStatus());
+            this.projectInfoDao.modifyProject(projectInfo);
         }
 
     }
