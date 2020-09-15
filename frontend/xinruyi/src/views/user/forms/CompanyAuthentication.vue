@@ -168,6 +168,7 @@ const fields = [
   'companyAccountBranchBank', //	String	企业对公账号所在银行
   'contactName', //	String	联系人姓名
   'contact', //	String	联系人电话
+  'status',
   'remark' //	String	备注
 ]
 let timeout

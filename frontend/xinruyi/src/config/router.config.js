@@ -14,7 +14,7 @@ export const asyncRouterMap = [
     name: 'FinancialServices',
     redirect: '/dashboard/workplace',
     component: BasicLayout,
-    meta: { title: '财务服务', keepAlive: true, icon: 'account-book', permission: ['admin', 'xinruyi.custom.normal'] },
+    meta: { title: '财务服务', keepAlive: true, icon: 'account-book', permission: ['admin', 'xinruyi.custom.normal', 'xinruyi.custom.visitor'] },
     children: [
       {
         path: '/financialServices/console',
@@ -27,7 +27,7 @@ export const asyncRouterMap = [
         name: 'MyInfo',
         component: resolve => require(['@/views/user/MyInfo'], resolve),
         // component: () => import('@/views/user/MyInfo'),
-        meta: { title: '我的', keepAlive: true, permission: ['admin', 'xinruyi.custom.normal'] }
+        meta: { title: '我的', keepAlive: true, permission: ['admin', 'xinruyi.custom.normal', 'xinruyi.custom.visitor'] }
       }
     ]
   },

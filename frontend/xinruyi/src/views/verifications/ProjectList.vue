@@ -446,7 +446,6 @@ export default {
                 this.projectMdl.remark = ''
       this.projectMdl.status = ''
             }
-            console.log(this.projectMdl)
             this.projectVisible = true
             this.confirmLoading = false
           } else {
@@ -570,8 +569,6 @@ this.formTitle = '审核项目发布申请'
       } else {
           this.formTitle = '审核项目完成申请'
       }
-
-      console.log(this.projectMdl)
       this.projectVisible = true
       this.isverify = true
       this.isShowOnly = true

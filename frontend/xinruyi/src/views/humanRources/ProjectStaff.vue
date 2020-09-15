@@ -15,7 +15,8 @@
           <a-skeleton :loading="infoLoading" active title>
             <a-row>
               <a-col :sm="8" :xs="24">
-                <a-button type="dashed" size="small" @click="handleProjectStaffOpsDrawer()">新增人员</a-button>
+                <span>状态:{{ projectStatusMap[item.status] }}</span>
+                <a-button type="dashed" size="small" :disabled="item.status!='3'&&item.status!='5'" @click="handleProjectStaffOpsDrawer()">新增人员</a-button>
                 <a-button type="primary" size="small" @click="refresh=!refresh">刷新</a-button>
               </a-col>
             </a-row>
@@ -42,6 +43,7 @@
             </span>
             <span slot="ops" slot-scope="text, record">
               <a-button
+                v-if="item.status=='3'||item.status=='5'"
                 :disabled="record.status!=='2'"
                 type="primary"
                 size="small"
@@ -49,6 +51,7 @@
                 icon="edit"
                 @click="handleUpdate(record)"></a-button>
               <a-button
+                v-if="item.status=='3'||item.status=='5'"
                 :disabled="record.status!=='2'"
                 type="danger"
                 size="small"
@@ -199,6 +202,7 @@ export default {
       queryParam: {
         projectID: ''
       },
+      projectStatusMap: '',
       staffMdl: {},
       picStaffId: '',
       currentTableId: '',
@@ -292,6 +296,12 @@ export default {
       this.genderMap = {}
       for (const i of response) {
         this.genderMap[i.id] = i.name
+      }
+    })
+    this.getDict('projectStatus').then((response) => {
+      this.projectStatusMap = {}
+      for (const i of response) {
+        this.projectStatusMap[i.id] = i.name
       }
     })
     this.getDict('staffStatus').then((response) => {

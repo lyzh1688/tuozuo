@@ -131,7 +131,7 @@
         <span slot="status" slot-scope="text">{{ companyStatusMap[text] }}</span>
         <span slot="industryType" slot-scope="text">{{ industryTypeMap[text] }}</span>
         <span slot="area" slot-scope="text, record">
-          <areashow :provinceCode="record.province" :cityCode="record.city" :districtCode="record.district"/>
+          {{ record.provinceName }}-{{ record.cityName }}-{{ record.districtName }}
         </span>
         <span slot="ops" slot-scope="text, record">
           <a-button
@@ -150,7 +150,7 @@
         </span>
       </s-table>
       <companyform
-        :title="formTitle"
+        title="审核企业认证申请"
         ref="companyform"
         :clearUpload="clearUpload"
         :visible="companyVisible"
@@ -161,7 +161,17 @@
         @ok="handleOk"
       >
         <template v-slot:other v-if="isShowOnly">
-          <a-form-item label="公司状态">
+          <a-form-item label="审核结果" v-if="isShowOnly&&isverify">
+            <a-select
+              :disabled="isShowOnly&&!isverify"
+              style="width:200px;"
+              v-decorator="['status', {rules: [{required: true, message: '请选择状态！'}], validateTrigger: 'blur'}]"
+              placeholder="请选择">
+              <a-select-option value="1">审核成功</a-select-option>
+              <a-select-option value="0">审核失败</a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item label="公司状态" v-if="isShowOnly&&!isverify">
             <a-select
               :disabled="isShowOnly&&!isverify"
               style="width:200px;"
@@ -181,6 +191,17 @@
           </a-form-item>
         </template>
       </companyform>
+      <companyspotform
+        title="审核企业入住申请"
+        ref="companyspotform"
+        :visible="companyspotformVisible"
+        :loading="confirmLoading"
+        :model="companyMdl"
+        :isShowOnly="isShowOnly"
+        @cancel="handleCancel"
+        @ok="handleOk"
+      >
+      </companyspotform>
     </a-card>
   </page-header-wrapper>
 </template>
@@ -188,18 +209,20 @@
 <script>
 import { Modal } from 'ant-design-vue'
 import { STable } from '@/components'
-import areashow from './AreaShow'
 import {
   fuzzyQueryCompany,
   getCompanyDetail
 } from '@/api/company'
 import {
   getCompanyEventList,
-  doprojectRelease
+  doCompanyAuth,
+  docompanySpot
 } from '@/api/events'
 import { getCommonDict, getAreaCode } from '@/api/dictionary'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 import companyform from '@/views/user/forms/CompanyAuthentication'
+import companyspotform from './form/CompanySpotForm'
+import md5 from 'md5'
 const columns = [
   {
     title: '编号',
@@ -307,7 +330,9 @@ export default {
       confirmLoading: false,
       companyMdl: {},
       isverify: false,
+      verifyType: '',
       isShowOnly: false,
+      companyspotformVisible: false,
       formTitle: '',
       queryParam1: {
         companyStatus: '',
@@ -380,7 +405,7 @@ export default {
   components: {
     STable,
     companyform,
-    areashow
+    companyspotform
   },
   created () {
     fetch('', (data) => (this.fuzzyProjectList = data))
@@ -420,7 +445,7 @@ export default {
         })
       })
     },
-    fetchCompanyDetail (record) {
+    fetchCompanyDetail (record, mark) {
       this.formTitle = '公司详情'
       this.isShowOnly = true
       this.isverify = false
@@ -429,13 +454,26 @@ export default {
         .then((response) => {
           const result = response
           if (success(result)) {
-            this.companyMdl = {
+            if (record.status !== '1') {
+              this.companyMdl = {
               ...result.data,
-              projectId: record.projectId,
-              fee: record.rate,
-              status: record.projectStatus
+              status: record.status
+            }
+             if (mark) {
+                this.companyMdl.remark = ''
+      this.companyMdl.status = ''
             }
             this.companyVisible = true
+            } else {
+              this.companyMdl = {
+              companyName: record.companyName,
+              province: record.provinceName,
+              city: record.cityName,
+              district: record.districtName,
+              industryType: record.industryType,
+             registerId: JSON.parse(record.snapshot)['registerId']
+            }
+            }
             this.confirmLoading = false
           } else {
             this.confirmLoading = false
@@ -467,24 +505,69 @@ export default {
       this.queryParam1.district = ''
     },
     handleOk () {
-      if (this.isShowOnly) {
+      if (this.isShowOnly && !this.isverify) {
         const form = this.$refs.companyform.form
         this.clearUpload = !this.clearUpload
         form.resetFields() // 清理表单数据（可不做）
+        const form2 = this.$refs.companyspotform.form
+        this.clearUpload = !this.clearUpload
+        form2.resetFields()
         this.$refs.table.refresh(true)
         this.companyVisible = false
+        this.companyspotformVisible = false
         return
       }
-      const form = this.$refs.companyform.form
+      if (this.verifyType === '1') {
+const form = this.$refs.companyspotform.form
       form.validateFields((errors, values) => {
         if (!errors) {
           this.confirmLoading = true
-          doprojectRelease(values)
+             values['password'] = md5(values['password'])
+            docompanySpot(values)
               .then((response) => {
                 const result = response
                 if (success(result)) {
                   this.$notification.success({
-                    message: '修改成功'
+                    message: '审核成功'
+                  })
+                  const form = this.$refs.companyspotform.form
+                  this.clearUpload = !this.clearUpload
+                  form.resetFields() // 清理表单数据（可不做）
+                  this.$refs.table.refresh(true)
+                  this.companyspotformVisible = false
+                  this.confirmLoading = false
+                } else {
+                  this.confirmLoading = false
+                  this.$notification.error({
+                    message: errorMessage(result),
+                    description: '审核失败'
+                  })
+                }
+                if (needLogin(result)) {
+                  this.companyspotformVisible = false
+                  this.confirmLoading = false
+                }
+              })
+              .catch((error) => {
+                this.$notification.error({
+                  message: '审核失败',
+                  description: error
+                })
+                this.confirmLoading = false
+              })
+        }
+      })
+      } else {
+ const form = this.$refs.companyform.form
+      form.validateFields((errors, values) => {
+        if (!errors) {
+          this.confirmLoading = true
+doCompanyAuth(values)
+              .then((response) => {
+                const result = response
+                if (success(result)) {
+                  this.$notification.success({
+                    message: '审核成功'
                   })
                   const form = this.$refs.companyform.form
                   this.clearUpload = !this.clearUpload
@@ -496,7 +579,7 @@ export default {
                   this.confirmLoading = false
                   this.$notification.error({
                     message: errorMessage(result),
-                    description: '修改失败'
+                    description: '审核失败'
                   })
                 }
                 if (needLogin(result)) {
@@ -506,13 +589,14 @@ export default {
               })
               .catch((error) => {
                 this.$notification.error({
-                  message: '修改失败。请稍后再试',
+                  message: '审核失败',
                   description: error
                 })
                 this.confirmLoading = false
               })
         }
       })
+      }
     },
     handleAdd () {
       this.formTitle = '新建项目'
@@ -525,9 +609,13 @@ export default {
       this.companyVisible = true
     },
     async handleverify (record) {
-      await this.fetchCompanyDetail(record)
-      this.formTitle = '审核项目发布申请'
-      this.companyVisible = true
+      this.verifyType = record.status
+      await this.fetchCompanyDetail(record, true)
+       if (record.status === '1') {
+this.companyspotformVisible = true
+      } else {
+          this.companyVisible = true
+      }
       this.isverify = true
       this.isShowOnly = true
     },
@@ -538,11 +626,13 @@ export default {
           content: '是否确认取消操作？所做的修改将会丢失！',
           onOk: () => {
             this.companyVisible = false
+            this.companyspotformVisible = false
           },
           onCancel () {}
         })
         } else {
              this.companyVisible = false
+             this.companyspotformVisible = false
         }
     },
     handleCustomSearch2 (value) {
