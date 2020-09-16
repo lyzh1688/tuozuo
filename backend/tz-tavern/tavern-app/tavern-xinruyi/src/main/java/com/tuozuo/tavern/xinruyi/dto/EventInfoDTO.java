@@ -12,7 +12,15 @@ public class EventInfoDTO {
     private String applyDate;
     private String snapshot;
     private String status;
+    private String finishDate;
 
+    public String getFinishDate() {
+        return finishDate;
+    }
+
+    public void setFinishDate(String finishDate) {
+        this.finishDate = finishDate;
+    }
 
     public String getStatus() {
         return status;

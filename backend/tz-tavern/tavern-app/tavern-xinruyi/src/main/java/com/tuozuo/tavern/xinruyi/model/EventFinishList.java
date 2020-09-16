@@ -26,8 +26,19 @@ public class EventFinishList {
     private String eventOwnerName;
     private LocalDateTime updateDate;
 
+    @TableField(exist = false)
+    private String finishDate;
+
     private String registerId;
     private String status;
+
+    public String getFinishDate() {
+        return finishDate;
+    }
+
+    public void setFinishDate(String finishDate) {
+        this.finishDate = finishDate;
+    }
 
     public String getStatus() {
         return status;
