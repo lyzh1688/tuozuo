@@ -173,7 +173,7 @@
         size="default"
         rowKey="projectId"
         :pageSize="20"
-        :columns="columns"
+        :columns="columns2"
         :data="loadData2"
         :showPagination="true"
       >
@@ -359,6 +359,61 @@ const columns = [
     scopedSlots: { customRender: 'ops' }
   }
 ]
+const columns2 = [
+  {
+    title: '编号',
+    scopedSlots: { customRender: 'no' }
+  },
+  {
+    title: '公司名称',
+    dataIndex: 'companyName',
+    scopedSlots: { customRender: 'companyName' }
+  },
+
+  {
+    title: '项目名称',
+    dataIndex: 'projectName',
+    scopedSlots: { customRender: 'projectName' }
+  },
+  {
+    title: '事件类型',
+    dataIndex: 'eventType',
+    scopedSlots: { customRender: 'eventType' }
+  },
+  {
+    title: '申请日期',
+    dataIndex: 'applyDate',
+    scopedSlots: { customRender: 'applyDate' }
+  },
+  {
+    title: '申请者',
+    dataIndex: 'applicant',
+    scopedSlots: { customRender: 'applicant' }
+  },
+  {
+    title: '处理时间',
+    dataIndex: 'finishDate',
+    scopedSlots: { customRender: 'finishDate' }
+  },
+  {
+    title: '审核状态',
+    dataIndex: 'status',
+     customRender: (text) => {
+      if (text === '0') {
+        return '审核未通过'
+      }
+      if (text === '1') {
+        return '审核通过'
+      }
+      return ''
+    }
+  },
+  {
+    title: '操作',
+    dataIndex: 'ops',
+    scopedSlots: { customRender: 'ops' }
+  }
+]
 // const statusMap = {
 //   0: {
 //     status: 'default',
@@ -446,6 +501,7 @@ export default {
   name: 'EventList',
   data () {
     this.columns = columns
+    this.columns2 = columns2
     return {
       clearUpload: false,
       projectVisible: false,

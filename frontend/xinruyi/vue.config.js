@@ -32,6 +32,7 @@ const assetsCDN = {
 }
 
 // vue.config.js
+
 const vueConfig = {
   publicPath: '/',
   // 构建时输出目录 默认dist
@@ -65,6 +66,12 @@ const vueConfig = {
     config.resolve.alias
       .set('@$', resolve('src'))
 
+      if (process.env.use_analyzer) { // 分析
+        config
+            .plugin('webpack-bundle-analyzer')
+            .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
+    }
+
     const svgRule = config.module.rule('svg')
     svgRule.uses.clear()
     svgRule
@@ -89,6 +96,10 @@ const vueConfig = {
         return args
       })
     }
+    config.plugins.delete('prefetch')
+    config.performance.set('maxEntrypointSize', 1000 * 1024)
+    config.performance.set('maxAssetSize', 550 * 1024)
+    config.performance.set('assetFilter', (assetFilename) => { return assetFilename.endsWith('.js') })
   },
 
   css: {
@@ -97,7 +108,7 @@ const vueConfig = {
         modifyVars: {
           // less vars，customize ant design theme
 
-          // 'primary-color': '#F5222D',
+          'primary-color': '#02cea2',
           // 'link-color': '#F5222D',
           'border-radius-base': '2px'
         },
@@ -106,7 +117,6 @@ const vueConfig = {
       }
     }
   },
-
   devServer: {
     // development server port 8000
     port: 8000
