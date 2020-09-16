@@ -84,8 +84,7 @@ public class ModelConverterFactory {
         return projectInfo;
     }
 
-    public static ProjectInfo modifyVoToProjectInfo(ProjectModifyVO vo, String companyId) {
-        ProjectInfo projectInfo = new ProjectInfo();
+    public static ProjectInfo modifyVoToProjectInfo(ProjectModifyVO vo, String companyId,ProjectInfo projectInfo) {
         projectInfo.setCompanyId(companyId);
         projectInfo.setProjectId(vo.getProjectId());
         projectInfo.setProjectName(vo.getProjectName());

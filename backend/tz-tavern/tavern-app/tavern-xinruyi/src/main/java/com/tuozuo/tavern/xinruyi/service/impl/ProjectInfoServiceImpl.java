@@ -197,7 +197,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
             throw new Exception("项目已完成审核，修改失败");
         }
 //        String today = DateUtils.formatDate(LocalDate.now(), DateUtils.SIMPLE_8_FORMATTER);
-        projectInfo = ModelConverterFactory.modifyVoToProjectInfo(vo, companyId);
+        ModelConverterFactory.modifyVoToProjectInfo(vo, companyId,projectInfo);
         this.setProjectInfoFiles(vo.getProjectFile(), projectInfo);
         this.projectInfoDao.modifyProject(projectInfo);
 
