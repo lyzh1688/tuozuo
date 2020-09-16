@@ -27,6 +27,15 @@ public class EventFinishList {
     private LocalDateTime updateDate;
 
     private String registerId;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getRegisterId() {
         return registerId;

@@ -225,6 +225,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         EventFinishList eventFinishList = new EventFinishList();
         BeanUtils.copyProperties(eventTodoList, eventFinishList);
         eventFinishList.setUpdateDate(LocalDateTime.now());
+        eventFinishList.setStatus(status);
         this.eventInfoDao.delEventTodo(eventTodoList.getEventId());
         this.eventInfoDao.insertEventFinish(eventFinishList);
 
@@ -283,6 +284,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
             eventFinishList.setEventOwnerName(companyInfo.getCompanyName());
             eventFinishList.setCompanyId(companyInfo.getCompanyId());
             eventFinishList.setUpdateDate(LocalDateTime.now());
+            eventFinishList.setStatus(vo.getResult());
             this.companyInfoDao.updateById(companyInfo);
             this.eventInfoDao.delEventTodo(event.getEventId());
             this.eventInfoDao.insertEventFinish(eventFinishList);

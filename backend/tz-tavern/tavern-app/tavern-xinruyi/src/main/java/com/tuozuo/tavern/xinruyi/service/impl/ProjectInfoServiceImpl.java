@@ -267,6 +267,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         EventFinishList eventFinishList = new EventFinishList();
         BeanUtils.copyProperties(eventTodoList, eventFinishList);
         eventFinishList.setUpdateDate(LocalDateTime.now());
+        eventFinishList.setStatus(vo.getStatus());
         this.eventInfoDao.delEventTodo(eventTodoList.getEventId());
         this.eventInfoDao.insertEventFinish(eventFinishList);
         this.projectInfoDao.modifyProject(projectInfo);
@@ -290,6 +291,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         EventFinishList eventFinishList = new EventFinishList();
         BeanUtils.copyProperties(eventTodoList, eventFinishList);
         eventFinishList.setUpdateDate(LocalDateTime.now());
+        eventFinishList.setStatus(vo.getStatus());
         this.eventInfoDao.delEventTodo(eventTodoList.getEventId());
         this.eventInfoDao.insertEventFinish(eventFinishList);
         this.projectInfoDao.modifyProject(projectInfo);
@@ -319,6 +321,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         EventFinishList eventFinishList = new EventFinishList();
         BeanUtils.copyProperties(eventTodoList, eventFinishList);
         eventFinishList.setUpdateDate(LocalDateTime.now());
+        eventFinishList.setStatus(vo.getAuditResult());
         this.eventInfoDao.delEventTodo(eventTodoList.getEventId());
         this.eventInfoDao.insertEventFinish(eventFinishList);
     }
