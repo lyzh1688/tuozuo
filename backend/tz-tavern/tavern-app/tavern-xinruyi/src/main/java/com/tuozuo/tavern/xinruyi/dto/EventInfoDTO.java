@@ -11,6 +11,16 @@ public class EventInfoDTO {
     private String applicant;
     private String applyDate;
     private String snapshot;
+    private String status;
+
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getCompanyName() {
         return companyName;
