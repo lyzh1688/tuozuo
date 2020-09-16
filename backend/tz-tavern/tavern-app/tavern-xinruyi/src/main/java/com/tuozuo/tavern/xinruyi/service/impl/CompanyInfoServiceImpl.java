@@ -67,6 +67,10 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     @Transactional
     @Override
     public void companyApply(CompanyApplyVO vo) {
+        if (this.isRepeatedCompanyApply(vo.getCompanyName())) {
+            LOGGER.info("[企业申请] repeated apply companyName: {},applyVO: {}", vo.getCompanyName(), JSON.toJSONString(vo));
+            return;
+        }
 
         //企业申请
         CompanyInfo companyInfo = this.factory.voToCompanyInfo(vo);
@@ -75,21 +79,21 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         //企业申请事件
         EventTodoList eventTodoList = new EventTodoList();
         //构造snapshot
-        List<AreaInfo> areaInfoList = this.businessSearchDao.selectAreaInfo(vo.getProvince(),vo.getCity(),vo.getDistrict());
-        Map<String,AreaInfo> areaInfoMap = areaInfoList.parallelStream()
-                .collect(Collectors.toMap(AreaInfo::getAreaCode,v -> v));
+        List<AreaInfo> areaInfoList = this.businessSearchDao.selectAreaInfo(vo.getProvince(), vo.getCity(), vo.getDistrict());
+        Map<String, AreaInfo> areaInfoMap = areaInfoList.parallelStream()
+                .collect(Collectors.toMap(AreaInfo::getAreaCode, v -> v));
         JSONObject snapshot = new JSONObject();
         snapshot.put("registerId", companyInfo.getRegisterId());
         snapshot.put("companyName", vo.getCompanyName());
         snapshot.put("contact", vo.getContact());
         snapshot.put("industryType", vo.getIndustryType());
-        if(areaInfoMap.containsKey(vo.getProvince())){
+        if (areaInfoMap.containsKey(vo.getProvince())) {
             snapshot.put("provinceName", areaInfoMap.get(vo.getProvince()).getAreaName());
         }
-        if(areaInfoMap.containsKey(vo.getCity())){
+        if (areaInfoMap.containsKey(vo.getCity())) {
             snapshot.put("cityName", areaInfoMap.get(vo.getCity()).getAreaName());
         }
-        if(areaInfoMap.containsKey(vo.getDistrict())){
+        if (areaInfoMap.containsKey(vo.getDistrict())) {
             snapshot.put("districtName", areaInfoMap.get(vo.getDistrict()).getAreaName());
         }
         eventTodoList.setSnapshot(snapshot.toJSONString());
@@ -111,6 +115,14 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     @Transactional
     @Override
     public void applyForCompanyAuth(CompanyAuthInfoVO companyAuthInfoVO) throws Exception {
+
+
+        if (isRepeatedCompanyAuthApply(companyAuthInfoVO.getCompanyId(), EventType.ENTERPRISE_AUTH.getStatus())) {
+            LOGGER.error("[企业认证申请] repeated apply companyId: {},authVO: {}", companyAuthInfoVO.getCompanyId(), JSON.toJSONString(companyAuthInfoVO));
+            return;
+        }
+
+
         //1、companyInfoExt表
         CompanyInfoExt companyInfoExt = ModelConverterFactory.authVOToCompanyInfoExt(companyAuthInfoVO);
         this.setCompanyInfoFiles(companyAuthInfoVO.getBusinessLicense(),
@@ -157,7 +169,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         this.companyInfoDao.updateCompanyAuthInfo(companyInfoExt);
 
         //审核失败状态发送事件
-        if(companyInfo.getStatus().equals(CompanyStatus.AUTH_FAILED.getStatus())){
+        if (companyInfo.getStatus().equals(CompanyStatus.AUTH_FAILED.getStatus())) {
             EventTodoList eventTodoList = new EventTodoList();
             //构造snapshot
             JSONObject snapshot = new JSONObject();
@@ -294,6 +306,16 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
             throw e;
         }
 
+    }
+
+    @Override
+    public boolean isRepeatedCompanyApply(String companyName) {
+        return this.companyInfoDao.selectCompanyInfoByName(companyName).isPresent();
+    }
+
+    @Override
+    public boolean isRepeatedCompanyAuthApply(String companyId, String eventType) {
+        return this.eventInfoDao.selectCompanyAuthTodo(companyId, eventType).isPresent();
     }
 
 

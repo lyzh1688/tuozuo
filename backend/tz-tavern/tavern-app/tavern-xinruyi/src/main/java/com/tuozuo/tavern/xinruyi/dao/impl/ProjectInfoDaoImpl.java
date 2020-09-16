@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -26,7 +27,7 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
     public List<ProjectInfo> selectAllProjectInfo(String projectName) {
         return this.projectInfoMapper.selectList(Wrappers.<ProjectInfo>query()
                 .lambda()
-                .like(StringUtils.isNoneEmpty(projectName),ProjectInfo::getProjectName, projectName)
+                .like(StringUtils.isNoneEmpty(projectName), ProjectInfo::getProjectName, projectName)
                 .orderByAsc(ProjectInfo::getProjectName));
     }
 
@@ -34,7 +35,7 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
     public List<ProjectInfo> selectAllCustomProjectInfo(String companyId, String projectName) {
         return this.projectInfoMapper.selectList(Wrappers.<ProjectInfo>query()
                 .lambda()
-                .like(StringUtils.isNoneEmpty(projectName),ProjectInfo::getProjectName, projectName)
+                .like(StringUtils.isNoneEmpty(projectName), ProjectInfo::getProjectName, projectName)
                 .eq(ProjectInfo::getCompanyId, companyId)
                 .orderByAsc(ProjectInfo::getProjectName));
     }
@@ -43,7 +44,7 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
     public List<ProjectInfo> selectProjectInfo(String projectName, int queryCnt) {
         return this.projectInfoMapper.selectList(Wrappers.<ProjectInfo>query()
                 .lambda()
-                .like(StringUtils.isNoneEmpty(projectName),ProjectInfo::getProjectName, projectName)
+                .like(StringUtils.isNoneEmpty(projectName), ProjectInfo::getProjectName, projectName)
                 .orderByAsc(ProjectInfo::getProjectName)
                 .last("limit " + queryCnt));
     }
@@ -52,18 +53,18 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
     public List<ProjectInfo> selectCustomProjectInfo(String companyId, String projectName, int queryCnt) {
         return this.projectInfoMapper.selectList(Wrappers.<ProjectInfo>query()
                 .lambda()
-                .like(StringUtils.isNoneEmpty(projectName),ProjectInfo::getProjectName, projectName)
+                .like(StringUtils.isNoneEmpty(projectName), ProjectInfo::getProjectName, projectName)
                 .eq(ProjectInfo::getCompanyId, companyId)
                 .orderByAsc(ProjectInfo::getProjectName)
                 .last("limit " + queryCnt));
     }
 
     @Override
-    public IPage<ProjectInfo> selectProjectPage(int pageNo, int pageSize, String companyId, String projectId, String industryType, String limitBudget, String upperBudget, String requirementStatus ,String beginDate,
+    public IPage<ProjectInfo> selectProjectPage(int pageNo, int pageSize, String companyId, String projectId, String industryType, String limitBudget, String upperBudget, String requirementStatus, String beginDate,
                                                 String endDate) {
         Page page = new Page(pageNo, pageSize);
-        return this.projectInfoMapper.selectProjectPage(page, companyId, projectId, industryType, limitBudget, upperBudget, requirementStatus , beginDate,
-                 endDate);
+        return this.projectInfoMapper.selectProjectPage(page, companyId, projectId, industryType, limitBudget, upperBudget, requirementStatus, beginDate,
+                endDate);
     }
 
     @Override
@@ -78,7 +79,7 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
 
     @Override
     public void modifyProject(ProjectInfo projectInfo) {
-        this.projectInfoMapper.update(projectInfo,Wrappers.<ProjectInfo>query()
+        this.projectInfoMapper.update(projectInfo, Wrappers.<ProjectInfo>query()
                 .lambda()
                 .eq(ProjectInfo::getProjectId, projectInfo.getProjectId()));
     }
@@ -86,6 +87,15 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
     @Override
     public void updateStatus() {
         this.projectInfoMapper.updateStatus();
+    }
+
+    @Override
+    public Optional<ProjectInfo> selectProjectInfo(String companyId, String projectName) {
+        return Optional.ofNullable(this.projectInfoMapper.selectOne(Wrappers.<ProjectInfo>query()
+                .lambda()
+                .eq(ProjectInfo::getProjectName, projectName)
+                .eq(ProjectInfo::getCompanyId, companyId)));
+
     }
 
 

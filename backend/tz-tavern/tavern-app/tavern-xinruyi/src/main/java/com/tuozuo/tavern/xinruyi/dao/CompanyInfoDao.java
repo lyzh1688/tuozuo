@@ -4,6 +4,7 @@ import com.tuozuo.tavern.xinruyi.model.CompanyInfo;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfoExt;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -30,5 +31,7 @@ public interface CompanyInfoDao {
     List<CompanyInfo> selectCompanyList(String companyName, int queryCnt);
 
     void insertCompanyInfo(CompanyInfo companyInfo);
+
+    Optional<CompanyInfo> selectCompanyInfoByName(String companyName);
 
 }

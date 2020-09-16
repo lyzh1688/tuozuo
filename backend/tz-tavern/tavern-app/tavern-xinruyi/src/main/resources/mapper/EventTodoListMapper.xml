@@ -16,6 +16,7 @@
     <result column="applicant" jdbcType="VARCHAR" property="applicant" />
     <result column="applyDate" jdbcType="VARCHAR" property="applyDate" />
     <result column="register_id" jdbcType="VARCHAR" property="registerId" />
+    <result column="staff_id" jdbcType="VARCHAR" property="staffId" />
   </resultMap>
   <resultMap id="BaseProjectResultMap" type="com.tuozuo.tavern.xinruyi.model.ProjectEventInfo">
 

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -82,5 +83,12 @@ public class CompanyInfoDaoImpl implements CompanyInfoDao {
     @Override
     public void insertCompanyInfo(CompanyInfo companyInfo) {
         this.companyInfoMapper.insert(companyInfo);
+    }
+
+    @Override
+    public Optional<CompanyInfo> selectCompanyInfoByName(String companyName) {
+        return Optional.ofNullable(this.companyInfoMapper.selectOne(Wrappers.<CompanyInfo>query()
+                .lambda()
+                .eq(CompanyInfo::getCompanyName, companyName)));
     }
 }

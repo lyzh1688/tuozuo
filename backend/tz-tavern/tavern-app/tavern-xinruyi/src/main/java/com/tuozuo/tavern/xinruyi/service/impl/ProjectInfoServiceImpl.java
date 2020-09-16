@@ -98,6 +98,13 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     @Transactional
     @Override
     public void delProjectStaff(String projectId, String staffId, String companyId) throws Exception {
+
+        if (this.isRepeatedStaffFiredApply(companyId, projectId, staffId, EventType.STAFF_FIRE.getStatus())) {
+            LOGGER.error("[项目人员裁员申请] repeated apply companyId: {},projectId: {},staffId: {}", companyId, projectId, staffId);
+            return;
+        }
+
+
         ProjectStaff projectStaff = new ProjectStaff();
         projectStaff.setProjectId(projectId);
         projectStaff.setStaffId(staffId);
@@ -118,6 +125,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         eventTodoList.setEventDate(LocalDateTime.now());
         eventTodoList.setProjectId(projectId);
         eventTodoList.setCompanyId(companyId);
+        eventTodoList.setStaffId(staffId);
         eventTodoList.setRegisterId(companyInfo.getRegisterId());
         this.eventInfoDao.insertEventTodo(eventTodoList);
 
@@ -149,6 +157,13 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     @Transactional
     @Override
     public void addProjectInfo(ProjectAddVO vo, String companyId) throws Exception {
+
+        if (this.isRepeatedApply(companyId, vo.getProjectName())) {
+            LOGGER.error("[项目申请] repeated apply companyId: {},applyVO: {}", companyId, JSON.toJSONString(vo));
+            return;
+        }
+
+
         ProjectInfo projectInfo = ModelConverterFactory.addVoToProjectInfo(vo, companyId);
         this.setProjectInfoFiles(vo.getProjectFile(), projectInfo);
         this.projectInfoDao.insertProject(projectInfo);
@@ -186,7 +201,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         this.setProjectInfoFiles(vo.getProjectFile(), projectInfo);
         this.projectInfoDao.modifyProject(projectInfo);
 
-        if(projectInfo.getStatus().equals(ProjectStatus.APPLY_FAILURE.getStatus())){
+        if (projectInfo.getStatus().equals(ProjectStatus.APPLY_FAILURE.getStatus())) {
             CompanyInfo companyInfo = this.companyInfoDao.selectCompanyInfo(companyId);
             //项目发布事件
             EventTodoList eventTodoList = new EventTodoList();
@@ -214,6 +229,12 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     @Transactional
     @Override
     public void endProject(String project, String companyId) {
+        if (this.isRepeatedAuthApply(project, companyId, EventType.PROJECT_DONE.getStatus())) {
+            LOGGER.error("[项目完结申请] repeated apply companyId: {},projectId: {}", companyId, project);
+            return;
+        }
+
+
         ProjectInfo projectInfo = new ProjectInfo();
         projectInfo.setProjectId(project);
         projectInfo.setStatus(ProjectStatus.AUDITED.getStatus());
@@ -329,6 +350,21 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     @Override
     public void modifyProjectStatusTask() {
         this.projectInfoDao.updateStatus();
+    }
+
+    @Override
+    public boolean isRepeatedApply(String companyId, String projectName) {
+        return this.projectInfoDao.selectProjectInfo(companyId, projectName).isPresent();
+    }
+
+    @Override
+    public boolean isRepeatedAuthApply(String companyId, String projectId, String eventType) {
+        return this.eventInfoDao.selectProjectFinishTodo(companyId, projectId, eventType).isPresent();
+    }
+
+    @Override
+    public boolean isRepeatedStaffFiredApply(String companyId, String projectId, String staffId, String eventType) {
+        return this.eventInfoDao.selectProjectStaffFiredTodo(companyId, projectId, staffId, eventType).isPresent();
     }
 
 

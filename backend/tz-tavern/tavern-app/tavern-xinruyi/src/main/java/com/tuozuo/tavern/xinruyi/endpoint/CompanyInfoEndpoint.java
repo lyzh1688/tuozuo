@@ -42,7 +42,7 @@ public class CompanyInfoEndpoint {
      * 企业入驻申请
      */
     @PostMapping("/cooperation")
-    public TavernResponse companycooperation(@RequestBody @Valid CompanyApplyVO vo) {
+    public TavernResponse companyCooperation(@RequestBody @Valid CompanyApplyVO vo) {
         try {
             this.companyInfoService.companyApply(vo);
             return TavernResponse.OK;

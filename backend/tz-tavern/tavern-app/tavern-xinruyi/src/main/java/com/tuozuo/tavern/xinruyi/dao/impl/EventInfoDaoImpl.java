@@ -31,9 +31,9 @@ public class EventInfoDaoImpl implements EventInfoDao {
     private EventFinishListMapper eventFinishListMapper;
 
     @Override
-    public IPage<ProjectEventInfo> selectProjects(int pageNo, int pageSize, String companyId, String projectId, String status,String industryType, String beginDate, String endDate) {
+    public IPage<ProjectEventInfo> selectProjects(int pageNo, int pageSize, String companyId, String projectId, String status, String industryType, String beginDate, String endDate) {
         Page page = new Page(pageNo, pageSize);
-        return this.eventTodoListMapper.selectProjects(page, companyId, projectId, status,industryType, beginDate, endDate);
+        return this.eventTodoListMapper.selectProjects(page, companyId, projectId, status, industryType, beginDate, endDate);
     }
 
     @Override
@@ -113,5 +113,32 @@ public class EventInfoDaoImpl implements EventInfoDao {
     @Override
     public List<EventTodoList> selectEventTodo(String eventType) {
         return this.eventTodoListMapper.selectByEventType(eventType);
+    }
+
+    @Override
+    public Optional<EventTodoList> selectCompanyAuthTodo(String companyId, String eventType) {
+        return Optional.ofNullable(this.eventTodoListMapper.selectOne(Wrappers.<EventTodoList>query()
+                .lambda()
+                .eq(EventTodoList::getCompanyId, companyId)
+                .eq(EventTodoList::getEventType, eventType)));
+    }
+
+    @Override
+    public Optional<EventTodoList> selectProjectFinishTodo(String companyId, String projectId, String eventType) {
+        return Optional.ofNullable(this.eventTodoListMapper.selectOne(Wrappers.<EventTodoList>query()
+                .lambda()
+                .eq(EventTodoList::getCompanyId, companyId)
+                .eq(EventTodoList::getProjectId, projectId)
+                .eq(EventTodoList::getEventType, eventType)));
+    }
+
+    @Override
+    public Optional<EventTodoList> selectProjectStaffFiredTodo(String companyId, String projectId, String staffId, String eventType) {
+        return Optional.ofNullable(this.eventTodoListMapper.selectOne(Wrappers.<EventTodoList>query()
+                .lambda()
+                .eq(EventTodoList::getCompanyId, companyId)
+                .eq(EventTodoList::getProjectId, projectId)
+                .eq(EventTodoList::getStaffId, staffId)
+                .eq(EventTodoList::getEventType, eventType)));
     }
 }

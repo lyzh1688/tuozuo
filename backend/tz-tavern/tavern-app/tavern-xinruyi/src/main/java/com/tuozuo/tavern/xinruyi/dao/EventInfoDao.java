@@ -60,4 +60,10 @@ public interface EventInfoDao {
     Optional<EventTodoList> selectStaffFiredTodo(String projectId, String staffId, String eventType);
 
     List<EventTodoList> selectEventTodo(String eventType);
+
+    Optional<EventTodoList> selectCompanyAuthTodo(String companyId, String eventType);
+
+    Optional<EventTodoList> selectProjectFinishTodo(String companyId, String projectId, String eventType);
+
+    Optional<EventTodoList> selectProjectStaffFiredTodo(String companyId, String projectId, String staffId,String eventType);
 }

@@ -42,4 +42,10 @@ public interface ProjectInfoService {
 
     void modifyProjectStatusTask();
 
+    boolean isRepeatedApply(String companyId,String projectName);
+
+    boolean isRepeatedAuthApply(String companyId,String projectId,String eventType);
+
+    boolean isRepeatedStaffFiredApply(String companyId,String projectId,String staffId,String eventType);
+
 }

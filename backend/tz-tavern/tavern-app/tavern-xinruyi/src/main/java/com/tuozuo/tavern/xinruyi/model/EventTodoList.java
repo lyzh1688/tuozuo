@@ -27,6 +27,16 @@ public class EventTodoList {
 
     private String registerId;
 
+    private String staffId;
+
+    public String getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(String staffId) {
+        this.staffId = staffId;
+    }
+
     public String getRegisterId() {
         return registerId;
     }

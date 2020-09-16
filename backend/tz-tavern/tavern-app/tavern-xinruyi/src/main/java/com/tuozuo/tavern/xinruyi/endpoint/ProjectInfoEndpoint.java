@@ -171,7 +171,7 @@ public class ProjectInfoEndpoint {
             this.projectInfoService.delProjectStaff(vo.getProjectId(), staffId, companyId);
             return TavernResponse.OK;
         } catch (Exception e) {
-            LOGGER.error("[项目人员修改] failed", e);
+            LOGGER.error("[项目人员裁员] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }

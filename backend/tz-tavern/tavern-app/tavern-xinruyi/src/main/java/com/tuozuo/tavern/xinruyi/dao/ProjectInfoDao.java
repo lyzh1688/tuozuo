@@ -6,6 +6,7 @@ import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -37,6 +38,8 @@ public interface ProjectInfoDao {
     void modifyProject(ProjectInfo projectInfo);
 
     void updateStatus();
+
+    Optional<ProjectInfo> selectProjectInfo(String companyId, String projectName);
 
 
 }

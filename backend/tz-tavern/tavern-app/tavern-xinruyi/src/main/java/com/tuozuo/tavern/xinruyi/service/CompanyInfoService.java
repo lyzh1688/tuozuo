@@ -34,4 +34,8 @@ public interface CompanyInfoService {
     void auditCompanyAuth(String companyId,String status,String remark) throws Exception;
 
     void auditCompanySettled(AuditCompanySettledVO vo) throws Exception;
+
+    boolean isRepeatedCompanyApply(String companyName );
+
+    boolean isRepeatedCompanyAuthApply(String companyId,String eventType );
 }
