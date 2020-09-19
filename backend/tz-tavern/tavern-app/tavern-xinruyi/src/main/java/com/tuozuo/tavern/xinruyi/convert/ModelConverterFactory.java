@@ -2,16 +2,19 @@ package com.tuozuo.tavern.xinruyi.convert;
 
 import com.tuozuo.tavern.common.protocol.SystemID;
 import com.tuozuo.tavern.common.protocol.UserTypeDict;
+import com.tuozuo.tavern.xinruyi.dto.PaymentDTO;
 import com.tuozuo.tavern.xinruyi.dto.ProjectDetailDTO;
 import com.tuozuo.tavern.xinruyi.dto.ProjectInfoDTO;
 import com.tuozuo.tavern.xinruyi.model.CompanyInfoExt;
 import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
+import com.tuozuo.tavern.xinruyi.model.ProjectPayment;
 import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
 import com.tuozuo.tavern.xinruyi.utils.DateUtils;
 import com.tuozuo.tavern.xinruyi.utils.UUIDUtil;
 import com.tuozuo.tavern.xinruyi.vo.*;
 import com.tuuozuo.tavern.authority.spi.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -155,5 +158,20 @@ public class ModelConverterFactory {
     public static UserVO companyToVO(String userId, String privilege) {
         return companyToVO(userId, null, privilege);
     }
+
+    public static PaymentDTO modelToPaymentDTO(ProjectPayment projectPayment) {
+        PaymentDTO paymentDTO = new PaymentDTO();
+        paymentDTO.setCompanyId(projectPayment.getCompanyId());
+        paymentDTO.setCompanyName(projectPayment.getCompanyName());
+        paymentDTO.setProjectId(projectPayment.getProjectId());
+        paymentDTO.setProjectName(projectPayment.getProjectName());
+        paymentDTO.setTotalWages(projectPayment.getTotalSalary());
+        paymentDTO.setReleaseDate(DateUtils.formatDate(projectPayment.getPayDate(), DateUtils.DEFAULT_SIMPLE_8__FORMATTER));
+        paymentDTO.setTransferVoucher(projectPayment.getFileVoucher());
+        paymentDTO.setPayVoucher(projectPayment.getFilePayCert());
+        paymentDTO.setReleaseStatus(projectPayment.getStatus());
+        return paymentDTO;
+    }
+
 
 }

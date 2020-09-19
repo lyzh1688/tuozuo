@@ -1,16 +1,16 @@
 package com.tuozuo.tavern.xinruyi.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tuozuo.tavern.xinruyi.model.ProjectPayment;
-import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
-public interface ProjectPaymentMapper {
-    int deleteByPrimaryKey(String paymentId);
-
-    int insert(ProjectPayment record);
-
-    ProjectPayment selectByPrimaryKey(String paymentId);
-
-    List<ProjectPayment> selectAll();
-
-    int updateByPrimaryKey(ProjectPayment record);
+@Mapper
+public interface ProjectPaymentMapper extends BaseMapper<ProjectPayment> {
+    IPage<ProjectPayment> selectByPage(Page page,
+                                       @Param("companyId") String companyId,
+                                       @Param("projectId") String projectId,
+                                       @Param("status") String status);
 }

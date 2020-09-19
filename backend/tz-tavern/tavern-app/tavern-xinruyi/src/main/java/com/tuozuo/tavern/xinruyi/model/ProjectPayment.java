@@ -1,5 +1,12 @@
 package com.tuozuo.tavern.xinruyi.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+@TableName("project_payment")
 public class ProjectPayment {
     private String paymentId;
 
@@ -14,6 +21,49 @@ public class ProjectPayment {
     private String filePayCert;
 
     private String status;
+
+    private BigDecimal totalSalary;
+
+    private LocalDate payDate;
+
+    @TableField(exist = false)
+    private String companyName;
+
+    @TableField(exist = false)
+    private String projectName;
+
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public BigDecimal getTotalSalary() {
+        return totalSalary;
+    }
+
+    public void setTotalSalary(BigDecimal totalSalary) {
+        this.totalSalary = totalSalary;
+    }
+
+    public LocalDate getPayDate() {
+        return payDate;
+    }
+
+    public void setPayDate(LocalDate payDate) {
+        this.payDate = payDate;
+    }
 
     public String getPaymentId() {
         return paymentId;
