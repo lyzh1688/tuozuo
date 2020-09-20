@@ -14,11 +14,12 @@
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <select id="selectByPage" resultMap="BaseResultMap">
-    select t2.company_name,t3.project_name,payment_id, t1.company_id, t1.project_id, t1.period,
+    select t2.company_name,t3.project_name,t1.payment_id, t1.company_id, t1.project_id, t1.period,
     file_voucher, file_pay_cert, t1.status,total_salary,pay_date
-    from project_payment t1,company_info t2,project_info t3
+    from project_payment_snapshot t4,project_payment t1,company_info t2,project_info t3
     <where>
-      t1.company_id = t2.company_id
+      t4.payment_id = t1.payment_id
+      and t1.company_id = t2.company_id
       and t1.project_id = t3.project_id
       <if test="companyId != null and companyId != ''">
         and t1.company_id = #{companyId}
