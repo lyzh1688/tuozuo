@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @TableName("project_payment")
 public class ProjectPayment {
@@ -32,6 +33,15 @@ public class ProjectPayment {
     @TableField(exist = false)
     private String projectName;
 
+    private LocalDateTime updateDate;
+
+    public LocalDateTime getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(LocalDateTime updateDate) {
+        this.updateDate = updateDate;
+    }
 
     public String getCompanyName() {
         return companyName;

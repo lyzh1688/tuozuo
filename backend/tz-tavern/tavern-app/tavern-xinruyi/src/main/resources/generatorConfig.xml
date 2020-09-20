@@ -45,9 +45,10 @@
         </table>-->
         <!--<table tableName="bank_info" domainObjectName="BankInfo">
         </table>-->
-        <table tableName="business_dict" domainObjectName="BusinessDict">
-        </table>
-
+       <!-- <table tableName="business_dict" domainObjectName="BusinessDict">
+        </table>-->
+         <table tableName="project_payment_snapshot" domainObjectName="ProjectPaymentSnapshot">
+                </table>
 
 
 

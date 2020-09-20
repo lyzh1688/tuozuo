@@ -11,10 +11,13 @@ import com.tuozuo.tavern.xinruyi.dto.ProjectStaffInfoListDTO;
 import com.tuozuo.tavern.xinruyi.model.ProjectPayment;
 import com.tuozuo.tavern.xinruyi.service.PaymentInfoService;
 import com.tuozuo.tavern.xinruyi.vo.PaymentListVO;
+import com.tuozuo.tavern.xinruyi.vo.PaymentVoucherUploadVO;
+import com.tuozuo.tavern.xinruyi.vo.ProjectAddVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -60,5 +63,22 @@ public class ProjectPaymentInfoEndpoint {
         }
     }
 
+    /**
+     * 上传凭证
+     */
+    @PostMapping("/voucher")
+    public TavernResponse uploadPaymentVoucher(@ModelAttribute @Valid PaymentVoucherUploadVO vo,
+                                               @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId,
+                                               @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup,
+                                               @RequestParam(name = "voucher") MultipartFile voucher) {
+        try {
+            vo.setVoucher(voucher);
+            this.paymentInfoService.uploadVoucher(vo, roleGroup, companyId);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[上传凭证] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
 
 }

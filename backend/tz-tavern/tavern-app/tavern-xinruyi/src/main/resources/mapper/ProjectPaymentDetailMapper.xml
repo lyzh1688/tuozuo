@@ -9,32 +9,11 @@
     <result column="period" jdbcType="VARCHAR" property="period" />
     <result column="pay_date" jdbcType="VARCHAR" property="payDate" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from project_payment_detail
-    where payment_id = #{paymentId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.tuozuo.tavern.xinruyi.model.ProjectPaymentDetail">
-    insert into project_payment_detail (payment_id, company_id, project_id, 
-      staff_id, period, pay_date
-      )
-    values (#{paymentId,jdbcType=VARCHAR}, #{companyId,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, 
-      #{staffId,jdbcType=VARCHAR}, #{period,jdbcType=VARCHAR}, #{payDate,jdbcType=VARCHAR}
-      )
+  <insert id="insertInitial">
+    insert into project_payment_detail(company_id,project_id,staff_id,period,pay_date,payment_id,salary)
+    SELECT #{companyId},project_id,staff_id,#{month},#{payDate},#{paymentId},salary from project_staff
+    WHERE project_id = #{projectId}
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.xinruyi.model.ProjectPaymentDetail">
-    update project_payment_detail
-    set company_id = #{companyId,jdbcType=VARCHAR},
-      project_id = #{projectId,jdbcType=VARCHAR},
-      staff_id = #{staffId,jdbcType=VARCHAR},
-      period = #{period,jdbcType=VARCHAR},
-      pay_date = #{payDate,jdbcType=VARCHAR}
-    where payment_id = #{paymentId,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select payment_id, company_id, project_id, staff_id, period, pay_date
-    from project_payment_detail
-    where payment_id = #{paymentId,jdbcType=VARCHAR}
-  </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select payment_id, company_id, project_id, staff_id, period, pay_date
     from project_payment_detail

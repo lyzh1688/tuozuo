@@ -11,6 +11,7 @@
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="total_salary" jdbcType="DECIMAL" property="totalSalary" />
     <result column="pay_date" jdbcType="VARCHAR" property="payDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <select id="selectByPage" resultMap="BaseResultMap">
     select t2.company_name,t3.project_name,payment_id, t1.company_id, t1.project_id, t1.period,

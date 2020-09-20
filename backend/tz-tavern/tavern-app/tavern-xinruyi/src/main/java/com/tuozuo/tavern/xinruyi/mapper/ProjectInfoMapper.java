@@ -21,4 +21,6 @@ public interface ProjectInfoMapper extends BaseMapper<ProjectInfo> {
 
     void updateStatus();
 
+    ProjectInfo selectByProjectId(@Param("projectId") String projectId);
+
 }

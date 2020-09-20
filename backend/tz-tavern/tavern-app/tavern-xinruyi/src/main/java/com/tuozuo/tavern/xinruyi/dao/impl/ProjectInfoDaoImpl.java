@@ -74,7 +74,7 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
 
     @Override
     public ProjectInfo selectProjectInfo(String projectId) {
-        return this.projectInfoMapper.selectById(projectId);
+        return this.projectInfoMapper.selectByProjectId(projectId);
     }
 
     @Override

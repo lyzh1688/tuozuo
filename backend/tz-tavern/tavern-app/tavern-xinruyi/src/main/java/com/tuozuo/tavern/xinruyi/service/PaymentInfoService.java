@@ -3,6 +3,7 @@ package com.tuozuo.tavern.xinruyi.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.xinruyi.model.ProjectPayment;
 import com.tuozuo.tavern.xinruyi.vo.PaymentListVO;
+import com.tuozuo.tavern.xinruyi.vo.PaymentVoucherUploadVO;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -11,5 +12,9 @@ import com.tuozuo.tavern.xinruyi.vo.PaymentListVO;
 public interface PaymentInfoService {
 
     IPage<ProjectPayment> queryProjectPaymentList(PaymentListVO vo);
+
+    void uploadVoucher(PaymentVoucherUploadVO voucherUploadVO,String roleGroup,String companyId) throws Exception;
+
+
 
 }

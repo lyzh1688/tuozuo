@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuozuo.tavern.xinruyi.mapper.ProjectPaymentSnapshotMapper">
+  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.xinruyi.model.ProjectPaymentSnapshot">
+    <id column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="company_id" jdbcType="VARCHAR" property="companyId" />
+    <result column="payment_id" jdbcType="VARCHAR" property="paymentId" />
+  </resultMap>
+  <insert id="insertOrUpdate" parameterType="com.tuozuo.tavern.xinruyi.model.ProjectPaymentSnapshot">
+    insert into project_payment_snapshot (project_id, company_id, payment_id
+      )
+    values (#{projectId,jdbcType=VARCHAR}, #{companyId,jdbcType=VARCHAR}, #{paymentId,jdbcType=VARCHAR}
+      )
+    ON DUPLICATE KEY UPDATE
+
+    company_id=VALUES(company_id),
+    payment_id=VALUES(payment_id)
+
+
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.xinruyi.model.ProjectPaymentSnapshot">
+    update project_payment_snapshot
+    set company_id = #{companyId,jdbcType=VARCHAR},
+      payment_id = #{paymentId,jdbcType=VARCHAR}
+    where project_id = #{projectId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select project_id, company_id, payment_id
+    from project_payment_snapshot
+    where project_id = #{projectId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select project_id, company_id, payment_id
+    from project_payment_snapshot
+  </select>
+</mapper>
