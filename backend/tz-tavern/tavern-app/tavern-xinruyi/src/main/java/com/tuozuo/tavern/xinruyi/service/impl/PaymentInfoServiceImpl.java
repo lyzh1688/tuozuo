@@ -117,14 +117,13 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
             //1、上传发放凭证
             //2、更新发放状态
             //3、结束发放流程
-            ProjectPayment projectPayment = new ProjectPayment();
-            projectPayment.setPaymentId(uploadVO.getPaymentId());
+            ProjectPayment projectPayment = this.paymentInfoDao.selectById(uploadVO.getPaymentId());
             projectPayment.setFileVoucher(voucher);
             projectPayment.setStatus(PaymentStatus.RELEASED.getStatus());
             projectPayment.setUpdateDate(LocalDateTime.now());
 
             this.paymentInfoDao.updatePaymentInfo(projectPayment);
-            EventTodoList eventTodoList = this.eventInfoDao.selectProjectTodo(companyId, EventType.SALARY_RELEASE_CONFIRM.getStatus());
+            EventTodoList eventTodoList = this.eventInfoDao.selectProjectTodo(projectPayment.getProjectId(), EventType.SALARY_RELEASE.getStatus());
             EventFinishList eventFinishList = new EventFinishList();
             BeanUtils.copyProperties(eventTodoList, eventFinishList);
             eventFinishList.setUpdateDate(LocalDateTime.now());
