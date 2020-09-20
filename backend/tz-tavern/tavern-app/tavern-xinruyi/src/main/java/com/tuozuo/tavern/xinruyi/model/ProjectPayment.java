@@ -1,6 +1,7 @@
 package com.tuozuo.tavern.xinruyi.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.math.BigDecimal;
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 
 @TableName("project_payment")
 public class ProjectPayment {
+    @TableId
     private String paymentId;
 
     private String companyId;

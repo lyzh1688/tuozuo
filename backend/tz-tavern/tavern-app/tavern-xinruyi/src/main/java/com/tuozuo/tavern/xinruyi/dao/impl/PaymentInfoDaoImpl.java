@@ -86,4 +86,9 @@ public class PaymentInfoDaoImpl extends ServiceImpl<ProjectPaymentDetailMapper, 
                 .lambda()
                 .eq(ProjectPaymentDetail::getPaymentId, paymentId));
     }
+
+    @Override
+    public ProjectPayment selectById(String paymentId) {
+        return this.projectPaymentMapper.selectById(paymentId);
+    }
 }

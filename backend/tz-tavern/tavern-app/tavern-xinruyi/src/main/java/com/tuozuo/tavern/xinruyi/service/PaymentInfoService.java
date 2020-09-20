@@ -23,6 +23,10 @@ public interface PaymentInfoService {
 
     void modifyStaffPayment(StaffPaymentInfoVO vo);
 
+    void staffPaymentConfirm(StaffPaymentConfirmVO vo);
+
+    void staffPaymentAudit(StaffPaymentAuditVO vo);
+
 
 
 

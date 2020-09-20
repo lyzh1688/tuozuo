@@ -173,4 +173,19 @@ public class ProjectPaymentInfoEndpoint {
             return TavernResponse.bizFailure(e.getMessage());
         }
     }
+
+    /**
+     * 审核工资发放
+     */
+    @PutMapping("/payoff/{paymentId}")
+    public TavernResponse paymentReleaseAudit(@PathVariable("paymentId") String paymentId, @RequestBody @Valid StaffPaymentAuditVO vo) {
+        try {
+            vo.setPaymentId(paymentId);
+            this.paymentInfoService.staffPaymentAudit(vo);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[审核工资发放] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
 }

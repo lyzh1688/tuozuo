@@ -173,6 +173,54 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
         this.paymentInfoDao.saveStaffPaymentList(projectPaymentDetailList);
     }
 
+    @Transactional
+    @Override
+    public void staffPaymentConfirm(StaffPaymentConfirmVO vo) {
+        //1、工资发放状态改变
+        //2、删除工资申请
+        //3、工资申请完成
+        //4、发起
+
+
+    }
+
+    @Transactional
+    @Override
+    public void staffPaymentAudit(StaffPaymentAuditVO vo) {
+        //工资发放审核
+        //1、审核状态
+        //2、删除工资申请
+        //3、工资申请完成
+        //4、发起客户审核
+
+        ProjectPayment projectPayment = this.paymentInfoDao.selectById(vo.getPaymentId());
+        if (vo.getStatus().equals("1")) {
+            projectPayment.setStatus(PaymentStatus.TO_PAYOFF.getStatus());
+        } else {
+            projectPayment.setStatus(PaymentStatus.FAILED.getStatus());
+        }
+
+        EventTodoList eventTodoList = this.eventInfoDao.selectProjectTodo(projectPayment.getProjectId(), EventType.SALARY_RELEASE_APPLY.getStatus());
+        EventFinishList eventFinishList = new EventFinishList();
+        BeanUtils.copyProperties(eventTodoList, eventFinishList);
+        eventFinishList.setUpdateDate(LocalDateTime.now());
+        eventFinishList.setStatus(vo.getStatus());
+        this.eventInfoDao.delEventTodo(eventTodoList.getEventId());
+        this.eventInfoDao.insertEventFinish(eventFinishList);
+        this.paymentInfoDao.updatePaymentInfo(projectPayment);
+
+        //发起客户审核
+        EventTodoList eventConfirmTodo = new EventTodoList();
+        //构造company_id,project_id,company_name,project_name,amount,month,payment_id,transferVoucher
+        BeanUtils.copyProperties(eventTodoList, eventConfirmTodo);
+        eventConfirmTodo.setEventId(UUIDUtil.randomUUID32());
+        eventConfirmTodo.setEventType(EventType.SALARY_RELEASE_CONFIRM.getStatus());
+        eventConfirmTodo.setRole(UserTypeDict.custom);
+        eventConfirmTodo.setEventDate(LocalDateTime.now());
+        this.eventInfoDao.insertEventTodo(eventConfirmTodo);
+
+    }
+
 
     //path + projectId + paymentId +file
     private String storePaymentVoucherFile(String projectId, String paymentId, MultipartFile file) throws Exception {

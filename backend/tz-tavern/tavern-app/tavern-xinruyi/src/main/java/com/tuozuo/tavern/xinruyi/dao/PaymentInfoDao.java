@@ -43,4 +43,6 @@ public interface PaymentInfoDao {
 
     void delStaffPaymentById(String paymentId);
 
+    ProjectPayment selectById(String paymentId);
+
 }
