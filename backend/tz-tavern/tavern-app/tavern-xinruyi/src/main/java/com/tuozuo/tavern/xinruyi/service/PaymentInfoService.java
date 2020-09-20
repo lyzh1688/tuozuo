@@ -1,7 +1,6 @@
 package com.tuozuo.tavern.xinruyi.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
 import com.tuozuo.tavern.xinruyi.model.ProjectPayment;
 import com.tuozuo.tavern.xinruyi.model.StaffSalaryInfo;
 import com.tuozuo.tavern.xinruyi.vo.*;
@@ -21,6 +20,10 @@ public interface PaymentInfoService {
     IPage<StaffSalaryInfo> queryStaffDetail(StaffSalaryDetailVO vo);
 
     IPage<StaffSalaryInfo> queryStaffInfo(StaffSalaryInfoVO vo);
+
+    void modifyStaffPayment(StaffPaymentInfoVO vo);
+
+
 
 
 }

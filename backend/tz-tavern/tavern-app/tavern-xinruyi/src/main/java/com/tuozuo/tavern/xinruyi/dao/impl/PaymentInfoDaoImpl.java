@@ -1,23 +1,28 @@
 package com.tuozuo.tavern.xinruyi.dao.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tuozuo.tavern.xinruyi.dao.PaymentInfoDao;
 import com.tuozuo.tavern.xinruyi.mapper.ProjectPaymentDetailMapper;
 import com.tuozuo.tavern.xinruyi.mapper.ProjectPaymentMapper;
 import com.tuozuo.tavern.xinruyi.mapper.ProjectPaymentSnapshotMapper;
 import com.tuozuo.tavern.xinruyi.model.ProjectPayment;
+import com.tuozuo.tavern.xinruyi.model.ProjectPaymentDetail;
 import com.tuozuo.tavern.xinruyi.model.ProjectPaymentSnapshot;
 import com.tuozuo.tavern.xinruyi.model.StaffSalaryInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Code Monkey: 何彪 <br>
  * Dev Time: 2020/9/19 <br>
  */
 @Repository
-public class PaymentInfoDaoImpl implements PaymentInfoDao {
+public class PaymentInfoDaoImpl extends ServiceImpl<ProjectPaymentDetailMapper, ProjectPaymentDetail> implements PaymentInfoDao {
 
     @Autowired
     private ProjectPaymentMapper projectPaymentMapper;
@@ -68,5 +73,17 @@ public class PaymentInfoDaoImpl implements PaymentInfoDao {
     public IPage<StaffSalaryInfo> selectStaffInfo(int pageNo, int pageSize, String projectId) {
         Page page = new Page(pageNo, pageSize);
         return this.projectPaymentDetailMapper.selectStaffInfo(page, projectId);
+    }
+
+    @Override
+    public void saveStaffPaymentList(List<ProjectPaymentDetail> projectPaymentDetailList) {
+        this.saveBatch(projectPaymentDetailList);
+    }
+
+    @Override
+    public void delStaffPaymentById(String paymentId) {
+        this.projectPaymentDetailMapper.delete( Wrappers.<ProjectPaymentDetail>query()
+                .lambda()
+                .eq(ProjectPaymentDetail::getPaymentId, paymentId));
     }
 }

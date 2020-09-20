@@ -2,8 +2,11 @@ package com.tuozuo.tavern.xinruyi.dao;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.xinruyi.model.ProjectPayment;
+import com.tuozuo.tavern.xinruyi.model.ProjectPaymentDetail;
 import com.tuozuo.tavern.xinruyi.model.ProjectPaymentSnapshot;
 import com.tuozuo.tavern.xinruyi.model.StaffSalaryInfo;
+
+import java.util.List;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -35,5 +38,9 @@ public interface PaymentInfoDao {
                                              String endDate,
                                              String staffId);
     IPage<StaffSalaryInfo> selectStaffInfo(int pageNo, int pageSize,String projectId);
+
+    void saveStaffPaymentList(List<ProjectPaymentDetail> projectPaymentDetailList);
+
+    void delStaffPaymentById(String paymentId);
 
 }

@@ -8,6 +8,7 @@
     <result column="staff_id" jdbcType="VARCHAR" property="staffId" />
     <result column="period" jdbcType="VARCHAR" property="period" />
     <result column="pay_date" jdbcType="VARCHAR" property="payDate" />
+    <result column="salary" jdbcType="DECIMAL" property="salary" />
   </resultMap>
   <resultMap id="SalaryMap" type="com.tuozuo.tavern.xinruyi.model.StaffSalaryInfo">
     <result column="staff_id" jdbcType="VARCHAR" property="staffId" />

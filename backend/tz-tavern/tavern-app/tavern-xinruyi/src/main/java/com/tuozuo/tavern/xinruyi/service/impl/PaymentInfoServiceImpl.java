@@ -26,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -141,14 +143,35 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
 
     @Override
     public IPage<StaffSalaryInfo> queryStaffDetail(StaffSalaryDetailVO vo) {
-        return this.paymentInfoDao.selectStaffDetail(vo.getPageNo(), vo.getPageSize(),vo.getCompanyId(), vo.getPaymentId(), vo.getProjectId(), vo.getStartDate(), vo.getEndDate(), vo.getStaffId());
+        return this.paymentInfoDao.selectStaffDetail(vo.getPageNo(), vo.getPageSize(), vo.getCompanyId(), vo.getPaymentId(), vo.getProjectId(), vo.getStartDate(), vo.getEndDate(), vo.getStaffId());
     }
 
     @Override
     public IPage<StaffSalaryInfo> queryStaffInfo(StaffSalaryInfoVO vo) {
-        return this.paymentInfoDao.selectStaffInfo(vo.getPageNo(),vo.getPageSize(),vo.getProjectId());
+        return this.paymentInfoDao.selectStaffInfo(vo.getPageNo(), vo.getPageSize(), vo.getProjectId());
     }
 
+    @Transactional
+    @Override
+    public void modifyStaffPayment(StaffPaymentInfoVO vo) {
+
+        List<ProjectPaymentDetail> projectPaymentDetailList = vo.getStaffSalary()
+                .stream()
+                .map(info -> {
+                    ProjectPaymentDetail detail = new ProjectPaymentDetail();
+                    detail.setCompanyId(vo.getCompanyId());
+                    detail.setPayDate(vo.getPayDate());
+                    detail.setPaymentId(vo.getPaymentId());
+                    detail.setPeriod(vo.getPeriod());
+                    detail.setProjectId(vo.getProjectId());
+                    detail.setStaffId(info.getStaffId());
+                    detail.setSalary(info.getSalary());
+                    return detail;
+                }).collect(Collectors.toList());
+
+        this.paymentInfoDao.delStaffPaymentById(vo.getPaymentId());
+        this.paymentInfoDao.saveStaffPaymentList(projectPaymentDetailList);
+    }
 
 
     //path + projectId + paymentId +file

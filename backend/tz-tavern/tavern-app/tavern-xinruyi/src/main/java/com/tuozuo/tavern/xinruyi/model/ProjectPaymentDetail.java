@@ -1,5 +1,10 @@
 package com.tuozuo.tavern.xinruyi.model;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.math.BigDecimal;
+
+@TableName("project_payment_detail")
 public class ProjectPaymentDetail {
     private String paymentId;
 
@@ -12,6 +17,16 @@ public class ProjectPaymentDetail {
     private String period;
 
     private String payDate;
+
+    private BigDecimal salary;
+
+    public BigDecimal getSalary() {
+        return salary;
+    }
+
+    public void setSalary(BigDecimal salary) {
+        this.salary = salary;
+    }
 
     public String getPaymentId() {
         return paymentId;

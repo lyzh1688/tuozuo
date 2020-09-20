@@ -157,4 +157,20 @@ public class ProjectPaymentInfoEndpoint {
             return TavernResponse.bizFailure(e.getMessage());
         }
     }
+
+    /**
+     * 修改发放明细
+     */
+    @PutMapping("/detail/{paymentId}")
+    public TavernResponse modifyPaymentDetail(@PathVariable("paymentId") String paymentId,
+                                              @RequestBody @Valid StaffPaymentInfoVO vo) {
+        try {
+            vo.setPaymentId(paymentId);
+            this.paymentInfoService.modifyStaffPayment(vo);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[修改发放明细] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
 }
