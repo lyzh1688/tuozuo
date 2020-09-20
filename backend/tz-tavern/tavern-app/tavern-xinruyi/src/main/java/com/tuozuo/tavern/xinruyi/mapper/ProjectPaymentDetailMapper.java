@@ -25,4 +25,8 @@ public interface ProjectPaymentDetailMapper extends BaseMapper<ProjectPaymentDet
                                              @Param("endDate") String endDate,
                                              @Param("staffId") String staffId);
 
+    IPage<StaffSalaryInfo> selectStaffInfo(Page page,
+                                           @Param("projectId") String projectId);
+
+
 }

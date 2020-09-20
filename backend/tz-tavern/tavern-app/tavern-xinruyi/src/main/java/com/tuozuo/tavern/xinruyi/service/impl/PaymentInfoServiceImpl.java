@@ -14,10 +14,7 @@ import com.tuozuo.tavern.xinruyi.service.PaymentInfoService;
 import com.tuozuo.tavern.xinruyi.utils.DateUtils;
 import com.tuozuo.tavern.xinruyi.utils.FileUtils;
 import com.tuozuo.tavern.xinruyi.utils.UUIDUtil;
-import com.tuozuo.tavern.xinruyi.vo.PaymentHistoryVO;
-import com.tuozuo.tavern.xinruyi.vo.PaymentListVO;
-import com.tuozuo.tavern.xinruyi.vo.PaymentVoucherUploadVO;
-import com.tuozuo.tavern.xinruyi.vo.StaffSalaryDetailVO;
+import com.tuozuo.tavern.xinruyi.vo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -146,6 +143,12 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
     public IPage<StaffSalaryInfo> queryStaffDetail(StaffSalaryDetailVO vo) {
         return this.paymentInfoDao.selectStaffDetail(vo.getPageNo(), vo.getPageSize(),vo.getCompanyId(), vo.getPaymentId(), vo.getProjectId(), vo.getStartDate(), vo.getEndDate(), vo.getStaffId());
     }
+
+    @Override
+    public IPage<StaffSalaryInfo> queryStaffInfo(StaffSalaryInfoVO vo) {
+        return this.paymentInfoDao.selectStaffInfo(vo.getPageNo(),vo.getPageSize(),vo.getProjectId());
+    }
+
 
 
     //path + projectId + paymentId +file

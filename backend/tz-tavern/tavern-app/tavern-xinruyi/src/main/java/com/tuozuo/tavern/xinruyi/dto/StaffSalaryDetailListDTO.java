@@ -8,15 +8,15 @@ import java.util.List;
  * Code Monkey: 何彪 <br>
  * Dev Time: 2020/9/20 <br>
  */
-public class StaffSalaryInfoListDTO {
-    private List<StaffSalaryInfoDTO> staffs = Lists.newArrayList();
+public class StaffSalaryDetailListDTO {
+    private List<StaffSalaryDetailDTO> staffs = Lists.newArrayList();
     private long total;
 
-    public List<StaffSalaryInfoDTO> getStaffs() {
+    public List<StaffSalaryDetailDTO> getStaffs() {
         return staffs;
     }
 
-    public void setStaffs(List<StaffSalaryInfoDTO> staffs) {
+    public void setStaffs(List<StaffSalaryDetailDTO> staffs) {
         this.staffs = staffs;
     }
 

@@ -59,4 +59,18 @@
     order by pay_date desc
 
   </select>
+  <select id="selectStaffInfo" resultMap="SalaryMap">
+    select
+    t1.staff_id,t3.staff_name,t2.project_name,t1.salary,
+    date_format(t1.pay_date ,'%Y%m%d') pay_date,t3.bank_card,t3.id_number,t3.gender
+    from project_payment_snapshot t4,project_payment_detail t1,project_info t2,staff_resource_pool t3
+    <where>
+      t1.project_id = t2.project_id
+      and t4.payment_id = t1.payment_id
+      and t1.staff_id = t3.staff_id
+      and  t1.project_id = #{projectId}
+    </where>
+    order by pay_date desc
+
+  </select>
 </mapper>

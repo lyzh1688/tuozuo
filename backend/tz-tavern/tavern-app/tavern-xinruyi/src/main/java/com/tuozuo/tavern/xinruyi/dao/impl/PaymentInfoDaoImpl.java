@@ -59,8 +59,14 @@ public class PaymentInfoDaoImpl implements PaymentInfoDao {
     }
 
     @Override
-    public IPage<StaffSalaryInfo> selectStaffDetail(int pageNo, int pageSize, String companyId,String paymentId, String projectId, String startDate, String endDate, String staffId) {
+    public IPage<StaffSalaryInfo> selectStaffDetail(int pageNo, int pageSize, String companyId, String paymentId, String projectId, String startDate, String endDate, String staffId) {
         Page page = new Page(pageNo, pageSize);
-        return this.projectPaymentDetailMapper.selectStaffDetail(page,companyId,paymentId,projectId,startDate,endDate,staffId);
+        return this.projectPaymentDetailMapper.selectStaffDetail(page, companyId, paymentId, projectId, startDate, endDate, staffId);
+    }
+
+    @Override
+    public IPage<StaffSalaryInfo> selectStaffInfo(int pageNo, int pageSize, String projectId) {
+        Page page = new Page(pageNo, pageSize);
+        return this.projectPaymentDetailMapper.selectStaffInfo(page, projectId);
     }
 }

@@ -123,6 +123,29 @@ public class ProjectPaymentInfoEndpoint {
             IPage<StaffSalaryInfo> page = this.paymentInfoService.queryStaffDetail(vo);
             List<StaffSalaryDetailDTO> staffSalaryDetailDTOList = page.getRecords()
                     .stream()
+                    .map(this.converterFactory::modelToStaffSalaryDetail)
+                    .collect(Collectors.toList());
+            StaffSalaryDetailListDTO dto = new StaffSalaryDetailListDTO();
+            dto.setStaffs(staffSalaryDetailDTOList);
+            dto.setTotal(page.getTotal());
+            return TavernResponse.ok(dto);
+        } catch (Exception e) {
+            LOGGER.error("[工资明细] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 查询项目人员工资信息
+     */
+    @GetMapping("/project/staff/{projectId}")
+    public TavernResponse querySalaryInfo(@PathVariable("projectId") String projectId,
+                                          @ModelAttribute @Valid StaffSalaryInfoVO vo) {
+        try {
+            vo.setProjectId(projectId);
+            IPage<StaffSalaryInfo> page = this.paymentInfoService.queryStaffInfo(vo);
+            List<StaffSalaryInfoDTO> staffSalaryDetailDTOList = page.getRecords()
+                    .stream()
                     .map(this.converterFactory::modelToStaffSalaryInfo)
                     .collect(Collectors.toList());
             StaffSalaryInfoListDTO dto = new StaffSalaryInfoListDTO();
@@ -130,7 +153,7 @@ public class ProjectPaymentInfoEndpoint {
             dto.setTotal(page.getTotal());
             return TavernResponse.ok(dto);
         } catch (Exception e) {
-            LOGGER.error("[工资明细] failed", e);
+            LOGGER.error("[查询项目人员工资信息] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }

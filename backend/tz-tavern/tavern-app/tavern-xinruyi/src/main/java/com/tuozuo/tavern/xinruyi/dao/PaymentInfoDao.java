@@ -34,5 +34,6 @@ public interface PaymentInfoDao {
                                              String startDate,
                                              String endDate,
                                              String staffId);
+    IPage<StaffSalaryInfo> selectStaffInfo(int pageNo, int pageSize,String projectId);
 
 }

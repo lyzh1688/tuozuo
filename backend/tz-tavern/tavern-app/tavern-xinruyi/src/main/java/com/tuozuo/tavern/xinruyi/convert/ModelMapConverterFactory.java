@@ -10,6 +10,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
+import java.math.BigDecimal;
+
 
 /**
  * Code Monkey: 何彪 <br>
@@ -87,16 +89,18 @@ public interface ModelMapConverterFactory {
 
     @Mappings({
             @Mapping(target = "registerId", expression = "java(com.tuozuo.tavern.xinruyi.utils.UUIDUtil.randomUUID32())"),
-            @Mapping(target = "companyIndustry",source = "industryType"),
+            @Mapping(target = "companyIndustry", source = "industryType"),
 
     })
     CompanyInfo voToCompanyInfo(CompanyApplyVO vo);
 
     @Mappings({
-            @Mapping(target = "name",source = "staffName"),
+            @Mapping(target = "name", source = "staffName"),
 
     })
-    StaffSalaryDetailDTO modelToStaffSalaryInfo(StaffSalaryInfo staffSalaryInfo);
+    StaffSalaryDetailDTO modelToStaffSalaryDetail(StaffSalaryInfo staffSalaryInfo);
+
+    StaffSalaryInfoDTO modelToStaffSalaryInfo(StaffSalaryInfo staffSalaryInfo);
 
 
 }
