@@ -180,6 +180,31 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
         //2、删除工资申请
         //3、工资申请完成
         //4、发起
+        ProjectPayment projectPayment = this.paymentInfoDao.selectById(vo.getPaymentId());
+        if (vo.getStatus().equals("1")) {
+            projectPayment.setStatus(PaymentStatus.TO_PAYOFF.getStatus());
+        } else {
+            projectPayment.setStatus(PaymentStatus.FAILED.getStatus());
+        }
+
+        EventTodoList eventTodoList = this.eventInfoDao.selectProjectTodo(projectPayment.getProjectId(), EventType.SALARY_RELEASE_CONFIRM.getStatus());
+        EventFinishList eventFinishList = new EventFinishList();
+        BeanUtils.copyProperties(eventTodoList, eventFinishList);
+        eventFinishList.setUpdateDate(LocalDateTime.now());
+        eventFinishList.setStatus(vo.getStatus());
+        this.eventInfoDao.delEventTodo(eventTodoList.getEventId());
+        this.eventInfoDao.insertEventFinish(eventFinishList);
+        this.paymentInfoDao.updatePaymentInfo(projectPayment);
+
+        //发起客户审核
+        EventTodoList salaryReleaseEvent = new EventTodoList();
+        //构造company_id,project_id,company_name,project_name,amount,month,payment_id,transferVoucher
+        BeanUtils.copyProperties(eventTodoList, salaryReleaseEvent);
+        salaryReleaseEvent.setEventId(UUIDUtil.randomUUID32());
+        salaryReleaseEvent.setEventType(EventType.SALARY_RELEASE.getStatus());
+        salaryReleaseEvent.setRole(UserTypeDict.staff);
+        salaryReleaseEvent.setEventDate(LocalDateTime.now());
+        this.eventInfoDao.insertEventTodo(salaryReleaseEvent);
 
 
     }

@@ -5,16 +5,15 @@ package com.tuozuo.tavern.xinruyi.vo;
  * Dev Time: 2020/9/20 <br>
  */
 public class StaffPaymentConfirmVO {
-    private String projectId;
+    private String paymentId;
     private String status;
-    private String month;
 
-    public String getProjectId() {
-        return projectId;
+    public String getPaymentId() {
+        return paymentId;
     }
 
-    public void setProjectId(String projectId) {
-        this.projectId = projectId;
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
     }
 
     public String getStatus() {
@@ -23,13 +22,5 @@ public class StaffPaymentConfirmVO {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getMonth() {
-        return month;
-    }
-
-    public void setMonth(String month) {
-        this.month = month;
     }
 }

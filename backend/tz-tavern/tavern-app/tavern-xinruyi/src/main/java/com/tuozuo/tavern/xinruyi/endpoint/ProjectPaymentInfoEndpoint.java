@@ -188,4 +188,19 @@ public class ProjectPaymentInfoEndpoint {
             return TavernResponse.bizFailure(e.getMessage());
         }
     }
+
+    /**
+     * 当月工资发放明细确认
+     */
+    @PutMapping("/salary/confirmation/{paymentId}")
+    public TavernResponse paymentConfirm(@PathVariable("paymentId") String paymentId, @RequestBody @Valid StaffPaymentConfirmVO vo) {
+        try {
+            vo.setPaymentId(paymentId);
+            this.paymentInfoService.staffPaymentConfirm(vo);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[当月工资发放明细确认] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
 }
