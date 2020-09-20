@@ -103,4 +103,7 @@ public interface ModelMapConverterFactory {
     StaffSalaryInfoDTO modelToStaffSalaryInfo(StaffSalaryInfo staffSalaryInfo);
 
 
+    StaffSalaryHistoryDTO modelToStaffSalaryHistoryDTO(StaffSalaryInfo staffSalaryInfo);
+
+
 }

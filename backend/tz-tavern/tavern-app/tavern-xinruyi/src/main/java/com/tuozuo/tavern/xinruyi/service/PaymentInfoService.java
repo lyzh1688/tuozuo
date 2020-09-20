@@ -14,7 +14,6 @@ public interface PaymentInfoService {
     IPage<ProjectPayment> queryProjectPaymentList(PaymentListVO vo);
 
     void uploadVoucher(PaymentVoucherUploadVO voucherUploadVO, String roleGroup, String companyId) throws Exception;
-
     IPage<ProjectPayment> queryProjectPaymentHisList(PaymentHistoryVO vo);
 
     IPage<StaffSalaryInfo> queryStaffDetail(StaffSalaryDetailVO vo);
@@ -26,6 +25,8 @@ public interface PaymentInfoService {
     void staffPaymentConfirm(StaffPaymentConfirmVO vo);
 
     void staffPaymentAudit(StaffPaymentAuditVO vo);
+
+    void modifyUploadVoucher(PaymentVoucherUploadVO voucherUploadVO) throws Exception;
 
 
 

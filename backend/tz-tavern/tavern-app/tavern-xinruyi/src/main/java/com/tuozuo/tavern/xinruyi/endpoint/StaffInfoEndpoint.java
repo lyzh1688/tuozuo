@@ -4,10 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
-import com.tuozuo.tavern.xinruyi.dto.StaffDictDTO;
-import com.tuozuo.tavern.xinruyi.dto.StaffResourcePoolDTO;
-import com.tuozuo.tavern.xinruyi.dto.StaffResourcePoolListDTO;
-import com.tuozuo.tavern.xinruyi.dto.StaffSalaryListDTO;
+import com.tuozuo.tavern.xinruyi.dto.*;
 import com.tuozuo.tavern.xinruyi.model.StaffResourcePool;
 import com.tuozuo.tavern.xinruyi.model.StaffSalaryInfo;
 import com.tuozuo.tavern.xinruyi.service.StaffInfoService;
@@ -119,8 +116,12 @@ public class StaffInfoEndpoint {
                     vo.getProjectId(),
                     vo.getBeginDate(),
                     vo.getEndDate());
+            List<StaffSalaryHistoryDTO> staffSalaryHistoryDTOList = page.getRecords()
+                    .stream()
+                    .map(this.converter::modelToStaffSalaryHistoryDTO)
+                    .collect(Collectors.toList());
             StaffSalaryListDTO staffSalaryListDTO = new StaffSalaryListDTO();
-            staffSalaryListDTO.setPayment(page.getRecords());
+            staffSalaryListDTO.setPayment(staffSalaryHistoryDTOList);
             staffSalaryListDTO.setTotal((int) page.getTotal());
             return TavernResponse.ok(staffSalaryListDTO);
         } catch (Exception e) {

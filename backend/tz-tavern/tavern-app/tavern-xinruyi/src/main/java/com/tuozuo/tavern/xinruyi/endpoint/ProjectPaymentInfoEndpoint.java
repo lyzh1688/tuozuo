@@ -203,4 +203,22 @@ public class ProjectPaymentInfoEndpoint {
             return TavernResponse.bizFailure(e.getMessage());
         }
     }
+
+    /**
+     * 修改上传凭证
+     */
+    @PutMapping("/voucher/{paymentId}")
+    public TavernResponse modifyUploadPaymentVoucher(@PathVariable("paymentId") String paymentId,
+                                                     @ModelAttribute @Valid PaymentVoucherUploadVO vo,
+                                                     @RequestParam(name = "voucher") MultipartFile voucher) {
+        try {
+            vo.setPaymentId(paymentId);
+            vo.setVoucher(voucher);
+            this.paymentInfoService.modifyUploadVoucher(vo);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[修改上传凭证] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
 }

@@ -10,14 +10,14 @@ import java.util.List;
  * Dev Time: 2020/8/30 <br>
  */
 public class StaffSalaryListDTO {
-    private List<StaffSalaryInfo>  payment = Lists.newArrayList();
+    private List<StaffSalaryHistoryDTO>  payment = Lists.newArrayList();
     private int total;
 
-    public List<StaffSalaryInfo> getPayment() {
+    public List<StaffSalaryHistoryDTO> getPayment() {
         return payment;
     }
 
-    public void setPayment(List<StaffSalaryInfo> payment) {
+    public void setPayment(List<StaffSalaryHistoryDTO> payment) {
         this.payment = payment;
     }
 
