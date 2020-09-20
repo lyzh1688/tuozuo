@@ -13,4 +13,10 @@ public interface ProjectPaymentMapper extends BaseMapper<ProjectPayment> {
                                        @Param("companyId") String companyId,
                                        @Param("projectId") String projectId,
                                        @Param("status") String status);
+
+    IPage<ProjectPayment> selectHistoryByPage(Page page,
+                                              @Param("companyId") String companyId,
+                                              @Param("projectId") String projectId,
+                                              @Param("beginMonth") String beginMonth,
+                                              @Param("endMonth") String endMonth);
 }

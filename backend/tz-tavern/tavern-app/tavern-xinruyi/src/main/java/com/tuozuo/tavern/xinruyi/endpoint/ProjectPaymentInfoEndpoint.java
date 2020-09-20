@@ -5,11 +5,10 @@ import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.common.protocol.UserTypeDict;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
-import com.tuozuo.tavern.xinruyi.dto.PaymentDTO;
-import com.tuozuo.tavern.xinruyi.dto.PaymentListDTO;
-import com.tuozuo.tavern.xinruyi.dto.ProjectStaffInfoListDTO;
+import com.tuozuo.tavern.xinruyi.dto.*;
 import com.tuozuo.tavern.xinruyi.model.ProjectPayment;
 import com.tuozuo.tavern.xinruyi.service.PaymentInfoService;
+import com.tuozuo.tavern.xinruyi.vo.PaymentHistoryVO;
 import com.tuozuo.tavern.xinruyi.vo.PaymentListVO;
 import com.tuozuo.tavern.xinruyi.vo.PaymentVoucherUploadVO;
 import com.tuozuo.tavern.xinruyi.vo.ProjectAddVO;
@@ -81,4 +80,31 @@ public class ProjectPaymentInfoEndpoint {
         }
     }
 
+    /**
+     * 资金历史列表
+     */
+    @GetMapping("/history/{projectId}")
+    public TavernResponse queryProjectPaymentHistory(@PathVariable("projectId") String projectId,
+                                                     @ModelAttribute @Valid PaymentHistoryVO vo,
+                                                     @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId,
+                                                     @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
+        try {
+            if (roleGroup.equals(UserTypeDict.custom)) {
+                vo.setCompanyId(companyId);
+            }
+            vo.setProjectId(projectId);
+            IPage<ProjectPayment> page = this.paymentInfoService.queryProjectPaymentHisList(vo);
+            List<PaymentHistoryDTO> projectPayments = page.getRecords()
+                    .stream()
+                    .map(ModelConverterFactory::modelToPaymentHistoryDTO)
+                    .collect(Collectors.toList());
+            PaymentHistoryListDTO dto = new PaymentHistoryListDTO();
+            dto.setSalaries(projectPayments);
+            dto.setTotal(page.getTotal());
+            return TavernResponse.ok(dto);
+        } catch (Exception e) {
+            LOGGER.error("[资金历史列表] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
 }

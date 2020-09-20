@@ -10,7 +10,9 @@ import com.tuozuo.tavern.xinruyi.model.ProjectPaymentSnapshot;
  */
 public interface PaymentInfoDao {
 
-    IPage<ProjectPayment> selectPaymentList(int pageNo,int pageSize,String companyId,String projectId,String status);
+    IPage<ProjectPayment> selectPaymentList(int pageNo, int pageSize, String companyId, String projectId, String status);
+
+    IPage<ProjectPayment> selectPaymentHisList(int pageNo, int pageSize, String companyId, String projectId, String beginMonth, String endMonth);
 
     void savePaymentInfo(ProjectPayment projectPayment);
 
@@ -21,6 +23,7 @@ public interface PaymentInfoDao {
                                   String payDate,
                                   String paymentId,
                                   String projectId);
+
     void updatePaymentInfo(ProjectPayment projectPayment);
 
 

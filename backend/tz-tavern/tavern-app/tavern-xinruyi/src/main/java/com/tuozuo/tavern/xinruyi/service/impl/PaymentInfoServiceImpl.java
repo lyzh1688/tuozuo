@@ -14,6 +14,7 @@ import com.tuozuo.tavern.xinruyi.service.PaymentInfoService;
 import com.tuozuo.tavern.xinruyi.utils.DateUtils;
 import com.tuozuo.tavern.xinruyi.utils.FileUtils;
 import com.tuozuo.tavern.xinruyi.utils.UUIDUtil;
+import com.tuozuo.tavern.xinruyi.vo.PaymentHistoryVO;
 import com.tuozuo.tavern.xinruyi.vo.PaymentListVO;
 import com.tuozuo.tavern.xinruyi.vo.PaymentVoucherUploadVO;
 import org.apache.commons.lang3.StringUtils;
@@ -133,6 +134,11 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
 
         }
 
+    }
+
+    @Override
+    public IPage<ProjectPayment> queryProjectPaymentHisList(PaymentHistoryVO vo) {
+        return this.paymentInfoDao.selectPaymentHisList(vo.getPageNo(), vo.getPageSize(), vo.getCompanyId(), vo.getProjectId(), vo.getBeginMonth(), vo.getEndMonth());
     }
 
 

@@ -33,4 +33,26 @@
     </where>
     order by pay_date desc
   </select>
+  <select id="selectHistoryByPage" resultMap="BaseResultMap">
+    select t2.company_name,t3.project_name,t1.payment_id, t1.company_id, t1.project_id, t1.period,
+    file_voucher, file_pay_cert, t1.status,total_salary,pay_date
+    from project_payment t1,company_info t2,project_info t3
+    <where>
+      t1.company_id = t2.company_id
+      and t1.project_id = t3.project_id
+      <if test="companyId != null and companyId != ''">
+        and t1.company_id = #{companyId}
+      </if>
+      <if test="projectId != null and projectId != ''">
+        and t1.project_id = #{projectId}
+      </if>
+      <if test="beginMonth != null and beginMonth != ''">
+        and t1.period >= #{beginMonth}
+      </if>
+      <if test="endMonth != null and endMonth != ''">
+        and t1.period <![CDATA[ <= ]]>  #{endMonth}
+      </if>
+    </where>
+    order by t1.period desc
+  </select>
 </mapper>

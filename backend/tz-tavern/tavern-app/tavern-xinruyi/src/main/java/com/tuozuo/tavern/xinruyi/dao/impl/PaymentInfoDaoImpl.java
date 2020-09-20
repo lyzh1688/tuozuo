@@ -1,13 +1,11 @@
 package com.tuozuo.tavern.xinruyi.dao.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tuozuo.tavern.xinruyi.dao.PaymentInfoDao;
 import com.tuozuo.tavern.xinruyi.mapper.ProjectPaymentDetailMapper;
 import com.tuozuo.tavern.xinruyi.mapper.ProjectPaymentMapper;
 import com.tuozuo.tavern.xinruyi.mapper.ProjectPaymentSnapshotMapper;
-import com.tuozuo.tavern.xinruyi.model.CompanyInfoExt;
 import com.tuozuo.tavern.xinruyi.model.ProjectPayment;
 import com.tuozuo.tavern.xinruyi.model.ProjectPaymentSnapshot;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +29,12 @@ public class PaymentInfoDaoImpl implements PaymentInfoDao {
     public IPage<ProjectPayment> selectPaymentList(int pageNo, int pageSize, String companyId, String projectId, String status) {
         Page page = new Page(pageNo, pageSize);
         return this.projectPaymentMapper.selectByPage(page, companyId, projectId, status);
+    }
+
+    @Override
+    public IPage<ProjectPayment> selectPaymentHisList(int pageNo, int pageSize, String companyId, String projectId, String beginMonth, String endMonth) {
+        Page page = new Page(pageNo, pageSize);
+        return this.projectPaymentMapper.selectHistoryByPage(page, companyId, projectId, beginMonth, endMonth);
     }
 
     @Override
