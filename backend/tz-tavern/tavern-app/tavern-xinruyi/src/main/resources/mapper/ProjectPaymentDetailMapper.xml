@@ -9,6 +9,16 @@
     <result column="period" jdbcType="VARCHAR" property="period" />
     <result column="pay_date" jdbcType="VARCHAR" property="payDate" />
   </resultMap>
+  <resultMap id="SalaryMap" type="com.tuozuo.tavern.xinruyi.model.StaffSalaryInfo">
+    <result column="staff_id" jdbcType="VARCHAR" property="staffId" />
+    <result column="staff_name" jdbcType="VARCHAR" property="staffName" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="salary" jdbcType="DECIMAL" property="salary" />
+    <result column="pay_date" jdbcType="VARCHAR" property="releaseDate" />
+    <result column="bank_card" jdbcType="VARCHAR" property="bankCard" />
+    <result column="id_number" jdbcType="VARCHAR" property="idNo" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
+  </resultMap>
   <insert id="insertInitial">
     insert into project_payment_detail(company_id,project_id,staff_id,period,pay_date,payment_id,salary)
     SELECT #{companyId},project_id,staff_id,#{month},#{payDate},#{paymentId},salary from project_staff
@@ -17,5 +27,36 @@
   <select id="selectAll" resultMap="BaseResultMap">
     select payment_id, company_id, project_id, staff_id, period, pay_date
     from project_payment_detail
+  </select>
+
+  <select id="selectStaffDetail" resultMap="SalaryMap">
+    select
+    t1.staff_id,t3.staff_name,t2.project_name,t1.salary,
+    date_format(t1.pay_date ,'%Y%m%d') pay_date,t3.bank_card,t3.id_number,t3.gender
+    from project_payment_detail t1,project_info t2,staff_resource_pool t3
+    <where>
+      t1.project_id = t2.project_id
+      and t1.staff_id = t3.staff_id
+      <if test="companyId != null and companyId != ''">
+        and  t1.company_id = #{companyId}
+      </if>
+      <if test="paymentId != null and paymentId != ''">
+        and  t1.payment_id = #{paymentId}
+      </if>
+      <if test="projectId != null and projectId != ''">
+        and  t1.project_id = #{projectId}
+      </if>
+      <if test="startDate != null and startDate != ''">
+        and t1. pay_date >= STR_TO_DATE(#{startDate}, '%Y%m%d')
+      </if>
+      <if test="endDate != null and endDate != ''">
+        and t1.pay_date <![CDATA[ <= ]]> STR_TO_DATE(#{endDate}, '%Y%m%d')
+      </if>
+      <if test="staffId != null and staffId != ''">
+        and  t1.staff_id = #{staffId}
+      </if>
+    </where>
+    order by pay_date desc
+
   </select>
 </mapper>

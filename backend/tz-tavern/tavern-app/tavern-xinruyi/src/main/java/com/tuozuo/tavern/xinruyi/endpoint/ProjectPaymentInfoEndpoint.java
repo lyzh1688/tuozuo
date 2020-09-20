@@ -5,13 +5,12 @@ import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.common.protocol.UserTypeDict;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
+import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.xinruyi.dto.*;
 import com.tuozuo.tavern.xinruyi.model.ProjectPayment;
+import com.tuozuo.tavern.xinruyi.model.StaffSalaryInfo;
 import com.tuozuo.tavern.xinruyi.service.PaymentInfoService;
-import com.tuozuo.tavern.xinruyi.vo.PaymentHistoryVO;
-import com.tuozuo.tavern.xinruyi.vo.PaymentListVO;
-import com.tuozuo.tavern.xinruyi.vo.PaymentVoucherUploadVO;
-import com.tuozuo.tavern.xinruyi.vo.ProjectAddVO;
+import com.tuozuo.tavern.xinruyi.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +34,8 @@ public class ProjectPaymentInfoEndpoint {
     @Autowired
     private PaymentInfoService paymentInfoService;
 
+    @Autowired
+    private ModelMapConverterFactory converterFactory;
 
     /**
      * 资金列表
@@ -104,6 +105,32 @@ public class ProjectPaymentInfoEndpoint {
             return TavernResponse.ok(dto);
         } catch (Exception e) {
             LOGGER.error("[资金历史列表] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 工资明细
+     */
+    @GetMapping("/salary/detail")
+    public TavernResponse querySalaryDetail(@ModelAttribute @Valid StaffSalaryDetailVO vo,
+                                            @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId,
+                                            @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
+        try {
+            if (roleGroup.equals(UserTypeDict.custom)) {
+                vo.setCompanyId(companyId);
+            }
+            IPage<StaffSalaryInfo> page = this.paymentInfoService.queryStaffDetail(vo);
+            List<StaffSalaryDetailDTO> staffSalaryDetailDTOList = page.getRecords()
+                    .stream()
+                    .map(this.converterFactory::modelToStaffSalaryInfo)
+                    .collect(Collectors.toList());
+            StaffSalaryInfoListDTO dto = new StaffSalaryInfoListDTO();
+            dto.setStaffs(staffSalaryDetailDTOList);
+            dto.setTotal(page.getTotal());
+            return TavernResponse.ok(dto);
+        } catch (Exception e) {
+            LOGGER.error("[工资明细] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }

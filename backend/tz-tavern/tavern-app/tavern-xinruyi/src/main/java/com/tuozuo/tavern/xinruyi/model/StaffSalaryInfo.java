@@ -8,11 +8,39 @@ import java.math.BigDecimal;
  */
 public class StaffSalaryInfo {
 
+    private String staffId;
     private String staffName;
     private String projectName;
     private BigDecimal salary;
     private String releaseDate;
     private String bankCard;
+    private String idNo;
+    private String gender;
+
+
+    public String getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(String staffId) {
+        this.staffId = staffId;
+    }
+
+    public String getIdNo() {
+        return idNo;
+    }
+
+    public void setIdNo(String idNo) {
+        this.idNo = idNo;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
     public String getStaffName() {
         return staffName;

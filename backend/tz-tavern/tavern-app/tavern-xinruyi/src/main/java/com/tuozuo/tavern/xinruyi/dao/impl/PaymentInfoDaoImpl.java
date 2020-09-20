@@ -8,6 +8,7 @@ import com.tuozuo.tavern.xinruyi.mapper.ProjectPaymentMapper;
 import com.tuozuo.tavern.xinruyi.mapper.ProjectPaymentSnapshotMapper;
 import com.tuozuo.tavern.xinruyi.model.ProjectPayment;
 import com.tuozuo.tavern.xinruyi.model.ProjectPaymentSnapshot;
+import com.tuozuo.tavern.xinruyi.model.StaffSalaryInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -55,5 +56,11 @@ public class PaymentInfoDaoImpl implements PaymentInfoDao {
     @Override
     public void updatePaymentInfo(ProjectPayment projectPayment) {
         this.projectPaymentMapper.updateById(projectPayment);
+    }
+
+    @Override
+    public IPage<StaffSalaryInfo> selectStaffDetail(int pageNo, int pageSize, String companyId,String paymentId, String projectId, String startDate, String endDate, String staffId) {
+        Page page = new Page(pageNo, pageSize);
+        return this.projectPaymentDetailMapper.selectStaffDetail(page,companyId,paymentId,projectId,startDate,endDate,staffId);
     }
 }

@@ -3,6 +3,7 @@ package com.tuozuo.tavern.xinruyi.dao;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.xinruyi.model.ProjectPayment;
 import com.tuozuo.tavern.xinruyi.model.ProjectPaymentSnapshot;
+import com.tuozuo.tavern.xinruyi.model.StaffSalaryInfo;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -26,5 +27,12 @@ public interface PaymentInfoDao {
 
     void updatePaymentInfo(ProjectPayment projectPayment);
 
+    IPage<StaffSalaryInfo> selectStaffDetail(int pageNo, int pageSize,
+                                             String companyId,
+                                             String paymentId,
+                                             String projectId,
+                                             String startDate,
+                                             String endDate,
+                                             String staffId);
 
 }

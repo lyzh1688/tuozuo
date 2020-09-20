@@ -92,5 +92,11 @@ public interface ModelMapConverterFactory {
     })
     CompanyInfo voToCompanyInfo(CompanyApplyVO vo);
 
+    @Mappings({
+            @Mapping(target = "name",source = "staffName"),
+
+    })
+    StaffSalaryDetailDTO modelToStaffSalaryInfo(StaffSalaryInfo staffSalaryInfo);
+
 
 }
