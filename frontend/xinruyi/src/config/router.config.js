@@ -71,6 +71,22 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/salaryControl',
+    name: 'SalaryControl',
+    redirect: '/salaryControl/SalaryViewList',
+    component: BasicLayout,
+    meta: { title: '资金管理', keepAlive: true, icon: 'account-book', permission: ['admin', 'xinruyi.staff.normal', 'xinruyi.custom.normal'] },
+    children: [
+      {
+        path: '/salaryControl/SalaryViewList',
+        name: 'SalaryViewList',
+        component: resolve => require(['@/views/salary/SalaryViewList'], resolve),
+        // component: () => import('@/views/company/MycompanyList'),
+        meta: { title: '待办列表', keepAlive: true, permission: ['admin', 'xinruyi.staff.normal', 'xinruyi.custom.normal'] }
+      }
+    ]
+  },
+  {
     path: '/eventControl',
     name: 'EventControl',
     redirect: '/eventControl/projectVerificationList',

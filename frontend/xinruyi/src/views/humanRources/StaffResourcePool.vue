@@ -100,7 +100,7 @@ const columns = [
   }
 ]
 export default {
-  name: 'HumanResourcePool',
+  name: 'SalaryViewList',
   data () {
     this.columns = columns
     return {

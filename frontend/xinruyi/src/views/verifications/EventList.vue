@@ -80,7 +80,7 @@
         :pageSize="20"
         :columns="columns"
         :data="loadData"
-        :showPagination="true"
+        showPagination="true"
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="eventType" slot-scope="text">{{ eventTypeMap[text] }}</span>
@@ -175,7 +175,7 @@
         :pageSize="20"
         :columns="columns2"
         :data="loadData2"
-        :showPagination="true"
+        showPagination="true"
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="eventType" slot-scope="text">{{ eventTypeMap[text] }}</span>
