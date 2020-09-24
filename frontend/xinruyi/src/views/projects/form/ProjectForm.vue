@@ -10,13 +10,8 @@
     <a-spin :spinning="loading">
       <a-form :form="form" v-bind="formLayout">
         <!-- 检查是否有 id 并且大于0，大于0是修改。其他是新增，新增不显示主键ID -->
-        <a-form-item
-          v-show="false"
-          label="项目Id"
-        >
-          <a-input
-            v-decorator="['projectId', { validateTrigger: 'blur'}]"
-          />
+        <a-form-item v-show="false" label="项目Id">
+          <a-input v-decorator="['projectId', { validateTrigger: 'blur'}]" />
         </a-form-item>
         <a-form-item label="项目名称">
           <a-input
@@ -105,12 +100,8 @@
             v-decorator="['isResident', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
             style="width: 120px"
           >
-            <a-select-option
-              value="0"
-            >否</a-select-option>
-            <a-select-option
-              value="1"
-            >是</a-select-option>
+            <a-select-option value="0">否</a-select-option>
+            <a-select-option value="1">是</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="联系人">
@@ -146,7 +137,7 @@
             </a-button>
           </a-upload>
         </a-form-item>
-        <a-form-item label="描述" >
+        <a-form-item label="描述">
           <a-textarea
             :disabled="isShowOnly"
             v-decorator="['desc', {rules: [{required: true, message: '请输描述！'}], validateTrigger: 'blur'}]"
@@ -174,14 +165,14 @@ const fields = [
   'city',
   'district',
   'isResident',
-'contactName',
-'contact',
-'projectFile',
-'budget',
-'remark',
-'status',
-'fee',
-'desc'
+  'contactName',
+  'contact',
+  'projectFile',
+  'budget',
+  'remark',
+  'status',
+  'fee',
+  'desc'
 ]
 
 export default {
@@ -198,7 +189,7 @@ export default {
       type: Object,
       default: () => null
     },
-   isShowOnly: {
+    isShowOnly: {
       type: Boolean,
       default: false
     },
@@ -228,8 +219,8 @@ export default {
     }
     return {
       // city: citiesHepler[0].label,
-       showUpload: true,
-       projectFileList: [],
+      showUpload: true,
+      projectFileList: [],
       provinceList: [],
       cityList: [],
       districtList: [],
@@ -248,14 +239,14 @@ export default {
   },
   created () {
     console.log('custom modal created')
- this.getAreaCode('province', '').then((response) => {
+    this.getAreaCode('province', '').then((response) => {
       this.provinceList = response
     })
     this.getDict('industryType').then((response) => {
       this.industryTypeList = response
     })
     // 防止表单未注册
-    fields.forEach(v => this.form.getFieldDecorator(v))
+    fields.forEach((v) => this.form.getFieldDecorator(v))
 
     // 当 model 发生改变时，为表单设置值
     this.$watch('model', () => {
@@ -309,7 +300,7 @@ export default {
         })
       })
     },
-     getAreaCode (level, code) {
+    getAreaCode (level, code) {
       return new Promise((resolve, reject) => {
         getAreaCode(level, code).then((Response) => {
           const result = Response
@@ -322,27 +313,27 @@ export default {
               description: '查询区域信息失败'
             })
           }
-           if (needLogin(result)) {
+          if (needLogin(result)) {
             this.visible = false
           }
         })
       })
     },
-       async handleChane (index) {
+    async handleChane (index) {
       await this.getAreaCode('city', index).then((response) => {
         this.cityList = response
       })
       if (this.model.province !== index) {
- this.form.setFieldsValue({ city: '' })
-       this.form.setFieldsValue({ district: '' })
+        this.form.setFieldsValue({ city: '' })
+        this.form.setFieldsValue({ district: '' })
       }
     },
     async handleChane2 (index) {
       await this.getAreaCode('district', index).then((response) => {
         this.districtList = response
       })
-       if (this.model.city !== index) {
-      this.form.setFieldsValue({ district: '' })
+      if (this.model.city !== index) {
+        this.form.setFieldsValue({ district: '' })
       }
     }
   }

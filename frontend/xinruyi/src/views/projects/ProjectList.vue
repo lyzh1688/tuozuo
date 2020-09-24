@@ -155,7 +155,7 @@ const columns = [
     dataIndex: 'projectName',
     scopedSlots: { customRender: 'projectName' }
   },
-{
+  {
     title: '行业类型',
     dataIndex: 'industryType',
     scopedSlots: { customRender: 'industryType' }
