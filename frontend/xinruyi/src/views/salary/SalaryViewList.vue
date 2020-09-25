@@ -112,27 +112,19 @@
           <a-button size="small" @click="fetchProjectDetail(record)" :loading="confirmLoading">详情</a-button>
         </span>
       </s-table>
-      <!-- <projectform
+      <uploadfileform
         :title="formTitle"
-        ref="projectform"
+        ref="uploadfileform"
         :clearUpload="clearUpload"
-        :visible="projectVisible"
+        :visible="salaryVisible"
         :loading="confirmLoading"
-        :model="projectMdl"
+        :model="salaryMdl"
         :isUpdate="isupdate"
         :isShowOnly="isShowOnly"
         @cancel="handleCancel"
         @ok="handleOk"
       >
-        <template v-slot:other v-if="isShowOnly">
-          <a-form-item label="备注">
-            <a-textarea
-              :disabled="isShowOnly"
-              v-decorator="['remark', { validateTrigger: 'blur'}]"
-            />
-          </a-form-item>
-        </template>
-      </projectform> -->
+      </uploadfileform>
     </a-card>
   </page-header-wrapper>
 </template>
@@ -147,10 +139,13 @@ import {
   fuzzyQueryCompany
 } from '@/api/company'
 import {
-  getSalaryViewList
+  getSalaryViewList,
+  uploadFile,
+  modifyFile
 } from '@/api/salary'
 import { getCommonDict } from '@/api/dictionary'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
+import uploadfileform from './forms/uploadFileForm'
 const columns = [
   {
     title: '编号',
@@ -286,9 +281,9 @@ export default {
     this.columns = columns
     return {
       clearUpload: false,
-      projectVisible: false,
+      salaryVisible: false,
       confirmLoading: false,
-      projectMdl: {},
+      salaryMdl: {},
       isupdate: false,
       isShowOnly: false,
       formTitle: '',
@@ -347,7 +342,8 @@ export default {
     }
   },
   components: {
-    STable
+    STable,
+    uploadfileform
   },
   created () {
     fetch('', (data) => (this.fuzzyProjectList = data))
@@ -359,6 +355,11 @@ export default {
         this.paymentStatusMap[i.id] = i.name
       }
     })
+  },
+  computed: {
+    userInfo () {
+      return this.$store.getters.userInfo
+    }
   },
   methods: {
       jumpToFile (link) {
@@ -372,11 +373,11 @@ export default {
     //     .then((response) => {
     //       const result = response
     //       if (success(result)) {
-    //         this.projectMdl = {
+    //         this.salaryMdl = {
     //           ...result.data,
     //           projectId: record.projectId
     //         }
-    //         this.projectVisible = true
+    //         this.salaryVisible = true
     //         this.confirmLoading = false
     //       } else {
     //         this.confirmLoading = false
@@ -394,104 +395,104 @@ export default {
     //       this.confirmLoading = false
     //     })
     // },
-    // handleOk () {
-    //   if (this.isShowOnly) {
-    //     const form = this.$refs.projectform.form
-    //     this.clearUpload = !this.clearUpload
-    //     form.resetFields() // 清理表单数据（可不做）
-    //     this.$refs.table.refresh(true)
-    //     this.projectVisible = false
-    //     return
-    //   }
-    //   const form = this.$refs.projectform.form
-    //   form.validateFields((errors, values) => {
-    //     if (!errors) {
-    //       this.confirmLoading = true
-    //       if (this.isupdate) {
-    //         updateProject(values)
-    //           .then((response) => {
-    //             const result = response
-    //             if (success(result)) {
-    //               this.$notification.success({
-    //                 message: '修改成功'
-    //               })
-    //               const form = this.$refs.projectform.form
-    //               this.clearUpload = !this.clearUpload
-    //               form.resetFields() // 清理表单数据（可不做）
-    //               this.$refs.table.refresh(true)
-    //               this.projectVisible = false
-    //               this.confirmLoading = false
-    //             } else {
-    //               this.confirmLoading = false
-    //               this.$notification.error({
-    //                 message: errorMessage(result),
-    //                 description: '修改失败'
-    //               })
-    //             }
-    //             if (needLogin(result)) {
-    //               this.projectVisible = false
-    //               this.confirmLoading = false
-    //             }
-    //           })
-    //           .catch((error) => {
-    //             this.$notification.error({
-    //               message: '修改失败。请稍后再试',
-    //               description: error
-    //             })
-    //             this.confirmLoading = false
-    //           })
-    //       } else {
-    //         addNewProject(values)
-    //           .then((response) => {
-    //             const result = response
-    //             if (success(result)) {
-    //               this.$notification.success({
-    //                 message: '新增成功'
-    //               })
-    //               const form = this.$refs.projectform.form
-    //               this.clearUpload = !this.clearUpload
-    //               form.resetFields() // 清理表单数据（可不做）
-    //               this.$refs.table.refresh(true)
-    //               this.projectVisible = false
-    //               this.confirmLoading = false
-    //             } else {
-    //               this.confirmLoading = false
-    //               this.$notification.error({
-    //                 message: errorMessage(result),
-    //                 description: '新增失败。请稍后再试'
-    //               })
-    //             }
-    //             if (needLogin(result)) {
-    //               this.projectVisible = false
-    //               this.confirmLoading = false
-    //             }
-    //           })
-    //           .catch((error) => {
-    //             this.$notification.error({
-    //               message: '新增失败。请稍后再试',
-    //               description: error
-    //             })
-    //             this.confirmLoading = false
-    //           })
-    //       }
-    //     }
-    //   })
-    // },
+    handleOk () {
+      if (this.isShowOnly) {
+        const form = this.$refs.uploadfileform.form
+        this.clearUpload = !this.clearUpload
+        form.resetFields() // 清理表单数据（可不做）
+        this.$refs.table.refresh(true)
+        this.salaryVisible = false
+        return
+      }
+      const form = this.$refs.uploadfileform.form
+      form.validateFields((errors, values) => {
+        if (!errors) {
+          this.confirmLoading = true
+          if (this.isupdate) {
+            modifyFile(values)
+              .then((response) => {
+                const result = response
+                if (success(result)) {
+                  this.$notification.success({
+                    message: '修改成功'
+                  })
+                  const form = this.$refs.uploadfileform.form
+                  this.clearUpload = !this.clearUpload
+                  form.resetFields() // 清理表单数据（可不做）
+                  this.$refs.table.refresh(true)
+                  this.salaryVisible = false
+                  this.confirmLoading = false
+                } else {
+                  this.confirmLoading = false
+                  this.$notification.error({
+                    message: errorMessage(result),
+                    description: '修改失败'
+                  })
+                }
+                if (needLogin(result)) {
+                  this.salaryVisible = false
+                  this.confirmLoading = false
+                }
+              })
+              .catch((error) => {
+                this.$notification.error({
+                  message: '修改失败。请稍后再试',
+                  description: error
+                })
+                this.confirmLoading = false
+              })
+          } else {
+            uploadFile(values)
+              .then((response) => {
+                const result = response
+                if (success(result)) {
+                  this.$notification.success({
+                    message: '新增成功'
+                  })
+                  const form = this.$refs.uploadfileform.form
+                  this.clearUpload = !this.clearUpload
+                  form.resetFields() // 清理表单数据（可不做）
+                  this.$refs.table.refresh(true)
+                  this.salaryVisible = false
+                  this.confirmLoading = false
+                } else {
+                  this.confirmLoading = false
+                  this.$notification.error({
+                    message: errorMessage(result),
+                    description: '新增失败。请稍后再试'
+                  })
+                }
+                if (needLogin(result)) {
+                  this.salaryVisible = false
+                  this.confirmLoading = false
+                }
+              })
+              .catch((error) => {
+                this.$notification.error({
+                  message: '新增失败。请稍后再试',
+                  description: error
+                })
+                this.confirmLoading = false
+              })
+          }
+        }
+      })
+    },
     handleAdd () {
-      this.formTitle = '新建项目'
-      this.projectMdl = {}
-      const form = this.$refs.projectform.form
+      this.formTitle = '新建工资发放申请'
+      this.salaryMdl = { companyId: this.userInfo.name }
+      const form = this.$refs.uploadfileform.form
       this.clearUpload = !this.clearUpload
       form.resetFields() // 清理表单数据（可不做）
       this.isupdate = false
       this.isShowOnly = false
-      this.projectVisible = true
+      this.salaryVisible = true
     },
     async handleUpdate (record) {
       await this.fetchProjectDetail(record)
       this.formTitle = '修改项目'
       this.isupdate = true
-      this.projectVisible = true
+      this.salaryVisible = true
       this.isShowOnly = false
     },
     handleCancel () {
@@ -500,12 +501,12 @@ export default {
           title: '取消操作',
           content: '是否确认取消操作？所做的修改将会丢失！',
           onOk: () => {
-            this.projectVisible = false
+            this.salaryVisible = false
           },
           onCancel () {}
         })
       } else {
-        this.projectVisible = false
+        this.salaryVisible = false
       }
     },
     handleCustomSearch (value) {

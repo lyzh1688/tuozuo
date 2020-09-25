@@ -13,10 +13,10 @@
         <a-form-item v-show="false" label="公司id">
           <a-input v-decorator="['companyId', { validateTrigger: 'blur'}]" />
         </a-form-item>
-        <a-form-item label="公司名称">
+        <a-form-item label="公司名称" v-show="form.companyName&&form.companyName!=''">
           <a-input
             :disabled="true"
-            v-decorator="['companyName', {rules: [{required: true, message: '请输入项目名称！'}], validateTrigger: 'blur'}]"
+            v-decorator="['companyName']"
           />
         </a-form-item>
         <a-form-item label="项目名称">
@@ -30,10 +30,10 @@
             :filter-option="false"
             :not-found-content="null"
             v-decorator="['projectId', {rules: [{required: true, message: '请输入项目名称！'}], validateTrigger: 'blur'}]"
-            @search="handleCustomSearch2"
-            @change="handleCustomChange2"
+            @search="handleProjectSearch"
+            @change="handleProjectChange"
           >
-            <a-select-option v-for="d in fuzzyCompanyList" :key="d.value">{{ d.text }}</a-select-option>
+            <a-select-option v-for="d in fuzzyProjectList" :key="d.value">{{ d.text }}</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="总金额">
@@ -201,10 +201,10 @@ export default {
     })
   },
   methods: {
-      handleCustomSearch (value) {
+      handleProjectSearch (value) {
       fetch(value, (data) => (this.fuzzyProjectList = data))
     },
-    handleCustomChange (value) {
+    handleProjectChange (value) {
       // console.log(value)
       this.form.setFieldsValue({ projectId: value })
       fetch(value, (data) => (this.fuzzyProjectList = data))
