@@ -16,7 +16,15 @@ public class StaffSalaryInfo {
     private String bankCard;
     private String idNo;
     private String gender;
+    private String month;
 
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
 
     public String getStaffId() {
         return staffId;

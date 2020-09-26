@@ -19,6 +19,7 @@
     <result column="bank_card" jdbcType="VARCHAR" property="bankCard" />
     <result column="id_number" jdbcType="VARCHAR" property="idNo" />
     <result column="gender" jdbcType="VARCHAR" property="gender" />
+    <result column="period" jdbcType="VARCHAR" property="month" />
   </resultMap>
   <insert id="insertInitial">
     insert into project_payment_detail(company_id,project_id,staff_id,period,pay_date,payment_id,salary)
@@ -34,7 +35,7 @@
   <select id="selectStaffDetail" resultMap="SalaryMap">
     select
     t1.staff_id,t3.staff_name,t2.project_name,t1.salary,
-    date_format(t1.pay_date ,'%Y%m%d') pay_date,t3.bank_card,t3.id_number,t3.gender
+    date_format(t1.pay_date ,'%Y%m%d') pay_date,t3.bank_card,t3.id_number,t3.gender,t1.period
     from project_payment_detail t1,project_info t2,staff_resource_pool t3
     <where>
       t1.project_id = t2.project_id

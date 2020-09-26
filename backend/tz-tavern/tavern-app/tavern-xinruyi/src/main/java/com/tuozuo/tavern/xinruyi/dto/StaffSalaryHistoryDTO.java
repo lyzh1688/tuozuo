@@ -12,6 +12,15 @@ public class StaffSalaryHistoryDTO {
     private BigDecimal salary;
     private String releaseDate;
     private String bankCard;
+    private String month;
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
 
     public String getStaffName() {
         return staffName;
