@@ -33,7 +33,7 @@
     t1.status,
     t3.project_name,t1.event_owner_name ,date_format(t1.event_date ,'%Y%m%d') applyDate,t1.event_owner_name applicant,
     date_format(t1.update_date ,'%Y%m%d') finishDate
-    from event_finish_list t1 LEFT JOIN project_info t3 on t1.project_id = t3.project_id left JOIN company_info t2 on t1.register_id = t2.register_id
+    from event_finish_list t1 LEFT JOIN project_info t3 on t1.project_id = t3.project_id left JOIN company_info t2 on (t1.register_id = t2.register_id or t1.company_id = t2.company_id)
     <where>
       t1.role = #{role}
       <if test="companyId != null and companyId != ''">

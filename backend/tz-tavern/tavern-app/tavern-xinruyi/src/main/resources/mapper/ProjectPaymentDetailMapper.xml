@@ -24,6 +24,7 @@
     insert into project_payment_detail(company_id,project_id,staff_id,period,pay_date,payment_id,salary)
     SELECT #{companyId},project_id,staff_id,#{month},#{payDate},#{paymentId},salary from project_staff
     WHERE project_id = #{projectId}
+    and status = '2'
   </insert>
   <select id="selectAll" resultMap="BaseResultMap">
     select payment_id, company_id, project_id, staff_id, period, pay_date
