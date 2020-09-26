@@ -62,8 +62,9 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
     @Override
     public void uploadVoucher(PaymentVoucherUploadVO uploadVO, String roleGroup, String companyId) throws Exception {
         String paymentId = UUIDUtil.randomUUID32();
-        String voucher = this.storePaymentVoucherFile(uploadVO.getProjectId(), paymentId, uploadVO.getVoucher());
+        String voucher ;
         if (roleGroup.equals(UserTypeDict.custom)) {
+            voucher = this.storePaymentVoucherFile(uploadVO.getProjectId(), paymentId, uploadVO.getVoucher());
             //1、上传凭证
             //2、刷detail初始值
             //3、发起申请事件
@@ -118,8 +119,9 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
             //1、上传发放凭证
             //2、更新发放状态
             //3、结束发放流程
+            voucher = this.storePaymentVoucherFile(uploadVO.getProjectId(), uploadVO.getPaymentId(), uploadVO.getVoucher());
             ProjectPayment projectPayment = this.paymentInfoDao.selectById(uploadVO.getPaymentId());
-            projectPayment.setFileVoucher(voucher);
+            projectPayment.setFilePayCert(voucher);
             projectPayment.setStatus(PaymentStatus.RELEASED.getStatus());
             projectPayment.setUpdateDate(LocalDateTime.now());
 
