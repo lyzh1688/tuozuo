@@ -171,6 +171,7 @@ public class ModelConverterFactory {
         paymentDTO.setTransferVoucher(projectPayment.getFileVoucher());
         paymentDTO.setPayVoucher(projectPayment.getFilePayCert());
         paymentDTO.setReleaseStatus(projectPayment.getStatus());
+        paymentDTO.setPaymentId(projectPayment.getPaymentId());
         return paymentDTO;
     }
 

@@ -16,6 +16,15 @@ public class PaymentDTO {
     private String transferVoucher;
     private String payVoucher;
     private String releaseStatus;
+    private String paymentId;
+
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
+    }
 
     public String getCompanyId() {
         return companyId;

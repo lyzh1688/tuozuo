@@ -16,7 +16,7 @@ public class PaymentVoucherUploadVO {
     private BigDecimal amount;
     @NotNull(message = "month is not null")
     private String month;
-    @NotNull(message = "payDate is not null")
+//    @NotNull(message = "payDate is not null")
     private String payDate;
     private MultipartFile voucher;
     private String paymentId;
