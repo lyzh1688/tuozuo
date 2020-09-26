@@ -81,7 +81,9 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
             projectPayment.setFileVoucher(voucher);
             projectPayment.setStatus(PaymentStatus.APPLYING.getStatus());
             projectPayment.setTotalSalary(uploadVO.getAmount());
-            projectPayment.setPayDate(DateUtils.parseDate(uploadVO.getPayDate(), DateUtils.DEFAULT_SIMPLE_8__FORMATTER));
+            if(uploadVO.getPayDate() != null){
+                projectPayment.setPayDate(DateUtils.parseDate(uploadVO.getPayDate(), DateUtils.DEFAULT_SIMPLE_8__FORMATTER));
+            }
             projectPayment.setUpdateDate(LocalDateTime.now());
 
 
@@ -124,6 +126,9 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
             projectPayment.setFilePayCert(voucher);
             projectPayment.setStatus(PaymentStatus.RELEASED.getStatus());
             projectPayment.setUpdateDate(LocalDateTime.now());
+            if(uploadVO.getPayDate() != null){
+                projectPayment.setPayDate(DateUtils.parseDate(uploadVO.getPayDate(), DateUtils.DEFAULT_SIMPLE_8__FORMATTER));
+            }
 
             this.paymentInfoDao.updatePaymentInfo(projectPayment);
             Optional<EventTodoList> op = this.eventInfoDao.selectProjectPaymentTodo(projectPayment.getProjectId(), EventType.SALARY_RELEASE.getStatus(), uploadVO.getPaymentId());
@@ -283,7 +288,9 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
         projectPayment.setFileVoucher(voucher);
         projectPayment.setStatus(PaymentStatus.APPLYING.getStatus());
         projectPayment.setTotalSalary(uploadVO.getAmount());
-        projectPayment.setPayDate(DateUtils.parseDate(uploadVO.getPayDate(), DateUtils.DEFAULT_SIMPLE_8__FORMATTER));
+        if(uploadVO.getPayDate() != null){
+            projectPayment.setPayDate(DateUtils.parseDate(uploadVO.getPayDate(), DateUtils.DEFAULT_SIMPLE_8__FORMATTER));
+        }
         projectPayment.setUpdateDate(LocalDateTime.now());
 
 
