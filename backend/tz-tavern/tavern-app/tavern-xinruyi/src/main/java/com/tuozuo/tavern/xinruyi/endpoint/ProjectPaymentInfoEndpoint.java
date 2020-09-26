@@ -210,10 +210,12 @@ public class ProjectPaymentInfoEndpoint {
     @PutMapping("/voucher/{paymentId}")
     public TavernResponse modifyUploadPaymentVoucher(@PathVariable("paymentId") String paymentId,
                                                      @ModelAttribute @Valid PaymentVoucherUploadVO vo,
-                                                     @RequestParam(name = "voucher") MultipartFile voucher) {
+                                                     @RequestParam(name = "voucher",required = false) MultipartFile voucher) {
         try {
             vo.setPaymentId(paymentId);
-            vo.setVoucher(voucher);
+            if(voucher != null){
+                vo.setVoucher(voucher);
+            }
             this.paymentInfoService.modifyUploadVoucher(vo);
             return TavernResponse.OK;
         } catch (Exception e) {

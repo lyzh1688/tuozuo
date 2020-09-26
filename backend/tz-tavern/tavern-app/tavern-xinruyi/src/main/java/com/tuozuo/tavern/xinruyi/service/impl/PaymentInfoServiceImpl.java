@@ -62,7 +62,7 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
     @Override
     public void uploadVoucher(PaymentVoucherUploadVO uploadVO, String roleGroup, String companyId) throws Exception {
         String paymentId = UUIDUtil.randomUUID32();
-        String voucher ;
+        String voucher;
         if (roleGroup.equals(UserTypeDict.custom)) {
             voucher = this.storePaymentVoucherFile(uploadVO.getProjectId(), paymentId, uploadVO.getVoucher());
             //1、上传凭证
@@ -268,10 +268,15 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
     @Transactional
     @Override
     public void modifyUploadVoucher(PaymentVoucherUploadVO uploadVO) throws Exception {
-        String voucher = this.storePaymentVoucherFile(uploadVO.getProjectId(), uploadVO.getPaymentId(), uploadVO.getVoucher());
         //1、上传凭证
         //3、发起申请事件
+        String voucher;
         ProjectPayment projectPayment = this.paymentInfoDao.selectById(uploadVO.getPaymentId());
+        if (uploadVO.getVoucher() != null) {
+            voucher = this.storePaymentVoucherFile(uploadVO.getProjectId(), uploadVO.getPaymentId(), uploadVO.getVoucher());
+        } else {
+            voucher = projectPayment.getFileVoucher();
+        }
         projectPayment.setPaymentId(uploadVO.getPaymentId());
         projectPayment.setProjectId(uploadVO.getProjectId());
         projectPayment.setPeriod(uploadVO.getMonth());
