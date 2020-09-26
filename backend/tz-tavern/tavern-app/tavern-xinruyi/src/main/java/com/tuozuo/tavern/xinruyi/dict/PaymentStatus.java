@@ -7,7 +7,7 @@ package com.tuozuo.tavern.xinruyi.dict;
 public enum PaymentStatus {
 
 //    1:申请中，2:待发放，3:已发放，4审核失败
-    APPLYING("1"), TO_PAYOFF("2"), RELEASED("3"), FAILED("4");
+    APPLYING("1"), TO_PAYOFF("3"), RELEASED("4"), FAILED("5"),CUSTOM_CONFIRM("2");
     private String status;
 
     public String getStatus() {

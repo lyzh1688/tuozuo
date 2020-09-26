@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -123,7 +124,11 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
             projectPayment.setUpdateDate(LocalDateTime.now());
 
             this.paymentInfoDao.updatePaymentInfo(projectPayment);
-            EventTodoList eventTodoList = this.eventInfoDao.selectProjectTodo(projectPayment.getProjectId(), EventType.SALARY_RELEASE.getStatus());
+            Optional<EventTodoList> op = this.eventInfoDao.selectProjectPaymentTodo(projectPayment.getProjectId(), EventType.SALARY_RELEASE.getStatus(),uploadVO.getPaymentId());
+            if(!op.isPresent()){
+                throw new Exception("该发放记录不存在");
+            }
+            EventTodoList eventTodoList = op.get();
             EventFinishList eventFinishList = new EventFinishList();
             BeanUtils.copyProperties(eventTodoList, eventFinishList);
             eventFinishList.setUpdateDate(LocalDateTime.now());
@@ -174,19 +179,24 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
 
     @Transactional
     @Override
-    public void staffPaymentConfirm(StaffPaymentConfirmVO vo) {
+    public void staffPaymentConfirm(StaffPaymentConfirmVO vo) throws Exception {
         //1、工资发放状态改变
         //2、删除工资申请
         //3、工资申请完成
         //4、发起
         ProjectPayment projectPayment = this.paymentInfoDao.selectById(vo.getPaymentId());
         if (vo.getStatus().equals("1")) {
-            projectPayment.setStatus(PaymentStatus.TO_PAYOFF.getStatus());
+            projectPayment.setStatus(PaymentStatus.CUSTOM_CONFIRM.getStatus());
         } else {
             projectPayment.setStatus(PaymentStatus.FAILED.getStatus());
         }
 
-        EventTodoList eventTodoList = this.eventInfoDao.selectProjectTodo(projectPayment.getProjectId(), EventType.SALARY_RELEASE_CONFIRM.getStatus());
+        Optional<EventTodoList> op = this.eventInfoDao.selectProjectPaymentTodo(projectPayment.getProjectId(), EventType.SALARY_RELEASE_CONFIRM.getStatus(),vo.getPaymentId());
+        if(!op.isPresent()){
+            throw new Exception("该申请记录不存在");
+        }
+        EventTodoList eventTodoList = op.get();
+
         EventFinishList eventFinishList = new EventFinishList();
         BeanUtils.copyProperties(eventTodoList, eventFinishList);
         eventFinishList.setUpdateDate(LocalDateTime.now());
@@ -210,7 +220,7 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
 
     @Transactional
     @Override
-    public void staffPaymentAudit(StaffPaymentAuditVO vo) {
+    public void staffPaymentAudit(StaffPaymentAuditVO vo) throws Exception {
         //工资发放审核
         //1、审核状态
         //2、删除工资申请
@@ -224,7 +234,14 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
             projectPayment.setStatus(PaymentStatus.FAILED.getStatus());
         }
 
-        EventTodoList eventTodoList = this.eventInfoDao.selectProjectTodo(projectPayment.getProjectId(), EventType.SALARY_RELEASE_APPLY.getStatus());
+
+        Optional<EventTodoList> op = this.eventInfoDao.selectProjectPaymentTodo(projectPayment.getProjectId(), EventType.SALARY_RELEASE_APPLY.getStatus(),vo.getPaymentId());
+        if(!op.isPresent()){
+            throw new Exception("该申请记录不存在");
+        }
+        EventTodoList eventTodoList = op.get();
+
+
         EventFinishList eventFinishList = new EventFinishList();
         BeanUtils.copyProperties(eventTodoList, eventFinishList);
         eventFinishList.setUpdateDate(LocalDateTime.now());

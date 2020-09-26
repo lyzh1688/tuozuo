@@ -94,6 +94,23 @@ public class EventInfoDaoImpl implements EventInfoDao {
     }
 
     @Override
+    public Optional<EventTodoList> selectProjectPaymentTodo(String projectId, String eventType, String paymentId) {
+        return this.eventTodoListMapper.selectList(Wrappers.<EventTodoList>query()
+                .lambda()
+                .eq(EventTodoList::getProjectId, projectId)
+                .eq(EventTodoList::getEventType, eventType))
+                .stream()
+                .filter(e -> {
+                    JSONObject object = JSON.parseObject(e.getSnapshot());
+                    if (object.getString("payment_id") != null && object.getString("payment_id").equals(paymentId)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }).findFirst();
+    }
+
+    @Override
     public Optional<EventTodoList> selectStaffFiredTodo(String projectId, String staffId, String eventType) {
         return this.eventTodoListMapper.selectList(Wrappers.<EventTodoList>query()
                 .lambda()

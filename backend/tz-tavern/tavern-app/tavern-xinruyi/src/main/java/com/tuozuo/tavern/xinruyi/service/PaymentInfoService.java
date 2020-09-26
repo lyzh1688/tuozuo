@@ -22,9 +22,9 @@ public interface PaymentInfoService {
 
     void modifyStaffPayment(StaffPaymentInfoVO vo);
 
-    void staffPaymentConfirm(StaffPaymentConfirmVO vo);
+    void staffPaymentConfirm(StaffPaymentConfirmVO vo) throws Exception;
 
-    void staffPaymentAudit(StaffPaymentAuditVO vo);
+    void staffPaymentAudit(StaffPaymentAuditVO vo) throws Exception;
 
     void modifyUploadVoucher(PaymentVoucherUploadVO voucherUploadVO) throws Exception;
 

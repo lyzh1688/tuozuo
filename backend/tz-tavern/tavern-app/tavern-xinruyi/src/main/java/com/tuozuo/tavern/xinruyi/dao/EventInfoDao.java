@@ -57,6 +57,8 @@ public interface EventInfoDao {
 
     EventTodoList selectProjectTodo(String projectId, String eventType);
 
+    Optional<EventTodoList> selectProjectPaymentTodo(String projectId, String eventType,String paymentId);
+
     Optional<EventTodoList> selectStaffFiredTodo(String projectId, String staffId, String eventType);
 
     List<EventTodoList> selectEventTodo(String eventType);
