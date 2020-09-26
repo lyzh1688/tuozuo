@@ -17,6 +17,15 @@ public class PaymentDTO {
     private String payVoucher;
     private String releaseStatus;
     private String paymentId;
+    private String month;
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
 
     public String getPaymentId() {
         return paymentId;
