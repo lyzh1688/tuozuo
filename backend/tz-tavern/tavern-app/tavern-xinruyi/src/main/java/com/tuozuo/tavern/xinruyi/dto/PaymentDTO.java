@@ -18,6 +18,15 @@ public class PaymentDTO {
     private String releaseStatus;
     private String paymentId;
     private String month;
+    private String remark;
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     public String getMonth() {
         return month;

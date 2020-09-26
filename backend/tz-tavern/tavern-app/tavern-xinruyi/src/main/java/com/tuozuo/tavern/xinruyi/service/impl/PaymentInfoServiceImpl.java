@@ -124,8 +124,8 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
             projectPayment.setUpdateDate(LocalDateTime.now());
 
             this.paymentInfoDao.updatePaymentInfo(projectPayment);
-            Optional<EventTodoList> op = this.eventInfoDao.selectProjectPaymentTodo(projectPayment.getProjectId(), EventType.SALARY_RELEASE.getStatus(),uploadVO.getPaymentId());
-            if(!op.isPresent()){
+            Optional<EventTodoList> op = this.eventInfoDao.selectProjectPaymentTodo(projectPayment.getProjectId(), EventType.SALARY_RELEASE.getStatus(), uploadVO.getPaymentId());
+            if (!op.isPresent()) {
                 throw new Exception("该发放记录不存在");
             }
             EventTodoList eventTodoList = op.get();
@@ -186,13 +186,13 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
         //4、发起
         ProjectPayment projectPayment = this.paymentInfoDao.selectById(vo.getPaymentId());
         if (vo.getStatus().equals("1")) {
-            projectPayment.setStatus(PaymentStatus.CUSTOM_CONFIRM.getStatus());
+            projectPayment.setStatus(PaymentStatus.TO_PAYOFF.getStatus());
         } else {
             projectPayment.setStatus(PaymentStatus.FAILED.getStatus());
         }
 
-        Optional<EventTodoList> op = this.eventInfoDao.selectProjectPaymentTodo(projectPayment.getProjectId(), EventType.SALARY_RELEASE_CONFIRM.getStatus(),vo.getPaymentId());
-        if(!op.isPresent()){
+        Optional<EventTodoList> op = this.eventInfoDao.selectProjectPaymentTodo(projectPayment.getProjectId(), EventType.SALARY_RELEASE_CONFIRM.getStatus(), vo.getPaymentId());
+        if (!op.isPresent()) {
             throw new Exception("该申请记录不存在");
         }
         EventTodoList eventTodoList = op.get();
@@ -229,14 +229,15 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
 
         ProjectPayment projectPayment = this.paymentInfoDao.selectById(vo.getPaymentId());
         if (vo.getStatus().equals("1")) {
-            projectPayment.setStatus(PaymentStatus.TO_PAYOFF.getStatus());
+            projectPayment.setStatus(PaymentStatus.CUSTOM_CONFIRM.getStatus());
         } else {
             projectPayment.setStatus(PaymentStatus.FAILED.getStatus());
         }
+        projectPayment.setRemark(vo.getRemark());
 
 
-        Optional<EventTodoList> op = this.eventInfoDao.selectProjectPaymentTodo(projectPayment.getProjectId(), EventType.SALARY_RELEASE_APPLY.getStatus(),vo.getPaymentId());
-        if(!op.isPresent()){
+        Optional<EventTodoList> op = this.eventInfoDao.selectProjectPaymentTodo(projectPayment.getProjectId(), EventType.SALARY_RELEASE_APPLY.getStatus(), vo.getPaymentId());
+        if (!op.isPresent()) {
             throw new Exception("该申请记录不存在");
         }
         EventTodoList eventTodoList = op.get();
@@ -266,47 +267,47 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
     @Override
     public void modifyUploadVoucher(PaymentVoucherUploadVO uploadVO) throws Exception {
         String voucher = this.storePaymentVoucherFile(uploadVO.getProjectId(), uploadVO.getPaymentId(), uploadVO.getVoucher());
-            //1、上传凭证
-            //3、发起申请事件
-            ProjectPayment projectPayment = this.paymentInfoDao.selectById(uploadVO.getPaymentId());
-            projectPayment.setPaymentId(uploadVO.getPaymentId());
-            projectPayment.setProjectId(uploadVO.getProjectId());
-            projectPayment.setPeriod(uploadVO.getMonth());
-            projectPayment.setFileVoucher(voucher);
-            projectPayment.setStatus(PaymentStatus.APPLYING.getStatus());
-            projectPayment.setTotalSalary(uploadVO.getAmount());
-            projectPayment.setPayDate(DateUtils.parseDate(uploadVO.getPayDate(), DateUtils.DEFAULT_SIMPLE_8__FORMATTER));
-            projectPayment.setUpdateDate(LocalDateTime.now());
+        //1、上传凭证
+        //3、发起申请事件
+        ProjectPayment projectPayment = this.paymentInfoDao.selectById(uploadVO.getPaymentId());
+        projectPayment.setPaymentId(uploadVO.getPaymentId());
+        projectPayment.setProjectId(uploadVO.getProjectId());
+        projectPayment.setPeriod(uploadVO.getMonth());
+        projectPayment.setFileVoucher(voucher);
+        projectPayment.setStatus(PaymentStatus.APPLYING.getStatus());
+        projectPayment.setTotalSalary(uploadVO.getAmount());
+        projectPayment.setPayDate(DateUtils.parseDate(uploadVO.getPayDate(), DateUtils.DEFAULT_SIMPLE_8__FORMATTER));
+        projectPayment.setUpdateDate(LocalDateTime.now());
 
 
-            EventTodoList eventTodoList = new EventTodoList();
-            //构造company_id,project_id,company_name,project_name,amount,month,payment_id,transferVoucher
-            ProjectInfo projectInfo = this.projectInfoDao.selectProjectInfo(uploadVO.getProjectId());
-            JSONObject eventSnapshot = new JSONObject();
-            eventSnapshot.put("company_id", projectPayment.getCompanyId());
-            eventSnapshot.put("project_id", uploadVO.getProjectId());
-            eventSnapshot.put("company_name", projectInfo.getCompanyName());
-            eventSnapshot.put("project_name", projectInfo.getProjectName());
-            eventSnapshot.put("amount", uploadVO.getAmount());
-            eventSnapshot.put("month", uploadVO.getMonth());
-            eventSnapshot.put("payment_id", projectPayment.getPaymentId());
-            eventSnapshot.put("transferVoucher", voucher);
+        EventTodoList eventTodoList = new EventTodoList();
+        //构造company_id,project_id,company_name,project_name,amount,month,payment_id,transferVoucher
+        ProjectInfo projectInfo = this.projectInfoDao.selectProjectInfo(uploadVO.getProjectId());
+        JSONObject eventSnapshot = new JSONObject();
+        eventSnapshot.put("company_id", projectPayment.getCompanyId());
+        eventSnapshot.put("project_id", uploadVO.getProjectId());
+        eventSnapshot.put("company_name", projectInfo.getCompanyName());
+        eventSnapshot.put("project_name", projectInfo.getProjectName());
+        eventSnapshot.put("amount", uploadVO.getAmount());
+        eventSnapshot.put("month", uploadVO.getMonth());
+        eventSnapshot.put("payment_id", projectPayment.getPaymentId());
+        eventSnapshot.put("transferVoucher", voucher);
 
-            eventTodoList.setSnapshot(JSON.toJSONString(eventSnapshot));
-            eventTodoList.setEventOwnerId( projectPayment.getCompanyId());
-            eventTodoList.setApplicant(projectInfo.getCompanyName());
-            eventTodoList.setEventId(UUIDUtil.randomUUID32());
-            eventTodoList.setEventType(EventType.SALARY_RELEASE_APPLY.getStatus());
-            eventTodoList.setRole(UserTypeDict.staff);
-            eventTodoList.setEventOwnerName(projectInfo.getCompanyName());
-            eventTodoList.setEventDate(LocalDateTime.now());
-            eventTodoList.setProjectId(projectInfo.getProjectId());
-            eventTodoList.setCompanyId( projectPayment.getCompanyId());
+        eventTodoList.setSnapshot(JSON.toJSONString(eventSnapshot));
+        eventTodoList.setEventOwnerId(projectPayment.getCompanyId());
+        eventTodoList.setApplicant(projectInfo.getCompanyName());
+        eventTodoList.setEventId(UUIDUtil.randomUUID32());
+        eventTodoList.setEventType(EventType.SALARY_RELEASE_APPLY.getStatus());
+        eventTodoList.setRole(UserTypeDict.staff);
+        eventTodoList.setEventOwnerName(projectInfo.getCompanyName());
+        eventTodoList.setEventDate(LocalDateTime.now());
+        eventTodoList.setProjectId(projectInfo.getProjectId());
+        eventTodoList.setCompanyId(projectPayment.getCompanyId());
 
-            this.eventInfoDao.insertEventTodo(eventTodoList);
-            this.paymentInfoDao.updatePaymentInfo(projectPayment);
+        this.eventInfoDao.insertEventTodo(eventTodoList);
+        this.paymentInfoDao.updatePaymentInfo(projectPayment);
 
-        }
+    }
 
 
     //path + projectId + paymentId +file

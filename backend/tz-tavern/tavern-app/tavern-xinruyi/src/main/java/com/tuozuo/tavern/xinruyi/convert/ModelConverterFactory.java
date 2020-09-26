@@ -173,6 +173,7 @@ public class ModelConverterFactory {
         paymentDTO.setReleaseStatus(projectPayment.getStatus());
         paymentDTO.setPaymentId(projectPayment.getPaymentId());
         paymentDTO.setMonth(projectPayment.getPeriod());
+        paymentDTO.setRemark(projectPayment.getRemark());
         return paymentDTO;
     }
 

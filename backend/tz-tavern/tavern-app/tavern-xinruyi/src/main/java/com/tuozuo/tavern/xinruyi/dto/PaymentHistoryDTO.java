@@ -18,6 +18,15 @@ public class PaymentHistoryDTO {
     private String payVoucher;
     private String status;
     private String paymentId;
+    private String remark;
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     public String getCompanyId() {
         return companyId;
