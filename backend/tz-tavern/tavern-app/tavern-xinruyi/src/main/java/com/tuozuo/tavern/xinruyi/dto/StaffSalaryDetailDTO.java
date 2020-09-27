@@ -11,6 +11,15 @@ public class StaffSalaryDetailDTO {
     private String salary;
     private String gender;
     private String bankCard;
+    private String staffId;
+
+    public String getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(String staffId) {
+        this.staffId = staffId;
+    }
 
     public String getName() {
         return name;
