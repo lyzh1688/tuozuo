@@ -3,7 +3,7 @@
     <a-card :bordered="false" title="待处理事件">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="8" :sm="8">
+          <a-col :md="8" :sm="8" v-if="isStaff">
             <a-form-item label="公司名称">
               <a-select
                 show-search
@@ -42,10 +42,9 @@
           <a-col :md="8" :sm="8">
             <a-form-item label="事件类型">
               <a-select v-model="queryParam1.eventType" style="width: 200px">
-                <a-select-option
-                  v-for="province in eventTypeList"
-                  :key="province.id"
-                >{{ province.name }}</a-select-option>
+                <a-select-option v-for="province in eventTypeList" :key="province.id">{{
+                  province.name
+                }}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -56,19 +55,25 @@
                 type="primary"
                 size="small"
                 @click="$refs.table.refresh(true)"
-              >查询</a-button>
+              >查询</a-button
+              >
               <a-button
                 :disabled="projectListLoading"
                 size="small"
                 type="primary"
-                @click="()=>{ queryParam1= {
-                  eventType: '',
-                  companyId: '',
-                  projectId: '',
-                  pageNo: 1,
-                  pageSize: 20
-                }}"
-              >重置</a-button>
+                @click="
+                  () => {
+                    queryParam1 = {
+                      eventType: '',
+                      companyId: '',
+                      projectId: '',
+                      pageNo: 1,
+                      pageSize: 20,
+                    }
+                  }
+                "
+              >重置</a-button
+              >
             </a-form-item>
           </a-col>
         </a-row>
@@ -77,7 +82,7 @@
         ref="table"
         size="default"
         rowKey="projectId"
-        :pageSize="20"
+        :pageSize="10"
         :columns="columns"
         :data="loadData"
         showPagination="true"
@@ -85,12 +90,7 @@
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="eventType" slot-scope="text">{{ eventTypeMap[text] }}</span>
         <span slot="ops" slot-scope="text, record">
-          <a-button
-            size="small"
-            type="primary"
-            @click="handleverify(record)"
-            :loading="confirmLoading"
-          >审核</a-button>
+          <a-button size="small" type="primary" @click="handleverify(record)" :loading="confirmLoading">审核</a-button>
           <!-- <a-button size="small" @click="fetchProjectDetail(record)" :loading="confirmLoading">详情</a-button> -->
         </span>
       </s-table>
@@ -98,7 +98,7 @@
     <a-card :bordered="false" title="已完成事件">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="8" :sm="8">
+          <a-col :md="8" :sm="8" v-if="isStaff">
             <a-form-item label="公司名称">
               <a-select
                 show-search
@@ -137,10 +137,9 @@
           <a-col :md="8" :sm="8">
             <a-form-item label="事件类型">
               <a-select v-model="queryParam2.eventType" style="width: 200px">
-                <a-select-option
-                  v-for="province in eventTypeList"
-                  :key="province.id"
-                >{{ province.name }}</a-select-option>
+                <a-select-option v-for="province in eventTypeList" :key="province.id">{{
+                  province.name
+                }}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -151,19 +150,25 @@
                 type="primary"
                 size="small"
                 @click="$refs.table2.refresh(true)"
-              >查询</a-button>
+              >查询</a-button
+              >
               <a-button
                 :disabled="projectListLoading"
                 size="small"
                 type="primary"
-                @click="()=>{ queryParam2= {
-                  eventType: '',
-                  companyId: '',
-                  projectId: '',
-                  pageNo: 1,
-                  pageSize: 20
-                }}"
-              >重置</a-button>
+                @click="
+                  () => {
+                    queryParam2 = {
+                      eventType: '',
+                      companyId: '',
+                      projectId: '',
+                      pageNo: 1,
+                      pageSize: 20,
+                    }
+                  }
+                "
+              >重置</a-button
+              >
             </a-form-item>
           </a-col>
         </a-row>
@@ -172,7 +177,7 @@
         ref="table2"
         size="default"
         rowKey="projectId"
-        :pageSize="20"
+        :pageSize="10"
         :columns="columns2"
         :data="loadData2"
         showPagination="true"
@@ -198,39 +203,38 @@
       <template v-slot:other v-if="isShowOnly">
         <a-form-item label="服务费率">
           <a-input-number
-            :disabled="isShowOnly&&!isverify||verifyType !== '3'"
+            :disabled="(isShowOnly && !isverify) || verifyType !== '3'"
             :min="0"
-            v-decorator="['fee', {rules: [{required: true, message: '请输入服务费率！'}], validateTrigger: 'blur'}]"
+            v-decorator="['fee', { rules: [{ required: true, message: '请输入服务费率！' }], validateTrigger: 'blur' }]"
           />
         </a-form-item>
-        <a-form-item label="审核结果" v-if="isShowOnly&&isverify">
+        <a-form-item label="审核结果" v-if="isShowOnly && isverify">
           <a-select
-            :disabled="isShowOnly&&!isverify"
-            style="width:200px;"
-            v-decorator="['status', {rules: [{required: true, message: '请选择状态！'}], validateTrigger: 'blur'}]"
+            :disabled="isShowOnly && !isverify"
+            style="width: 200px"
+            v-decorator="['status', { rules: [{ required: true, message: '请选择状态！' }], validateTrigger: 'blur' }]"
             placeholder="请选择"
           >
             <a-select-option value="1">审核成功</a-select-option>
             <a-select-option value="0">审核失败</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="项目状态" v-if="isShowOnly&&!isverify">
+        <a-form-item label="项目状态" v-if="isShowOnly && !isverify">
           <a-select
-            :disabled="isShowOnly&&!isverify"
-            style="width:200px;"
-            v-decorator="['status', {rules: [{required: true, message: '请选择状态！'}], validateTrigger: 'blur'}]"
+            :disabled="isShowOnly && !isverify"
+            style="width: 200px"
+            v-decorator="['status', { rules: [{ required: true, message: '请选择状态！' }], validateTrigger: 'blur' }]"
             placeholder="请选择"
           >
-            <a-select-option
-              v-for=" projectStatusItem in projectStatusList"
-              :key="projectStatusItem.id"
-            >{{ projectStatusItem.name }}</a-select-option>
+            <a-select-option v-for="projectStatusItem in projectStatusList" :key="projectStatusItem.id">{{
+              projectStatusItem.name
+            }}</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="备注">
           <a-textarea
-            :disabled="isShowOnly&&!isverify"
-            v-decorator="['remark', {rules: [{required: true, message: '请输备注！'}], validateTrigger: 'blur'}]"
+            :disabled="isShowOnly && !isverify"
+            v-decorator="['remark', { rules: [{ required: true, message: '请输备注！' }], validateTrigger: 'blur' }]"
           />
         </a-form-item>
       </template>
@@ -247,34 +251,33 @@
       @ok="handleOk"
     >
       <template v-slot:other v-if="isShowOnly">
-        <a-form-item label="审核结果" v-if="isShowOnly&&isverify">
+        <a-form-item label="审核结果" v-if="isShowOnly && isverify">
           <a-select
-            :disabled="isShowOnly&&!isverify"
-            style="width:200px;"
-            v-decorator="['status', {rules: [{required: true, message: '请选择状态！'}], validateTrigger: 'blur'}]"
+            :disabled="isShowOnly && !isverify"
+            style="width: 200px"
+            v-decorator="['status', { rules: [{ required: true, message: '请选择状态！' }], validateTrigger: 'blur' }]"
             placeholder="请选择"
           >
             <a-select-option value="1">审核成功</a-select-option>
             <a-select-option value="0">审核失败</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="公司状态" v-if="isShowOnly&&!isverify">
+        <a-form-item label="公司状态" v-if="isShowOnly && !isverify">
           <a-select
-            :disabled="isShowOnly&&!isverify"
-            style="width:200px;"
-            v-decorator="['status', {rules: [{required: true, message: '请选择状态！'}], validateTrigger: 'blur'}]"
+            :disabled="isShowOnly && !isverify"
+            style="width: 200px"
+            v-decorator="['status', { rules: [{ required: true, message: '请选择状态！' }], validateTrigger: 'blur' }]"
             placeholder="请选择"
           >
-            <a-select-option
-              v-for=" projectStatusItem in companyStatusList"
-              :key="projectStatusItem.id"
-            >{{ projectStatusItem.name }}</a-select-option>
+            <a-select-option v-for="projectStatusItem in companyStatusList" :key="projectStatusItem.id">{{
+              projectStatusItem.name
+            }}</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="备注">
           <a-textarea
-            :disabled="isShowOnly&&!isverify"
-            v-decorator="['remark', {rules: [{required: true, message: '请输备注！'}], validateTrigger: 'blur'}]"
+            :disabled="isShowOnly && !isverify"
+            v-decorator="['remark', { rules: [{ required: true, message: '请输备注！' }], validateTrigger: 'blur' }]"
           />
         </a-form-item>
       </template>
@@ -299,6 +302,58 @@
       @cancel="handleCancel"
       @ok="handleOk"
     ></firestaffform>
+    <uploadfileform
+      :title="formTitle"
+      ref="uploadfileform"
+      :clearUpload="clearUpload"
+      :visible="salaryVisible"
+      :loading="confirmLoading"
+      :model="salaryMdl"
+      :isUpdate="true"
+      :isShowOnly="false"
+      @cancel="handleCancel"
+      @ok="handleSalaryRelease"
+    >
+    </uploadfileform>
+    <verifysalary
+      ref="salaryVerifysalary"
+      :visible="salaryVerifyVisible"
+      :loading="confirmLoading"
+      :model="salaryDetailMdl"
+      @cancel="salaryVerifyVisible = false"
+      @ok="salaryVerifyVisible = false"
+      @pass="handleVerifyOK()"
+      @reject="handleVerifyReject()"
+    >
+    </verifysalary>
+    <salarydetailwithlist
+      :title="formTitle"
+      ref="salarydetailwithlist"
+      :visible="salaryDetailVisible"
+      :loading="confirmLoading"
+      :model="salaryDetailMdl"
+      :isUpdate="isupdate"
+      :isShowOnly="false"
+      @cancel="salaryDetailVisible = false"
+      @ok="salaryDetailVisible = false"
+    >
+      <template v-slot:other >
+        <a-row>
+          <a-col :span="48">
+            <a-form-item>
+              <div style="display: flex; flex-wrap: nowrap; flex-flow: row; justify-content: space-between">
+                <div style="margin-inline-end: 70px; margin-inline-start: 70px">
+                  <a-button type="primary" @click="handleConfirmOK()">确认通过</a-button>
+                </div>
+                <div style="margin-inline-end: 70px; margin-inline-start: 70px">
+                  <a-button type="danger" @click="handleConfirmReject()">确认不通过</a-button>
+                </div>
+              </div>
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </template>
+    </salarydetailwithlist>
   </page-header-wrapper>
 </template>
 
@@ -316,12 +371,16 @@ import {
   dodecruitment
 } from '@/api/events'
 import { getCommonDict } from '@/api/dictionary'
+import { uploadFile, doVerifySalary, doConfirmSalary } from '@/api/salary'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
 import projectform from '@/views/projects/form/ProjectForm'
 import md5 from 'md5'
 import firestaffform from './form/FireStaffForm'
 import companyform from '@/views/user/forms/CompanyAuthentication'
 import companyspotform from './form/CompanySpotForm'
+import uploadfileform from '@/views/salary/forms/uploadFileForm'
+import verifysalary from '@/views/salary/forms/VerifySalary'
+import salarydetailwithlist from '@/views/salary/forms/SalaryDetailWithList'
 const columns = [
   {
     title: '编号',
@@ -398,7 +457,7 @@ const columns2 = [
   {
     title: '审核状态',
     dataIndex: 'status',
-     customRender: (text) => {
+    customRender: (text) => {
       if (text === '0') {
         return '审核未通过'
       }
@@ -509,6 +568,11 @@ export default {
       fireStaffVisible: false,
       companyVisible: false,
       confirmLoading: false,
+      salaryVisible: false,
+      salaryMdl: {},
+      salaryDetailMdl: {},
+      salaryDetailVisible: false,
+      salaryVerifyVisible: false,
       verificationMdl: {},
       verifyType: '',
       isverify: false,
@@ -630,7 +694,10 @@ export default {
     projectform,
     firestaffform,
     companyform,
-    companyspotform
+    companyspotform,
+    uploadfileform,
+    verifysalary,
+    salarydetailwithlist
   },
   created () {
     fetch('', (data) => {
@@ -670,7 +737,146 @@ export default {
       }
     })
   },
+   computed: {
+    isStaff () {
+      for (const i of this.$store.getters.roles.permissionList) {
+        if (i.includes('staff')) {
+          return true
+        }
+      }
+      return false
+    }
+  },
   methods: {
+    handleConfirmOK () {
+      const form = this.$refs.salarydetailwithlist.form
+      form.validateFields((errors, values) => {
+        if (!errors) {
+          console.log('values', values)
+
+          Modal.confirm({
+            title: '审核通过',
+            content: '是否确认取审核通过？通过后将进入工资待发放流程！',
+            onOk: () => {
+              this.sendConfirmResult(values.paymentId, '1')
+            },
+            onCancel () {}
+          })
+        }
+      })
+    },
+    handleConfirmReject () {
+      const form = this.$refs.salarydetailwithlist.form
+      form.validateFields((errors, values) => {
+        if (!errors) {
+          Modal.confirm({
+            title: '确认未通过',
+            content: '是否确认不通过审核？该操作将需要您重新修改或者发起工资发放申请再继续流程！',
+            onOk: () => {
+              this.sendConfirmResult(values.paymentId, '0')
+            },
+            onCancel () {}
+          })
+        }
+      })
+    },
+    sendConfirmResult (id, status) {
+      this.confirmLoading = true
+      doConfirmSalary(id, status)
+        .then((response) => {
+          const result = response
+          if (success(result)) {
+            this.$notification.success({
+              message: '发送确认成功'
+            })
+            this.salaryDetailVisible = false
+            this.$refs.table.refresh(true)
+            this.$refs.table2.refresh(true)
+            this.confirmLoading = false
+          } else {
+            this.confirmLoading = false
+            this.$notification.error({
+              message: errorMessage(result),
+              description: '发送确认失败'
+            })
+          }
+          if (needLogin(result)) {
+            this.salaryDetailVisible = false
+            this.confirmLoading = false
+          }
+        })
+        .catch((error) => {
+          this.$notification.error({
+            message: '发送确认失败',
+            description: error
+          })
+          this.confirmLoading = false
+        })
+    },
+    handleVerifyOK () {
+      const form = this.$refs.salaryVerifysalary.form
+      form.validateFields((errors, values) => {
+        if (!errors) {
+          console.log('values', values)
+          Modal.confirm({
+            title: '审核通过',
+            content: '是否确认取审核通过？',
+            onOk: () => {
+              this.sendVerifyResult(values.paymentId, '1', values.remark)
+            },
+            onCancel () {}
+          })
+        }
+      })
+    },
+    handleVerifyReject () {
+      const form = this.$refs.salaryVerifysalary.form
+      form.validateFields((errors, values) => {
+        if (!errors) {
+          Modal.confirm({
+            title: '审核未通过',
+            content: '是否确认不通过审核？该操作将需要客户重新修改审核后再次发起！',
+            onOk: () => {
+              this.sendVerifyResult(values.paymentId, '0', values.remark)
+            },
+            onCancel () {}
+          })
+        }
+      })
+    },
+    sendVerifyResult (id, status, remark) {
+      this.confirmLoading = true
+      doVerifySalary(id, status, remark)
+        .then((response) => {
+          const result = response
+          if (success(result)) {
+            this.$notification.success({
+              message: '发送审核成功'
+            })
+            this.salaryVerifyVisible = false
+            this.confirmLoading = false
+            this.$refs.table.refresh(true)
+            this.$refs.table2.refresh(true)
+          } else {
+            this.confirmLoading = false
+            this.$notification.error({
+              message: errorMessage(result),
+              description: '发送审核失败'
+            })
+          }
+          if (needLogin(result)) {
+            this.salaryVerifyVisible = false
+            this.confirmLoading = false
+          }
+        })
+        .catch((error) => {
+          this.$notification.error({
+            message: '发送审核失败',
+            description: error
+          })
+          this.confirmLoading = false
+        })
+    },
     fetchCompanyDetail (record, mark) {
       this.formTitle = '公司详情'
       this.isShowOnly = true
@@ -1029,9 +1235,95 @@ export default {
           contact: snapshotBody.contact
         }
         this.fireStaffVisible = true
+      } else if (this.verifyType === '8') {
+        const snapshotBody = JSON.parse(record.snapshot)
+        this.salaryDetailMdl = {
+          transferVoucher: snapshotBody.transferVoucher,
+          companyId: snapshotBody.company_id,
+          paymentId: snapshotBody.payment_id,
+          projectName: snapshotBody.project_name,
+          projectId: snapshotBody.project_id,
+          companyName: snapshotBody.company_name,
+          totalWages: snapshotBody.amount,
+          month: snapshotBody.month
+        }
+        this.salaryVerifyVisible = true
+      } else if (this.verifyType === '9') {
+        const snapshotBody = JSON.parse(record.snapshot)
+        this.salaryDetailMdl = {
+          transferVoucher: snapshotBody.transferVoucher,
+          companyId: snapshotBody.company_id,
+          paymentId: snapshotBody.payment_id,
+          projectName: snapshotBody.project_name,
+          projectId: snapshotBody.project_id,
+          companyName: snapshotBody.company_name,
+          totalWages: snapshotBody.amount,
+          month: snapshotBody.month
+        }
+        this.salaryDetailVisible = true
+      } else if (this.verifyType === '10') {
+        const snapshotBody = JSON.parse(record.snapshot)
+        this.formTitle = '工资发放'
+        this.salaryMdl = {
+          companyId: snapshotBody.company_id,
+          paymentId: snapshotBody.payment_id,
+          projectName: snapshotBody.project_name,
+          projectId: snapshotBody.project_id,
+          companyName: snapshotBody.company_name,
+          amount: snapshotBody.amount,
+          month: snapshotBody.month
+        }
+        const form = this.$refs.uploadfileform.form
+        this.clearUpload = !this.clearUpload
+        form.resetFields() // 清理表单数据（可不做）
+        this.isupdate = true
+        this.isShowOnly = false
+        this.salaryVisible = true
       }
+
       this.isverify = true
       this.isShowOnly = true
+    },
+    handleSalaryRelease () {
+      const form = this.$refs.uploadfileform.form
+      form.validateFields((errors, values) => {
+        if (!errors) {
+          this.confirmLoading = true
+          uploadFile(values)
+            .then((response) => {
+              const result = response
+              if (success(result)) {
+                this.$notification.success({
+                  message: '执行成功'
+                })
+                const form = this.$refs.uploadfileform.form
+                this.clearUpload = !this.clearUpload
+                form.resetFields() // 清理表单数据（可不做）
+                this.$refs.table.refresh(true)
+                this.$refs.table2.refresh(true)
+                this.salaryVisible = false
+                this.confirmLoading = false
+              } else {
+                this.confirmLoading = false
+                this.$notification.error({
+                  message: errorMessage(result),
+                  description: '执行失败。请稍后再试'
+                })
+              }
+              if (needLogin(result)) {
+                this.salaryVisible = false
+                this.confirmLoading = false
+              }
+            })
+            .catch((error) => {
+              this.$notification.error({
+                message: '执行失败。请稍后再试',
+                description: error
+              })
+              this.confirmLoading = false
+            })
+        }
+      })
     },
     handleCancel () {
       if (this.isverify) {
@@ -1043,6 +1335,7 @@ export default {
             this.companyVisible = false
             this.companyspotformVisible = false
             this.fireStaffVisible = false
+            this.salaryVisible = false
           },
           onCancel () {}
         })

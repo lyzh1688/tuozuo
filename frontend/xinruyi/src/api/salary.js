@@ -2,11 +2,11 @@ import request from '@/utils/request'
 const apiList = {
   salaryviewList: process.env.VUE_APP_SYSTEM_URL + '/v1/fund/list',
   fileUpload: process.env.VUE_APP_SYSTEM_URL + '/v1/fund/voucher',
-  historyList: process.env.VUE_APP_SYSTEM_URL + '/v1/event/list/v1/fund/history/',
+  historyList: process.env.VUE_APP_SYSTEM_URL + '/v1/fund/history/',
   modifyFileupload: process.env.VUE_APP_SYSTEM_URL + '/v1/fund/voucher/',
   confirmSalary: process.env.VUE_APP_SYSTEM_URL + '/v1/fund/salary/confirmation/',
   verifySalary: process.env.VUE_APP_SYSTEM_URL + '/v1/fund/payoff/',
-  modifySalaryList: process.env.VUE_APP_SYSTEM_URL + '/v1/fund/payoff/',
+  modifySalaryList: process.env.VUE_APP_SYSTEM_URL + '/v1/fund/detail/',
   salaryList: process.env.VUE_APP_SYSTEM_URL + '/v1/fund/salary/detail'
 }
 /**
@@ -64,8 +64,15 @@ voucher	是	multipartfile	凭证	根据用户判断存放字段
 export function modifyFile (form) {
     const formData = new FormData()
     for (const i in form) {
+        if (i.includes('payDate')) {
+            continue
+        }
       if (i.includes('voucher')) {
-        formData.append(i, form[i].file.originFileObj)
+        if (typeof form[i] === 'string') {
+          // formData.append(i, null)
+        } else {
+          formData.append(i, form[i].file.originFileObj)
+        }
       } else {
         formData.append(i, form[i])
       }
@@ -90,7 +97,7 @@ export function modifyFile (form) {
  */
 export function getHistorySalaryList (companyId, projectId, beginMonth, endMonth, pageNo, pageSize) {
     return request({
-        url: apiList.historyList + '?companyId=' + companyId + '&projectId=' + projectId + '&beginMonth=' + beginMonth + '&endMonth=' + endMonth + '&pageNo=' + pageNo + '&pageSize=' + pageSize,
+        url: apiList.historyList + projectId + '?companyId=' + companyId + '&beginMonth=' + beginMonth + '&endMonth=' + endMonth + '&pageNo=' + pageNo + '&pageSize=' + pageSize,
         method: 'get'
     })
 }

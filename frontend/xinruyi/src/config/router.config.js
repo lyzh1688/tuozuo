@@ -82,7 +82,14 @@ export const asyncRouterMap = [
         name: 'SalaryViewList',
         component: resolve => require(['@/views/salary/SalaryViewList'], resolve),
         // component: () => import('@/views/company/MycompanyList'),
-        meta: { title: '待办列表', keepAlive: true, permission: ['admin', 'xinruyi.staff.normal', 'xinruyi.custom.normal'] }
+        meta: { title: '资金列表', keepAlive: true, permission: ['admin', 'xinruyi.staff.normal', 'xinruyi.custom.normal'] }
+      },
+      {
+        path: '/salaryControl/eventList',
+        name: 'EventList',
+        component: resolve => require(['@/views/verifications/EventList'], resolve),
+        // component: () => import('@/views/company/MycompanyList'),
+        meta: { title: '待办列表', keepAlive: true, permission: ['admin', 'xinruyi.custom.normal'] }
       }
     ]
   },

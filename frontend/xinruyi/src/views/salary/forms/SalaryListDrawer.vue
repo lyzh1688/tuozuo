@@ -12,56 +12,9 @@
       <a-form >
         <!-- 检查是否有 id 并且大于0，大于0是修改。其他是新增，新增不显示主键ID -->
         <a-row>
-          <a-col :md="7" :sm="8" v-if="projectId==''">
-            <a-form-item label="项目名称" >
-              <a-select
-                show-search
-                :value="queryParam.projectId"
-                placeholder="请输入项目名称"
-                style="width: 200px"
-                :default-active-first-option="false"
-                :show-arrow="false"
-                :filter-option="false"
-                :not-found-content="null"
-                @search="handleCustomSearch"
-                @change="handleCustomChange"
-              >
-                <a-select-option v-for="d in fuzzyProjectList" :key="d.value">{{ d.text }}</a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="8">
-            <a-form-item label="开始日期">
-              <a-date-picker
-                valueFormat="YYYYMMDD"
-                format="YYYY-MM-DD"
-                v-model="queryParam.beginDate"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="8">
-            <a-form-item label="结束日期">
-              <a-date-picker
-                valueFormat="YYYYMMDD"
-                format="YYYY-MM-DD"
-                v-model="queryParam.endDate"
-              />
-            </a-form-item>
-          </a-col>
           <a-col :md="8" :sm="8">
             <a-form-item >
               <a-button type="primary" size="small" @click="refresh=!refresh">查询</a-button>
-              <a-button
-                size="small"
-                type="primary"
-                @click="()=>{queryParam= {
-                  projectId: '',
-                  beginDate: '',
-                  endDate: '',
-                  pageNo: 1,
-                  pageSize: 20
-                }}"
-              >重置</a-button>
             </a-form-item>
           </a-col>
         </a-row>
@@ -76,6 +29,7 @@
             showPagination="true"
           >
             <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
+            <span slot="gender" slot-scope="text">{{ genderMap[text] }}</span>
           </s-table>
         </a-form-item>
       </a-form>
@@ -85,9 +39,9 @@
 
 <script>
 import { STable } from '@/components'
+import { getCommonDict } from '@/api/dictionary'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
-import { fuzzyQueryProject } from '@/api/projects'
-import { getSalaryList } from '@/api/humanResource'
+import { getDetailsalaryList } from '@/api/salary'
 // 表单字段
 const columns = [
   {
@@ -96,13 +50,13 @@ const columns = [
   },
   {
     title: '姓名',
-    dataIndex: 'staffName',
-    scopedSlots: { customRender: 'staffName' }
+    dataIndex: 'name',
+    scopedSlots: { customRender: 'name' }
   },
   {
-    title: '项目名称',
-    dataIndex: 'projectName',
-    scopedSlots: { customRender: 'projectName' }
+    title: '性别',
+    dataIndex: 'gender',
+    scopedSlots: { customRender: 'gender' }
   },
   {
     title: '工资',
@@ -110,14 +64,9 @@ const columns = [
     scopedSlots: { customRender: 'salary' }
   },
   {
-    title: '工资月份',
-    dataIndex: 'month',
-    scopedSlots: { customRender: 'month' }
-  },
-  {
-    title: '发放时间',
-    dataIndex: 'releaseDate',
-    scopedSlots: { customRender: 'releaseDate' }
+    title: '身份证',
+    dataIndex: 'idNo',
+    scopedSlots: { customRender: 'idNo' }
   },
   {
     title: '银行卡号',
@@ -125,38 +74,7 @@ const columns = [
     scopedSlots: { customRender: 'bankCard' }
   }
 ]
-let timeout
-let currentValue
 
-function fetch (value, callback) {
-  if (timeout) {
-    clearTimeout(timeout)
-    timeout = null
-  }
-  currentValue = value
-
-  function fake () {
-    fuzzyQueryProject(value, 20, false).then((d) => {
-      if (currentValue === value) {
-        const result = d.data
-        const data = []
-        result.forEach((r) => {
-          data.push({
-            value: r['id'],
-            text: r['name']
-          })
-        })
-        data.push({
-          value: '',
-          text: ''
-        })
-        callback(data)
-      }
-    })
-  }
-
-  timeout = setTimeout(fake, 300)
-}
 export default {
   props: {
     visible: {
@@ -167,7 +85,7 @@ export default {
          type: Boolean,
        default: () => false
     },
-    staffId: {
+    paymentId: {
         type: String,
        default: () => ''
     },
@@ -190,23 +108,24 @@ export default {
           endData: '',
           projectId: ''
       },
+      genderMap: {},
       fuzzyProjectList: [],
       salaryData: parameter => {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
         if (this.projectId !== '') {
           requestParameters.projectId = this.projectId
         }
+        if (this.paymentId !== '') {
+          requestParameters.paymentId = this.paymentId
+        }
         console.log('loadData request parameters:', requestParameters)
         this.infoLoading = true
-        return getSalaryList(requestParameters.projectId, this.staffId, requestParameters.beginDate, requestParameters.endDate, requestParameters.pageNo, requestParameters.pageSize)
+        return getDetailsalaryList(requestParameters.paymentId, requestParameters.projectId, '', '', '', requestParameters.pageNo, requestParameters.pageSize)
           .then(Response => {
             const result = Response
             // console.log('getTradeflow', result)
             if (success(result)) {
-              const ans = []
-              for (const i in result.data.payment) {
-                ans.push({ ...result.data.payment[i], key: i })
-              }
+              const ans = result.data.staffs
               setTimeout(() => {
               this.infoLoading = false
             }, 600)
@@ -243,6 +162,12 @@ export default {
   },
   created () {
        fetch('', (data) => (this.fuzzyProjectList = data))
+       this.getDict('gender').then((response) => {
+      this.genderMap = {}
+      for (const i of response) {
+        this.genderMap[i.id] = i.name
+      }
+    })
   },
   methods: {
       visibleChange (data) {
@@ -264,6 +189,25 @@ export default {
       // console.log(value)
       this.queryParam.projectId = value
       fetch(value, (data) => (this.fuzzyProjectList = data))
+    },
+    getDict (keyword) {
+      return new Promise((resolve, reject) => {
+        getCommonDict(keyword).then((Response) => {
+          const result = Response
+          // console.log('dictQuery', result)
+          if (success(result)) {
+            resolve(result.data)
+          } else {
+            this.$notification.error({
+              message: errorMessage(result),
+              description: '查询字典失败'
+            })
+          }
+          if (needLogin(result)) {
+            this.visible = false
+          }
+        })
+      })
     }
   },
   watch: {

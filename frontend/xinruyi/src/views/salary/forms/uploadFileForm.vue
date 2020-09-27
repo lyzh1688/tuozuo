@@ -4,24 +4,32 @@
     :width="740"
     :visible="visible"
     :confirmLoading="loading"
-    @ok="() => { $emit('ok') }"
-    @cancel="() => { $emit('cancel') }"
+    @ok="
+      () => {
+        $emit('ok')
+      }
+    "
+    @cancel="
+      () => {
+        $emit('cancel')
+      }
+    "
   >
     <a-spin :spinning="loading">
       <a-form :form="form" v-bind="formLayout">
         <!-- 检查是否有 id 并且大于0，大于0是修改。其他是新增，新增不显示主键ID -->
         <a-form-item v-show="false" label="公司id">
-          <a-input v-decorator="['companyId', { validateTrigger: 'blur'}]" />
+          <a-input v-decorator="['companyId', { validateTrigger: 'blur' }]" />
         </a-form-item>
-        <a-form-item label="公司名称" v-show="form.companyName&&form.companyName!=''">
-          <a-input
-            :disabled="true"
-            v-decorator="['companyName']"
-          />
+        <a-form-item v-show="false" label="工资id">
+          <a-input v-decorator="['paymentId', { validateTrigger: 'blur' }]" />
+        </a-form-item>
+        <a-form-item label="公司名称" v-show="isUpdate">
+          <a-input :disabled="true" v-decorator="['companyName']" />
         </a-form-item>
         <a-form-item label="项目名称">
           <a-select
-            :disabled="isShowOnly"
+            :disabled="isUpdate"
             show-search
             placeholder="请输入项目名称"
             style="width: 200px"
@@ -29,7 +37,10 @@
             :show-arrow="false"
             :filter-option="false"
             :not-found-content="null"
-            v-decorator="['projectId', {rules: [{required: true, message: '请输入项目名称！'}], validateTrigger: 'blur'}]"
+            v-decorator="[
+              'projectId',
+              { rules: [{ required: true, message: '请输入项目名称！' }], validateTrigger: 'blur' },
+            ]"
             @search="handleProjectSearch"
             @change="handleProjectChange"
           >
@@ -38,32 +49,57 @@
         </a-form-item>
         <a-form-item label="总金额">
           <a-input-number
-            :disabled="isShowOnly"
+            :disabled="isUpdate && model.releaseStatus !== '5'"
             :min="0"
-            v-decorator="['amount', {rules: [{required: true, message: '请输入预算金额！'}], validateTrigger: 'blur'}]"
+            v-decorator="[
+              'amount',
+              { rules: [{ required: true, message: '请输入预算金额！' }], validateTrigger: 'blur' },
+            ]"
           />
         </a-form-item>
         <a-form-item label="发放月份">
           <a-month-picker
-            :disabled="isShowOnly"
+            :disabled="isUpdate && model.releaseStatus !== '5'"
             valueFormat="YYYYMM"
             format="YYYY-MM"
-            v-decorator="['month', {rules: [{required: true, message: '请输入项目开始时间！'}], validateTrigger: ['change', 'blur']}]"
+            v-decorator="[
+              'month',
+              { rules: [{ required: true, message: '请输入项目开始时间！' }], validateTrigger: ['change', 'blur'] },
+            ]"
           />
         </a-form-item>
-        <a-form-item label="项目文件" key="项目文件">
+        <a-form-item label="实际发放日期" v-if="isUpdate && model.releaseStatus !== '5'">
+          <a-date-picker
+            :disabled="isShowOnly"
+            valueFormat="YYYYMMDD"
+            format="YYYY-MM-DD"
+            v-decorator="[
+              'payDate',
+              { rules: [{ required: true, message: '请输入工资发放日期时间！' }], validateTrigger: ['change', 'blur'] },
+            ]"
+          />
+        </a-form-item>
+        <a-form-item label="凭证文件" key="凭证文件">
           <a-button
             type="text"
-            v-if="model&&typeof model.voucher === 'string'"
-            @click="()=>{jumpToFile(model.voucher)}"
-          >已上传的文件</a-button>
+            v-if="model && typeof model.voucher === 'string'"
+            @click="
+              () => {
+                jumpToFile(model.voucher)
+              }
+            "
+          >已上传的文件</a-button
+          >
           <a-upload
             :beforeUpload="beforeUpload"
             v-show="!isShowOnly"
             name="projectFile"
             :file-list="voucherFileList"
             list-type="picture-card"
-            v-decorator="['voucher', {rules: [{required: true, message: '请输入项目文件！'}], validateTrigger: 'blur'}]"
+            v-decorator="[
+              'voucher',
+              { rules: [{ required: true, message: '请输入项目文件！' }], validateTrigger: 'blur' },
+            ]"
             :showUploadList="{ showPreviewIcon: false, showRemoveIcon: true }"
             @change="handlevoucherFileChange"
           >
@@ -81,9 +117,7 @@
 <script>
 import pick from 'lodash.pick'
 // import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
-import {
-  fuzzyQueryProject
-} from '@/api/projects'
+import { fuzzyQueryProject } from '@/api/projects'
 // 表单字段
 const fields = [
   'paymentId',
@@ -93,6 +127,7 @@ const fields = [
   'companyName',
   'amount',
   'month',
+  'payDate',
   'voucher'
 ]
 let timeout
@@ -187,11 +222,16 @@ export default {
   watch: {
     clearUpload: function (newVal, oldVal) {
       this.voucherFileList = []
+    },
+    visible (value) {
+      if (value) {
+        fetch(this.model.companyName ? this.model.companyName : '', (data) => (this.fuzzyProjectList = data))
+      }
     }
   },
   created () {
     console.log('custom modal created')
-    fetch('', (data) => (this.fuzzyProjectList = data))
+    fetch(this.model.companyName ? this.model.companyName : '', (data) => (this.fuzzyProjectList = data))
     // 防止表单未注册
     fields.forEach((v) => this.form.getFieldDecorator(v))
 
@@ -201,7 +241,10 @@ export default {
     })
   },
   methods: {
-      handleProjectSearch (value) {
+    jumpToFile (link) {
+      window.open(link, '_blank')
+    },
+    handleProjectSearch (value) {
       fetch(value, (data) => (this.fuzzyProjectList = data))
     },
     handleProjectChange (value) {
