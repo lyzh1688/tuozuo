@@ -367,6 +367,11 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         return this.eventInfoDao.selectProjectStaffFiredTodo(companyId, projectId, staffId, eventType).isPresent();
     }
 
+    @Override
+    public List<HotProjectInfo> queryHotProjects() {
+        return this.projectInfoDao.selectHotProjects();
+    }
+
 
     private void setProjectInfoFiles(MultipartFile file, ProjectInfo projectInfo) throws Exception {
         if (file != null) {

@@ -22,4 +22,9 @@ public class BusinessDictServiceImpl implements BusinessDictService {
     public List<BusinessDict> queryBusinessDicts(String group) {
         return this.businessDictDao.selectBuinessDicts(group);
     }
+
+    @Override
+    public List<BusinessDict> queryIndustryType() {
+        return this.businessDictDao.selectIndustryType();
+    }
 }

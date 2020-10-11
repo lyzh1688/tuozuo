@@ -6,28 +6,11 @@
     <id column="business_group" jdbcType="VARCHAR" property="businessGroup" />
     <result column="business_name" jdbcType="VARCHAR" property="businessName" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="map">
-    delete from business_dict
-    where business_id = #{businessId,jdbcType=VARCHAR}
-      and business_group = #{businessGroup,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.tuozuo.tavern.xinruyi.model.BusinessDict">
-    insert into business_dict (business_id, business_group, business_name
-      )
-    values (#{businessId,jdbcType=VARCHAR}, #{businessGroup,jdbcType=VARCHAR}, #{businessName,jdbcType=VARCHAR}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.xinruyi.model.BusinessDict">
-    update business_dict
-    set business_name = #{businessName,jdbcType=VARCHAR}
-    where business_id = #{businessId,jdbcType=VARCHAR}
-      and business_group = #{businessGroup,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
-    select business_id, business_group, business_name
-    from business_dict
-    where business_id = #{businessId,jdbcType=VARCHAR}
-      and business_group = #{businessGroup,jdbcType=VARCHAR}
+  <select id="selectIndustryType" parameterType="map" resultMap="BaseResultMap">
+    select t1.business_id,t1.business_name from business_dict t1 LEFT JOIN project_info t2
+    on t1.business_id = t2.project_industry
+    where t1.business_group = 'industryType'
+    group by  business_id order by count(1) desc
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select business_id, business_group, business_name

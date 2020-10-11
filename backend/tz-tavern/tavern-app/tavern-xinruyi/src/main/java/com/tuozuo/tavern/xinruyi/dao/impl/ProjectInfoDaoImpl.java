@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tuozuo.tavern.xinruyi.dao.ProjectInfoDao;
+import com.tuozuo.tavern.xinruyi.mapper.HotProjectInfoMapper;
 import com.tuozuo.tavern.xinruyi.mapper.ProjectInfoMapper;
+import com.tuozuo.tavern.xinruyi.model.HotProjectInfo;
 import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
 
     @Autowired
     private ProjectInfoMapper projectInfoMapper;
+    @Autowired
+    private HotProjectInfoMapper hotProjectInfoMapper;
 
     @Override
     public List<ProjectInfo> selectAllProjectInfo(String projectName) {
@@ -96,6 +100,11 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
                 .eq(ProjectInfo::getProjectName, projectName)
                 .eq(ProjectInfo::getCompanyId, companyId)));
 
+    }
+
+    @Override
+    public List<HotProjectInfo> selectHotProjects() {
+        return this.hotProjectInfoMapper.selectAll();
     }
 
 

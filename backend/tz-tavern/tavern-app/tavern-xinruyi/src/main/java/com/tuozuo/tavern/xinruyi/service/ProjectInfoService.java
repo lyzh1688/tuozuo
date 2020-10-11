@@ -48,4 +48,6 @@ public interface ProjectInfoService {
 
     boolean isRepeatedStaffFiredApply(String companyId,String projectId,String staffId,String eventType);
 
+    List<HotProjectInfo> queryHotProjects();
+
 }

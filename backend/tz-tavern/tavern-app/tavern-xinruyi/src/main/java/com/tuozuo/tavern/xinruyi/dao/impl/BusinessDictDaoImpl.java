@@ -25,4 +25,9 @@ public class BusinessDictDaoImpl implements BusinessDictDao {
                 .eq(BusinessDict::getBusinessGroup, group)
                 .orderByAsc(BusinessDict::getBusinessId));
     }
+
+    @Override
+    public List<BusinessDict> selectIndustryType() {
+        return this.businessDictMapper.selectIndustryType();
+    }
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuozuo.tavern.xinruyi.mapper.HotProjectInfoMapper">
+  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.xinruyi.model.HotProjectInfo">
+    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="order" jdbcType="INTEGER" property="order" />
+    <result column="project_desc" jdbcType="VARCHAR" property="projectDesc" />
+    <result column="company_id" jdbcType="VARCHAR" property="companyId" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="status" jdbcType="VARCHAR" property="projectStatus" />
+  </resultMap>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select t1.project_id,t1.project_name,t2.project_desc,t3.company_id,t3.company_name,t2.status,t1.order
+    from hot_project_info t1,project_info t2,company_info t3
+    where t1.project_id = t2.project_id
+    and t2.company_id = t3.company_id
+  </select>
+</mapper>

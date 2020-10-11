@@ -47,8 +47,11 @@
         </table>-->
        <!-- <table tableName="business_dict" domainObjectName="BusinessDict">
         </table>-->
-         <table tableName="project_payment_snapshot" domainObjectName="ProjectPaymentSnapshot">
+        <!-- <table tableName="project_payment_snapshot" domainObjectName="ProjectPaymentSnapshot">
+                </table>-->
+         <table tableName="hot_project_info" domainObjectName="HotProjectInfo">
                 </table>
+
 
 
 

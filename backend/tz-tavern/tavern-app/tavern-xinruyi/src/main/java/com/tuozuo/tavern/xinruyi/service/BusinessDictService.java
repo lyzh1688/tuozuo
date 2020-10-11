@@ -13,4 +13,6 @@ public interface BusinessDictService {
 
     List<BusinessDict> queryBusinessDicts(String group);
 
+    List<BusinessDict> queryIndustryType();
+
 }

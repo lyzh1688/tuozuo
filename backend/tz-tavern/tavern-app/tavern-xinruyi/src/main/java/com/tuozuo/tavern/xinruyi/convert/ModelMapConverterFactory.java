@@ -105,5 +105,11 @@ public interface ModelMapConverterFactory {
 
     StaffSalaryHistoryDTO modelToStaffSalaryHistoryDTO(StaffSalaryInfo staffSalaryInfo);
 
+    @Mappings({
+            @Mapping(target = "industryId", source = "businessId"),
+            @Mapping(target = "industryName", source = "businessName"),
+
+    })
+    IndustryTypeDTO modelToIndustryTypeDTO(BusinessDict businessDict);
 
 }

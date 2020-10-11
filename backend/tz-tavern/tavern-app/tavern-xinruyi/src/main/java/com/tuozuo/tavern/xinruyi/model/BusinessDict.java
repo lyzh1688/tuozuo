@@ -1,5 +1,8 @@
 package com.tuozuo.tavern.xinruyi.model;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
+@TableName("business_dict")
 public class BusinessDict {
     private String businessId;
 
