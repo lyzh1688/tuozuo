@@ -50,4 +50,7 @@ public interface ProjectInfoService {
 
     List<HotProjectInfo> queryHotProjects();
 
+    List<IndustryProjectInfo> queryIndustryProject(String projectId,
+                                                    String publishDate,
+                                                    String industryId);
 }

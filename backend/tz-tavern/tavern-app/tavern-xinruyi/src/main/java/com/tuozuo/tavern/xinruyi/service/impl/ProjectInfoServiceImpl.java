@@ -11,6 +11,7 @@ import com.tuozuo.tavern.xinruyi.dict.ProjectStatus;
 import com.tuozuo.tavern.xinruyi.dict.StaffStatus;
 import com.tuozuo.tavern.xinruyi.model.*;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
+import com.tuozuo.tavern.xinruyi.utils.DateUtils;
 import com.tuozuo.tavern.xinruyi.utils.FileUtils;
 import com.tuozuo.tavern.xinruyi.utils.UUIDUtil;
 import com.tuozuo.tavern.xinruyi.utils.ValidateUtils;
@@ -370,6 +371,14 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     @Override
     public List<HotProjectInfo> queryHotProjects() {
         return this.projectInfoDao.selectHotProjects();
+    }
+
+    @Override
+    public List<IndustryProjectInfo> queryIndustryProject(String projectId, String publishDate, String industryId) {
+        if(StringUtils.isEmpty(publishDate)){
+            publishDate = DateUtils.formatDate(LocalDate.now().plusYears(1),DateUtils.DEFAULT_SIMPLE_8__FORMATTER);
+        }
+        return this.projectInfoDao.selectIndustryProject(projectId, publishDate, industryId);
     }
 
 

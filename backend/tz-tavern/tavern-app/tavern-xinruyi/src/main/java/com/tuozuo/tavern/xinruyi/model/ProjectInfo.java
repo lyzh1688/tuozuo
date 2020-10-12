@@ -49,6 +49,7 @@ public class ProjectInfo {
 
     private String budget;
 
+
     public String getCompanyName() {
         return companyName;
     }

@@ -7,6 +7,7 @@ import com.tuozuo.tavern.xinruyi.dao.ProjectInfoDao;
 import com.tuozuo.tavern.xinruyi.mapper.HotProjectInfoMapper;
 import com.tuozuo.tavern.xinruyi.mapper.ProjectInfoMapper;
 import com.tuozuo.tavern.xinruyi.model.HotProjectInfo;
+import com.tuozuo.tavern.xinruyi.model.IndustryProjectInfo;
 import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,6 +106,11 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
     @Override
     public List<HotProjectInfo> selectHotProjects() {
         return this.hotProjectInfoMapper.selectAll();
+    }
+
+    @Override
+    public List<IndustryProjectInfo> selectIndustryProject(String projectId, String publishDate, String industryId) {
+        return this.projectInfoMapper.selectIndustryProject(projectId, publishDate, industryId);
     }
 
 

@@ -5,6 +5,7 @@ import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.xinruyi.dto.IndustryTypeDTO;
 import com.tuozuo.tavern.xinruyi.dto.IndustryTypeListDTO;
 import com.tuozuo.tavern.xinruyi.model.HotProjectInfo;
+import com.tuozuo.tavern.xinruyi.model.IndustryProjectInfo;
 import com.tuozuo.tavern.xinruyi.service.BusinessDictService;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,7 +24,7 @@ import java.util.stream.Collectors;
  * Dev Time: 2020/10/11 <br>
  */
 @RestController
-@RequestMapping("/tuozuo/xinruyi/applet/v1/")
+@RequestMapping("/tuozuo/xinruyi/applet/v1")
 public class AppletInfoEndpoint {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppletInfoEndpoint.class);
@@ -37,7 +39,7 @@ public class AppletInfoEndpoint {
     /**
      * 查询热门项目
      */
-    @GetMapping("project/hotProject")
+    @GetMapping("/project/hotProject")
     public TavernResponse queryHotProjects() {
         try {
             List<HotProjectInfo> hotProjectInfos = this.projectInfoService.queryHotProjects();
@@ -63,6 +65,22 @@ public class AppletInfoEndpoint {
             return TavernResponse.ok(dto);
         } catch (Exception e) {
             LOGGER.error("[行业分类] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 项目列表翻页接口
+     */
+    @GetMapping("/market/project/page")
+    public TavernResponse queryIndustryProjects(@RequestParam(value = "industryId") String industryId,
+                                                @RequestParam(value = "projectId", required = false) String projectId,
+                                                @RequestParam(value = "publishDate", required = false) String publishDate) {
+        try {
+            List<IndustryProjectInfo> industryProjectInfoList = this.projectInfoService.queryIndustryProject(projectId, publishDate, industryId);
+            return TavernResponse.ok(industryProjectInfoList);
+        } catch (Exception e) {
+            LOGGER.error("[项目列表翻页接口] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }

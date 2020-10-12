@@ -1,10 +1,7 @@
 package com.tuozuo.tavern.xinruyi.dao;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.tuozuo.tavern.xinruyi.model.HotProjectInfo;
-import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
-import com.tuozuo.tavern.xinruyi.model.ProjectStaff;
-import com.tuozuo.tavern.xinruyi.model.ProjectStaffInfo;
+import com.tuozuo.tavern.xinruyi.model.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +40,10 @@ public interface ProjectInfoDao {
     Optional<ProjectInfo> selectProjectInfo(String companyId, String projectName);
 
     List<HotProjectInfo> selectHotProjects();
+
+    List<IndustryProjectInfo> selectIndustryProject(String projectId,
+                                                    String publishDate,
+                                                    String industryId);
 
 
 }
