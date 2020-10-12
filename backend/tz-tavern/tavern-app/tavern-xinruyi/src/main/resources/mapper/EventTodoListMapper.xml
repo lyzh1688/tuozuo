@@ -55,6 +55,7 @@
     <result column="contact" jdbcType="VARCHAR" property="contact" />
     <result column="event_date" jdbcType="VARCHAR" property="applyDate" />
     <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="company_logo" jdbcType="VARCHAR" property="companyLogo" />
     <result column="file_biz_license" jdbcType="VARCHAR" property="businessLicense" />
     <result column="legal_person_name" jdbcType="VARCHAR" property="bossName" />
     <result column="legal_person_identity" jdbcType="VARCHAR" property="bossId" />
@@ -142,6 +143,7 @@
       IFNULL(t2.contact_phone,t1.contact) contact,
     date_format(t3.event_date ,'%Y%m%d') event_date,
     t1.`status`,
+    t2.company_logo,
     t2.file_biz_license,
     t2.legal_person_name,
     t2.legal_person_identity,

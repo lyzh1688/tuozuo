@@ -20,6 +20,7 @@ public class CompanyAuthInfoVO {
     private String bossId;
     private MultipartFile bossIdPicUp;
     private MultipartFile bossIdPicBack;
+    private MultipartFile companyLogo;
     @NotNull(message = "companyAccount is not null")
     private String companyAccount;
     @NotNull(message = "companyAccountBank is not null")
@@ -30,6 +31,14 @@ public class CompanyAuthInfoVO {
     private String contactName;
     @NotNull(message = "contact is not null")
     private String contact;
+
+    public MultipartFile getCompanyLogo() {
+        return companyLogo;
+    }
+
+    public void setCompanyLogo(MultipartFile companyLogo) {
+        this.companyLogo = companyLogo;
+    }
 
     public String getCompanyAccountBranchBank() {
         return companyAccountBranchBank;

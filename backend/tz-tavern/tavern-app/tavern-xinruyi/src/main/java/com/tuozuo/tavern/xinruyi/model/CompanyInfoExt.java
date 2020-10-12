@@ -29,6 +29,8 @@ public class CompanyInfoExt {
 
     private String fileLegalPersonIdcardBack;
 
+    private String companyLogo;
+
     private String companyBankAccount;
 
     private String companyBank;
@@ -40,6 +42,14 @@ public class CompanyInfoExt {
     private String contactPhone;
 
     private String remark;
+
+    public String getCompanyLogo() {
+        return companyLogo;
+    }
+
+    public void setCompanyLogo(String companyLogo) {
+        this.companyLogo = companyLogo;
+    }
 
     public String getBankName() {
         return bankName;

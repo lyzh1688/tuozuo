@@ -72,13 +72,14 @@ public class CompanyInfoEndpoint {
      */
     @PostMapping("/identification")
     public TavernResponse companyAuthentication(@ModelAttribute @Valid CompanyAuthInfoVO vo,
+                                                @RequestParam(name = "companyLogo") MultipartFile companyLogo,
                                                 @RequestParam(name = "businessLicense") MultipartFile businessLicense,
                                                 @RequestParam(name = "bossIdPicUp") MultipartFile bossIdPicUp,
                                                 @RequestParam(name = "bossIdPicBack") MultipartFile bossIdPicBack,
                                                 @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId
     ) {
         try {
-            this.setCompanyAuthInfo(vo, companyId, businessLicense, bossIdPicUp, bossIdPicBack);
+            this.setCompanyAuthInfo(vo, companyId, companyLogo,businessLicense, bossIdPicUp, bossIdPicBack);
             this.companyInfoService.applyForCompanyAuth(vo);
             return TavernResponse.OK;
         } catch (Exception e) {
@@ -93,12 +94,13 @@ public class CompanyInfoEndpoint {
     @PutMapping("")
     public TavernResponse modifyCompanyInfo(@ModelAttribute CompanyAuthInfoVO vo,
                                             @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId,
+                                            @RequestParam(name = "companyLogo", required = false) MultipartFile companyLogo,
                                             @RequestParam(name = "businessLicense", required = false) MultipartFile businessLicense,
                                             @RequestParam(name = "bossIdPicUp", required = false) MultipartFile bossIdPicUp,
                                             @RequestParam(name = "bossIdPicBack", required = false) MultipartFile bossIdPicBack
     ) {
         try {
-            this.setCompanyAuthInfo(vo, companyId, businessLicense, bossIdPicUp, bossIdPicBack);
+            this.setCompanyAuthInfo(vo, companyId, companyLogo,businessLicense, bossIdPicUp, bossIdPicBack);
             this.companyInfoService.modifyCompanyInfo(vo);
             return TavernResponse.OK;
         } catch (Exception e) {
@@ -196,6 +198,7 @@ public class CompanyInfoEndpoint {
 
     private CompanyAuthInfoVO setCompanyAuthInfo(CompanyAuthInfoVO vo,
                                                  String companyId,
+                                                 MultipartFile companyLogo,
                                                  MultipartFile businessLicense,
                                                  MultipartFile bossIdPicUp,
                                                  MultipartFile bossIdPicBack) {
@@ -203,6 +206,7 @@ public class CompanyInfoEndpoint {
         vo.setBusinessLicense(businessLicense);
         vo.setBossIdPicUp(bossIdPicUp);
         vo.setBossIdPicBack(bossIdPicBack);
+        vo.setCompanyLogo(companyLogo);
         return vo;
     }
 }

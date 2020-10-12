@@ -17,6 +17,7 @@ public class CompanyEventInfo {
     private String businessLicense;
     private String bossName;
     private String bossId;
+    private String companyLogo;
     private String bossIdPicUp;
     private String bossIdPicBack;
     private String companyAccount;
@@ -27,6 +28,14 @@ public class CompanyEventInfo {
     private String cityName;
     private String districtName;
     private String snapshot;
+
+    public String getCompanyLogo() {
+        return companyLogo;
+    }
+
+    public void setCompanyLogo(String companyLogo) {
+        this.companyLogo = companyLogo;
+    }
 
     public String getSnapshot() {
         return snapshot;

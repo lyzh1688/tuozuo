@@ -12,6 +12,7 @@ public class CompanyDetailInfoDTO {
     private String businessLicense;
     private String bossName;
     private String bossId;
+    private String companyLogo;
     private String bossIdPicUp;
     private String bossIdPicBack;
     private String companyAccount;
@@ -22,6 +23,14 @@ public class CompanyDetailInfoDTO {
     private String contactName;
     private String contact;
     private String remark;
+
+    public String getCompanyLogo() {
+        return companyLogo;
+    }
+
+    public void setCompanyLogo(String companyLogo) {
+        this.companyLogo = companyLogo;
+    }
 
     public String getBankName() {
         return bankName;

@@ -6,6 +6,7 @@
     <result column="file_biz_license" jdbcType="VARCHAR" property="fileBizLicense" />
     <result column="legal_person_identity" jdbcType="VARCHAR" property="legalPersonIdentity" />
     <result column="legal_person_name" jdbcType="VARCHAR" property="legalPersonName" />
+    <result column="company_logo" jdbcType="VARCHAR" property="companyLogo" />
     <result column="file_legal_person_idcard_up" jdbcType="VARCHAR" property="fileLegalPersonIdcardUp" />
     <result column="file_legal_person_idcard_back" jdbcType="VARCHAR" property="fileLegalPersonIdcardBack" />
     <result column="company_bank_account" jdbcType="VARCHAR" property="companyBankAccount" />
@@ -19,6 +20,7 @@
     <id column="company_id" jdbcType="VARCHAR" property="companyId" />
     <result column="register_id" jdbcType="VARCHAR" property="registerId" />
     <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="company_logo" jdbcType="VARCHAR" property="companyLogo" />
     <result column="file_biz_license" jdbcType="VARCHAR" property="fileBizLicense" />
     <result column="legal_person_identity" jdbcType="VARCHAR" property="legalPersonIdentity" />
     <result column="legal_person_name" jdbcType="VARCHAR" property="legalPersonName" />
@@ -34,18 +36,21 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
   <insert id="insertOrUpdate" parameterType="com.tuozuo.tavern.xinruyi.model.CompanyInfoExt">
-    insert into company_info_ext (company_id, file_biz_license, legal_person_identity, 
+    insert into company_info_ext (company_id, company_logo,file_biz_license, legal_person_identity,
       legal_person_name, file_legal_person_idcard_up, 
       file_legal_person_idcard_back, company_bank_account, 
       company_bank,company_branch_bank, contact_name, contact_phone,
       remark)
-    values (#{companyId,jdbcType=VARCHAR}, #{fileBizLicense,jdbcType=VARCHAR}, #{legalPersonIdentity,jdbcType=VARCHAR}, 
+    values (#{companyId,jdbcType=VARCHAR}, #{companyLogo,jdbcType=VARCHAR},#{fileBizLicense,jdbcType=VARCHAR}, #{legalPersonIdentity,jdbcType=VARCHAR},
       #{legalPersonName,jdbcType=VARCHAR}, #{fileLegalPersonIdcardUp,jdbcType=VARCHAR}, 
       #{fileLegalPersonIdcardBack,jdbcType=VARCHAR}, #{companyBankAccount,jdbcType=VARCHAR},
       #{companyBank,jdbcType=VARCHAR},#{companyBranchBank,jdbcType=VARCHAR}, #{contactName,jdbcType=VARCHAR}, #{contactPhone,jdbcType=VARCHAR},
       #{remark,jdbcType=VARCHAR})
 
     ON DUPLICATE KEY UPDATE
+    <if test="companyLogo != null">
+      company_logo=VALUES(company_logo),
+    </if>
     <if test="fileBizLicense != null">
       file_biz_license=VALUES(file_biz_license),
     </if>
@@ -81,7 +86,7 @@
     </if>
   </insert>
   <select id="select" resultMap="BaseDetailMap">
-    select t1.company_id, t1.file_biz_license, t1.legal_person_identity, t1.legal_person_name, t1.file_legal_person_idcard_up,
+    select t1.company_id, t1.company_logo,t1.file_biz_license, t1.legal_person_identity, t1.legal_person_name, t1.file_legal_person_idcard_up,
     t1.file_legal_person_idcard_back, t1.company_bank_account, t1.company_bank,t1.company_branch_bank, t1.contact_name,
     t1.contact_phone, t1.remark,t2.register_id,t2.company_name,t3.bank_name,t4.bank_name bank_branch_name
     from company_info_ext t1 LEFT JOIN bank_info t3 on t1.company_bank = t3.bank_code LEFT JOIN bank_info t4 on t1.company_branch_bank = t4.bank_code,company_info t2

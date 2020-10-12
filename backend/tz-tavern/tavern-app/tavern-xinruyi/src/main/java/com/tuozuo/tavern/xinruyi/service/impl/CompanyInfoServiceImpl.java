@@ -125,7 +125,9 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
 
         //1、companyInfoExt表
         CompanyInfoExt companyInfoExt = ModelConverterFactory.authVOToCompanyInfoExt(companyAuthInfoVO);
-        this.setCompanyInfoFiles(companyAuthInfoVO.getBusinessLicense(),
+        this.setCompanyInfoFiles(
+                companyAuthInfoVO.getCompanyLogo(),
+                companyAuthInfoVO.getBusinessLicense(),
                 companyAuthInfoVO.getBossIdPicUp(),
                 companyAuthInfoVO.getBossIdPicBack(),
                 companyInfoExt);
@@ -158,7 +160,8 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     @Override
     public void modifyCompanyInfo(CompanyAuthInfoVO companyAuthInfoVO) throws Exception {
         CompanyInfoExt companyInfoExt = ModelConverterFactory.authVOToCompanyInfoExt(companyAuthInfoVO);
-        this.setCompanyInfoFiles(companyAuthInfoVO.getBusinessLicense(),
+        this.setCompanyInfoFiles(companyAuthInfoVO.getCompanyLogo(),
+                companyAuthInfoVO.getBusinessLicense(),
                 companyAuthInfoVO.getBossIdPicUp(),
                 companyAuthInfoVO.getBossIdPicBack(),
                 companyInfoExt);
@@ -319,10 +322,16 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     }
 
 
-    private void setCompanyInfoFiles(MultipartFile businessLicense,
+    private void setCompanyInfoFiles(MultipartFile companyLogo,
+                                     MultipartFile businessLicense,
                                      MultipartFile bossIdPicUp,
                                      MultipartFile bossIdPicBack,
                                      CompanyInfoExt companyInfoExt) throws Exception {
+        if (companyLogo != null) {
+            String companyLogoUrl = this.storeProjectFile(companyInfoExt.getCompanyId(), companyLogo);
+            LOGGER.info("companyLogoUrl: {}", companyLogoUrl);
+            companyInfoExt.setCompanyLogo(companyLogoUrl);
+        }
         if (businessLicense != null) {
             String businessLicenseUrl = this.storeProjectFile(companyInfoExt.getCompanyId(), businessLicense);
             LOGGER.info("businessLicenseUrl: {}", businessLicenseUrl);
