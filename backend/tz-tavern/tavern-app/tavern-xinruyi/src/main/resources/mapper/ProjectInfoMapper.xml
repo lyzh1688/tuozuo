@@ -88,7 +88,7 @@
 
     </update>
 
-    <select id="selectIndustryProject" resultMap="IndustryProjectMap">
+    <select id="selectIndustryProjectPage" resultMap="IndustryProjectMap">
         select
             t2.project_id,
             t3.company_id,
@@ -117,6 +117,32 @@
         </where>
         order by t2.publish_date desc
         limit 0,20
+
+    </select>
+    <select id="selectIndustryProject" resultMap="IndustryProjectMap">
+        select
+            t2.project_id,
+            t3.company_id,
+            t3.company_name,
+            t3.logo,
+            t2.project_name,
+            t2.project_desc,
+            t2.project_member_count,
+            IFNULL(t4.cnt ,0) project_joined_count,
+            DATE_FORMAT(t2.publish_date,'%Y%m%d') publish_date,
+            t2.status
+        from project_info t2  LEFT JOIN (select count(1) cnt,t3.project_id from worker_info t1,worker_staff_rel t2,project_staff t3
+        where t1.register_id = t2.register_id
+        and t2.staff_id = t3.staff_id
+        and t3.is_signed = '1'
+        group by project_id) t4 on t2.project_id = t4.project_id,company_info t3
+        <where>
+            t2.company_id = t3.company_id
+            and t2.status not in ('1','6','7')
+            and t2.project_name like concat('%', #{projectName}, '%')
+        </where>
+        order by t2.publish_date desc
+        limit 0,#{queryCnt}
 
     </select>
 

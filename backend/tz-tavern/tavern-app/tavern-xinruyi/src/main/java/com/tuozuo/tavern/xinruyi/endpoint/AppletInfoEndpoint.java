@@ -85,5 +85,20 @@ public class AppletInfoEndpoint {
         }
     }
 
+    /**
+     * 市场页面项目搜索
+     */
+    @GetMapping("/market/project")
+    public TavernResponse fuzzyQueryIndustryProjects(@RequestParam(value = "projectName") String projectName,
+                                                     @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt) {
+        try {
+            List<IndustryProjectInfo> industryProjectInfoList = this.projectInfoService.queryIndustryProjectByName(projectName, queryCnt);
+            return TavernResponse.ok(industryProjectInfoList);
+        } catch (Exception e) {
+            LOGGER.error("[市场页面项目搜索] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
 
 }

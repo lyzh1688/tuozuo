@@ -381,6 +381,11 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         return this.projectInfoDao.selectIndustryProject(projectId, publishDate, industryId);
     }
 
+    @Override
+    public List<IndustryProjectInfo> queryIndustryProjectByName(String projectName, int queryCnt) {
+        return this.projectInfoDao.selectIndustryProject(projectName, queryCnt);
+    }
+
 
     private void setProjectInfoFiles(MultipartFile file, ProjectInfo projectInfo) throws Exception {
         if (file != null) {

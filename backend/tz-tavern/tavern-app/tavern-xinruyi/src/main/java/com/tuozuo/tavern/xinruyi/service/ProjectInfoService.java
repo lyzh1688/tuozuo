@@ -53,4 +53,5 @@ public interface ProjectInfoService {
     List<IndustryProjectInfo> queryIndustryProject(String projectId,
                                                     String publishDate,
                                                     String industryId);
+    List<IndustryProjectInfo> queryIndustryProjectByName(String projectName,int queryCnt);
 }

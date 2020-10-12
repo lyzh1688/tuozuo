@@ -27,8 +27,11 @@ public interface ProjectInfoMapper extends BaseMapper<ProjectInfo> {
     ProjectInfo selectByProjectId(@Param("projectId") String projectId);
 
 
-    List<IndustryProjectInfo> selectIndustryProject( @Param("projectId") String projectId,
-                                                     @Param("publishDate") String publishDate,
-                                                     @Param("industryId") String industryId);
+    List<IndustryProjectInfo> selectIndustryProjectPage(@Param("projectId") String projectId,
+                                                        @Param("publishDate") String publishDate,
+                                                        @Param("industryId") String industryId);
+
+    List<IndustryProjectInfo> selectIndustryProject(@Param("projectName") String projectName,
+                                                    @Param("queryCnt") int queryCnt);
 
 }

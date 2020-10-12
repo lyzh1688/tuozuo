@@ -45,5 +45,7 @@ public interface ProjectInfoDao {
                                                     String publishDate,
                                                     String industryId);
 
+    List<IndustryProjectInfo> selectIndustryProject(String projectName,
+                                                   int queryCnt);
 
 }
