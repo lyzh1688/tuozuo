@@ -112,4 +112,11 @@ public interface ModelMapConverterFactory {
     })
     IndustryTypeDTO modelToIndustryTypeDTO(BusinessDict businessDict);
 
+
+    @Mappings({
+            @Mapping(target = "projectStatus", source = "status"),
+            @Mapping(target = "projectCycle", source = "period"),
+
+    })
+    ProjectExperienceDTO modelToProjectExperienceDTO(ProjectInfo projectInfo);
 }

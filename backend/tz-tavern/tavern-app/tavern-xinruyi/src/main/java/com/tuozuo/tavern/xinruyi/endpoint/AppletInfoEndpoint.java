@@ -1,20 +1,21 @@
 package com.tuozuo.tavern.xinruyi.endpoint;
 
+import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.xinruyi.dto.IndustryTypeDTO;
 import com.tuozuo.tavern.xinruyi.dto.IndustryTypeListDTO;
+import com.tuozuo.tavern.xinruyi.dto.ProjectExperienceDTO;
 import com.tuozuo.tavern.xinruyi.model.HotProjectInfo;
 import com.tuozuo.tavern.xinruyi.model.IndustryProjectInfo;
+import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
 import com.tuozuo.tavern.xinruyi.service.BusinessDictService;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
+import com.tuozuo.tavern.xinruyi.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -96,6 +97,29 @@ public class AppletInfoEndpoint {
             return TavernResponse.ok(industryProjectInfoList);
         } catch (Exception e) {
             LOGGER.error("[市场页面项目搜索] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 项目经历
+     */
+    @GetMapping("/project/experience")
+    public TavernResponse queryExperienceProjects(@RequestHeader(value = "openId", defaultValue = "1234") String registerId,
+                                                  @RequestParam(value = "projectId", required = false) String projectId,
+                                                  @RequestParam(value = "publishDate", required = false) String publishDate,
+                                                  @RequestParam(value = "status") String status) {
+        try {
+            List<ProjectInfo> projectInfoList = this.projectInfoService.queryExperienceProjects(projectId, publishDate, registerId, status);
+            List<ProjectExperienceDTO> experienceDTOList = projectInfoList.stream()
+                    .map(projectInfo -> {
+                        ProjectExperienceDTO dto = this.converter.modelToProjectExperienceDTO(projectInfo);
+                        dto.setPublishDate(DateUtils.formatDate(projectInfo.getPublishDate(),DateUtils.DEFAULT_SIMPLE_8__FORMATTER));
+                        return dto;
+                    }).collect(Collectors.toList());
+            return TavernResponse.ok(experienceDTOList);
+        } catch (Exception e) {
+            LOGGER.error("[项目经历] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }

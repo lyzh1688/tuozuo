@@ -93,7 +93,7 @@
             t2.project_id,
             t3.company_id,
             t3.company_name,
-            t3.logo,
+            t3.logo company_logo,
             t2.project_name,
             t2.project_desc,
             t2.project_member_count,
@@ -124,7 +124,7 @@
             t2.project_id,
             t3.company_id,
             t3.company_name,
-            t3.logo,
+            t3.logo company_logo,
             t2.project_name,
             t2.project_desc,
             t2.project_member_count,
@@ -144,6 +144,50 @@
         order by t2.publish_date desc
         limit 0,#{queryCnt}
 
+    </select>
+
+    <select id="selectCurProjects" resultMap="BaseResultMap">
+        select
+        t2.project_id,t3.company_id,t3.company_name,t3.logo company_logo,t2.project_name,t2.project_desc,t2.period,
+        t2.publish_date,t2.status
+        from project_info t2 , (select t3.project_id from worker_info t1,worker_staff_rel t2,project_staff t3
+        where t1.register_id = t2.register_id
+        and t2.staff_id = t3.staff_id
+        and t3.is_signed = '1'
+        and t3.status = '2'
+        and t1.register_id = #{registerId}
+        ) t4 ,company_info t3
+        where  t2.company_id = t3.company_id
+        and t2.project_id = t4.project_id
+        and t2.status in( '1','3','5')
+        and
+        (
+        t2.publish_date <![CDATA[ < ]]> STR_TO_DATE(#{publishDate}, '%Y%m%d')
+        or (t2.publish_date = STR_TO_DATE(#{publishDate}, '%Y%m%d') and t2.project_id <![CDATA[ < ]]> #{projectId,jdbcType=VARCHAR})
+        )
+        order by t2.publish_date desc
+        limit 0,20
+    </select>
+    <select id="selectFinishedProjects" resultMap="BaseResultMap">
+        select
+        t2.project_id,t3.company_id,t3.company_name,t3.logo company_logo,t2.project_name,t2.project_desc,t2.period,
+        t2.publish_date,t2.status
+        from project_info t2 , (select t3.project_id from worker_info t1,worker_staff_rel t2,project_staff t3
+        where t1.register_id = t2.register_id
+        and t2.staff_id = t3.staff_id
+        and t3.is_signed = '1'
+        and t1.register_id = #{registerId}
+        ) t4 ,company_info t3
+        where  t2.company_id = t3.company_id
+        and t2.project_id = t4.project_id
+        and t2.status in( '6','7')
+        and
+        (
+        t2.publish_date <![CDATA[ < ]]> STR_TO_DATE(#{publishDate}, '%Y%m%d')
+        or (t2.publish_date = STR_TO_DATE(#{publishDate}, '%Y%m%d') and t2.project_id <![CDATA[ < ]]> #{projectId,jdbcType=VARCHAR})
+        )
+        order by t2.publish_date desc
+        limit 0,20
     </select>
 
 </mapper>

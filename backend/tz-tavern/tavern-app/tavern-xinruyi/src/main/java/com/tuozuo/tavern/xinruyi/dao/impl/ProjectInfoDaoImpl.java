@@ -118,5 +118,15 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
         return this.projectInfoMapper.selectIndustryProject(projectName, queryCnt);
     }
 
+    @Override
+    public List<ProjectInfo> selectCurProjects(String projectId, String publishDate, String registerId) {
+        return this.projectInfoMapper.selectCurProjects(projectId, publishDate, registerId);
+    }
+
+    @Override
+    public List<ProjectInfo> selectFinishedProjects(String projectId, String publishDate, String registerId) {
+        return this.projectInfoMapper.selectFinishedProjects(projectId, publishDate, registerId);
+    }
+
 
 }

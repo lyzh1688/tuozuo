@@ -12,13 +12,13 @@ import java.util.Optional;
  */
 public interface ProjectInfoDao {
 
-    List<ProjectInfo> selectAllProjectInfo( String projectName);
+    List<ProjectInfo> selectAllProjectInfo(String projectName);
 
     List<ProjectInfo> selectAllCustomProjectInfo(String companyId, String projectName);
 
     List<ProjectInfo> selectProjectInfo(String projectName, int queryCnt);
 
-    List<ProjectInfo> selectCustomProjectInfo( String companyId,String projectName, int queryCnt);
+    List<ProjectInfo> selectCustomProjectInfo(String companyId, String projectName, int queryCnt);
 
     IPage<ProjectInfo> selectProjectPage(int pageNo, int pageSize, String companyId, String projectId,
                                          String industryType,
@@ -27,7 +27,7 @@ public interface ProjectInfoDao {
                                          String requirementStatus,
                                          String beginDate,
                                          String endDate
-                                         );
+    );
 
     void insertProject(ProjectInfo projectInfo);
 
@@ -46,6 +46,14 @@ public interface ProjectInfoDao {
                                                     String industryId);
 
     List<IndustryProjectInfo> selectIndustryProject(String projectName,
-                                                   int queryCnt);
+                                                    int queryCnt);
+
+    List<ProjectInfo> selectCurProjects(String projectId,
+                                                String publishDate,
+                                                String registerId);
+
+    List<ProjectInfo> selectFinishedProjects(String projectId,
+                                                     String publishDate,
+                                                     String registerId);
 
 }

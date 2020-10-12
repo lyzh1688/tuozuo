@@ -28,7 +28,7 @@ public interface ProjectInfoService {
 
     void modifyProjectInfo(ProjectModifyVO vo, String companyId) throws Exception;
 
-    void endProject(String project,String companyId);
+    void endProject(String project, String companyId);
 
     ProjectInfo queryProjectDetail(String projectId);
 
@@ -42,16 +42,23 @@ public interface ProjectInfoService {
 
     void modifyProjectStatusTask();
 
-    boolean isRepeatedApply(String companyId,String projectName);
+    boolean isRepeatedApply(String companyId, String projectName);
 
-    boolean isRepeatedAuthApply(String companyId,String projectId,String eventType);
+    boolean isRepeatedAuthApply(String companyId, String projectId, String eventType);
 
-    boolean isRepeatedStaffFiredApply(String companyId,String projectId,String staffId,String eventType);
+    boolean isRepeatedStaffFiredApply(String companyId, String projectId, String staffId, String eventType);
 
     List<HotProjectInfo> queryHotProjects();
 
     List<IndustryProjectInfo> queryIndustryProject(String projectId,
-                                                    String publishDate,
-                                                    String industryId);
-    List<IndustryProjectInfo> queryIndustryProjectByName(String projectName,int queryCnt);
+                                                   String publishDate,
+                                                   String industryId);
+
+    List<IndustryProjectInfo> queryIndustryProjectByName(String projectName, int queryCnt);
+
+    List<ProjectInfo> queryExperienceProjects(String projectId,
+                                                      String publishDate,
+                                                      String registerId,
+                                                      String status);
+
 }

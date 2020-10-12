@@ -198,7 +198,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
             throw new Exception("项目已完成审核，修改失败");
         }
 //        String today = DateUtils.formatDate(LocalDate.now(), DateUtils.SIMPLE_8_FORMATTER);
-        ModelConverterFactory.modifyVoToProjectInfo(vo, companyId,projectInfo);
+        ModelConverterFactory.modifyVoToProjectInfo(vo, companyId, projectInfo);
         this.setProjectInfoFiles(vo.getProjectFile(), projectInfo);
         this.projectInfoDao.modifyProject(projectInfo);
 
@@ -375,8 +375,8 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     @Override
     public List<IndustryProjectInfo> queryIndustryProject(String projectId, String publishDate, String industryId) {
-        if(StringUtils.isEmpty(publishDate)){
-            publishDate = DateUtils.formatDate(LocalDate.now().plusYears(1),DateUtils.DEFAULT_SIMPLE_8__FORMATTER);
+        if (StringUtils.isEmpty(publishDate)) {
+            publishDate = DateUtils.formatDate(LocalDate.now().plusYears(1), DateUtils.DEFAULT_SIMPLE_8__FORMATTER);
         }
         return this.projectInfoDao.selectIndustryProject(projectId, publishDate, industryId);
     }
@@ -384,6 +384,18 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     @Override
     public List<IndustryProjectInfo> queryIndustryProjectByName(String projectName, int queryCnt) {
         return this.projectInfoDao.selectIndustryProject(projectName, queryCnt);
+    }
+
+    @Override
+    public List<ProjectInfo> queryExperienceProjects(String projectId, String publishDate, String registerId, String status) {
+        if (StringUtils.isEmpty(publishDate)) {
+            publishDate = DateUtils.formatDate(LocalDate.now().plusYears(1), DateUtils.DEFAULT_SIMPLE_8__FORMATTER);
+        }
+        if (status.equals("0")) {
+            return this.projectInfoDao.selectFinishedProjects(projectId, publishDate, registerId);
+        } else {
+            return this.projectInfoDao.selectCurProjects(projectId, publishDate, registerId);
+        }
     }
 
 

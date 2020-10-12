@@ -16,6 +16,8 @@ public class ProjectInfo {
 
     @TableField(exist = false)
     private String companyName;
+    @TableField(exist = false)
+    private String companyLogo;
 
     private String projectIndustry;
 
@@ -49,6 +51,14 @@ public class ProjectInfo {
 
     private String budget;
 
+
+    public String getCompanyLogo() {
+        return companyLogo;
+    }
+
+    public void setCompanyLogo(String companyLogo) {
+        this.companyLogo = companyLogo;
+    }
 
     public String getCompanyName() {
         return companyName;
