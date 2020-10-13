@@ -3,11 +3,10 @@ package com.tuozuo.tavern.authority.model;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.google.common.base.Strings;
 import com.tuozuo.tavern.libs.auth.jwt.AuthTokenFactor;
 import com.tuozuo.tavern.libs.auth.jwt.JwtAuthenticationProperty;
 import com.tuozuo.tavern.libs.auth.jwt.TokenHelper;
-
-import java.util.List;
 
 /**
  * Created by 刘悦之 on 2020/7/18.
@@ -15,7 +14,6 @@ import java.util.List;
 @TableName("AUTH_USER")
 public class User {
     static int maxFailedTimes = 5;
-//    static String AUTHORITY = "normal";
     @TableId
     String userId;
     @TableId
@@ -24,10 +22,11 @@ public class User {
     String roleGroup;
     String userPswd;
     int failedTimes;
-    @TableField(exist = false)
-    TokenAuthority tokenAuthority = new TokenAuthority();
+    //    @TableField(exist = false)
+//    TokenAuthority tokenAuthority = new TokenAuthority();
     @TableField(exist = false)
     Privilege privilege;
+
     public User() {
     }
 
@@ -46,23 +45,50 @@ public class User {
         this.userPswd = userPswd;
     }
 
+    private String createAccessToken(JwtAuthenticationProperty config) {
+        AuthTokenFactor tokenFactor = new AuthTokenFactor(this.userId, this.systemId, this.roleGroup);
+        String accessToken = TokenHelper.createToken(config, tokenFactor);
+        return accessToken;
+    }
+
+    private String createTokenAuthority() {
+        return String.join(".", this.systemId, this.roleGroup, this.privilege.getPrivilege());
+    }
+
+    public WXTokenAuthority wxLogin(String openID, String systemId, String roleGroup, JwtAuthenticationProperty config) {
+        WXTokenAuthority tokenAuthority = new WXTokenAuthority();
+        if (Strings.isNullOrEmpty(this.userId)) {
+            this.userId = openID;
+            this.roleGroup = roleGroup;
+            this.systemId = systemId;
+            tokenAuthority.setLoginSuccess(false);
+        } else {
+            tokenAuthority.setLoginSuccess(true);
+        }
+        tokenAuthority.setAuthority(this.createTokenAuthority());
+        String accessToken = this.createAccessToken(config);
+        tokenAuthority.setAccessToken(accessToken);
+        tokenAuthority.openID = openID;
+        return tokenAuthority;
+    }
+
     public TokenAuthority login(String inputMD5Pswd, JwtAuthenticationProperty config) {
+        TokenAuthority tokenAuthority = new TokenAuthority();
         if (failedTimes >= maxFailedTimes) {
-            this.tokenAuthority.setLoginSuccess(false);
-            this.tokenAuthority.setLoginMessage("密码错误次数达到上限");
+            tokenAuthority.setLoginSuccess(false);
+            tokenAuthority.setLoginMessage("密码错误次数达到上限");
         } else {
             if (this.userPswd.equals(inputMD5Pswd)) {
-                this.tokenAuthority.setLoginSuccess(true);
-                this.tokenAuthority.setAuthority(String.join(".", this.systemId, this.roleGroup, this.privilege.getPrivilege()));
-                AuthTokenFactor tokenFactor = new AuthTokenFactor(this.userId, this.systemId, this.roleGroup);
-                String accessToken = TokenHelper.createToken(config, tokenFactor);
-                this.tokenAuthority.setAccessToken(accessToken);
+                tokenAuthority.setLoginSuccess(true);
+                tokenAuthority.setAuthority(this.createTokenAuthority());
+                String accessToken = this.createAccessToken(config);
+                tokenAuthority.setAccessToken(accessToken);
             } else {
-                this.tokenAuthority.setLoginSuccess(false);
-                this.tokenAuthority.setLoginMessage("密码错误,您还可以尝试" + (maxFailedTimes - failedTimes) + "次");
+                tokenAuthority.setLoginSuccess(false);
+                tokenAuthority.setLoginMessage("密码错误,您还可以尝试" + (maxFailedTimes - failedTimes) + "次");
             }
         }
-        return this.tokenAuthority;
+        return tokenAuthority;
     }
 
     public static int getMaxFailedTimes() {
@@ -123,13 +149,5 @@ public class User {
 
     public void incFailedTimes() {
         this.failedTimes++;
-    }
-
-    public TokenAuthority getTokenAuthority() {
-        return tokenAuthority;
-    }
-
-    public void setTokenAuthority(TokenAuthority tokenAuthority) {
-        this.tokenAuthority = tokenAuthority;
     }
 }

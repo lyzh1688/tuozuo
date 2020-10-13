@@ -22,3 +22,11 @@ spring:
     max-wait: 10000
     min-idle: 1
     initial-size: 5
+wx:
+  miniapp:
+    configs:
+        - appID: #微信小程序的appid
+          secret: #微信小程序的Secret
+#          token: #微信小程序消息服务器配置的token
+#          aesKey: #微信小程序消息服务器配置的EncodingAESKey
+          msgDataFormat: JSON

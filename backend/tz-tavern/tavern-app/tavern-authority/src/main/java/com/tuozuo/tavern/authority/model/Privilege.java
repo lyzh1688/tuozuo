@@ -18,10 +18,12 @@ public class Privilege {
     @TableField
     String privilege;
 
-    private static String AUTHORITY = "normal";
+    public static String AUTHORITY_NORMAL = "normal";
+    public static String AUTHORITY_ADMIN = "admin";
+    public static String AUTHORITY_VISITOR = "visitor";
 
     public static Privilege createDefaultPrivilege(String userId, String systemId, String roleGroup) {
-        return new Privilege(userId,systemId,roleGroup,AUTHORITY);
+        return new Privilege(userId,systemId,roleGroup, AUTHORITY_NORMAL);
     }
 
     public Privilege(){}

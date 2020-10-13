@@ -1,5 +1,7 @@
 package com.tuozuo.tavern.authority.service;
 
+import cn.binarywang.wx.miniapp.api.WxMaService;
+import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import com.google.common.base.Strings;
 import com.tuozuo.tavern.authority.dao.AuthorityDao;
 import com.tuozuo.tavern.authority.dao.PrivilegeDao;
@@ -9,6 +11,7 @@ import com.tuozuo.tavern.libs.auth.encrypt.RSAKeyPair;
 import com.tuozuo.tavern.libs.auth.jwt.JwtAuthenticationProperty;
 import com.tuozuo.tavern.libs.auth.session.RedisSession;
 import com.tuozuo.tavern.libs.auth.session.SessionManager;
+import me.chanjar.weixin.common.error.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +41,9 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Autowired
     SessionManager sessionManager;
 
+    @Autowired
+    WxMaService wxMaService;
+
     @Override
     public RSAPublicKey getRSAPublicKeys(String userId, String systemId, String roleGroup) throws NoSuchAlgorithmException {
         RSAKeyPair pair = RSAEncrypt.genKeyPair();
@@ -66,12 +72,11 @@ public class AuthorityServiceImpl implements AuthorityService {
         }
         //获取用户权限
         Optional<Privilege> privilegeOp = this.privilegeDao.getPrivilege(userId, systemId, roleGroup);
-        if(privilegeOp.isPresent()){
+        if (privilegeOp.isPresent()) {
             user.setPrivilege(privilegeOp.get());
-        }
-        else {
+        } else {
             //兼容老系统,若无权限，则为默认NORMAL权限
-            Privilege defaultPrivilege = Privilege.createDefaultPrivilege(userId,systemId,roleGroup);
+            Privilege defaultPrivilege = Privilege.createDefaultPrivilege(userId, systemId, roleGroup);
             user.setPrivilege(defaultPrivilege);
         }
 
@@ -94,6 +99,38 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
+    public Optional<WXTokenAuthority> wxLogin(String code, String systemId, String roleGroup) {
+        //获取openID
+        WxMaJscode2SessionResult wxSessionResult = null;
+        try {
+            wxSessionResult = wxMaService.getUserService().getSessionInfo(code);
+            String openID = wxSessionResult.getOpenid();
+            //校验openID（即UserID）是否存在
+            User user = null;
+            user = this.authorityDao.getUser(openID, systemId, roleGroup);
+                if (user == null) {
+                user = new User();
+            }
+            //获取用户权限
+            Optional<Privilege> privilegeOp = this.privilegeDao.getPrivilege(openID, systemId, roleGroup);
+            if (privilegeOp.isPresent()) {
+                user.setPrivilege(privilegeOp.get());
+            } else {
+                user.setPrivilege(new Privilege(openID, systemId, roleGroup, Privilege.AUTHORITY_VISITOR));
+            }
+            WXTokenAuthority tokenAuthority = user.wxLogin(openID, systemId, roleGroup, property);
+            RedisSession session = new RedisSession(user.getUserId(), user.getSystemId(), user.getRoleGroup(), tokenAuthority.getAccessToken());
+            sessionManager.createOrRefreshSession(session);
+
+            return Optional.of(tokenAuthority);
+        } catch (WxErrorException e) {
+            LOGGER.error("微信服务器连接失败...", e);
+            return Optional.empty();
+        }
+
+    }
+
+    @Override
     public boolean logout(String userId, String systemId, String roleGroup, String accessToken) {
         try {
             RedisSession session = new RedisSession(userId, systemId, roleGroup, accessToken);
@@ -110,7 +147,7 @@ public class AuthorityServiceImpl implements AuthorityService {
             this.authorityDao.createUser(user);
             return this.privilegeDao.addPrivilege(user.getPrivilege());
         } catch (Exception e) {
-            LOGGER.error("[创建用户失败] error: ",e);
+            LOGGER.error("[创建用户失败] error: ", e);
             throw e;
         }
     }
@@ -121,7 +158,7 @@ public class AuthorityServiceImpl implements AuthorityService {
         this.authorityDao.updateUser(user);
         this.privilegeDao.updatePrivilege(user.getPrivilege());
     }
-    
+
     @Transactional
     @Override
     public void remove(String userId) {
