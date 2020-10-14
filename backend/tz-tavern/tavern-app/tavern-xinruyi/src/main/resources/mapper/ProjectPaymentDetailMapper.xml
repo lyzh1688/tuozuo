@@ -28,7 +28,7 @@
     and status = '2'
   </insert>
   <select id="selectProjectPayment" resultMap="BaseResultMap">
-    select t1.payment_id, t1.company_id, t1.project_id, t1.staff_id, t1.period, t1.pay_date
+    select t1.payment_id, t1.company_id, t1.project_id, t1.staff_id, t1.period, t1.pay_date,t1.salary
     from project_payment_detail t1,worker_info t2,worker_staff_rel t3
     where t1.staff_id = t3.staff_id
     and t2.register_id = t3.register_id
@@ -37,7 +37,7 @@
     and
     (
     t1.pay_date <![CDATA[ < ]]> #{payDate}
-    or (t1.pay_date = #{payDate} and t1.project_id <![CDATA[ < ]]> #{projectId,jdbcType=VARCHAR})
+    or (t1.pay_date = #{payDate} and t1.payment_id <![CDATA[ < ]]> #{paymentId,jdbcType=VARCHAR})
     )
     order by t1.pay_date desc
     limit 0,20

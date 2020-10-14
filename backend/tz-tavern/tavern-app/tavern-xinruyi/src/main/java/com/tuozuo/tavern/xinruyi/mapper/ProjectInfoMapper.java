@@ -35,12 +35,12 @@ public interface ProjectInfoMapper extends BaseMapper<ProjectInfo> {
                                                     @Param("queryCnt") int queryCnt);
 
     List<ProjectInfo> selectCurProjects(@Param("projectId") String projectId,
-                                                @Param("publishDate") String publishDate,
-                                                @Param("registerId") String registerId);
+                                        @Param("publishDate") String publishDate,
+                                        @Param("registerId") String registerId);
 
     List<ProjectInfo> selectFinishedProjects(@Param("projectId") String projectId,
-                                                     @Param("publishDate") String publishDate,
-                                                     @Param("registerId") String registerId);
+                                             @Param("publishDate") String publishDate,
+                                             @Param("registerId") String registerId);
 
 
 }

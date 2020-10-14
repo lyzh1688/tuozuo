@@ -6,6 +6,7 @@ import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.xinruyi.dto.IndustryTypeDTO;
 import com.tuozuo.tavern.xinruyi.dto.IndustryTypeListDTO;
 import com.tuozuo.tavern.xinruyi.dto.ProjectExperienceDTO;
+import com.tuozuo.tavern.xinruyi.dto.ProjectExperienceDetailDTO;
 import com.tuozuo.tavern.xinruyi.model.HotProjectInfo;
 import com.tuozuo.tavern.xinruyi.model.IndustryProjectInfo;
 import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
@@ -120,6 +121,22 @@ public class AppletInfoEndpoint {
             return TavernResponse.ok(experienceDTOList);
         } catch (Exception e) {
             LOGGER.error("[项目经历] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+    /**
+     * 项目详情
+     */
+    @GetMapping("/project/experience/{projectId}")
+    public TavernResponse queryExperienceProjectDetail(@RequestHeader(value = "openId", defaultValue = "1234") String registerId,
+                                                  @PathVariable("projectId") String projectId,
+                                                  @RequestParam(value = "paymentId", required = false) String paymentId,
+                                                  @RequestParam(value = "releaseDate", required = false) String payDate) {
+        try {
+            ProjectExperienceDetailDTO detailDTO = this.projectInfoService.queryProjectExperienceDetail(registerId, projectId, paymentId, payDate);
+            return TavernResponse.ok(detailDTO);
+        } catch (Exception e) {
+            LOGGER.error("[项目详情] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }

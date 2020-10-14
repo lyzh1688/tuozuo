@@ -119,4 +119,18 @@ public interface ModelMapConverterFactory {
 
     })
     ProjectExperienceDTO modelToProjectExperienceDTO(ProjectInfo projectInfo);
+
+    @Mappings({
+            @Mapping(target = "projectStatus", source = "status"),
+
+    })
+    ProjectExperienceDetailDTO modelToProjectExperienceDetailDTO(ProjectInfo projectInfo);
+
+    @Mappings({
+            @Mapping(target = "releaseDate", source = "payDate"),
+    })
+    ProjectExperiencePaymentDTO modelToProjectExperiencePaymentDTO(ProjectPaymentDetail detail);
+
+
+
 }

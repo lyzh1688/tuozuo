@@ -1,6 +1,7 @@
 package com.tuozuo.tavern.xinruyi.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.tuozuo.tavern.xinruyi.dto.ProjectExperienceDetailDTO;
 import com.tuozuo.tavern.xinruyi.model.*;
 import com.tuozuo.tavern.xinruyi.vo.*;
 
@@ -60,5 +61,7 @@ public interface ProjectInfoService {
                                                       String publishDate,
                                                       String registerId,
                                                       String status);
+
+    ProjectExperienceDetailDTO queryProjectExperienceDetail(String registerId,String projectId,String paymentId,String payDate);
 
 }

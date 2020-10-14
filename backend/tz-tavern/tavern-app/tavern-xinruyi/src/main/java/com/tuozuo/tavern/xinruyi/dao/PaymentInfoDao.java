@@ -37,12 +37,18 @@ public interface PaymentInfoDao {
                                              String startDate,
                                              String endDate,
                                              String staffId);
-    IPage<StaffSalaryInfo> selectStaffInfo(int pageNo, int pageSize,String projectId);
+
+    IPage<StaffSalaryInfo> selectStaffInfo(int pageNo, int pageSize, String projectId);
 
     void saveStaffPaymentList(List<ProjectPaymentDetail> projectPaymentDetailList);
 
     void delStaffPaymentById(String paymentId);
 
     ProjectPayment selectById(String paymentId);
+
+    List<ProjectPaymentDetail> selectProjectPayment(String registerId,
+                                                    String projectId,
+                                                    String paymentId,
+                                                    String payDate);
 
 }

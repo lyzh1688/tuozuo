@@ -91,4 +91,9 @@ public class PaymentInfoDaoImpl extends ServiceImpl<ProjectPaymentDetailMapper, 
     public ProjectPayment selectById(String paymentId) {
         return this.projectPaymentMapper.selectById(paymentId);
     }
+
+    @Override
+    public List<ProjectPaymentDetail> selectProjectPayment(String registerId, String projectId, String paymentId,String payDate) {
+        return this.projectPaymentDetailMapper.selectProjectPayment(registerId, projectId,paymentId, payDate);
+    }
 }

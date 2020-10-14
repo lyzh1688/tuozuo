@@ -5,10 +5,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.UserTypeDict;
 import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
+import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.xinruyi.dao.*;
 import com.tuozuo.tavern.xinruyi.dict.EventType;
 import com.tuozuo.tavern.xinruyi.dict.ProjectStatus;
 import com.tuozuo.tavern.xinruyi.dict.StaffStatus;
+import com.tuozuo.tavern.xinruyi.dto.ProjectExperienceDetailDTO;
+import com.tuozuo.tavern.xinruyi.dto.ProjectExperiencePaymentDTO;
 import com.tuozuo.tavern.xinruyi.model.*;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
 import com.tuozuo.tavern.xinruyi.utils.DateUtils;
@@ -30,6 +33,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -54,6 +58,10 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     private CompanyInfoDao companyInfoDao;
     @Autowired
     private StaffInfoDao staffInfoDao;
+    @Autowired
+    private ModelMapConverterFactory converter;
+    @Autowired
+    private PaymentInfoDao paymentInfoDao;
 
 
     @Override
@@ -396,6 +404,23 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         } else {
             return this.projectInfoDao.selectCurProjects(projectId, publishDate, registerId);
         }
+    }
+
+    @Override
+    public ProjectExperienceDetailDTO queryProjectExperienceDetail(String registerId, String projectId, String paymentId, String payDate) {
+        ProjectInfo projectInfo = this.projectInfoDao.selectProjectInfo(projectId);
+        if (StringUtils.isEmpty(payDate)) {
+            payDate = DateUtils.formatDate(LocalDate.now().plusYears(1), DateUtils.DEFAULT_SIMPLE_8__FORMATTER);
+        }
+        List<ProjectPaymentDetail> projectPaymentDetails = this.paymentInfoDao.selectProjectPayment(registerId, projectId, paymentId, payDate);
+        ProjectExperienceDetailDTO detailDTO = new ProjectExperienceDetailDTO();
+        detailDTO = this.converter.modelToProjectExperienceDetailDTO(projectInfo);
+        List<ProjectExperiencePaymentDTO> paymentDTOS = projectPaymentDetails
+                .stream()
+                .map(this.converter::modelToProjectExperiencePaymentDTO)
+                .collect(Collectors.toList());
+        detailDTO.setPayment(paymentDTOS);
+        return detailDTO;
     }
 
 
