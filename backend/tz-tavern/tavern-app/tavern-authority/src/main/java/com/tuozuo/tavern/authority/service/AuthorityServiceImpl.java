@@ -12,7 +12,6 @@ import com.tuozuo.tavern.libs.auth.jwt.JwtAuthenticationProperty;
 import com.tuozuo.tavern.libs.auth.session.RedisSession;
 import com.tuozuo.tavern.libs.auth.session.SessionManager;
 import me.chanjar.weixin.common.error.WxErrorException;
-import me.chanjar.weixin.common.service.WxService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,7 +104,7 @@ public class AuthorityServiceImpl implements AuthorityService {
         WxMaJscode2SessionResult wxSessionResult = null;
         try {
             wxSessionResult = wxMaService.getUserService().getSessionInfo(code);
-            if(wxSessionResult == null){
+            if (wxSessionResult == null) {
                 LOGGER.error("微信服务器连接失败...");
                 return Optional.empty();
             }
@@ -113,7 +112,7 @@ public class AuthorityServiceImpl implements AuthorityService {
             //校验openID（即UserID）是否存在
             User user = null;
             user = this.authorityDao.getUser(openID, systemId, roleGroup);
-                if (user == null) {
+            if (user == null) {
                 user = new User();
             }
             //获取用户权限

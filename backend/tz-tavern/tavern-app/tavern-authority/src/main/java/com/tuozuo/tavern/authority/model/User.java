@@ -61,10 +61,8 @@ public class User {
             this.userId = openID;
             this.roleGroup = roleGroup;
             this.systemId = systemId;
-            tokenAuthority.setLoginSuccess(false);
-        } else {
-            tokenAuthority.setLoginSuccess(true);
         }
+        tokenAuthority.setLoginSuccess(true);
         tokenAuthority.setAuthority(this.createTokenAuthority());
         String accessToken = this.createAccessToken(config);
         tokenAuthority.setAccessToken(accessToken);
