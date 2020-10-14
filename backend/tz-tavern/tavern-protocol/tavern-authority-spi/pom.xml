@@ -17,11 +17,6 @@
             <artifactId>tavern-common-protocol</artifactId>
             <version>${tavern.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.tuozuo.tavern</groupId>
-            <artifactId>tavern-auth</artifactId>
-            <version>${tavern.version}</version>
-        </dependency>
     </dependencies>
 
 </project>
