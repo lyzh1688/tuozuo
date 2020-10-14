@@ -5,6 +5,8 @@
     <id column="payment_id" jdbcType="VARCHAR" property="paymentId" />
     <result column="company_id" jdbcType="VARCHAR" property="companyId" />
     <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
     <result column="staff_id" jdbcType="VARCHAR" property="staffId" />
     <result column="period" jdbcType="VARCHAR" property="period" />
     <result column="pay_date" jdbcType="VARCHAR" property="payDate" />
@@ -85,6 +87,28 @@
       and  t1.project_id = #{projectId}
     </where>
     order by pay_date desc
-
   </select>
+  
+  <select id="selectPaymentRecord" resultMap="BaseResultMap">
+    select t1.company_id,t1.project_id,t1.staff_id,t1.period,t1.pay_date,t1.payment_id,t1.salary,t2.project_name,t3.company_name
+    from project_payment_detail t1,project_info t2,company_info t3,worker_info t4,worker_staff_rel t5
+    <where>
+    t1.project_id = t2.project_id
+    and t1.company_id = t3.company_id
+    and t1.staff_id = t5.staff_id
+    and t4.register_id = t5.register_id
+    and t4.register_id = #{registerId}
+    <if test="projectId != null and projectId != ''">
+      and t1.project_id = #{projectId}
+    </if>
+    and
+    (
+    t1.pay_date <![CDATA[ < ]]> #{payDate}
+    or (t1.pay_date = #{payDate} and t1.payment_id <![CDATA[ < ]]> #{paymentId,jdbcType=VARCHAR})
+    )
+    </where>
+    order by t1.pay_date desc
+    limit 0,20
+  </select>
+  
 </mapper>

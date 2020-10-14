@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.xinruyi.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.math.BigDecimal;
@@ -11,6 +12,11 @@ public class ProjectPaymentDetail {
     private String companyId;
 
     private String projectId;
+
+    @TableField(exist = false)
+    private String companyName;
+    @TableField(exist = false)
+    private String projectName;
 
     private String staffId;
 
@@ -74,5 +80,21 @@ public class ProjectPaymentDetail {
 
     public void setPayDate(String payDate) {
         this.payDate = payDate == null ? null : payDate.trim();
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 }

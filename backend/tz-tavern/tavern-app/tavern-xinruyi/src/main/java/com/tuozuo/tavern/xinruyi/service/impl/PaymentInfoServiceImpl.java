@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -321,6 +322,15 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
         this.eventInfoDao.insertEventTodo(eventTodoList);
         this.paymentInfoDao.updatePaymentInfo(projectPayment);
 
+    }
+
+
+    @Override
+    public List<ProjectPaymentDetail> queryProjectPaymentRecord(String registerId, String projectId, String paymentId, String payDate) {
+        if (StringUtils.isEmpty(payDate)) {
+            payDate = DateUtils.formatDate(LocalDate.now().plusYears(1), DateUtils.DEFAULT_SIMPLE_8__FORMATTER);
+        }
+        return this.paymentInfoDao.selectPaymentRecord(registerId, projectId, paymentId, payDate);
     }
 
 

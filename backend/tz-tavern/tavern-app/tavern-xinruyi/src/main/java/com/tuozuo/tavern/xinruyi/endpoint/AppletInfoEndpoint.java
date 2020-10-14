@@ -1,17 +1,14 @@
 package com.tuozuo.tavern.xinruyi.endpoint;
 
-import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.xinruyi.dto.IndustryTypeDTO;
 import com.tuozuo.tavern.xinruyi.dto.IndustryTypeListDTO;
 import com.tuozuo.tavern.xinruyi.dto.ProjectExperienceDTO;
 import com.tuozuo.tavern.xinruyi.dto.ProjectExperienceDetailDTO;
-import com.tuozuo.tavern.xinruyi.model.HotProjectInfo;
-import com.tuozuo.tavern.xinruyi.model.IndustryProjectInfo;
-import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
-import com.tuozuo.tavern.xinruyi.model.WorkerSummaryInfo;
+import com.tuozuo.tavern.xinruyi.model.*;
 import com.tuozuo.tavern.xinruyi.service.BusinessDictService;
+import com.tuozuo.tavern.xinruyi.service.PaymentInfoService;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
 import com.tuozuo.tavern.xinruyi.service.WorkerInfoService;
 import com.tuozuo.tavern.xinruyi.utils.DateUtils;
@@ -39,6 +36,8 @@ public class AppletInfoEndpoint {
     private BusinessDictService businessDictService;
     @Autowired
     private WorkerInfoService workerInfoService;
+    @Autowired
+    private PaymentInfoService paymentInfoService;
     @Autowired
     private ModelMapConverterFactory converter;
 
@@ -119,7 +118,7 @@ public class AppletInfoEndpoint {
             List<ProjectExperienceDTO> experienceDTOList = projectInfoList.stream()
                     .map(projectInfo -> {
                         ProjectExperienceDTO dto = this.converter.modelToProjectExperienceDTO(projectInfo);
-                        dto.setPublishDate(DateUtils.formatDate(projectInfo.getPublishDate(),DateUtils.DEFAULT_SIMPLE_8__FORMATTER));
+                        dto.setPublishDate(DateUtils.formatDate(projectInfo.getPublishDate(), DateUtils.DEFAULT_SIMPLE_8__FORMATTER));
                         return dto;
                     }).collect(Collectors.toList());
             return TavernResponse.ok(experienceDTOList);
@@ -128,14 +127,15 @@ public class AppletInfoEndpoint {
             return TavernResponse.bizFailure(e.getMessage());
         }
     }
+
     /**
      * 项目详情
      */
     @GetMapping("/project/experience/{projectId}")
     public TavernResponse queryExperienceProjectDetail(@RequestHeader(value = "openId", defaultValue = "1234") String registerId,
-                                                  @PathVariable("projectId") String projectId,
-                                                  @RequestParam(value = "paymentId", required = false) String paymentId,
-                                                  @RequestParam(value = "releaseDate", required = false) String payDate) {
+                                                       @PathVariable("projectId") String projectId,
+                                                       @RequestParam(value = "paymentId", required = false) String paymentId,
+                                                       @RequestParam(value = "releaseDate", required = false) String payDate) {
         try {
             ProjectExperienceDetailDTO detailDTO = this.projectInfoService.queryProjectExperienceDetail(registerId, projectId, paymentId, payDate);
             return TavernResponse.ok(detailDTO);
@@ -144,6 +144,7 @@ public class AppletInfoEndpoint {
             return TavernResponse.bizFailure(e.getMessage());
         }
     }
+
     /**
      * 我的概览
      */
@@ -154,6 +155,22 @@ public class AppletInfoEndpoint {
             return TavernResponse.ok(workerSummaryInfo);
         } catch (Exception e) {
             LOGGER.error("[我的概览] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 收入记录
+     */
+    @GetMapping("/custom/salary")
+    public TavernResponse queryMySalaryRecord(@RequestHeader(value = "openId", defaultValue = "1234") String registerId,
+                                              @RequestParam(value = "paymentId", required = false) String paymentId,
+                                              @RequestParam(value = "releaseDate", required = false) String payDate) {
+        try {
+            List<ProjectPaymentDetail> projectPaymentDetails = this.paymentInfoService.queryProjectPaymentRecord(registerId, null, paymentId, payDate);
+            return TavernResponse.ok(projectPaymentDetails);
+        } catch (Exception e) {
+            LOGGER.error("[收入记录] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }

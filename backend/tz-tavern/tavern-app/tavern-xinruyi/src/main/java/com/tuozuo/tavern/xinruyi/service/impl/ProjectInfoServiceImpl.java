@@ -412,7 +412,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         if (StringUtils.isEmpty(payDate)) {
             payDate = DateUtils.formatDate(LocalDate.now().plusYears(1), DateUtils.DEFAULT_SIMPLE_8__FORMATTER);
         }
-        List<ProjectPaymentDetail> projectPaymentDetails = this.paymentInfoDao.selectProjectPayment(registerId, projectId, paymentId, payDate);
+        List<ProjectPaymentDetail> projectPaymentDetails = this.paymentInfoDao.selectPaymentRecord(registerId, projectId, paymentId, payDate);
         ProjectExperienceDetailDTO detailDTO = new ProjectExperienceDetailDTO();
         detailDTO = this.converter.modelToProjectExperienceDetailDTO(projectInfo);
         List<ProjectExperiencePaymentDTO> paymentDTOS = projectPaymentDetails
@@ -422,6 +422,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         detailDTO.setPayment(paymentDTOS);
         return detailDTO;
     }
+
 
 
     private void setProjectInfoFiles(MultipartFile file, ProjectInfo projectInfo) throws Exception {

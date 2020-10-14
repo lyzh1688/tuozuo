@@ -46,9 +46,10 @@ public interface PaymentInfoDao {
 
     ProjectPayment selectById(String paymentId);
 
-    List<ProjectPaymentDetail> selectProjectPayment(String registerId,
-                                                    String projectId,
-                                                    String paymentId,
-                                                    String payDate);
+    List<ProjectPaymentDetail> selectPaymentRecord(String registerId,
+                                                   String projectId,
+                                                   String paymentId,
+                                                   String payDate);
+
 
 }

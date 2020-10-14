@@ -58,10 +58,12 @@ public interface ProjectInfoService {
     List<IndustryProjectInfo> queryIndustryProjectByName(String projectName, int queryCnt);
 
     List<ProjectInfo> queryExperienceProjects(String projectId,
-                                                      String publishDate,
-                                                      String registerId,
-                                                      String status);
+                                              String publishDate,
+                                              String registerId,
+                                              String status);
 
-    ProjectExperienceDetailDTO queryProjectExperienceDetail(String registerId,String projectId,String paymentId,String payDate);
+    ProjectExperienceDetailDTO queryProjectExperienceDetail(String registerId, String projectId, String paymentId, String payDate);
+
+
 
 }
