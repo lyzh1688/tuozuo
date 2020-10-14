@@ -7,30 +7,22 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="is_certificate" jdbcType="VARCHAR" property="isCertificate" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from worker_info
-    where register_id = #{registerId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.tuozuo.tavern.xinruyi.model.WorkerInfo">
-    insert into worker_info (register_id, id_number, name, 
-      is_certificate)
-    values (#{registerId,jdbcType=VARCHAR}, #{idNumber,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{isCertificate,jdbcType=VARCHAR})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.xinruyi.model.WorkerInfo">
-    update worker_info
-    set id_number = #{idNumber,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
-      is_certificate = #{isCertificate,jdbcType=VARCHAR}
-    where register_id = #{registerId,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select register_id, id_number, name, is_certificate
-    from worker_info
-    where register_id = #{registerId,jdbcType=VARCHAR}
-  </select>
+  <resultMap id="BaseWorkerSumMap" type="com.tuozuo.tavern.xinruyi.model.WorkerSummaryInfo">
+    <result column="project_num" jdbcType="INTEGER" property="projectNum" />
+    <result column="total_salary" jdbcType="VARCHAR" property="totalSalary" />
+    <result column="is_certificate" jdbcType="VARCHAR" property="authStatus" />
+  </resultMap>
+
   <select id="selectAll" resultMap="BaseResultMap">
     select register_id, id_number, name, is_certificate
     from worker_info
+  </select>
+  <select id="selectWorkerSumInfo" resultMap="BaseWorkerSumMap">
+    select count(1) project_num,sum(total_salary) total_salary,is_certificate from(
+    select sum(t3.salary) total_salary,t1.is_certificate,t1.register_id from worker_info t1,worker_staff_rel t2 ,project_payment_detail t3
+    where t1.register_id = t2.register_id
+    and t2.staff_id = t3.staff_id
+    and t1.register_id = #{registerId}
+    group by t3.project_id) t group by register_id
   </select>
 </mapper>

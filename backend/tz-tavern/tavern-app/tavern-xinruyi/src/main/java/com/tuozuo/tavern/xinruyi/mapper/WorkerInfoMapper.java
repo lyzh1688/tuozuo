@@ -1,16 +1,14 @@
 package com.tuozuo.tavern.xinruyi.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.tuozuo.tavern.xinruyi.model.WorkerInfo;
+import com.tuozuo.tavern.xinruyi.model.WorkerSummaryInfo;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
+@Mapper
+public interface WorkerInfoMapper extends BaseMapper<WorkerInfo> {
 
-public interface WorkerInfoMapper {
-    int deleteByPrimaryKey(String registerId);
-
-    int insert(WorkerInfo record);
-
-    WorkerInfo selectByPrimaryKey(String registerId);
-
-    List<WorkerInfo> selectAll();
-
-    int updateByPrimaryKey(WorkerInfo record);
+    WorkerSummaryInfo selectWorkerSumInfo(@Param("registerId")String registerId);
 }

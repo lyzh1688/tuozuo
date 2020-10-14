@@ -10,8 +10,10 @@ import com.tuozuo.tavern.xinruyi.dto.ProjectExperienceDetailDTO;
 import com.tuozuo.tavern.xinruyi.model.HotProjectInfo;
 import com.tuozuo.tavern.xinruyi.model.IndustryProjectInfo;
 import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
+import com.tuozuo.tavern.xinruyi.model.WorkerSummaryInfo;
 import com.tuozuo.tavern.xinruyi.service.BusinessDictService;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
+import com.tuozuo.tavern.xinruyi.service.WorkerInfoService;
 import com.tuozuo.tavern.xinruyi.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +37,8 @@ public class AppletInfoEndpoint {
     private ProjectInfoService projectInfoService;
     @Autowired
     private BusinessDictService businessDictService;
+    @Autowired
+    private WorkerInfoService workerInfoService;
     @Autowired
     private ModelMapConverterFactory converter;
 
@@ -137,6 +141,19 @@ public class AppletInfoEndpoint {
             return TavernResponse.ok(detailDTO);
         } catch (Exception e) {
             LOGGER.error("[项目详情] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+    /**
+     * 我的概览
+     */
+    @GetMapping("/custom/overview")
+    public TavernResponse queryMyInfo(@RequestHeader(value = "openId", defaultValue = "1234") String registerId) {
+        try {
+            WorkerSummaryInfo workerSummaryInfo = this.workerInfoService.queryWorkerSumInfo(registerId);
+            return TavernResponse.ok(workerSummaryInfo);
+        } catch (Exception e) {
+            LOGGER.error("[我的概览] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }
