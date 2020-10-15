@@ -5,7 +5,10 @@
     <id column="register_id" jdbcType="VARCHAR" property="registerId" />
     <result column="id_number" jdbcType="VARCHAR" property="idNumber" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="is_certificate" jdbcType="VARCHAR" property="isCertificate" />
+    <result column="video" jdbcType="VARCHAR" property="video" />
+    <result column="id_pic_up" jdbcType="VARCHAR" property="idPicUp" />
+    <result column="id_pic_back" jdbcType="VARCHAR" property="idPicBack" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
   </resultMap>
   <resultMap id="BaseWorkerSumMap" type="com.tuozuo.tavern.xinruyi.model.WorkerSummaryInfo">
     <result column="project_num" jdbcType="INTEGER" property="projectNum" />

@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.xinruyi.endpoint;
 
+import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.xinruyi.dto.IndustryTypeDTO;
@@ -12,10 +13,14 @@ import com.tuozuo.tavern.xinruyi.service.PaymentInfoService;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
 import com.tuozuo.tavern.xinruyi.service.WorkerInfoService;
 import com.tuozuo.tavern.xinruyi.utils.DateUtils;
+import com.tuozuo.tavern.xinruyi.vo.CompanyAuthInfoVO;
+import com.tuozuo.tavern.xinruyi.vo.WorkerAuthVO;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,8 +84,8 @@ public class AppletInfoEndpoint {
      */
     @GetMapping("/market/project/page")
     public TavernResponse queryIndustryProjects(@RequestParam(value = "industryId") String industryId,
-                                                @RequestParam(value = "projectId", required = false) String projectId,
-                                                @RequestParam(value = "publishDate", required = false) String publishDate) {
+            @RequestParam(value = "projectId", required = false) String projectId,
+            @RequestParam(value = "publishDate", required = false) String publishDate) {
         try {
             List<IndustryProjectInfo> industryProjectInfoList = this.projectInfoService.queryIndustryProject(projectId, publishDate, industryId);
             return TavernResponse.ok(industryProjectInfoList);
@@ -95,7 +100,7 @@ public class AppletInfoEndpoint {
      */
     @GetMapping("/market/project")
     public TavernResponse fuzzyQueryIndustryProjects(@RequestParam(value = "projectName") String projectName,
-                                                     @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt) {
+            @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt) {
         try {
             List<IndustryProjectInfo> industryProjectInfoList = this.projectInfoService.queryIndustryProjectByName(projectName, queryCnt);
             return TavernResponse.ok(industryProjectInfoList);
@@ -110,9 +115,9 @@ public class AppletInfoEndpoint {
      */
     @GetMapping("/project/experience")
     public TavernResponse queryExperienceProjects(@RequestHeader(value = "openId", defaultValue = "1234") String registerId,
-                                                  @RequestParam(value = "projectId", required = false) String projectId,
-                                                  @RequestParam(value = "publishDate", required = false) String publishDate,
-                                                  @RequestParam(value = "status") String status) {
+            @RequestParam(value = "projectId", required = false) String projectId,
+            @RequestParam(value = "publishDate", required = false) String publishDate,
+            @RequestParam(value = "status") String status) {
         try {
             List<ProjectInfo> projectInfoList = this.projectInfoService.queryExperienceProjects(projectId, publishDate, registerId, status);
             List<ProjectExperienceDTO> experienceDTOList = projectInfoList.stream()
@@ -133,9 +138,9 @@ public class AppletInfoEndpoint {
      */
     @GetMapping("/project/experience/{projectId}")
     public TavernResponse queryExperienceProjectDetail(@RequestHeader(value = "openId", defaultValue = "1234") String registerId,
-                                                       @PathVariable("projectId") String projectId,
-                                                       @RequestParam(value = "paymentId", required = false) String paymentId,
-                                                       @RequestParam(value = "releaseDate", required = false) String payDate) {
+            @PathVariable("projectId") String projectId,
+            @RequestParam(value = "paymentId", required = false) String paymentId,
+            @RequestParam(value = "releaseDate", required = false) String payDate) {
         try {
             ProjectExperienceDetailDTO detailDTO = this.projectInfoService.queryProjectExperienceDetail(registerId, projectId, paymentId, payDate);
             return TavernResponse.ok(detailDTO);
@@ -164,8 +169,8 @@ public class AppletInfoEndpoint {
      */
     @GetMapping("/custom/salary")
     public TavernResponse queryMySalaryRecord(@RequestHeader(value = "openId", defaultValue = "1234") String registerId,
-                                              @RequestParam(value = "paymentId", required = false) String paymentId,
-                                              @RequestParam(value = "releaseDate", required = false) String payDate) {
+            @RequestParam(value = "paymentId", required = false) String paymentId,
+            @RequestParam(value = "releaseDate", required = false) String payDate) {
         try {
             List<ProjectPaymentDetail> projectPaymentDetails = this.paymentInfoService.queryProjectPaymentRecord(registerId, null, paymentId, payDate);
             return TavernResponse.ok(projectPaymentDetails);
@@ -175,5 +180,33 @@ public class AppletInfoEndpoint {
         }
     }
 
+    /**
+     * 实名认证
+     */
+    @PostMapping("/custom/identification")
+    public TavernResponse workerAuth(@ModelAttribute WorkerAuthVO vo,
+            @RequestHeader(value = "openId", defaultValue = "1234") String registerId,
+            @RequestParam(name = "video") MultipartFile video,
+            @RequestParam(name = "idPicUp") MultipartFile idPicUp,
+            @RequestParam(name = "idPicDown") MultipartFile idPicDown
+    ) {
+        try {
+            this.setWorkAuthInfo(vo, registerId,video,idPicUp,idPicDown);
+            this.workerInfoService.addWorker(vo);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[实名认证] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    private void setWorkAuthInfo(WorkerAuthVO vo,String registerId, MultipartFile video,
+            MultipartFile idPicUp,
+            MultipartFile idPicDown) {
+        vo.setRegisterId(registerId);
+        vo.setVideo(video);
+        vo.setIdPicUp(idPicUp);
+        vo.setIdPicDown(idPicDown);
+    }
 
 }

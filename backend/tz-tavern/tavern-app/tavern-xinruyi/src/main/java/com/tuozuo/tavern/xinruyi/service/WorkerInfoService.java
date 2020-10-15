@@ -1,6 +1,7 @@
 package com.tuozuo.tavern.xinruyi.service;
 
 import com.tuozuo.tavern.xinruyi.model.WorkerSummaryInfo;
+import com.tuozuo.tavern.xinruyi.vo.WorkerAuthVO;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -9,4 +10,7 @@ import com.tuozuo.tavern.xinruyi.model.WorkerSummaryInfo;
 public interface WorkerInfoService {
 
     WorkerSummaryInfo queryWorkerSumInfo(String registerId);
+
+    void addWorker(WorkerAuthVO vo) throws Exception;
+
 }

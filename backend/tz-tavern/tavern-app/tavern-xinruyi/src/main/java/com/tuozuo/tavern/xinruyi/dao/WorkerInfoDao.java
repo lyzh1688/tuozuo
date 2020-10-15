@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.xinruyi.dao;
 
+import com.tuozuo.tavern.xinruyi.model.WorkerInfo;
 import com.tuozuo.tavern.xinruyi.model.WorkerSummaryInfo;
 
 /**
@@ -9,5 +10,7 @@ import com.tuozuo.tavern.xinruyi.model.WorkerSummaryInfo;
 public interface WorkerInfoDao {
 
     WorkerSummaryInfo selectWorkerSumInfo(String registerId);
+
+    void insert(WorkerInfo workerInfo);
 
 }
