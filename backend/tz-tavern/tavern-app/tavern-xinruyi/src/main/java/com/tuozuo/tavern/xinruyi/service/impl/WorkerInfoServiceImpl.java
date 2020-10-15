@@ -4,13 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.tuozuo.tavern.common.protocol.UserTypeDict;
 import com.tuozuo.tavern.xinruyi.dao.EventInfoDao;
+import com.tuozuo.tavern.xinruyi.dao.ProjectInfoDao;
+import com.tuozuo.tavern.xinruyi.dao.ProjectStaffInfoDao;
 import com.tuozuo.tavern.xinruyi.dao.WorkerInfoDao;
 import com.tuozuo.tavern.xinruyi.dict.EventType;
 import com.tuozuo.tavern.xinruyi.dto.EventInfoDTO;
-import com.tuozuo.tavern.xinruyi.model.EventTodoList;
-import com.tuozuo.tavern.xinruyi.model.ProjectInfo;
-import com.tuozuo.tavern.xinruyi.model.WorkerInfo;
-import com.tuozuo.tavern.xinruyi.model.WorkerSummaryInfo;
+import com.tuozuo.tavern.xinruyi.model.*;
 import com.tuozuo.tavern.xinruyi.service.WorkerInfoService;
 import com.tuozuo.tavern.xinruyi.utils.FileUtils;
 import com.tuozuo.tavern.xinruyi.utils.UUIDUtil;
@@ -25,7 +24,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -45,6 +47,8 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
     private WorkerInfoDao workerInfoDao;
     @Autowired
     private EventInfoDao eventInfoDao;
+    @Autowired
+    private ProjectStaffInfoDao projectStaffInfoDao;
 
     @Override
     public WorkerSummaryInfo queryWorkerSumInfo(String registerId) {
@@ -81,6 +85,24 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
         eventTodoList.setEventOwnerId(vo.getIdNo());
         this.eventInfoDao.insertEventTodo(eventTodoList);
 
+    }
+
+    @Override
+    public void quitProject(String registerId, String projectId,String reason) {
+        List<WorkerStaffRel> workerStaffRelList = this.workerInfoDao.selectWorkerStaffRel(registerId);
+        Optional<WorkerStaffRel> op = workerStaffRelList.stream()
+                .filter(workerStaffRel1 -> workerStaffRel1.getProjectId().equals(projectId))
+                .findFirst();
+        if(op.isPresent()){
+            WorkerStaffRel rel  = op.get();
+            ProjectStaff projectStaff = new ProjectStaff();
+            projectStaff.setStatus("0");
+            projectStaff.setStaffId(rel.getStaffId());
+            projectStaff.setProjectId(rel.getProjectId());
+            projectStaff.setQuitDate(LocalDate.now());
+            projectStaff.setQuitReason(reason);
+            this.projectStaffInfoDao.updateProjectStaff(projectStaff);
+        }
     }
 
 

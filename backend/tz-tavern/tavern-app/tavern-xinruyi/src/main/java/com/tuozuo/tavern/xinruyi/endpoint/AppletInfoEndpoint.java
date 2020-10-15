@@ -14,6 +14,7 @@ import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
 import com.tuozuo.tavern.xinruyi.service.WorkerInfoService;
 import com.tuozuo.tavern.xinruyi.utils.DateUtils;
 import com.tuozuo.tavern.xinruyi.vo.CompanyAuthInfoVO;
+import com.tuozuo.tavern.xinruyi.vo.ProjectQuitVO;
 import com.tuozuo.tavern.xinruyi.vo.WorkerAuthVO;
 
 import org.slf4j.Logger;
@@ -196,6 +197,21 @@ public class AppletInfoEndpoint {
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[实名认证] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+    /**
+     * 退出项目
+     */
+    @PostMapping("/custom/quit")
+    public TavernResponse quiteProject(@RequestBody ProjectQuitVO vo,
+            @RequestHeader(value = "openId", defaultValue = "1234") String registerId
+    ) {
+        try {
+            this.workerInfoService.quitProject(registerId,vo.getProjectId(),vo.getReason());
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[退出项目] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }

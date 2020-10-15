@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuozuo.tavern.xinruyi.mapper.WorkerStaffRelMapper">
+  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.xinruyi.model.WorkerStaffRel">
+    <id column="register_id" jdbcType="VARCHAR" property="registerId" />
+    <result column="staff_id" jdbcType="VARCHAR" property="staffId" />
+    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+  </resultMap>
+  <select id="selectStaffProject" resultMap="BaseResultMap">
+    select t1.register_id, t1.staff_id,t2.project_id
+    from worker_staff_rel t1,project_staff t2
+    where t1.staff_id = t2.staff_id
+    and t1.register_id = #{registerId}
+  </select>
+</mapper>

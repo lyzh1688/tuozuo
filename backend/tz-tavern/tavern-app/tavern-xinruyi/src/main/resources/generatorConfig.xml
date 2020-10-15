@@ -49,7 +49,9 @@
         </table>-->
         <!-- <table tableName="project_payment_snapshot" domainObjectName="ProjectPaymentSnapshot">
                 </table>-->
-         <table tableName="hot_project_info" domainObjectName="HotProjectInfo">
+        <!-- <table tableName="hot_project_info" domainObjectName="HotProjectInfo">
+                </table>-->
+         <table tableName="worker_staff_rel" domainObjectName="WorkerStaffRel">
                 </table>
 
 

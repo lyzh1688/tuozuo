@@ -13,4 +13,6 @@ public interface WorkerInfoService {
 
     void addWorker(WorkerAuthVO vo) throws Exception;
 
+    void quitProject(String registerId,String projectId,String reason);
+
 }

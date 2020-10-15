@@ -64,6 +64,8 @@ public interface ProjectInfoService {
 
     ProjectExperienceDetailDTO queryProjectExperienceDetail(String registerId, String projectId, String paymentId, String payDate);
 
+    void quitFromProject(String registerId,String projectId);
+
 
 
 }

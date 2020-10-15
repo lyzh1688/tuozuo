@@ -423,6 +423,10 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         return detailDTO;
     }
 
+    @Override
+    public void quitFromProject(String registerId, String projectId) {
+
+    }
 
 
     private void setProjectInfoFiles(MultipartFile file, ProjectInfo projectInfo) throws Exception {
