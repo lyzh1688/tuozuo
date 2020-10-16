@@ -62,6 +62,8 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     private ModelMapConverterFactory converter;
     @Autowired
     private PaymentInfoDao paymentInfoDao;
+    @Autowired
+    private WorkerInfoDao workerInfoDao;
 
 
     @Override
@@ -424,7 +426,42 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     }
 
     @Override
-    public void quitFromProject(String registerId, String projectId) {
+    public void applyForProject(ProjectParticipateVO vo) throws Exception {
+        WorkerInfo workerInfo = this.workerInfoDao.selectById(vo.getRegisterId());
+        if(workerInfo == null){
+            throw new Exception("您尚未认证，无法加入项目");
+        }
+        StaffResourcePool staffResourcePool = this.staffInfoDao.selectStaffInfo(vo.getCompanyId(),workerInfo.getIdNumber());
+        //发布加入项目申请
+        EventTodoList eventTodoList = new EventTodoList();
+        //构造snapshot
+        // 公司ID，name
+        //项目id，name
+        //staffId，name
+        //联系方式
+        JSONObject snapshot = new JSONObject();
+        snapshot.put("companyId", vo.getCompanyId());
+        snapshot.put("companyName", vo.getCompanyName());
+        snapshot.put("projectId", vo.getProjectId());
+        snapshot.put("projectName",vo.getProjectName());
+        snapshot.put("staffId", staffResourcePool.getStaffId());
+        snapshot.put("staffName", workerInfo.getName());
+        snapshot.put("contact", workerInfo.getContact());
+        eventTodoList.setSnapshot(snapshot.toJSONString());
+        eventTodoList.setEventOwnerId(vo.getRegisterId());
+        eventTodoList.setApplicant(workerInfo.getName());
+        eventTodoList.setEventId(UUIDUtil.randomUUID32());
+        eventTodoList.setEventType(EventType.STAFF_JOIN.getStatus());
+        eventTodoList.setRole(UserTypeDict.staff);
+        eventTodoList.setEventOwnerName(workerInfo.getName());
+        eventTodoList.setEventDate(LocalDateTime.now());
+        eventTodoList.setProjectId(vo.getProjectId());
+        eventTodoList.setCompanyId(vo.getCompanyId());
+        eventTodoList.setRegisterId(vo.getRegisterId());
+        eventTodoList.setStaffId(staffResourcePool.getStaffId());
+        this.eventInfoDao.insertEventTodo(eventTodoList);
+
+
 
     }
 

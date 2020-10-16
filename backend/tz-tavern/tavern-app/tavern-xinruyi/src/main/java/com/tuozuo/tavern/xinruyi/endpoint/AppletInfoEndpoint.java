@@ -13,10 +13,9 @@ import com.tuozuo.tavern.xinruyi.service.PaymentInfoService;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
 import com.tuozuo.tavern.xinruyi.service.WorkerInfoService;
 import com.tuozuo.tavern.xinruyi.utils.DateUtils;
-import com.tuozuo.tavern.xinruyi.vo.CompanyAuthInfoVO;
+import com.tuozuo.tavern.xinruyi.vo.ProjectParticipateVO;
 import com.tuozuo.tavern.xinruyi.vo.ProjectQuitVO;
 import com.tuozuo.tavern.xinruyi.vo.WorkerAuthVO;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,8 +84,8 @@ public class AppletInfoEndpoint {
      */
     @GetMapping("/market/project/page")
     public TavernResponse queryIndustryProjects(@RequestParam(value = "industryId") String industryId,
-            @RequestParam(value = "projectId", required = false) String projectId,
-            @RequestParam(value = "publishDate", required = false) String publishDate) {
+                                                @RequestParam(value = "projectId", required = false) String projectId,
+                                                @RequestParam(value = "publishDate", required = false) String publishDate) {
         try {
             List<IndustryProjectInfo> industryProjectInfoList = this.projectInfoService.queryIndustryProject(projectId, publishDate, industryId);
             return TavernResponse.ok(industryProjectInfoList);
@@ -101,7 +100,7 @@ public class AppletInfoEndpoint {
      */
     @GetMapping("/market/project")
     public TavernResponse fuzzyQueryIndustryProjects(@RequestParam(value = "projectName") String projectName,
-            @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt) {
+                                                     @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt) {
         try {
             List<IndustryProjectInfo> industryProjectInfoList = this.projectInfoService.queryIndustryProjectByName(projectName, queryCnt);
             return TavernResponse.ok(industryProjectInfoList);
@@ -115,10 +114,10 @@ public class AppletInfoEndpoint {
      * 项目经历
      */
     @GetMapping("/project/experience")
-    public TavernResponse queryExperienceProjects(@RequestHeader(value = "openId", defaultValue = "1234") String registerId,
-            @RequestParam(value = "projectId", required = false) String projectId,
-            @RequestParam(value = "publishDate", required = false) String publishDate,
-            @RequestParam(value = "status") String status) {
+    public TavernResponse queryExperienceProjects(@RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId,
+                                                  @RequestParam(value = "projectId", required = false) String projectId,
+                                                  @RequestParam(value = "publishDate", required = false) String publishDate,
+                                                  @RequestParam(value = "status") String status) {
         try {
             List<ProjectInfo> projectInfoList = this.projectInfoService.queryExperienceProjects(projectId, publishDate, registerId, status);
             List<ProjectExperienceDTO> experienceDTOList = projectInfoList.stream()
@@ -138,10 +137,10 @@ public class AppletInfoEndpoint {
      * 项目详情
      */
     @GetMapping("/project/experience/{projectId}")
-    public TavernResponse queryExperienceProjectDetail(@RequestHeader(value = "openId", defaultValue = "1234") String registerId,
-            @PathVariable("projectId") String projectId,
-            @RequestParam(value = "paymentId", required = false) String paymentId,
-            @RequestParam(value = "releaseDate", required = false) String payDate) {
+    public TavernResponse queryExperienceProjectDetail(@RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId,
+                                                       @PathVariable("projectId") String projectId,
+                                                       @RequestParam(value = "paymentId", required = false) String paymentId,
+                                                       @RequestParam(value = "releaseDate", required = false) String payDate) {
         try {
             ProjectExperienceDetailDTO detailDTO = this.projectInfoService.queryProjectExperienceDetail(registerId, projectId, paymentId, payDate);
             return TavernResponse.ok(detailDTO);
@@ -155,7 +154,7 @@ public class AppletInfoEndpoint {
      * 我的概览
      */
     @GetMapping("/custom/overview")
-    public TavernResponse queryMyInfo(@RequestHeader(value = "openId", defaultValue = "1234") String registerId) {
+    public TavernResponse queryMyInfo(@RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId) {
         try {
             WorkerSummaryInfo workerSummaryInfo = this.workerInfoService.queryWorkerSumInfo(registerId);
             return TavernResponse.ok(workerSummaryInfo);
@@ -169,9 +168,9 @@ public class AppletInfoEndpoint {
      * 收入记录
      */
     @GetMapping("/custom/salary")
-    public TavernResponse queryMySalaryRecord(@RequestHeader(value = "openId", defaultValue = "1234") String registerId,
-            @RequestParam(value = "paymentId", required = false) String paymentId,
-            @RequestParam(value = "releaseDate", required = false) String payDate) {
+    public TavernResponse queryMySalaryRecord(@RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId,
+                                              @RequestParam(value = "paymentId", required = false) String paymentId,
+                                              @RequestParam(value = "releaseDate", required = false) String payDate) {
         try {
             List<ProjectPaymentDetail> projectPaymentDetails = this.paymentInfoService.queryProjectPaymentRecord(registerId, null, paymentId, payDate);
             return TavernResponse.ok(projectPaymentDetails);
@@ -186,13 +185,13 @@ public class AppletInfoEndpoint {
      */
     @PostMapping("/custom/identification")
     public TavernResponse workerAuth(@ModelAttribute WorkerAuthVO vo,
-            @RequestHeader(value = "openId", defaultValue = "1234") String registerId,
-            @RequestParam(name = "video") MultipartFile video,
-            @RequestParam(name = "idPicUp") MultipartFile idPicUp,
-            @RequestParam(name = "idPicDown") MultipartFile idPicDown
+                                     @RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId,
+                                     @RequestParam(name = "video") MultipartFile video,
+                                     @RequestParam(name = "idPicUp") MultipartFile idPicUp,
+                                     @RequestParam(name = "idPicDown") MultipartFile idPicDown
     ) {
         try {
-            this.setWorkAuthInfo(vo, registerId,video,idPicUp,idPicDown);
+            this.setWorkAuthInfo(vo, registerId, video, idPicUp, idPicDown);
             this.workerInfoService.addWorker(vo);
             return TavernResponse.OK;
         } catch (Exception e) {
@@ -200,15 +199,16 @@ public class AppletInfoEndpoint {
             return TavernResponse.bizFailure(e.getMessage());
         }
     }
+
     /**
      * 退出项目
      */
     @PostMapping("/custom/quit")
     public TavernResponse quiteProject(@RequestBody ProjectQuitVO vo,
-            @RequestHeader(value = "openId", defaultValue = "1234") String registerId
+                                       @RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId
     ) {
         try {
-            this.workerInfoService.quitProject(registerId,vo.getProjectId(),vo.getReason());
+            this.workerInfoService.quitProject(registerId, vo.getProjectId(), vo.getReason());
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[退出项目] failed", e);
@@ -216,9 +216,27 @@ public class AppletInfoEndpoint {
         }
     }
 
-    private void setWorkAuthInfo(WorkerAuthVO vo,String registerId, MultipartFile video,
-            MultipartFile idPicUp,
-            MultipartFile idPicDown) {
+    /**
+     * 加入项目
+     */
+    @PostMapping("/project/participation")
+    public TavernResponse participateProject(@RequestBody ProjectParticipateVO vo,
+                                             @RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId
+    ) {
+        try {
+            vo.setRegisterId(registerId);
+            this.projectInfoService.applyForProject(vo);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[加入项目] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+
+    private void setWorkAuthInfo(WorkerAuthVO vo, String registerId, MultipartFile video,
+                                 MultipartFile idPicUp,
+                                 MultipartFile idPicDown) {
         vo.setRegisterId(registerId);
         vo.setVideo(video);
         vo.setIdPicUp(idPicUp);

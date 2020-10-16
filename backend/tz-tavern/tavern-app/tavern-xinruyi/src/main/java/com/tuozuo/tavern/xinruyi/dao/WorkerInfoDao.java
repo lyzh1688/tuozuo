@@ -18,4 +18,6 @@ public interface WorkerInfoDao {
 
     List<WorkerStaffRel> selectWorkerStaffRel(String registerId);
 
+    WorkerInfo selectById(String registerId);
+
 }

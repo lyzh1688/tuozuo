@@ -22,8 +22,11 @@ public interface StaffInfoDao {
 
 
     List<StaffResourcePool> selectAllStaff(String name);
+
     List<StaffResourcePool> selectAllCustomStaff(String name, String companyId);
+
     List<StaffResourcePool> selectStaff(String name, int queryCnt);
+
     List<StaffResourcePool> selectCustomStaff(String name, String companyId, int queryCnt);
 
     IPage<StaffSalaryInfo> selectStaffSalaryInfo(int pageNo, int pageSize,
@@ -32,5 +35,8 @@ public interface StaffInfoDao {
                                                  String projectId,
                                                  String beginDate,
                                                  String endDate);
+
     StaffResourcePool selectStaffInfo(String staffId);
+
+    StaffResourcePool selectStaffInfo(String companyId, String idNo);
 }

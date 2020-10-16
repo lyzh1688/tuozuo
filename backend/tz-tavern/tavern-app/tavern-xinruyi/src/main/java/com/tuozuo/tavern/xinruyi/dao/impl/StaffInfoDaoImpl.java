@@ -91,5 +91,12 @@ public class StaffInfoDaoImpl implements StaffInfoDao {
         return this.staffResourcePoolMapper.select(staffId);
     }
 
+    @Override
+    public StaffResourcePool selectStaffInfo(String companyId, String idNo) {
+        return this.staffResourcePoolMapper.selectOne(Wrappers.<StaffResourcePool>query().lambda()
+                .eq(StaffResourcePool::getCompanyId, companyId)
+                .eq(StaffResourcePool::getIdNumber, idNo));
+    }
+
 
 }

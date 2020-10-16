@@ -40,4 +40,9 @@ public class WorkerInfoDaoImpl extends ServiceImpl<WorkerInfoMapper, WorkerInfo>
     public List<WorkerStaffRel> selectWorkerStaffRel(String registerId) {
         return this.workerStaffRelMapper.selectStaffProject(registerId);
     }
+
+    @Override
+    public WorkerInfo selectById(String registerId) {
+        return this.workerInfoMapper.selectById(registerId);
+    }
 }
