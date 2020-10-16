@@ -428,10 +428,10 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     @Override
     public void applyForProject(ProjectParticipateVO vo) throws Exception {
         WorkerInfo workerInfo = this.workerInfoDao.selectById(vo.getRegisterId());
-        if(workerInfo == null){
+        if (workerInfo == null) {
             throw new Exception("您尚未认证，无法加入项目");
         }
-        StaffResourcePool staffResourcePool = this.staffInfoDao.selectStaffInfo(vo.getCompanyId(),workerInfo.getIdNumber());
+        StaffResourcePool staffResourcePool = this.staffInfoDao.selectStaffInfo(vo.getCompanyId(), workerInfo.getIdNumber());
         //发布加入项目申请
         EventTodoList eventTodoList = new EventTodoList();
         //构造snapshot
@@ -443,7 +443,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         snapshot.put("companyId", vo.getCompanyId());
         snapshot.put("companyName", vo.getCompanyName());
         snapshot.put("projectId", vo.getProjectId());
-        snapshot.put("projectName",vo.getProjectName());
+        snapshot.put("projectName", vo.getProjectName());
         snapshot.put("staffId", staffResourcePool.getStaffId());
         snapshot.put("staffName", workerInfo.getName());
         snapshot.put("contact", workerInfo.getContact());
@@ -462,7 +462,22 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         this.eventInfoDao.insertEventTodo(eventTodoList);
 
 
+    }
 
+    @Transactional
+    @Override
+    public void auditWorkerParticipation(AuditWorkerParticipateVO vo) {
+        //1、处理事件
+        EventTodoList eventTodoList = this.eventInfoDao.selectWorkerTodo(vo.getRegisterId(), EventType.STAFF_JOIN.getStatus());
+        EventFinishList eventFinishList = new EventFinishList();
+        BeanUtils.copyProperties(eventTodoList, eventFinishList);
+        JSONObject snapshot = JSON.parseObject(eventTodoList.getSnapshot());
+        snapshot.put("remark", vo.getRemark());
+        eventFinishList.setSnapshot(JSON.toJSONString(snapshot));
+        eventFinishList.setUpdateDate(LocalDateTime.now());
+        eventFinishList.setStatus(vo.getResult());
+        this.eventInfoDao.delEventTodo(eventTodoList.getEventId());
+        this.eventInfoDao.insertEventFinish(eventFinishList);
     }
 
 

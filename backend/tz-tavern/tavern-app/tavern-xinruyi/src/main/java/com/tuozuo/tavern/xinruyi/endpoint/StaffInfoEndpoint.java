@@ -7,7 +7,9 @@ import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.xinruyi.dto.*;
 import com.tuozuo.tavern.xinruyi.model.StaffResourcePool;
 import com.tuozuo.tavern.xinruyi.model.StaffSalaryInfo;
+import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
 import com.tuozuo.tavern.xinruyi.service.StaffInfoService;
+import com.tuozuo.tavern.xinruyi.vo.AuditWorkerParticipateVO;
 import com.tuozuo.tavern.xinruyi.vo.SalaryHistoryVO;
 import com.tuozuo.tavern.xinruyi.vo.StaffInfoVO;
 import com.tuozuo.tavern.xinruyi.vo.StaffModifyVO;
@@ -31,6 +33,8 @@ public class StaffInfoEndpoint {
 
     @Autowired
     private StaffInfoService staffInfoService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
     @Autowired
     private ModelMapConverterFactory converter;
 
@@ -165,5 +169,22 @@ public class StaffInfoEndpoint {
             return TavernResponse.bizFailure(e.getMessage());
         }
     }
+
+    /**
+     * 人员加入申请审核
+     */
+    @PutMapping("/participation/{registerId}")
+    public TavernResponse auditParticipateProject(@PathVariable("registerId") String registerId,
+                                                  @RequestBody AuditWorkerParticipateVO vo) {
+        try {
+            vo.setRegisterId(registerId);
+            this.projectInfoService.auditWorkerParticipation(vo);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[人员加入申请审核] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
 
 }
