@@ -137,4 +137,7 @@ public interface ModelMapConverterFactory {
     ProjectPaymentDetailDTO modelToProjectPaymentDetailDTO(ProjectPaymentDetail detail);
 
 
+    WorkerApplyRecord modelToWorkerApplyRecord(EventFinishList eventFinishList);
+
+
 }

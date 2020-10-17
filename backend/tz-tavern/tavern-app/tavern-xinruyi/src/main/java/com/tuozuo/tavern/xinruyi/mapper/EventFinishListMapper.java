@@ -6,6 +6,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tuozuo.tavern.xinruyi.model.EventFinishList;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
 @Mapper
 public interface EventFinishListMapper extends BaseMapper<EventFinishList> {
 
@@ -13,5 +16,9 @@ public interface EventFinishListMapper extends BaseMapper<EventFinishList> {
                                            @Param("companyId") String companyId,
                                            @Param("projectId") String projectId,
                                            @Param("eventId") String eventId,
-                                           @Param("role") String role );
+                                           @Param("role") String role);
+
+    List<EventFinishList> selectEventRecord(@Param("registerId") String registerId,
+                                            @Param("eventId") String eventId,
+                                            @Param("eventDate") String eventDate);
 }

@@ -11,6 +11,7 @@
     <result column="contact" jdbcType="VARCHAR" property="contact" />
     <result column="company_id" jdbcType="VARCHAR" property="companyId" />
     <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="staff_id" jdbcType="VARCHAR" property="staffId" />
   </resultMap>
   <resultMap id="BaseWorkerSumMap" type="com.tuozuo.tavern.xinruyi.model.WorkerSummaryInfo">
     <result column="project_num" jdbcType="INTEGER" property="projectNum" />
@@ -21,7 +22,7 @@
   <select id="selectById" resultMap="BaseResultMap">
     select
     t1.*,
-    t2.company_id,t3.company_name
+    t2.company_id,t3.company_name,t2.staff_id
     from worker_info t1,staff_resource_pool t2,company_info t3
     where t1.id_number = t2.id_number
     and t2.company_id = t3.company_id

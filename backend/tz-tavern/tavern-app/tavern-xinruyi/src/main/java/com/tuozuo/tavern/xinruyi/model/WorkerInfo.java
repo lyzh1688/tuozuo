@@ -25,6 +25,16 @@ public class WorkerInfo {
     private String companyId;
     @TableField(exist = false)
     private String companyName;
+    @TableField(exist = false)
+    private String staffId;
+
+    public String getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(String staffId) {
+        this.staffId = staffId;
+    }
 
     public String getCompanyId() {
         return companyId;

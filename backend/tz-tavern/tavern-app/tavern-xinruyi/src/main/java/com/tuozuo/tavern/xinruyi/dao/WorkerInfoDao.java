@@ -14,10 +14,12 @@ public interface WorkerInfoDao {
 
     WorkerSummaryInfo selectWorkerSumInfo(String registerId);
 
-    void insert(WorkerInfo workerInfo);
+    void insertOrUpdate(WorkerInfo workerInfo);
 
     List<WorkerStaffRel> selectWorkerStaffRel(String registerId);
 
     WorkerInfo selectById(String registerId);
+
+    void insertStaffRel(WorkerStaffRel rel);
 
 }

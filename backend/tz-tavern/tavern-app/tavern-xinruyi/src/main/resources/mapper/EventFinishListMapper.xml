@@ -48,4 +48,31 @@
     </where>
     order by t1.update_date desc
   </select>
+  
+  <select id="selectEventRecord" resultMap="BaseResultMap">
+
+    select * from (
+    select t1.event_id,t1.event_date event_date,t2.company_name,t3.project_name,'2' `status`
+    from event_todo_list t1,company_info t2,project_info t3
+    where t1.company_id = t2.company_id
+    and t1.project_id = t3.project_id
+    and t1.event_type = '5'
+    and t1.register_id = #{registerId}
+
+    union all
+
+    select t1.event_id,t1.event_date event_date,t2.company_name,t3.project_name,t1.`status`
+    from event_finish_list t1,company_info t2,project_info t3
+    where t1.company_id = t2.company_id
+    and t1.project_id = t3.project_id
+    and t1.event_type = '5'
+    and t1.register_id = #{registerId}
+    ) t where
+    (
+    t.event_date <![CDATA[ < ]]> STR_TO_DATE(#{eventDate}, '%Y%m%d')
+    or (t.event_date = STR_TO_DATE(#{eventDate}, '%Y%m%d') and t.event_id <![CDATA[ < ]]> #{eventId,jdbcType=VARCHAR})
+    )
+    order by t.event_date desc
+    limit 0,20
+  </select>
 </mapper>

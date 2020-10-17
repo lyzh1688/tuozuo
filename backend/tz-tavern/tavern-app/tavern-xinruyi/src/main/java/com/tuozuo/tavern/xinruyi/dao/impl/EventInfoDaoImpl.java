@@ -166,4 +166,9 @@ public class EventInfoDaoImpl implements EventInfoDao {
                 .eq(EventTodoList::getStaffId, staffId)
                 .eq(EventTodoList::getEventType, eventType)));
     }
+
+    @Override
+    public List<EventFinishList> selectEventRecord(String registerId,String eventId,String eventDate) {
+        return this.eventFinishListMapper.selectEventRecord(registerId,eventId,eventDate);
+    }
 }

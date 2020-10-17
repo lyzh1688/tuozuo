@@ -16,6 +16,10 @@ zuul:
       path: /tuozuo/auth/v1/**
       url: http://127.0.0.1:8081/
       stripPrefix: false
+    tavern-wx-authority:
+      path: /tuozuo/auth/wx/v1/**
+      url: http://127.0.0.1:8081/
+      stripPrefix: false
     tavern-shuiruyi:
       path: /tuozuo/shuiruyi/v1/**
       url: http://127.0.0.1:8083/

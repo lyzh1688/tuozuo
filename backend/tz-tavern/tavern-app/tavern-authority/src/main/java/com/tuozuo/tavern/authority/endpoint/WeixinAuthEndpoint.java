@@ -43,6 +43,6 @@ public class WeixinAuthEndpoint {
                 return TavernResponse.createResponse(AUTH_FAILURE, tokenAuthority.getLoginMessage(), tokenAuthority);
             }
         }
-        return TavernResponse.bizFailure("内部服务错误");
+        return TavernResponse.bizFailure("code 无效");
     }
 }

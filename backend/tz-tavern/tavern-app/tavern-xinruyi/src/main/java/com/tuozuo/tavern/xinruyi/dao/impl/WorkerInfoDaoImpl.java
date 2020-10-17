@@ -1,6 +1,5 @@
 package com.tuozuo.tavern.xinruyi.dao.impl;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tuozuo.tavern.xinruyi.dao.WorkerInfoDao;
 import com.tuozuo.tavern.xinruyi.mapper.WorkerInfoMapper;
@@ -32,7 +31,7 @@ public class WorkerInfoDaoImpl extends ServiceImpl<WorkerInfoMapper, WorkerInfo>
     }
 
     @Override
-    public void insert(WorkerInfo workerInfo) {
+    public void insertOrUpdate(WorkerInfo workerInfo) {
         this.saveOrUpdate(workerInfo);
     }
 
@@ -44,5 +43,10 @@ public class WorkerInfoDaoImpl extends ServiceImpl<WorkerInfoMapper, WorkerInfo>
     @Override
     public WorkerInfo selectById(String registerId) {
         return this.workerInfoMapper.selectById(registerId);
+    }
+
+    @Override
+    public void insertStaffRel(WorkerStaffRel rel) {
+        this.workerStaffRelMapper.insert(rel);
     }
 }

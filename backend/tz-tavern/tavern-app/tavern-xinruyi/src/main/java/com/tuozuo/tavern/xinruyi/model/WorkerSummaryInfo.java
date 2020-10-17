@@ -8,6 +8,16 @@ import java.math.BigDecimal;
  */
 public class WorkerSummaryInfo {
 
+    public static WorkerSummaryInfo defaultWorkerSummaryInfo() {
+        return new WorkerSummaryInfo(0, BigDecimal.ZERO, "0");
+    }
+
+    public WorkerSummaryInfo(int projectNum, BigDecimal totalSalary, String authStatus) {
+        this.projectNum = projectNum;
+        this.totalSalary = totalSalary;
+        this.authStatus = authStatus;
+    }
+
     private int projectNum;
     private BigDecimal totalSalary;
     private String authStatus;

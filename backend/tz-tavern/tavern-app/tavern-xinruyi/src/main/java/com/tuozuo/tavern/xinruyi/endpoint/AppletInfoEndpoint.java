@@ -3,15 +3,9 @@ package com.tuozuo.tavern.xinruyi.endpoint;
 import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
-import com.tuozuo.tavern.xinruyi.dto.IndustryTypeDTO;
-import com.tuozuo.tavern.xinruyi.dto.IndustryTypeListDTO;
-import com.tuozuo.tavern.xinruyi.dto.ProjectExperienceDTO;
-import com.tuozuo.tavern.xinruyi.dto.ProjectExperienceDetailDTO;
+import com.tuozuo.tavern.xinruyi.dto.*;
 import com.tuozuo.tavern.xinruyi.model.*;
-import com.tuozuo.tavern.xinruyi.service.BusinessDictService;
-import com.tuozuo.tavern.xinruyi.service.PaymentInfoService;
-import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
-import com.tuozuo.tavern.xinruyi.service.WorkerInfoService;
+import com.tuozuo.tavern.xinruyi.service.*;
 import com.tuozuo.tavern.xinruyi.utils.DateUtils;
 import com.tuozuo.tavern.xinruyi.vo.ProjectParticipateVO;
 import com.tuozuo.tavern.xinruyi.vo.ProjectQuitVO;
@@ -43,6 +37,8 @@ public class AppletInfoEndpoint {
     private WorkerInfoService workerInfoService;
     @Autowired
     private PaymentInfoService paymentInfoService;
+    @Autowired
+    private EventInfoService eventInfoService;
     @Autowired
     private ModelMapConverterFactory converter;
 
@@ -233,7 +229,28 @@ public class AppletInfoEndpoint {
         }
     }
 
-
+    /**
+     * 申请记录
+     */
+    @GetMapping("/custom/apply/record")
+    public TavernResponse queryApplyRecord(@RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId,
+                                           @RequestParam(value = "eventId", required = false) String eventId,
+                                           @RequestParam(value = "eventDate", required = false) String eventDate) {
+        try {
+            List<EventFinishList> eventFinishLists = this.eventInfoService.queryEventRecords(registerId, eventId, eventDate);
+            List<WorkerApplyRecord> applyRecords = eventFinishLists.stream()
+                    .map(event -> {
+                        WorkerApplyRecord record =  this.converter.modelToWorkerApplyRecord(event);
+                        record.setEventDate(DateUtils.formatDateTime(event.getEventDate(),DateUtils.DEFAULT_DATETIME_FORMATTER));
+                        return record;
+                    })
+                    .collect(Collectors.toList());
+            return TavernResponse.ok(applyRecords);
+        } catch (Exception e) {
+            LOGGER.error("[申请记录] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
 
     private void setWorkAuthInfo(WorkerAuthVO vo, String registerId, MultipartFile video,
                                  MultipartFile idPicUp,

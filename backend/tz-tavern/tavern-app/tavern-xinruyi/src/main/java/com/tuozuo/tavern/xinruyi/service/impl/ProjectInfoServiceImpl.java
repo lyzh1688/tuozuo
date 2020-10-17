@@ -466,7 +466,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     @Transactional
     @Override
-    public void auditWorkerParticipation(AuditWorkerParticipateVO vo) {
+    public void auditWorkerParticipation(AuditWorkerVO vo) {
         //1、处理事件
         EventTodoList eventTodoList = this.eventInfoDao.selectWorkerTodo(vo.getRegisterId(), EventType.STAFF_JOIN.getStatus());
         EventFinishList eventFinishList = new EventFinishList();

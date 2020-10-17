@@ -18,5 +18,5 @@ public interface WorkerInfoService {
 
     WorkerInfo queryWorkerInfo(String registerId);
 
-    void auditForWorkerInfo();
+    void auditForWorkerInfo(String registerId,String remark,String result);
 }

@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
  * Code Monkey: 何彪 <br>
  * Dev Time: 2020/10/16 <br>
  */
-public class AuditWorkerParticipateVO {
+public class AuditWorkerVO {
     private String registerId;
     @NotNull(message = "remark is not null")
     private String remark;

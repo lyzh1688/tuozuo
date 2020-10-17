@@ -11,7 +11,7 @@ import com.tuozuo.tavern.xinruyi.model.WorkerInfo;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
 import com.tuozuo.tavern.xinruyi.service.StaffInfoService;
 import com.tuozuo.tavern.xinruyi.service.WorkerInfoService;
-import com.tuozuo.tavern.xinruyi.vo.AuditWorkerParticipateVO;
+import com.tuozuo.tavern.xinruyi.vo.AuditWorkerVO;
 import com.tuozuo.tavern.xinruyi.vo.SalaryHistoryVO;
 import com.tuozuo.tavern.xinruyi.vo.StaffInfoVO;
 import com.tuozuo.tavern.xinruyi.vo.StaffModifyVO;
@@ -179,13 +179,27 @@ public class StaffInfoEndpoint {
      */
     @PutMapping("/participation/{registerId}")
     public TavernResponse auditParticipateProject(@PathVariable("registerId") String registerId,
-                                                  @RequestBody AuditWorkerParticipateVO vo) {
+                                                  @RequestBody AuditWorkerVO vo) {
         try {
             vo.setRegisterId(registerId);
             this.projectInfoService.auditWorkerParticipation(vo);
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[人员加入申请审核] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+    /**
+     * 人员实名认证申请审核
+     */
+    @PutMapping("/identification/{registerId}")
+    public TavernResponse auditIdentificationProject(@PathVariable("registerId") String registerId,
+                                                  @RequestBody AuditWorkerVO vo) {
+        try {
+            this.workerInfoService.auditForWorkerInfo(registerId,vo.getRemark(),vo.getResult());
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[人员实名认证申请审核] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }
