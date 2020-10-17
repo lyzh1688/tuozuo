@@ -105,6 +105,24 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
         }
     }
 
+    @Override
+    public WorkerInfo queryWorkerInfo(String registerId) {
+        return this.workerInfoDao.selectById(registerId);
+    }
+
+    @Override
+    public void auditForWorkerInfo() {
+        //1、对事件进行处理
+        //2、更改认证状态
+        //3、增加员工关系
+        
+
+
+
+
+
+    }
+
 
     private void setWorkerInfoFiles(MultipartFile video,
             MultipartFile idPicUp,

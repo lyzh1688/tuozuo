@@ -7,8 +7,10 @@ import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.xinruyi.dto.*;
 import com.tuozuo.tavern.xinruyi.model.StaffResourcePool;
 import com.tuozuo.tavern.xinruyi.model.StaffSalaryInfo;
+import com.tuozuo.tavern.xinruyi.model.WorkerInfo;
 import com.tuozuo.tavern.xinruyi.service.ProjectInfoService;
 import com.tuozuo.tavern.xinruyi.service.StaffInfoService;
+import com.tuozuo.tavern.xinruyi.service.WorkerInfoService;
 import com.tuozuo.tavern.xinruyi.vo.AuditWorkerParticipateVO;
 import com.tuozuo.tavern.xinruyi.vo.SalaryHistoryVO;
 import com.tuozuo.tavern.xinruyi.vo.StaffInfoVO;
@@ -35,6 +37,8 @@ public class StaffInfoEndpoint {
     private StaffInfoService staffInfoService;
     @Autowired
     private ProjectInfoService projectInfoService;
+    @Autowired
+    private WorkerInfoService workerInfoService;
     @Autowired
     private ModelMapConverterFactory converter;
 
@@ -182,6 +186,20 @@ public class StaffInfoEndpoint {
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[人员加入申请审核] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 实名认证详情
+     */
+    @GetMapping("/identification/detail/{registerId}")
+    public TavernResponse queryWorkerInfo(@PathVariable("registerId") String registerId) {
+        try {
+            WorkerInfo workerInfo = this.workerInfoService.queryWorkerInfo(registerId);
+            return TavernResponse.ok(workerInfo);
+        } catch (Exception e) {
+            LOGGER.error("[实名认证详情] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }

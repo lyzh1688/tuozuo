@@ -234,6 +234,7 @@ public class AppletInfoEndpoint {
     }
 
 
+
     private void setWorkAuthInfo(WorkerAuthVO vo, String registerId, MultipartFile video,
                                  MultipartFile idPicUp,
                                  MultipartFile idPicDown) {

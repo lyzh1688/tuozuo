@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.xinruyi.service;
 
+import com.tuozuo.tavern.xinruyi.model.WorkerInfo;
 import com.tuozuo.tavern.xinruyi.model.WorkerSummaryInfo;
 import com.tuozuo.tavern.xinruyi.vo.WorkerAuthVO;
 
@@ -15,4 +16,7 @@ public interface WorkerInfoService {
 
     void quitProject(String registerId,String projectId,String reason);
 
+    WorkerInfo queryWorkerInfo(String registerId);
+
+    void auditForWorkerInfo();
 }

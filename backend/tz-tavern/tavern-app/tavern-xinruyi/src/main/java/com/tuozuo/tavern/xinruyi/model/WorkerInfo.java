@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.xinruyi.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -19,6 +20,27 @@ public class WorkerInfo {
     private String idPicUp;
     private String idPicBack;
     private String contact;
+
+    @TableField(exist = false)
+    private String companyId;
+    @TableField(exist = false)
+    private String companyName;
+
+    public String getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
 
     public String getContact() {
         return contact;
