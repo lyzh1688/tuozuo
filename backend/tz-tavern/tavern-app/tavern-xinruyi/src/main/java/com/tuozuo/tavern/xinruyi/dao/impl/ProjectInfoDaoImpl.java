@@ -109,13 +109,13 @@ public class ProjectInfoDaoImpl implements ProjectInfoDao {
     }
 
     @Override
-    public List<IndustryProjectInfo> selectIndustryProject(String projectId, String publishDate, String industryId) {
+    public List<IndustryProjectInfo> selectIndustryProjectById(String projectId, String publishDate, String industryId) {
         return this.projectInfoMapper.selectIndustryProjectPage(projectId, publishDate, industryId);
     }
 
     @Override
-    public List<IndustryProjectInfo> selectIndustryProject(String projectName, int queryCnt) {
-        return this.projectInfoMapper.selectIndustryProject(projectName, queryCnt);
+    public List<IndustryProjectInfo> selectIndustryProjectByName(String projectName, String publishDate, String projectId) {
+        return this.projectInfoMapper.selectIndustryProject(projectName, publishDate,projectId);
     }
 
     @Override

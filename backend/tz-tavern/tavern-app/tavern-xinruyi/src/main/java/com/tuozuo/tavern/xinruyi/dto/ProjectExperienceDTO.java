@@ -15,6 +15,15 @@ public class ProjectExperienceDTO {
     private String projectCycle;
     private String publishDate;
     private String projectStatus;
+    private String statusDesc;
+
+    public String getStatusDesc() {
+        return statusDesc;
+    }
+
+    public void setStatusDesc(String statusDesc) {
+        this.statusDesc = statusDesc;
+    }
 
     public String getProjectId() {
         return projectId;

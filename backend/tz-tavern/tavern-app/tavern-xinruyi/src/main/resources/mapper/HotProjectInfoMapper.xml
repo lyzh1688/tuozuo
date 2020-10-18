@@ -8,12 +8,17 @@
     <result column="project_desc" jdbcType="VARCHAR" property="projectDesc" />
     <result column="company_id" jdbcType="VARCHAR" property="companyId" />
     <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="company_logo" jdbcType="VARCHAR" property="companyLogo" />
     <result column="status" jdbcType="VARCHAR" property="projectStatus" />
+    <result column="status_desc" jdbcType="VARCHAR" property="statusDesc" />
   </resultMap>
   <select id="selectAll" resultMap="BaseResultMap">
-    select t1.project_id,t1.project_name,t2.project_desc,t3.company_id,t3.company_name,t2.status,t1.order
-    from hot_project_info t1,project_info t2,company_info t3
-    where t1.project_id = t2.project_id
-    and t2.company_id = t3.company_id
+      select t1.project_id,t1.project_name,t2.project_desc,t3.company_id,t3.company_name,t2.status,t1.order,t4.business_name status_desc,t5.company_logo
+      from hot_project_info t1,project_info t2,company_info t3,business_dict t4,company_info_ext t5
+      where t1.project_id = t2.project_id
+      and t2.company_id = t3.company_id
+      and t3.company_id = t5.company_id
+      and t2.status = t4.business_id
+      and t4.business_group = 'projectStatus'
   </select>
 </mapper>

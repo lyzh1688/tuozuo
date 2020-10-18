@@ -48,9 +48,19 @@ public class ProjectInfo {
     private BigDecimal fee;
 
     private String status;
+    @TableField(exist = false)
+    private String statusDesc;
 
     private String budget;
 
+
+    public String getStatusDesc() {
+        return statusDesc;
+    }
+
+    public void setStatusDesc(String statusDesc) {
+        this.statusDesc = statusDesc;
+    }
 
     public String getCompanyLogo() {
         return companyLogo;

@@ -13,6 +13,9 @@ public class HotProjectInfo {
 
     private Integer order;
 
+
+    @TableField(exist = false)
+    private String companyLogo;
     @TableField(exist = false)
     private String projectDesc;
     @TableField(exist = false)
@@ -21,6 +24,24 @@ public class HotProjectInfo {
     private String companyName;
     @TableField(exist = false)
     private int projectStatus;
+    @TableField(exist = false)
+    private String statusDesc;
+
+    public String getCompanyLogo() {
+        return companyLogo;
+    }
+
+    public void setCompanyLogo(String companyLogo) {
+        this.companyLogo = companyLogo;
+    }
+
+    public String getStatusDesc() {
+        return statusDesc;
+    }
+
+    public void setStatusDesc(String statusDesc) {
+        this.statusDesc = statusDesc;
+    }
 
     public String getProjectDesc() {
         return projectDesc;

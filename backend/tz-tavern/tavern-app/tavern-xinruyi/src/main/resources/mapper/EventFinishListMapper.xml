@@ -72,7 +72,7 @@
     t.event_date <![CDATA[ < ]]> STR_TO_DATE(#{eventDate}, '%Y%m%d')
     or (t.event_date = STR_TO_DATE(#{eventDate}, '%Y%m%d') and t.event_id <![CDATA[ < ]]> #{eventId,jdbcType=VARCHAR})
     )
-    order by t.event_date desc
+    order by t.event_date desc,t.event_id desc
     limit 0,20
   </select>
 </mapper>

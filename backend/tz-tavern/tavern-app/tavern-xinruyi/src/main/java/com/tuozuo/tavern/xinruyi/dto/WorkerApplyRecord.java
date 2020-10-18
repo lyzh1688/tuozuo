@@ -1,5 +1,7 @@
 package com.tuozuo.tavern.xinruyi.dto;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Code Monkey: 何彪 <br>
  * Dev Time: 2020/10/17 <br>
@@ -10,6 +12,26 @@ public class WorkerApplyRecord {
     private String companyName;
     private String projectName;
     private String status;
+    private String statusDesc;
+
+    public String getStatusDesc() {
+        return statusDesc;
+    }
+
+    public void setStatusDesc() {
+        if (StringUtils.isEmpty(this.status)) {
+            this.statusDesc = null;
+        }
+        if (this.status.equals("0")) {
+            this.statusDesc = "申请失败";
+        }
+        if (this.status.equals("1")) {
+            this.statusDesc = "申请成功";
+        }
+        if (this.status.equals("2")) {
+            this.statusDesc = "申请中";
+        }
+    }
 
     public String getEventId() {
         return eventId;

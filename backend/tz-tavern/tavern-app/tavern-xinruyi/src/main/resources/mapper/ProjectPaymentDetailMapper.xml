@@ -41,7 +41,7 @@
     t1.pay_date <![CDATA[ < ]]> #{payDate}
     or (t1.pay_date = #{payDate} and t1.payment_id <![CDATA[ < ]]> #{paymentId,jdbcType=VARCHAR})
     )
-    order by t1.pay_date desc
+    order by t1.pay_date desc,t1.payment_id desc
     limit 0,20
   </select>
 
@@ -107,7 +107,7 @@
     or (t1.pay_date = #{payDate} and t1.payment_id <![CDATA[ < ]]> #{paymentId,jdbcType=VARCHAR})
     )
     </where>
-    order by t1.pay_date desc
+    order by t1.pay_date desc,t1.payment_id desc
     limit 0,20
   </select>
   

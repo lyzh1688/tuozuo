@@ -32,7 +32,8 @@ public interface ProjectInfoMapper extends BaseMapper<ProjectInfo> {
                                                         @Param("industryId") String industryId);
 
     List<IndustryProjectInfo> selectIndustryProject(@Param("projectName") String projectName,
-                                                    @Param("queryCnt") int queryCnt);
+                                                    @Param("publishDate") String publishDate,
+                                                    @Param("projectId") String projectId);
 
     List<ProjectInfo> selectCurProjects(@Param("projectId") String projectId,
                                         @Param("publishDate") String publishDate,

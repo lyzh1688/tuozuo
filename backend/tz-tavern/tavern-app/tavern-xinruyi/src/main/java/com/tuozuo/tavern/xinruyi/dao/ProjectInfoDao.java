@@ -41,12 +41,13 @@ public interface ProjectInfoDao {
 
     List<HotProjectInfo> selectHotProjects();
 
-    List<IndustryProjectInfo> selectIndustryProject(String projectId,
-                                                    String publishDate,
-                                                    String industryId);
+    List<IndustryProjectInfo> selectIndustryProjectById(String projectId,
+                                                        String publishDate,
+                                                        String industryId);
 
-    List<IndustryProjectInfo> selectIndustryProject(String projectName,
-                                                    int queryCnt);
+    List<IndustryProjectInfo> selectIndustryProjectByName(String projectName,
+                                                        String publishDate,
+                                                        String projectId);
 
     List<ProjectInfo> selectCurProjects(String projectId,
                                                 String publishDate,

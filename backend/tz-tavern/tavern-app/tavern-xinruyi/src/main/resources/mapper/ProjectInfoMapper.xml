@@ -20,6 +20,7 @@
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="fee" jdbcType="DECIMAL" property="fee"/>
         <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="statusDesc" jdbcType="VARCHAR" property="statusDesc"/>
         <result column="budget" jdbcType="VARCHAR" property="budget"/>
         <result column="company_name" jdbcType="VARCHAR" property="companyName"/>
     </resultMap>
@@ -34,6 +35,7 @@
         <result column="project_joined_count" jdbcType="DECIMAL" property="joinedNum"/>
         <result column="publish_date" jdbcType="VARCHAR" property="publishDate"/>
         <result column="status" jdbcType="VARCHAR" property="projectStatus"/>
+        <result column="statusDesc" jdbcType="VARCHAR" property="statusDesc"/>
     </resultMap>
 
     <select id="selectByProjectId" resultMap="BaseResultMap">
@@ -104,7 +106,7 @@
         where t1.register_id = t2.register_id
         and t2.staff_id = t3.staff_id
         and t3.is_signed = '1'
-        group by project_id) t4 on t2.project_id = t4.project_id,company_info t3,company_info_ext t5
+        group by project_id) t4 on t2.project_id = t4.project_id,company_info t3,company_info_ext t5,business_dict t6
         <where>
             t2.company_id = t3.company_id
             and t3.company_id = t5.company_id
@@ -115,8 +117,10 @@
             t2.publish_date <![CDATA[ < ]]> STR_TO_DATE(#{publishDate}, '%Y%m%d')
             or (t2.publish_date = STR_TO_DATE(#{publishDate}, '%Y%m%d') and t2.project_id <![CDATA[ < ]]> #{projectId,jdbcType=VARCHAR})
             )
+            and t2.status = t6.business_id
+            and t6.business_group = 'projectStatus'
         </where>
-        order by t2.publish_date desc
+        order by t2.publish_date desc,t2.project_id desc
         limit 0,20
 
     </select>
@@ -136,15 +140,22 @@
         where t1.register_id = t2.register_id
         and t2.staff_id = t3.staff_id
         and t3.is_signed = '1'
-        group by project_id) t4 on t2.project_id = t4.project_id,company_info t3,company_info_ext t5
+        group by project_id) t4 on t2.project_id = t4.project_id,company_info t3,company_info_ext t5,business_dict t6
         <where>
             t2.company_id = t3.company_id
             and t3.company_id = t5.company_id
             and t2.status not in ('1','6','7')
             and t2.project_name like concat('%', #{projectName}, '%')
+            and
+            (
+            t2.publish_date <![CDATA[ < ]]> STR_TO_DATE(#{publishDate}, '%Y%m%d')
+            or (t2.publish_date = STR_TO_DATE(#{publishDate}, '%Y%m%d') and t2.project_id <![CDATA[ < ]]> #{projectId,jdbcType=VARCHAR})
+            )
+            and t2.status = t6.business_id
+            and t6.business_group = 'projectStatus'
         </where>
-        order by t2.publish_date desc
-        limit 0,#{queryCnt}
+        order by t2.publish_date desc,t2.project_id desc
+        limit 0,20
 
     </select>
 
@@ -152,7 +163,7 @@
         select
         t2.project_id,t3.company_id,t3.company_name,t5.company_logo ,t2.project_name,t2.project_desc,t2.period,
         t2.publish_date,t2.status
-        from project_info t2 , (select t3.project_id from worker_info t1,worker_staff_rel t2,project_staff t3
+        from project_info t2 , (select t3.project_id from worker_info t1,worker_staff_rel t2,project_staff t3,business_dict t4
         where t1.register_id = t2.register_id
         and t2.staff_id = t3.staff_id
         and t3.is_signed = '1'
@@ -168,14 +179,16 @@
         t2.publish_date <![CDATA[ < ]]> STR_TO_DATE(#{publishDate}, '%Y%m%d')
         or (t2.publish_date = STR_TO_DATE(#{publishDate}, '%Y%m%d') and t2.project_id <![CDATA[ < ]]> #{projectId,jdbcType=VARCHAR})
         )
-        order by t2.publish_date desc
+        and t2.status = t4.business_id
+        and t4.business_group = 'projectStatus'
+        order by t2.publish_date desc,t2.project_id desc
         limit 0,20
     </select>
     <select id="selectFinishedProjects" resultMap="BaseResultMap">
         select
         t2.project_id,t3.company_id,t3.company_name,t5.company_logo ,t2.project_name,t2.project_desc,t2.period,
         t2.publish_date,t2.status
-        from project_info t2 , (select t3.project_id from worker_info t1,worker_staff_rel t2,project_staff t3
+        from project_info t2 , (select t3.project_id from worker_info t1,worker_staff_rel t2,project_staff t3,business_dict t4
         where t1.register_id = t2.register_id
         and t2.staff_id = t3.staff_id
         and t3.is_signed = '1'
@@ -190,7 +203,9 @@
         t2.publish_date <![CDATA[ < ]]> STR_TO_DATE(#{publishDate}, '%Y%m%d')
         or (t2.publish_date = STR_TO_DATE(#{publishDate}, '%Y%m%d') and t2.project_id <![CDATA[ < ]]> #{projectId,jdbcType=VARCHAR})
         )
-        order by t2.publish_date desc
+        and t2.status = t4.business_id
+        and t4.business_group = 'projectStatus'
+        order by t2.publish_date desc,t2.project_id desc
         limit 0,20
     </select>
 

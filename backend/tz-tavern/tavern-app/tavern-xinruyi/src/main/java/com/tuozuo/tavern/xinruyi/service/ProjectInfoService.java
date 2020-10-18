@@ -55,7 +55,9 @@ public interface ProjectInfoService {
                                                    String publishDate,
                                                    String industryId);
 
-    List<IndustryProjectInfo> queryIndustryProjectByName(String projectName, int queryCnt);
+    List<IndustryProjectInfo> queryIndustryProjectByName(String projectName,
+                                                         String publishDate,
+                                                         String projectId);
 
     List<ProjectInfo> queryExperienceProjects(String projectId,
                                               String publishDate,

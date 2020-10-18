@@ -56,6 +56,7 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
         if (workerSummaryInfo == null) {
             return WorkerSummaryInfo.defaultWorkerSummaryInfo();
         } else {
+            workerSummaryInfo.setStatusDesc();
             return workerSummaryInfo;
         }
     }

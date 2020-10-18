@@ -388,12 +388,17 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         if (StringUtils.isEmpty(publishDate)) {
             publishDate = DateUtils.formatDate(LocalDate.now().plusYears(1), DateUtils.DEFAULT_SIMPLE_8__FORMATTER);
         }
-        return this.projectInfoDao.selectIndustryProject(projectId, publishDate, industryId);
+        return this.projectInfoDao.selectIndustryProjectById(projectId, publishDate, industryId);
     }
 
     @Override
-    public List<IndustryProjectInfo> queryIndustryProjectByName(String projectName, int queryCnt) {
-        return this.projectInfoDao.selectIndustryProject(projectName, queryCnt);
+    public List<IndustryProjectInfo> queryIndustryProjectByName(String projectName,
+                                                                String publishDate,
+                                                                String projectId) {
+        if (StringUtils.isEmpty(publishDate)) {
+            publishDate = DateUtils.formatDate(LocalDate.now().plusYears(1), DateUtils.DEFAULT_SIMPLE_8__FORMATTER);
+        }
+        return this.projectInfoDao.selectIndustryProjectByName(projectName, publishDate, projectId);
     }
 
     @Override

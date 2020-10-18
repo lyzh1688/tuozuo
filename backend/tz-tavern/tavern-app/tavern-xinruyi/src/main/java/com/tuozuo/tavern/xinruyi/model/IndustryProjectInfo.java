@@ -16,6 +16,15 @@ public class IndustryProjectInfo {
     private int joinedNum;
     private String publishDate;
     private String projectStatus;
+    private String statusDesc;
+
+    public String getStatusDesc() {
+        return statusDesc;
+    }
+
+    public void setStatusDesc(String statusDesc) {
+        this.statusDesc = statusDesc;
+    }
 
     public String getProjectId() {
         return projectId;

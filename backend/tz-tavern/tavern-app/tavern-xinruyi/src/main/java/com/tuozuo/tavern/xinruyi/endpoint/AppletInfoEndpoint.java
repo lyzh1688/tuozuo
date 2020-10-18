@@ -96,9 +96,10 @@ public class AppletInfoEndpoint {
      */
     @GetMapping("/market/project")
     public TavernResponse fuzzyQueryIndustryProjects(@RequestParam(value = "projectName") String projectName,
-                                                     @RequestParam(name = "queryCnt", defaultValue = "20") int queryCnt) {
+                                                     @RequestParam(value = "projectId", required = false) String projectId,
+                                                     @RequestParam(value = "publishDate", required = false) String publishDate) {
         try {
-            List<IndustryProjectInfo> industryProjectInfoList = this.projectInfoService.queryIndustryProjectByName(projectName, queryCnt);
+            List<IndustryProjectInfo> industryProjectInfoList = this.projectInfoService.queryIndustryProjectByName(projectName, projectId,publishDate);
             return TavernResponse.ok(industryProjectInfoList);
         } catch (Exception e) {
             LOGGER.error("[市场页面项目搜索] failed", e);
@@ -110,7 +111,7 @@ public class AppletInfoEndpoint {
      * 项目经历
      */
     @GetMapping("/project/experience")
-    public TavernResponse queryExperienceProjects(@RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId,
+    public TavernResponse queryExperienceProjects(@RequestHeader(value = TavernRequestAuthFields.USER_ID,defaultValue = "1234") String registerId,
                                                   @RequestParam(value = "projectId", required = false) String projectId,
                                                   @RequestParam(value = "publishDate", required = false) String publishDate,
                                                   @RequestParam(value = "status") String status) {
@@ -133,7 +134,7 @@ public class AppletInfoEndpoint {
      * 项目详情
      */
     @GetMapping("/project/experience/{projectId}")
-    public TavernResponse queryExperienceProjectDetail(@RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId,
+    public TavernResponse queryExperienceProjectDetail(@RequestHeader(value = TavernRequestAuthFields.USER_ID,defaultValue = "1234") String registerId,
                                                        @PathVariable("projectId") String projectId,
                                                        @RequestParam(value = "paymentId", required = false) String paymentId,
                                                        @RequestParam(value = "releaseDate", required = false) String payDate) {
@@ -150,7 +151,7 @@ public class AppletInfoEndpoint {
      * 我的概览
      */
     @GetMapping("/custom/overview")
-    public TavernResponse queryMyInfo(@RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId) {
+    public TavernResponse queryMyInfo(@RequestHeader(value = TavernRequestAuthFields.USER_ID,defaultValue = "1234") String registerId) {
         try {
             WorkerSummaryInfo workerSummaryInfo = this.workerInfoService.queryWorkerSumInfo(registerId);
             return TavernResponse.ok(workerSummaryInfo);
@@ -164,7 +165,7 @@ public class AppletInfoEndpoint {
      * 收入记录
      */
     @GetMapping("/custom/salary")
-    public TavernResponse queryMySalaryRecord(@RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId,
+    public TavernResponse queryMySalaryRecord(@RequestHeader(value = TavernRequestAuthFields.USER_ID,defaultValue = "1234") String registerId,
                                               @RequestParam(value = "paymentId", required = false) String paymentId,
                                               @RequestParam(value = "releaseDate", required = false) String payDate) {
         try {
@@ -181,7 +182,7 @@ public class AppletInfoEndpoint {
      */
     @PostMapping("/custom/identification")
     public TavernResponse workerAuth(@ModelAttribute WorkerAuthVO vo,
-                                     @RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId,
+                                     @RequestHeader(value = TavernRequestAuthFields.USER_ID,defaultValue = "1234") String registerId,
                                      @RequestParam(name = "video") MultipartFile video,
                                      @RequestParam(name = "idPicUp") MultipartFile idPicUp,
                                      @RequestParam(name = "idPicDown") MultipartFile idPicDown
@@ -201,7 +202,7 @@ public class AppletInfoEndpoint {
      */
     @PostMapping("/custom/quit")
     public TavernResponse quiteProject(@RequestBody ProjectQuitVO vo,
-                                       @RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId
+                                       @RequestHeader(value = TavernRequestAuthFields.USER_ID,defaultValue = "1234") String registerId
     ) {
         try {
             this.workerInfoService.quitProject(registerId, vo.getProjectId(), vo.getReason());
@@ -217,7 +218,7 @@ public class AppletInfoEndpoint {
      */
     @PostMapping("/project/participation")
     public TavernResponse participateProject(@RequestBody ProjectParticipateVO vo,
-                                             @RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId
+                                             @RequestHeader(value = TavernRequestAuthFields.USER_ID,defaultValue = "1234") String registerId
     ) {
         try {
             vo.setRegisterId(registerId);
@@ -233,7 +234,7 @@ public class AppletInfoEndpoint {
      * 申请记录
      */
     @GetMapping("/custom/apply/record")
-    public TavernResponse queryApplyRecord(@RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId,
+    public TavernResponse queryApplyRecord(@RequestHeader(value = TavernRequestAuthFields.USER_ID,defaultValue = "1234") String registerId,
                                            @RequestParam(value = "eventId", required = false) String eventId,
                                            @RequestParam(value = "eventDate", required = false) String eventDate) {
         try {
@@ -242,6 +243,7 @@ public class AppletInfoEndpoint {
                     .map(event -> {
                         WorkerApplyRecord record =  this.converter.modelToWorkerApplyRecord(event);
                         record.setEventDate(DateUtils.formatDateTime(event.getEventDate(),DateUtils.DEFAULT_DATETIME_FORMATTER));
+                        record.setStatusDesc();
                         return record;
                     })
                     .collect(Collectors.toList());
