@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -407,9 +408,19 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
             publishDate = DateUtils.formatDate(LocalDate.now().plusYears(1), DateUtils.DEFAULT_SIMPLE_8__FORMATTER);
         }
         if (status.equals("0")) {
-            return this.projectInfoDao.selectFinishedProjects(projectId, publishDate, registerId);
+            return this.projectInfoDao.selectFinishedProjects(projectId, publishDate, registerId).stream()
+                    .map(projectInfo -> {
+                        long workDays = this.calHisWorkDays(projectInfo.getEnterDate(), projectInfo.getQuitDate(), projectInfo.getPublishDate(), projectInfo.getPeriod());
+                        projectInfo.setWorkDays(workDays);
+                        return projectInfo;
+                    }).collect(Collectors.toList());
         } else {
-            return this.projectInfoDao.selectCurProjects(projectId, publishDate, registerId);
+            return this.projectInfoDao.selectCurProjects(projectId, publishDate, registerId).stream()
+                    .map(projectInfo -> {
+                        long workDays = this.calCurWorkDays(projectInfo.getEnterDate());
+                        projectInfo.setWorkDays(workDays);
+                        return projectInfo;
+                    }).collect(Collectors.toList());
         }
     }
 
@@ -504,5 +515,18 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         return StringUtils.join(fileUrlPath, projectId,
                 "/", fileName);
 
+    }
+
+
+    private long calCurWorkDays(LocalDate enterDate) {
+        return LocalDate.now().toEpochDay() - enterDate.toEpochDay();
+    }
+
+    private long calHisWorkDays(LocalDate enterDate, LocalDate quitDate, LocalDate publishDate, BigDecimal period) {
+        if (quitDate != null) {
+            return quitDate.toEpochDay() - enterDate.toEpochDay();
+        }
+        LocalDate finishDate = publishDate.plusDays(period.multiply(new BigDecimal(30)).intValue());
+        return finishDate.toEpochDay() - enterDate.toEpochDay();
     }
 }

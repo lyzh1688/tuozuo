@@ -16,6 +16,15 @@ public class ProjectExperienceDTO {
     private String publishDate;
     private String projectStatus;
     private String statusDesc;
+    private long workDays;
+
+    public long getWorkDays() {
+        return workDays;
+    }
+
+    public void setWorkDays(long workDays) {
+        this.workDays = workDays;
+    }
 
     public String getStatusDesc() {
         return statusDesc;

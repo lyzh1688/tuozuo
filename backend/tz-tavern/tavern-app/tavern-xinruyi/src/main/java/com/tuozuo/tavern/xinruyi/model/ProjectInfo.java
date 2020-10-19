@@ -50,9 +50,39 @@ public class ProjectInfo {
     private String status;
     @TableField(exist = false)
     private String statusDesc;
+    @TableField(exist = false)
+    private LocalDate enterDate;
+    @TableField(exist = false)
+    private LocalDate quitDate;
 
     private String budget;
+    @TableField(exist = false)
+    private long workDays;
 
+
+    public long getWorkDays() {
+        return workDays;
+    }
+
+    public void setWorkDays(long workDays) {
+        this.workDays = workDays;
+    }
+
+    public LocalDate getEnterDate() {
+        return enterDate;
+    }
+
+    public void setEnterDate(LocalDate enterDate) {
+        this.enterDate = enterDate;
+    }
+
+    public LocalDate getQuitDate() {
+        return quitDate;
+    }
+
+    public void setQuitDate(LocalDate quitDate) {
+        this.quitDate = quitDate;
+    }
 
     public String getStatusDesc() {
         return statusDesc;
