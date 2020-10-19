@@ -52,7 +52,7 @@
   <select id="selectEventRecord" resultMap="BaseResultMap">
 
     select * from (
-    select t1.event_id,t1.event_date event_date,t2.company_name,t3.project_name,'2' `status`
+    select t1.event_id,t1.event_date event_date,t2.company_name,t3.project_name,'2' `status`,t1.snapshot
     from event_todo_list t1,company_info t2,project_info t3
     where t1.company_id = t2.company_id
     and t1.project_id = t3.project_id
@@ -61,7 +61,7 @@
 
     union all
 
-    select t1.event_id,t1.event_date event_date,t2.company_name,t3.project_name,t1.`status`
+    select t1.event_id,t1.event_date event_date,t2.company_name,t3.project_name,t1.`status`,t1.snapshot
     from event_finish_list t1,company_info t2,project_info t3
     where t1.company_id = t2.company_id
     and t1.project_id = t3.project_id

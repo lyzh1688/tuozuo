@@ -13,6 +13,19 @@ public class WorkerApplyRecord {
     private String projectName;
     private String status;
     private String statusDesc;
+    private String remark;
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public void setStatusDesc(String statusDesc) {
+        this.statusDesc = statusDesc;
+    }
 
     public String getStatusDesc() {
         return statusDesc;
