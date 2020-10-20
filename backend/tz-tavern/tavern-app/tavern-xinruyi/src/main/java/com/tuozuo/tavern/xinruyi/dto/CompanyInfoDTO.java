@@ -11,10 +11,19 @@ public class CompanyInfoDTO {
     private String authStatus;
     private String companyName;
     private String industryType;
+    private String logo;
     private String contact;
     private String province;
     private String city;
     private String district;
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
 
     public String getRegisterId() {
         return registerId;

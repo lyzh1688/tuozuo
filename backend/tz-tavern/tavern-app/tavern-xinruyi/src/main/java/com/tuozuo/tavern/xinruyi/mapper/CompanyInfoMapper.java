@@ -8,4 +8,6 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface CompanyInfoMapper extends BaseMapper<CompanyInfo> {
 
+    CompanyInfo select(@Param("companyId")String companyId);
+
 }

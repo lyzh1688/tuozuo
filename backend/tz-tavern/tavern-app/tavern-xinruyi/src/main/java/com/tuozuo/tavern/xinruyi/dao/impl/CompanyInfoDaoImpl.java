@@ -26,9 +26,7 @@ public class CompanyInfoDaoImpl implements CompanyInfoDao {
 
     @Override
     public CompanyInfo selectCompanyInfo(String companyId) {
-        return this.companyInfoMapper.selectOne(Wrappers.<CompanyInfo>query()
-                .lambda()
-                .eq(CompanyInfo::getCompanyId, companyId));
+        return this.companyInfoMapper.select(companyId);
     }
 
     @Override
