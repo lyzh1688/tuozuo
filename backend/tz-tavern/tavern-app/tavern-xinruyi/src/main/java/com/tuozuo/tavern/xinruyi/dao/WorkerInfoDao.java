@@ -5,6 +5,7 @@ import com.tuozuo.tavern.xinruyi.model.WorkerStaffRel;
 import com.tuozuo.tavern.xinruyi.model.WorkerSummaryInfo;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -21,5 +22,7 @@ public interface WorkerInfoDao {
     WorkerInfo selectById(String registerId);
 
     void insertStaffRel(WorkerStaffRel rel);
+
+    Optional<WorkerStaffRel> selectWorkerStaffRelById(String registerId, String staffId);
 
 }

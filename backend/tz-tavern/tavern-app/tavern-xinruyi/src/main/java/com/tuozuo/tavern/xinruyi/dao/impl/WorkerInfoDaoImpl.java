@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.xinruyi.dao.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tuozuo.tavern.xinruyi.dao.WorkerInfoDao;
 import com.tuozuo.tavern.xinruyi.mapper.WorkerInfoMapper;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -48,5 +50,13 @@ public class WorkerInfoDaoImpl extends ServiceImpl<WorkerInfoMapper, WorkerInfo>
     @Override
     public void insertStaffRel(WorkerStaffRel rel) {
         this.workerStaffRelMapper.insert(rel);
+    }
+
+    @Override
+    public Optional<WorkerStaffRel> selectWorkerStaffRelById(String registerId, String staffId) {
+        return  Optional.ofNullable(this.workerStaffRelMapper.selectOne(Wrappers.<WorkerStaffRel>query()
+                .lambda()
+                .eq(WorkerStaffRel::getRegisterId, registerId)
+                .eq(WorkerStaffRel::getStaffId, staffId)));
     }
 }
