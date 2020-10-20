@@ -18,5 +18,5 @@ public interface WorkerInfoService {
 
     WorkerInfo queryWorkerInfo(String registerId);
 
-    void auditForWorkerInfo(String registerId,String remark,String result);
+    void auditForWorkerInfo(String registerId,String remark,String result) throws Exception;
 }

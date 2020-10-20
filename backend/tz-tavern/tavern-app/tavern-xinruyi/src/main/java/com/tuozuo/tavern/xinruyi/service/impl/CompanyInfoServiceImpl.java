@@ -245,7 +245,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         this.eventInfoDao.insertEventFinish(eventFinishList);
 
         if (companyInfo.getStatus().equals(CompanyStatus.DONE.getStatus())) {
-            UserVO userVO = ModelConverterFactory.companyToVO(companyId, UserPrivilege.COMMON_PRIVILEGE_XINRUYI);
+            UserVO userVO = ModelConverterFactory.authInfoToUserVO(companyId, UserPrivilege.COMMON_PRIVILEGE_XINRUYI);
             TavernResponse response = this.authorityService.modifyUser(userVO);
             if (response.getCode() != 0) {
                 throw new Exception("客户修改失败");
@@ -267,7 +267,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
             if (vo.getResult().equals("1")) {
                 companyInfo.setStatus(CompanyStatus.APPLY_SUCCESS.getStatus());
                 //创建用户
-                UserVO userVO = ModelConverterFactory.companyToVO(vo.getCompanyId(), vo.getPassword(), UserPrivilege.VISITOR_PRIVILEGE_XINRUYI);
+                UserVO userVO = ModelConverterFactory.authInfoToUserVO(vo.getCompanyId(), vo.getPassword(), UserPrivilege.VISITOR_PRIVILEGE_XINRUYI);
                 TavernResponse response = this.authorityService.createUser(userVO);
                 if (response.getCode() != 0) {
                     throw new Exception("客户创建失败");

@@ -2,10 +2,14 @@ package com.tuozuo.tavern.xinruyi.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.tuozuo.tavern.common.protocol.TavernResponse;
+import com.tuozuo.tavern.common.protocol.UserPrivilege;
 import com.tuozuo.tavern.common.protocol.UserTypeDict;
+import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
 import com.tuozuo.tavern.xinruyi.dao.EventInfoDao;
 import com.tuozuo.tavern.xinruyi.dao.ProjectStaffInfoDao;
 import com.tuozuo.tavern.xinruyi.dao.WorkerInfoDao;
+import com.tuozuo.tavern.xinruyi.dict.CompanyStatus;
 import com.tuozuo.tavern.xinruyi.dict.EventType;
 import com.tuozuo.tavern.xinruyi.dict.WorkerAuthStatus;
 import com.tuozuo.tavern.xinruyi.model.*;
@@ -14,6 +18,8 @@ import com.tuozuo.tavern.xinruyi.utils.FileUtils;
 import com.tuozuo.tavern.xinruyi.utils.UUIDUtil;
 import com.tuozuo.tavern.xinruyi.vo.WorkerAuthVO;
 
+import com.tuuozuo.tavern.authority.spi.AuthorityService;
+import com.tuuozuo.tavern.authority.spi.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +55,8 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
     private EventInfoDao eventInfoDao;
     @Autowired
     private ProjectStaffInfoDao projectStaffInfoDao;
+    @Autowired
+    private AuthorityService authorityService;
 
     @Override
     public WorkerSummaryInfo queryWorkerSumInfo(String registerId) {
@@ -64,6 +72,7 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
     @Transactional
     @Override
     public void addWorker(WorkerAuthVO vo) throws Exception {
+
 
         //1、新增用户
         WorkerInfo workerInfo = new WorkerInfo();
@@ -92,6 +101,13 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
         eventTodoList.setEventOwnerId(vo.getIdNo());
         this.eventInfoDao.insertEventTodo(eventTodoList);
 
+        //创建用户
+        UserVO userVO = ModelConverterFactory.authInfoToUserVO(vo.getRegisterId(), null, UserTypeDict.worker,UserPrivilege.VISITOR_PRIVILEGE_XINRUYI);
+        TavernResponse response = this.authorityService.createUser(userVO);
+        if (response.getCode() != 0) {
+            throw new Exception("用户创建失败");
+        }
+
     }
 
     @Override
@@ -119,10 +135,11 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
 
     @Transactional
     @Override
-    public void auditForWorkerInfo(String registerId, String remark, String result) {
+    public void auditForWorkerInfo(String registerId, String remark, String result) throws Exception {
         //1、对事件进行处理
         //2、更改认证状态
         //3、增加员工关系
+        //4、同步更新用户状态
         WorkerInfo workerInfo = this.workerInfoDao.selectById(registerId);
         workerInfo.setRegisterId(registerId);
         if(result.equals("0")){
@@ -148,6 +165,13 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
         this.eventInfoDao.delEventTodo(eventTodoList.getEventId());
         this.eventInfoDao.insertEventFinish(eventFinishList);
 
+        if (result.equals("1")) {
+            UserVO userVO = ModelConverterFactory.authInfoToUserVO(registerId, UserPrivilege.COMMON_PRIVILEGE_XINRUYI);
+            TavernResponse response = this.authorityService.modifyUser(userVO);
+            if (response.getCode() != 0) {
+                throw new Exception("小程序用户修改失败");
+            }
+        }
 
     }
 

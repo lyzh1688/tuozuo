@@ -15,7 +15,6 @@ import com.tuozuo.tavern.xinruyi.utils.UUIDUtil;
 import com.tuozuo.tavern.xinruyi.vo.*;
 import com.tuuozuo.tavern.authority.spi.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -146,18 +145,23 @@ public class ModelConverterFactory {
         return ext;
     }
 
-    public static UserVO companyToVO(String userId, String customPswd, String privilege) {
+
+
+    public static UserVO authInfoToUserVO(String userId, String customPswd, String privilege) {
+        return authInfoToUserVO(userId, customPswd, UserTypeDict.custom,privilege);
+    }
+    public static UserVO authInfoToUserVO(String userId, String customPswd, String userType,String privilege) {
         UserVO user = new UserVO();
         user.setUserId(userId);
         user.setSystemId(SystemID.SYS_ID_XINRUYI);
-        user.setRoleGroup(UserTypeDict.custom);
+        user.setRoleGroup(userType);
         user.setUserPswd(customPswd);
         user.setPrivilege(privilege);
         return user;
     }
 
-    public static UserVO companyToVO(String userId, String privilege) {
-        return companyToVO(userId, null, privilege);
+    public static UserVO authInfoToUserVO(String userId, String privilege) {
+        return authInfoToUserVO(userId, null, privilege);
     }
 
     public static PaymentDTO modelToPaymentDTO(ProjectPayment projectPayment) {
