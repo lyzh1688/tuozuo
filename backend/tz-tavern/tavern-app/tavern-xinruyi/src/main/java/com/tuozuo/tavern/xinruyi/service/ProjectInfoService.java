@@ -68,7 +68,7 @@ public interface ProjectInfoService {
 
     void applyForProject(ProjectParticipateVO vo) throws Exception;
 
-    void auditWorkerParticipation(AuditWorkerVO vo);
+    void auditWorkerParticipation(AuditWorkerVO vo) throws Exception;
 
 
 

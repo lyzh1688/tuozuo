@@ -460,7 +460,9 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         snapshot.put("companyName", vo.getCompanyName());
         snapshot.put("projectId", vo.getProjectId());
         snapshot.put("projectName", vo.getProjectName());
-        snapshot.put("staffId", staffResourcePool.getStaffId());
+        if(staffResourcePool != null){
+            snapshot.put("staffId", staffResourcePool.getStaffId());
+        }
         snapshot.put("staffName", workerInfo.getName());
         snapshot.put("contact", workerInfo.getContact());
         eventTodoList.setSnapshot(snapshot.toJSONString());
@@ -474,7 +476,9 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         eventTodoList.setProjectId(vo.getProjectId());
         eventTodoList.setCompanyId(vo.getCompanyId());
         eventTodoList.setRegisterId(vo.getRegisterId());
-        eventTodoList.setStaffId(staffResourcePool.getStaffId());
+        if(staffResourcePool != null){
+            eventTodoList.setStaffId(staffResourcePool.getStaffId());
+        }
         this.eventInfoDao.insertEventTodo(eventTodoList);
 
 
@@ -482,7 +486,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     @Transactional
     @Override
-    public void auditWorkerParticipation(AuditWorkerVO vo) {
+    public void auditWorkerParticipation(AuditWorkerVO vo) throws Exception {
         //1、处理事件
         EventTodoList eventTodoList = this.eventInfoDao.selectWorkerTodo(vo.getRegisterId(), EventType.STAFF_JOIN.getStatus());
         EventFinishList eventFinishList = new EventFinishList();
@@ -499,6 +503,9 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         if(vo.getResult().equals("1")){
             WorkerInfo workerInfo = this.workerInfoDao.selectById(vo.getRegisterId());
             StaffResourcePool staffResourcePool = this.staffInfoDao.selectStaffInfo(snapshot.getString("companyId"), workerInfo.getIdNumber());
+            if(staffResourcePool == null){
+                throw new Exception("该员工未加入员工池，无法审核通过，请先添加员工！");
+            }
             WorkerStaffRel rel = new WorkerStaffRel();
             rel.setStaffId(staffResourcePool.getStaffId());
             rel.setRegisterId(vo.getRegisterId());
