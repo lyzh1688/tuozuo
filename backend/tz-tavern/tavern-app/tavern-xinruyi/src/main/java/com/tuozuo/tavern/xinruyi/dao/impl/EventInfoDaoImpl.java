@@ -102,6 +102,20 @@ public class EventInfoDaoImpl implements EventInfoDao {
     }
 
     @Override
+    public boolean hasEvent(String registerId, String eventType) {
+        Optional<EventTodoList> todoListOp = Optional.ofNullable(this.eventTodoListMapper.selectOne(Wrappers.<EventTodoList>query()
+                .lambda()
+                .eq(EventTodoList::getRegisterId, registerId)
+                .eq(EventTodoList::getEventType, eventType)));
+        Optional<EventFinishList> finishListOp = Optional.ofNullable(this.eventFinishListMapper.selectOne(Wrappers.<EventFinishList>query()
+                .lambda()
+                .eq(EventFinishList::getRegisterId, registerId)
+                .eq(EventFinishList::getEventType, eventType)));
+        return todoListOp.isPresent() || finishListOp.isPresent();
+
+    }
+
+    @Override
     public EventTodoList selectEventById(String eventId) {
         return this.eventTodoListMapper.selectOne(Wrappers.<EventTodoList>query()
                 .lambda()
@@ -175,7 +189,7 @@ public class EventInfoDaoImpl implements EventInfoDao {
     }
 
     @Override
-    public List<EventFinishList> selectEventRecord(String registerId,String eventId,String eventDate) {
-        return this.eventFinishListMapper.selectEventRecord(registerId,eventId,eventDate);
+    public List<EventFinishList> selectEventRecord(String registerId, String eventId, String eventDate) {
+        return this.eventFinishListMapper.selectEventRecord(registerId, eventId, eventDate);
     }
 }

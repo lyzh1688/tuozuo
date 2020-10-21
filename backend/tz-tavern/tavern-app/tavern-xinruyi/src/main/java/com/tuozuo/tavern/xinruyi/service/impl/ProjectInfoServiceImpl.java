@@ -447,6 +447,9 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         if (workerInfo == null) {
             throw new Exception("您尚未认证，无法加入项目");
         }
+        if(this.eventInfoDao.hasEvent(vo.getRegisterId(),EventType.STAFF_JOIN.getStatus())){
+            throw new Exception("您已申请加入过该项目");
+        }
         StaffResourcePool staffResourcePool = this.staffInfoDao.selectStaffInfo(vo.getCompanyId(), workerInfo.getIdNumber());
         //发布加入项目申请
         EventTodoList eventTodoList = new EventTodoList();
