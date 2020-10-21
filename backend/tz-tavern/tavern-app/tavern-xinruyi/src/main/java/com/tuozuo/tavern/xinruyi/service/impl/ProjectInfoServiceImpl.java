@@ -460,6 +460,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         snapshot.put("companyName", vo.getCompanyName());
         snapshot.put("projectId", vo.getProjectId());
         snapshot.put("projectName", vo.getProjectName());
+        snapshot.put("idNo", workerInfo.getIdNumber());
         if(staffResourcePool != null){
             snapshot.put("staffId", staffResourcePool.getStaffId());
         }
