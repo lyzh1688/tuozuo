@@ -496,15 +496,17 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         this.eventInfoDao.insertEventFinish(eventFinishList);
 
         //2、绑定关系
-        WorkerInfo workerInfo = this.workerInfoDao.selectById(vo.getRegisterId());
-        StaffResourcePool staffResourcePool = this.staffInfoDao.selectStaffInfo(snapshot.getString("companyId"), workerInfo.getIdNumber());
-        WorkerStaffRel rel = new WorkerStaffRel();
-        rel.setStaffId(staffResourcePool.getStaffId());
-        rel.setRegisterId(vo.getRegisterId());
-        Optional<WorkerStaffRel> op =  this.workerInfoDao.selectWorkerStaffRelById(rel.getRegisterId(),rel.getStaffId());
-        if(!op.isPresent()){
-            LOGGER.info("【小程序】[绑定公司和员工关系]: 员工Id,[{}],openId,[{}]",rel.getStaffId(),rel.getRegisterId());
-            this.workerInfoDao.insertStaffRel(rel);
+        if(vo.getResult().equals("1")){
+            WorkerInfo workerInfo = this.workerInfoDao.selectById(vo.getRegisterId());
+            StaffResourcePool staffResourcePool = this.staffInfoDao.selectStaffInfo(snapshot.getString("companyId"), workerInfo.getIdNumber());
+            WorkerStaffRel rel = new WorkerStaffRel();
+            rel.setStaffId(staffResourcePool.getStaffId());
+            rel.setRegisterId(vo.getRegisterId());
+            Optional<WorkerStaffRel> op =  this.workerInfoDao.selectWorkerStaffRelById(rel.getRegisterId(),rel.getStaffId());
+            if(!op.isPresent()){
+                LOGGER.info("【小程序】[绑定公司和员工关系]: 员工Id,[{}],openId,[{}]",rel.getStaffId(),rel.getRegisterId());
+                this.workerInfoDao.insertStaffRel(rel);
+            }
         }
 
     }
