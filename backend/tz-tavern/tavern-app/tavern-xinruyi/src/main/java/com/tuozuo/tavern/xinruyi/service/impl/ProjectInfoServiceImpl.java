@@ -490,7 +490,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     @Override
     public void auditWorkerParticipation(AuditWorkerVO vo) throws Exception {
         //1、处理事件
-        EventTodoList eventTodoList = this.eventInfoDao.selectWorkerTodo(vo.getRegisterId(), EventType.STAFF_JOIN.getStatus());
+        EventTodoList eventTodoList = this.eventInfoDao.selectEventById(vo.getEventId());
         EventFinishList eventFinishList = new EventFinishList();
         BeanUtils.copyProperties(eventTodoList, eventFinishList);
         JSONObject snapshot = JSON.parseObject(eventTodoList.getSnapshot());
@@ -503,14 +503,14 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
         //2、绑定关系
         if(vo.getResult().equals("1")){
-            WorkerInfo workerInfo = this.workerInfoDao.selectById(vo.getRegisterId());
+            WorkerInfo workerInfo = this.workerInfoDao.selectById(vo.getEventId());
             StaffResourcePool staffResourcePool = this.staffInfoDao.selectStaffInfo(snapshot.getString("companyId"), workerInfo.getIdNumber());
             if(staffResourcePool == null){
                 throw new Exception("该员工未加入员工池，无法审核通过，请先添加员工！");
             }
             WorkerStaffRel rel = new WorkerStaffRel();
             rel.setStaffId(staffResourcePool.getStaffId());
-            rel.setRegisterId(vo.getRegisterId());
+            rel.setRegisterId(vo.getEventId());
             Optional<WorkerStaffRel> op =  this.workerInfoDao.selectWorkerStaffRelById(rel.getRegisterId(),rel.getStaffId());
             if(!op.isPresent()){
                 LOGGER.info("【小程序】[绑定公司和员工关系]: 员工Id,[{}],openId,[{}]",rel.getStaffId(),rel.getRegisterId());

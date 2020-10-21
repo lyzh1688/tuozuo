@@ -7,19 +7,19 @@ import javax.validation.constraints.NotNull;
  * Dev Time: 2020/10/16 <br>
  */
 public class AuditWorkerVO {
-    private String registerId;
+    private String eventId;
     @NotNull(message = "remark is not null")
     private String remark;
     @NotNull(message = "result is not null")
     private String result;
 
 
-    public String getRegisterId() {
-        return registerId;
+    public String getEventId() {
+        return eventId;
     }
 
-    public void setRegisterId(String registerId) {
-        this.registerId = registerId;
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
     }
 
     public String getRemark() {

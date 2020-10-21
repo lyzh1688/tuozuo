@@ -177,11 +177,11 @@ public class StaffInfoEndpoint {
     /**
      * 人员加入申请审核
      */
-    @PutMapping("/participation/{registerId}")
-    public TavernResponse auditParticipateProject(@PathVariable("registerId") String registerId,
+    @PutMapping("/participation/{eventId}")
+    public TavernResponse auditParticipateProject(@PathVariable("eventId") String eventId,
                                                   @RequestBody AuditWorkerVO vo) {
         try {
-            vo.setRegisterId(registerId);
+            vo.setEventId(eventId);
             this.projectInfoService.auditWorkerParticipation(vo);
             return TavernResponse.OK;
         } catch (Exception e) {
