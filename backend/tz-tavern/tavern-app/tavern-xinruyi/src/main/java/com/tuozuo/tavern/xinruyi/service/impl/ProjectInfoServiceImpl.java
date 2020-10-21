@@ -466,6 +466,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         }
         snapshot.put("staffName", workerInfo.getName());
         snapshot.put("contact", workerInfo.getContact());
+        snapshot.put("registerId", workerInfo.getRegisterId());
         eventTodoList.setSnapshot(snapshot.toJSONString());
         eventTodoList.setEventOwnerId(vo.getRegisterId());
         eventTodoList.setApplicant(workerInfo.getName());
