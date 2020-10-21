@@ -302,6 +302,15 @@
       @cancel="handleCancel"
       @ok="handleOk"
     ></firestaffform>
+    <joinprojectform
+      ref="joinprojectform"
+      :visible="joinprojectVisible"
+      :loading="confirmLoading"
+      :model="joinprojectMdl"
+      :isShowOnly="isShowOnly"
+      @cancel="handleCancel"
+      @ok="handleOk"
+    ></joinprojectform>
     <uploadfileform
       :title="formTitle"
       ref="uploadfileform"
@@ -368,7 +377,8 @@ import {
   doCompanyAuth,
   docompanySpot,
   doprojectConfirmation,
-  dodecruitment
+  dodecruitment,
+  doJoinProject
 } from '@/api/events'
 import { getCommonDict } from '@/api/dictionary'
 import { uploadFile, doVerifySalary, doConfirmSalary } from '@/api/salary'
@@ -381,6 +391,7 @@ import companyspotform from './form/CompanySpotForm'
 import uploadfileform from '@/views/salary/forms/uploadFileForm'
 import verifysalary from '@/views/salary/forms/VerifySalary'
 import salarydetailwithlist from '@/views/salary/forms/SalaryDetailWithList'
+import joinprojectform from './form/JoinProjectForm'
 const columns = [
   {
     title: '编号',
@@ -571,11 +582,14 @@ export default {
       salaryVisible: false,
       salaryMdl: {},
       salaryDetailMdl: {},
+      joinprojectMdl: {},
       salaryDetailVisible: false,
       salaryVerifyVisible: false,
+      joinprojectVisible: false,
       verificationMdl: {},
       verifyType: '',
       isverify: false,
+      isupdate: false,
       isShowOnly: false,
       eventTypeList: [],
       eventTypeMap: {},
@@ -697,7 +711,8 @@ export default {
     companyspotform,
     uploadfileform,
     verifysalary,
-    salarydetailwithlist
+    salarydetailwithlist,
+    joinprojectform
   },
   created () {
     fetch('', (data) => {
@@ -1148,6 +1163,44 @@ export default {
           }
         })
       }
+      if (this.verifyType === '5') {
+        const form = this.$refs.joinprojectform.form
+        form.validateFields((errors, values) => {
+          if (!errors) {
+            this.confirmLoading = true
+            doJoinProject(values)
+              .then((response) => {
+                const result = response
+                if (success(result)) {
+                  this.$notification.success({
+                    message: '审核成功'
+                  })
+                  this.$refs.table.refresh(true)
+                  this.$refs.table2.refresh(true)
+                  this.joinprojectVisible = false
+                  this.confirmLoading = false
+                } else {
+                  this.confirmLoading = false
+                  this.$notification.error({
+                    message: errorMessage(result),
+                    description: '审核失败'
+                  })
+                }
+                if (needLogin(result)) {
+                  this.joinprojectVisible = false
+                  this.confirmLoading = false
+                }
+              })
+              .catch((error) => {
+                this.$notification.error({
+                  message: '审核失败。请稍后再试',
+                  description: error
+                })
+                this.confirmLoading = false
+              })
+          }
+        })
+      }
       if (this.verifyType === '7') {
         const form = this.$refs.firestaffform.form
         form.validateFields((errors, values) => {
@@ -1223,6 +1276,9 @@ export default {
         await this.fetchProjectDetail(record)
         this.formTitle = '审核项目完成申请'
         this.projectVisible = true
+      } else if (this.verifyType === '5') {
+        this.joinprojectMdl = { ...JSON.parse(record.snapshot), eventId: record.eventId }
+        this.joinprojectVisible = true
       } else if (this.verifyType === '7') {
         const snapshotBody = JSON.parse(record.snapshot)
         this.verificationMdl = {
@@ -1336,6 +1392,7 @@ export default {
             this.companyspotformVisible = false
             this.fireStaffVisible = false
             this.salaryVisible = false
+            this.joinprojectVisible = false
           },
           onCancel () {}
         })

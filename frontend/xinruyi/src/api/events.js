@@ -9,7 +9,10 @@ const apiList = {
   decruitment: process.env.VUE_APP_SYSTEM_URL + '/v1/project/staff/decruitment',
   staffAuthentication: process.env.VUE_APP_SYSTEM_URL + '/v1/staff/authentication',
   staffCertification: process.env.VUE_APP_SYSTEM_URL + '/v1/staff/certification',
-  projectConfirmation: process.env.VUE_APP_SYSTEM_URL + '/v1/project/confirmation'
+  projectConfirmation: process.env.VUE_APP_SYSTEM_URL + '/v1/project/confirmation',
+  customJoinProject: process.env.VUE_APP_SYSTEM_URL + '/v1/staff/participation/',
+  customIdentification: process.env.VUE_APP_SYSTEM_URL + '/v1/staff/identification/'
+
 }
 /**
  * 查询待办列表
@@ -132,6 +135,34 @@ remark	是	String	备注
 export function doprojectConfirmation (form) {
     return request({
         url: apiList.projectConfirmation,
+        method: 'put',
+        data: form
+    })
+}
+/**
+ * 项目加入申请审核
+ * @param {Object} form 审核表单
+ * eventId	是	String	事件Id
+status	String	审核状态
+remark	是	String	备注
+ */
+export function doJoinProject (form) {
+    return request({
+        url: apiList.customJoinProject + form.eventId,
+        method: 'put',
+        data: form
+    })
+}
+/**
+ * 人员实名认证审核
+ * @param {Object} form 审核表单
+ * registerId	是	String	人员注册id
+status	String	审核状态
+remark	是	String	备注
+ */
+export function doCustomIdentification (form) {
+    return request({
+        url: apiList.customIdentification + form.registerId,
         method: 'put',
         data: form
     })
