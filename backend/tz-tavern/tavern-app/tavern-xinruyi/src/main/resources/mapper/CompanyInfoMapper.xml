@@ -18,5 +18,6 @@
   <select id="select" resultMap="BaseResultMap">
     select t1.*,t2.company_logo from company_info t1,company_info_ext t2
     where t1.company_id = t2.company_id
+    and t1.company_id = #{companyId}
   </select>
 </mapper>
