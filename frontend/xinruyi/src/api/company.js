@@ -32,7 +32,7 @@ contact	是	String	联系人电话
 export function addCompanyAuthentication (form) {
   const formData = new FormData()
   for (const i in form) {
-    if (i.includes('businessLicense') || i.includes('bossIdPicUp') || i.includes('bossIdPicBack')) {
+    if (i.includes('businessLicense') || i.includes('bossIdPicUp') || i.includes('bossIdPicBack') || i.includes('companyLogo')) {
       formData.append(i, form[i].file.originFileObj)
     } else {
       formData.append(i, form[i])
@@ -85,7 +85,7 @@ contact	否	String	联系人电话
 export function updateCompany (form) {
   const formData = new FormData()
   for (const i in form) {
-    if (i.includes('businessLicense') || i.includes('bossIdPicUp') || i.includes('bossIdPicBack')) {
+    if (i.includes('businessLicense') || i.includes('bossIdPicUp') || i.includes('bossIdPicBack') || i.includes('companyLogo')) {
       if (typeof form[i] === 'string') {
         // formData.append(i, null)
       } else {

@@ -22,6 +22,27 @@
             v-decorator="['companyName', {rules: [{required: true, message: '请输入项目名称！'}], validateTrigger: 'blur'}]"
           />
         </a-form-item>
+        <a-form-item label="公司logo" key="公司logo">
+          <a-button
+            type="text"
+            v-if="model&&typeof model.companyLogo === 'string'"
+            @click="()=>{jumpToFile(model.companyLogo)}"
+          >已上传的文件</a-button>
+          <a-upload
+            :beforeUpload="beforeUpload"
+            v-show="!isShowOnly"
+            name="companyLogo"
+            :file-list="companyLogoList"
+            list-type="picture-card"
+            v-decorator="['companyLogo', {rules: [{required: true, message: '请输入公司logo！'}], validateTrigger: 'blur'}]"
+            :showUploadList="{ showPreviewIcon: false, showRemoveIcon: true }"
+            @change="handlecompanyLogoChange"
+          >
+            <a-button v-show="!isShowOnly" :v-if="showUpload">
+              <a-icon :v-if="showUpload" type="upload" />上传
+            </a-button>
+          </a-upload>
+        </a-form-item>
         <a-form-item label="营业执照证明" key="营业执照证明">
           <a-button
             type="text"
@@ -160,6 +181,7 @@ const fields = [
   'companyName', // String	企业名称
   'businessLicense', //	String	营业执照
   'bossName', //	String	法人姓名
+  'companyLogo',
   'bossId', //	法人身份证号
   'bossIdPicUp', //	String	法人身份证正面照片
   'bossIdPicBack', //	String	法人身份证背面照片
@@ -253,6 +275,7 @@ export default {
       businessLicenseList: [],
       bossIdPicUpList: [],
       bossIdPicBackList: [],
+      companyLogoList: [],
       provinceList: [],
       bankAreaList: [],
       bankList: [],
@@ -311,6 +334,12 @@ export default {
       let fileList = [...info.fileList]
       fileList = fileList.slice(-1)
       this.bossIdPicUpList = fileList
+      //   this.fileList = [info]
+    },
+    handlecompanyLogoChange (info) {
+      let fileList = [...info.fileList]
+      fileList = fileList.slice(-1)
+      this.companyLogoList = fileList
       //   this.fileList = [info]
     },
     handlebossIdPicBackChange (info) {

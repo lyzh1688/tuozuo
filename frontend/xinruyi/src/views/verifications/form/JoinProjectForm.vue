@@ -21,6 +21,9 @@
         <a-form-item v-show="false" label="公司id">
           <a-input v-decorator="['companyId', { validateTrigger: 'blur' }]" />
         </a-form-item>
+        <a-form-item v-show="false" label="事件Id">
+          <a-input v-decorator="['eventId', { validateTrigger: 'blur' }]" />
+        </a-form-item>
         <a-form-item v-show="false" label="项目id">
           <a-input v-decorator="['projectId', { validateTrigger: 'blur' }]" />
         </a-form-item>
@@ -66,7 +69,7 @@
           :pageSize="20"
           :columns="columns"
           :data="loadData"
-          showPagination="true"
+          :showPagination="true"
         >
           <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         </s-table>
@@ -107,6 +110,7 @@ const fields = [
   'companyName',
   'projectId',
   'projectName',
+  'eventId',
   'staffId',
   'staffName',
   'contact',
@@ -243,8 +247,8 @@ export default {
     fields.forEach((v) => this.form.getFieldDecorator(v))
     // 当 model 发生改变时，为表单设置值
     this.$watch('model', () => {
-        this.$refs.joinprojecttable.refresh(true)
       this.model && this.form.setFieldsValue(pick(this.model, fields))
+        this.$refs.joinprojecttable.refresh(true)
     })
   },
   methods: {},
