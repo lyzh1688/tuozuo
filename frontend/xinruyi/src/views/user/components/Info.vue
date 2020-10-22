@@ -1,7 +1,7 @@
 <template>
   <div class="header-info">
     <span>{{ title }}</span>
-    <p>{{ value }}</p>
+    <p><a-avatar class="avatar" v-if="logo!==''" shape="square" :src="logo" />{{ value }}</p>
     <slot name="value"/>
     <em v-if="bordered" />
   </div>
@@ -19,6 +19,10 @@ export default {
       type: String,
       default: ''
     },
+    logo: {
+      type: String,
+      default: ''
+    },
     bordered: {
       type: Boolean,
       default: false
@@ -32,6 +36,7 @@ export default {
 
 .header-info {
   position: relative;
+  height: 10vh;
   text-align: center;
   & > span {
     display: inline-block;
@@ -61,4 +66,5 @@ export default {
     background-color: @border-color-split;
   }
 }
+
 </style>

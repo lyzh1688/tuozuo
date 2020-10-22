@@ -153,7 +153,7 @@ export default {
               this.infoLoading = false
             }, 600)
             this.$notification.error({
-              message: '查询资源池列表失败，请稍后再试',
+              message: '查询工资列表失败，请稍后再试',
               description: error
             })
           })

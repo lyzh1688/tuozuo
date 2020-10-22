@@ -4,7 +4,7 @@
     <slot name="freshButton"></slot>
     <a-row>
       <a-col :sm="8" :xs="24">
-        <userInfo title="公司名称" :value="handleDefault(customInfo.companyName)" :bordered="true" />
+        <userInfo title="公司名称" :value="handleDefault(customInfo.companyName)" :logo="customInfo.logo" :bordered="true" />
       </a-col>
       <a-col :sm="8" :xs="24">
         <userInfo

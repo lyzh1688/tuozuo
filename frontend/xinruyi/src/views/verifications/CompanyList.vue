@@ -117,6 +117,10 @@
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="status" slot-scope="text">{{ companyStatusMap[text] }}</span>
+        <span slot="companyName" slot-scope="text, record">
+          <a-avatar shape="square" style="margin-right:10px;" :src="record.companyLogo" />
+          <span>{{ text }}</span>
+        </span>
         <span slot="industryType" slot-scope="text">{{ industryTypeMap[text] }}</span>
         <span
           slot="area"
