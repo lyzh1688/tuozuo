@@ -15,7 +15,7 @@ public interface ProjectInfoService {
 
     List<ProjectInfo> queryProjectInfo(String companyId, String projectName, int queryCnt, Boolean all, String roleGroup);
 
-    IPage<ProjectStaffInfo> queryProjectStaffInfo(int pageNo, int pageSize, String companyId, String projectId);
+    IPage<ProjectStaffInfo> queryProjectStaffInfo(int pageNo, int pageSize, String companyId, String projectId, String roleGroup);
 
     void addProjectStaff(ProjectStaff projectStaff);
 

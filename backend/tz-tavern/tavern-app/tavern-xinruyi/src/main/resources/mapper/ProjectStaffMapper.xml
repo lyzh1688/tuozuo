@@ -47,7 +47,9 @@
     from staff_resource_pool t1,project_staff t2
     where t1.staff_id = t2.staff_id
     and t2.project_id = #{projectId}
-    and t1.company_id = #{companyId}
+    <if test="companyId != null and companyId != ''">
+      and t1.company_id = #{companyId}
+    </if>
     order by enter_date desc
   </select>
   <select id="selectStaff" resultType="com.tuozuo.tavern.xinruyi.model.StaffBasicInfo">

@@ -112,10 +112,11 @@ public class ProjectInfoEndpoint {
     @GetMapping("/staff/{projectId}")
     public TavernResponse queryProjectStaff(@PathVariable("projectId") String projectId,
                                             @ModelAttribute @Valid PageVO pageVO,
-                                            @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId) {
+                                            @RequestHeader(TavernRequestAuthFields.USER_ID) String companyId,
+                                            @RequestHeader(TavernRequestAuthFields.ROLE_GROUP) String roleGroup) {
         try {
             IPage<ProjectStaffInfo> page = this.projectInfoService.queryProjectStaffInfo(pageVO.getPageNo(),
-                    pageVO.getPageSize(), companyId, projectId);
+                    pageVO.getPageSize(), companyId, projectId,roleGroup);
             ProjectStaffInfoListDTO staffSalaryListDTO = new ProjectStaffInfoListDTO();
             staffSalaryListDTO.setStaffs(page.getRecords());
             staffSalaryListDTO.setTotal((int) page.getTotal());

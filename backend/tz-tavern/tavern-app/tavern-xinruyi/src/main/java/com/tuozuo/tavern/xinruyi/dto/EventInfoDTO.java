@@ -5,6 +5,7 @@ package com.tuozuo.tavern.xinruyi.dto;
  * Dev Time: 2020/9/10 <br>
  */
 public class EventInfoDTO {
+    private String eventId;
     private String companyName;
     private String eventType;
     private String projectName;
@@ -13,6 +14,14 @@ public class EventInfoDTO {
     private String snapshot;
     private String status;
     private String finishDate;
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
 
     public String getFinishDate() {
         return finishDate;

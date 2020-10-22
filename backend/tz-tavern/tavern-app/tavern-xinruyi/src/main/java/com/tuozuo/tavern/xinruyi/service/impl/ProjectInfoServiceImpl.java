@@ -88,7 +88,10 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     }
 
     @Override
-    public IPage<ProjectStaffInfo> queryProjectStaffInfo(int pageNo, int pageSize, String companyId, String projectId) {
+    public IPage<ProjectStaffInfo> queryProjectStaffInfo(int pageNo, int pageSize, String companyId, String projectId, String roleGroup) {
+        if (roleGroup.equals(UserTypeDict.staff)) {
+            companyId = null;
+        }
         return this.projectStaffInfoDao.selectProjectStaffInfo(pageNo, pageSize, companyId, projectId);
     }
 
@@ -447,7 +450,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         if (workerInfo == null) {
             throw new Exception("您尚未认证，无法加入项目");
         }
-        if(this.eventInfoDao.hasEvent(vo.getRegisterId(),EventType.STAFF_JOIN.getStatus())){
+        if (this.eventInfoDao.hasEvent(vo.getRegisterId(), EventType.STAFF_JOIN.getStatus())) {
             throw new Exception("您已申请加入过该项目");
         }
         StaffResourcePool staffResourcePool = this.staffInfoDao.selectStaffInfo(vo.getCompanyId(), workerInfo.getIdNumber());
@@ -464,7 +467,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         snapshot.put("projectId", vo.getProjectId());
         snapshot.put("projectName", vo.getProjectName());
         snapshot.put("idNo", workerInfo.getIdNumber());
-        if(staffResourcePool != null){
+        if (staffResourcePool != null) {
             snapshot.put("staffId", staffResourcePool.getStaffId());
         }
         snapshot.put("staffName", workerInfo.getName());
@@ -481,7 +484,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         eventTodoList.setProjectId(vo.getProjectId());
         eventTodoList.setCompanyId(vo.getCompanyId());
         eventTodoList.setRegisterId(vo.getRegisterId());
-        if(staffResourcePool != null){
+        if (staffResourcePool != null) {
             eventTodoList.setStaffId(staffResourcePool.getStaffId());
         }
         this.eventInfoDao.insertEventTodo(eventTodoList);
@@ -505,18 +508,18 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         this.eventInfoDao.insertEventFinish(eventFinishList);
 
         //2、绑定关系
-        if(vo.getResult().equals("1")){
+        if (vo.getResult().equals("1")) {
             WorkerInfo workerInfo = this.workerInfoDao.selectById(vo.getEventId());
             StaffResourcePool staffResourcePool = this.staffInfoDao.selectStaffInfo(snapshot.getString("companyId"), workerInfo.getIdNumber());
-            if(staffResourcePool == null){
+            if (staffResourcePool == null) {
                 throw new Exception("该员工未加入员工池，无法审核通过，请先添加员工！");
             }
             WorkerStaffRel rel = new WorkerStaffRel();
             rel.setStaffId(staffResourcePool.getStaffId());
             rel.setRegisterId(vo.getEventId());
-            Optional<WorkerStaffRel> op =  this.workerInfoDao.selectWorkerStaffRelById(rel.getRegisterId(),rel.getStaffId());
-            if(!op.isPresent()){
-                LOGGER.info("【小程序】[绑定公司和员工关系]: 员工Id,[{}],openId,[{}]",rel.getStaffId(),rel.getRegisterId());
+            Optional<WorkerStaffRel> op = this.workerInfoDao.selectWorkerStaffRelById(rel.getRegisterId(), rel.getStaffId());
+            if (!op.isPresent()) {
+                LOGGER.info("【小程序】[绑定公司和员工关系]: 员工Id,[{}],openId,[{}]", rel.getStaffId(), rel.getRegisterId());
                 this.workerInfoDao.insertStaffRel(rel);
             }
         }
