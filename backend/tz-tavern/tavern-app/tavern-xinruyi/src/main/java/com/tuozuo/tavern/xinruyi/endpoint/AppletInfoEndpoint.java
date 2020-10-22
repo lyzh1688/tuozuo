@@ -54,7 +54,7 @@ public class AppletInfoEndpoint {
             return TavernResponse.ok(hotProjectInfos);
         } catch (Exception e) {
             LOGGER.error("[查询热门项目] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("查询热门项目异常");
         }
     }
 
@@ -73,7 +73,7 @@ public class AppletInfoEndpoint {
             return TavernResponse.ok(dto);
         } catch (Exception e) {
             LOGGER.error("[行业分类] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("行业分类查询异常");
         }
     }
 
@@ -89,7 +89,7 @@ public class AppletInfoEndpoint {
             return TavernResponse.ok(industryProjectInfoList);
         } catch (Exception e) {
             LOGGER.error("[项目列表翻页接口] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("项目列表查询异常");
         }
     }
 
@@ -105,7 +105,7 @@ public class AppletInfoEndpoint {
             return TavernResponse.ok(industryProjectInfoList);
         } catch (Exception e) {
             LOGGER.error("[市场页面项目搜索] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("市场页面项目查询异常");
         }
     }
 
@@ -128,7 +128,7 @@ public class AppletInfoEndpoint {
             return TavernResponse.ok(experienceDTOList);
         } catch (Exception e) {
             LOGGER.error("[项目经历] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("项目经历查询异常");
         }
     }
 
@@ -145,7 +145,7 @@ public class AppletInfoEndpoint {
             return TavernResponse.ok(detailDTO);
         } catch (Exception e) {
             LOGGER.error("[项目详情] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("项目详情查询异常");
         }
     }
 
@@ -159,7 +159,7 @@ public class AppletInfoEndpoint {
             return TavernResponse.ok(workerSummaryInfo);
         } catch (Exception e) {
             LOGGER.error("[我的概览] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("我的概览查询异常");
         }
     }
 
@@ -175,7 +175,7 @@ public class AppletInfoEndpoint {
             return TavernResponse.ok(projectPaymentDetails);
         } catch (Exception e) {
             LOGGER.error("[收入记录] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("收入记录查询异常");
         }
     }
 
@@ -195,7 +195,7 @@ public class AppletInfoEndpoint {
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[实名认证] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("实名认证异常");
         }
     }
 
@@ -211,7 +211,7 @@ public class AppletInfoEndpoint {
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[退出项目] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("退出项目异常");
         }
     }
 
@@ -228,7 +228,7 @@ public class AppletInfoEndpoint {
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[加入项目] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("加入项目异常");
         }
     }
 
@@ -254,7 +254,7 @@ public class AppletInfoEndpoint {
             return TavernResponse.ok(applyRecords);
         } catch (Exception e) {
             LOGGER.error("[申请记录] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("申请记录查询异常");
         }
     }
 

@@ -23,6 +23,7 @@
         <result column="statusDesc" jdbcType="VARCHAR" property="statusDesc"/>
         <result column="budget" jdbcType="VARCHAR" property="budget"/>
         <result column="company_name" jdbcType="VARCHAR" property="companyName"/>
+        <result column="company_logo" jdbcType="VARCHAR" property="companyLogo"/>
         <result column="enter_date" jdbcType="DATE" property="enterDate"/>
         <result column="quit_date" jdbcType="DATE" property="quitDate"/>
     </resultMap>
@@ -43,10 +44,11 @@
     <select id="selectByProjectId" resultMap="BaseResultMap">
         select t1.project_id,t1.project_name, t1.company_id, t1.project_industry, t1.publish_date, t1.period, t1.contract_person,
         t1.contract_phone, t1.project_member_count, t1.province,t1.city,t1.district, t1.on_spot, t1.file_material, t1.project_desc,
-        t1.remark, t1.fee, t1.status, t1.budget,t2.company_name
-        from project_info t1 ,company_info t2
+        t1.remark, t1.fee, t1.status, t1.budget,t2.company_name,t3.company_logo 
+        from project_info t1 ,company_info t2,company_info_ext t3
         <where>
             t1.company_id = t2.company_id
+            and t2.company_id = t3.company_id
             and  t1.project_id = #{projectId}
         </where>
     </select>

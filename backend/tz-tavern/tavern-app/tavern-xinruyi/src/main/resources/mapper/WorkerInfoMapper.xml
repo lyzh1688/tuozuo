@@ -20,11 +20,45 @@
   </resultMap>
 
   <select id="selectWorkerSumInfo" resultMap="BaseWorkerSumMap">
-    select count(1) project_num,sum(total_salary) total_salary,is_certificate from(
-    select sum(t3.salary) total_salary,t1.is_certificate,t1.register_id from worker_info t1,worker_staff_rel t2 ,project_payment_detail t3
-    where t1.register_id = t2.register_id
-    and t2.staff_id = t3.staff_id
-    and t1.register_id = #{registerId}
-    group by t3.project_id) t group by register_id
+    SELECT
+    t1.project_num,
+    t1.is_certificate,
+    t2.total_salary
+    FROM
+    (
+    SELECT
+    count( 1 ) project_num,
+    is_certificate ,
+    register_id
+    FROM
+    (
+    SELECT
+    t1.is_certificate,
+    t1.register_id
+    FROM
+    worker_info t1,
+    worker_staff_rel t2,
+    project_staff t4
+    WHERE
+    t1.register_id = t2.register_id
+    AND t2.staff_id = t4.staff_id
+    AND t1.register_id = #{registerId}
+    GROUP BY
+    t4.project_id
+    ) t1) t1,
+    (
+    SELECT
+    sum( t3.salary ) total_salary,
+    t2.register_id
+    FROM
+    worker_staff_rel t2,
+    project_payment_detail t3
+    WHERE
+    t2.staff_id = t3.staff_id
+    AND t2.register_id = #{registerId}
+    ) t2
+    WHERE
+    t1.register_id = t2.register_id
+
   </select>
 </mapper>
