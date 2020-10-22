@@ -59,7 +59,7 @@ public interface EventInfoDao {
 
     EventTodoList selectWorkerTodo(String registerId, String eventType);
 
-    boolean hasEvent(String registerId, String eventType);
+    boolean hasEvent(String registerId, String eventType,String projectId);
 
     EventTodoList selectEventById(String eventId);
 

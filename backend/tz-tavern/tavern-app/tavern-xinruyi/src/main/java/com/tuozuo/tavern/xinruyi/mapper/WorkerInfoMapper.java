@@ -12,5 +12,4 @@ public interface WorkerInfoMapper extends BaseMapper<WorkerInfo> {
 
     WorkerSummaryInfo selectWorkerSumInfo(@Param("registerId")String registerId);
 
-    WorkerInfo selectById(@Param("registerId")String registerId);
 }

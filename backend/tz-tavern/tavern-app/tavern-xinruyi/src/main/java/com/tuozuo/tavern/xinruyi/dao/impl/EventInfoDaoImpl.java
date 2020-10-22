@@ -102,14 +102,16 @@ public class EventInfoDaoImpl implements EventInfoDao {
     }
 
     @Override
-    public boolean hasEvent(String registerId, String eventType) {
+    public boolean hasEvent(String registerId, String eventType,String projectId) {
         Optional<EventTodoList> todoListOp = Optional.ofNullable(this.eventTodoListMapper.selectOne(Wrappers.<EventTodoList>query()
                 .lambda()
                 .eq(EventTodoList::getRegisterId, registerId)
+                .eq(EventTodoList::getProjectId, projectId)
                 .eq(EventTodoList::getEventType, eventType)));
         Optional<EventFinishList> finishListOp = Optional.ofNullable(this.eventFinishListMapper.selectOne(Wrappers.<EventFinishList>query()
                 .lambda()
                 .eq(EventFinishList::getRegisterId, registerId)
+                .eq(EventFinishList::getProjectId, projectId)
                 .eq(EventFinishList::getEventType, eventType)));
         return todoListOp.isPresent() || finishListOp.isPresent();
 

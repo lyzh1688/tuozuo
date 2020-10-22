@@ -19,15 +19,6 @@
     <result column="is_certificate" jdbcType="VARCHAR" property="authStatus" />
   </resultMap>
 
-  <select id="selectById" resultMap="BaseResultMap">
-    select
-    t1.*,
-    t2.company_id,t3.company_name,t2.staff_id
-    from worker_info t1,staff_resource_pool t2,company_info t3
-    where t1.id_number = t2.id_number
-    and t2.company_id = t3.company_id
-    and t1.register_id = #{registerId}
-  </select>
   <select id="selectWorkerSumInfo" resultMap="BaseWorkerSumMap">
     select count(1) project_num,sum(total_salary) total_salary,is_certificate from(
     select sum(t3.salary) total_salary,t1.is_certificate,t1.register_id from worker_info t1,worker_staff_rel t2 ,project_payment_detail t3

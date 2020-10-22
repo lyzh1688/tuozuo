@@ -450,7 +450,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         if (workerInfo == null) {
             throw new Exception("您尚未认证，无法加入项目");
         }
-        if (this.eventInfoDao.hasEvent(vo.getRegisterId(), EventType.STAFF_JOIN.getStatus())) {
+        if (this.eventInfoDao.hasEvent(vo.getRegisterId(), EventType.STAFF_JOIN.getStatus(),vo.getProjectId())) {
             throw new Exception("您已申请加入过该项目");
         }
         StaffResourcePool staffResourcePool = this.staffInfoDao.selectStaffInfo(vo.getCompanyId(), workerInfo.getIdNumber());
@@ -509,19 +509,25 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
         //2、绑定关系
         if (vo.getResult().equals("1")) {
-            WorkerInfo workerInfo = this.workerInfoDao.selectById(vo.getEventId());
-            StaffResourcePool staffResourcePool = this.staffInfoDao.selectStaffInfo(snapshot.getString("companyId"), workerInfo.getIdNumber());
+            StaffResourcePool staffResourcePool = this.staffInfoDao.selectStaffInfo(snapshot.getString("companyId"), snapshot.getString("idNo"));
             if (staffResourcePool == null) {
                 throw new Exception("该员工未加入员工池，无法审核通过，请先添加员工！");
             }
             WorkerStaffRel rel = new WorkerStaffRel();
             rel.setStaffId(staffResourcePool.getStaffId());
-            rel.setRegisterId(vo.getEventId());
+            rel.setRegisterId(snapshot.getString("registerId"));
             Optional<WorkerStaffRel> op = this.workerInfoDao.selectWorkerStaffRelById(rel.getRegisterId(), rel.getStaffId());
             if (!op.isPresent()) {
                 LOGGER.info("【小程序】[绑定公司和员工关系]: 员工Id,[{}],openId,[{}]", rel.getStaffId(), rel.getRegisterId());
                 this.workerInfoDao.insertStaffRel(rel);
             }
+            //员工状态修改
+            ProjectStaff projectStaff= new ProjectStaff();
+            projectStaff.setIsSigned("1");
+            projectStaff.setProjectId(eventTodoList.getProjectId());
+            projectStaff.setStaffId(staffResourcePool.getStaffId());
+            this.projectStaffInfoDao.updateProjectStaff(projectStaff);
+
         }
 
     }
