@@ -408,7 +408,7 @@ export default {
     STable,
     projectform
   },
-  created () {
+  activated () {
     fetch('', (data) => (this.fuzzyProjectList = data))
     fetch2('', (data) => (this.fuzzyCompanyList = data))
     this.getDict('projectStatus').then((response) => {

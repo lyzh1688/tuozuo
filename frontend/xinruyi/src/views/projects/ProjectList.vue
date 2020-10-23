@@ -319,7 +319,7 @@ export default {
     STable,
     projectform
   },
-  created () {
+  activated () {
     fetch('', (data) => (this.fuzzyProjectList = data))
     this.getDict('projectStatus').then((response) => {
       this.projectStatusList = response

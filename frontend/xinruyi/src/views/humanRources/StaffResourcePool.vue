@@ -376,17 +376,18 @@ export default {
       })
     }
   },
-  created () {
+  activated () {
     this.getDict('gender').then((response) => {
       this.genderMap = {}
       for (const i of response) {
         this.genderMap[i.id] = i.name
       }
     })
-  },
-  activated () {
     this.$refs.table.refresh(true)
   },
+  // activated () {
+
+  // },
   components: {
     STable,
     staffDetail,

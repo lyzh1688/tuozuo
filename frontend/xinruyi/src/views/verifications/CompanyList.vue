@@ -394,7 +394,7 @@ export default {
     companyform,
     companyspotform
   },
-  created () {
+  activated () {
     fetch('', (data) => (this.fuzzyProjectList = data))
     fetch2('', (data) => (this.fuzzyCompanyList = data))
     this.getAreaCode('province', '').then((response) => {

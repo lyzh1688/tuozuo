@@ -290,7 +290,7 @@ export default {
     projectstaffopsdrawer,
     projectstaffopssubdrawer
   },
-  created () {
+  activated () {
       this.fetchProlectList()
     this.getDict('gender').then((response) => {
       this.genderMap = {}
@@ -310,6 +310,9 @@ export default {
         this.staffStatusMap[i.id] = i.name
       }
     })
+     this.$nextTick(() => {
+    this.$refs[this.currentTableId][0].refresh(true)
+   })
   },
   watch: {
     refresh (newVal, oldVal) {
@@ -317,12 +320,12 @@ export default {
       this.$refs[this.currentTableId][0].refresh(true)
     }
   },
-  async activated () {
-//    await this.fetchProlectList()
-   this.$nextTick(() => {
-    this.$refs[this.currentTableId][0].refresh(true)
-   })
-  },
+//   async activated () {
+// //    await this.fetchProlectList()
+//    this.$nextTick(() => {
+//     this.$refs[this.currentTableId][0].refresh(true)
+//    })
+//   },
   methods: {
     handleUpdate (record) {
       this.drawerTitle = '修改项目人员：' + record.name + ':' + record.idNo

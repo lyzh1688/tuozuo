@@ -714,7 +714,7 @@ export default {
     salarydetailwithlist,
     joinprojectform
   },
-  created () {
+  activated () {
     fetch('', (data) => {
       this.fuzzyProjectList = data
       this.fuzzyProjectList2 = data

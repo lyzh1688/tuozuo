@@ -451,7 +451,7 @@ export default {
     verifysalary,
     salaryhislist
   },
-  created () {
+  activated () {
     // console.log('isStaff', this.isStaff)
     fetch('', (data) => (this.fuzzyProjectList = data))
     fetch2('', (data) => (this.fuzzyCompanyList = data))
