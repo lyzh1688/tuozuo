@@ -2,6 +2,7 @@ package com.tuozuo.tavern.xinruyi.endpoint;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.xinruyi.dto.*;
@@ -47,7 +48,8 @@ public class AppletInfoEndpoint {
      * 查询热门项目
      */
     @GetMapping("/project/hotProject")
-    public TavernResponse queryHotProjects() {
+    public TavernResponse queryHotProjects( @RequestHeader(value = TavernRequestAuthFields.USER_ID,required = false) String registerId) {
+        LOGGER.info("USER_ID: [{}]",registerId);
         try {
             List<HotProjectInfo> hotProjectInfos = this.projectInfoService.queryHotProjects();
             return TavernResponse.ok(hotProjectInfos);
@@ -112,7 +114,7 @@ public class AppletInfoEndpoint {
      * 项目经历
      */
     @GetMapping("/project/experience")
-    public TavernResponse queryExperienceProjects(@RequestHeader(value = "userId", defaultValue = "1234") String registerId,
+    public TavernResponse queryExperienceProjects(@RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId,
                                                   @RequestParam(value = "projectId", required = false) String projectId,
                                                   @RequestParam(value = "publishDate", required = false) String publishDate,
                                                   @RequestParam(value = "status") String status) {
@@ -135,7 +137,7 @@ public class AppletInfoEndpoint {
      * 项目详情
      */
     @GetMapping("/project/experience/{projectId}")
-    public TavernResponse queryExperienceProjectDetail(@RequestHeader(value = "userId", defaultValue = "1234") String registerId,
+    public TavernResponse queryExperienceProjectDetail(@RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId,
                                                        @PathVariable("projectId") String projectId,
                                                        @RequestParam(value = "paymentId", required = false) String paymentId,
                                                        @RequestParam(value = "releaseDate", required = false) String payDate) {
@@ -152,7 +154,7 @@ public class AppletInfoEndpoint {
      * 我的概览
      */
     @GetMapping("/custom/overview")
-    public TavernResponse queryMyInfo(@RequestHeader(value = "userId", defaultValue = "1234") String registerId) {
+    public TavernResponse queryMyInfo(@RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId) {
         try {
             WorkerSummaryInfo workerSummaryInfo = this.workerInfoService.queryWorkerSumInfo(registerId);
             return TavernResponse.ok(workerSummaryInfo);
@@ -166,7 +168,7 @@ public class AppletInfoEndpoint {
      * 收入记录
      */
     @GetMapping("/custom/salary")
-    public TavernResponse queryMySalaryRecord(@RequestHeader(value = "userId", defaultValue = "1234") String registerId,
+    public TavernResponse queryMySalaryRecord(@RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId,
                                               @RequestParam(value = "paymentId", required = false) String paymentId,
                                               @RequestParam(value = "releaseDate", required = false) String payDate) {
         try {
@@ -183,7 +185,7 @@ public class AppletInfoEndpoint {
      */
     @PostMapping("/custom/identification")
     public TavernResponse workerAuth(@ModelAttribute WorkerAuthVO vo,
-                                     @RequestHeader(value = "userId", defaultValue = "1234") String registerId,
+                                     @RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId,
                                      @RequestParam(name = "video") MultipartFile video,
                                      @RequestParam(name = "signPic") MultipartFile signPic,
                                      @RequestParam(name = "idPicUp") MultipartFile idPicUp,
@@ -203,7 +205,7 @@ public class AppletInfoEndpoint {
      */
     @PutMapping("/custom/identification")
     public TavernResponse modifyWorkerAuth(@ModelAttribute WorkerAuthVO vo,
-                                     @RequestHeader(value = "userId", defaultValue = "1234") String registerId,
+                                     @RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId,
                                      @RequestParam(name = "video",required = false) MultipartFile video,
                                      @RequestParam(name = "signPic",required = false) MultipartFile signPic,
                                      @RequestParam(name = "idPicUp",required = false) MultipartFile idPicUp,
@@ -224,7 +226,7 @@ public class AppletInfoEndpoint {
      */
     @PostMapping("/custom/quit")
     public TavernResponse quiteProject(@RequestBody ProjectQuitVO vo,
-                                       @RequestHeader(value = "userId", defaultValue = "1234") String registerId
+                                       @RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId
     ) {
         try {
             this.workerInfoService.quitProject(registerId, vo.getProjectId(), vo.getReason());
@@ -240,7 +242,7 @@ public class AppletInfoEndpoint {
      */
     @PostMapping("/project/participation")
     public TavernResponse participateProject(@RequestBody ProjectParticipateVO vo,
-                                             @RequestHeader(value = "userId", defaultValue = "1234") String registerId
+                                             @RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId
     ) {
         try {
             vo.setRegisterId(registerId);
@@ -256,7 +258,7 @@ public class AppletInfoEndpoint {
      * 申请记录
      */
     @GetMapping("/custom/apply/record")
-    public TavernResponse queryApplyRecord(@RequestHeader(value = "userId", defaultValue = "1234") String registerId,
+    public TavernResponse queryApplyRecord(@RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId,
                                            @RequestParam(value = "eventId", required = false) String eventId,
                                            @RequestParam(value = "eventDate", required = false) String eventDate) {
         try {
@@ -282,7 +284,7 @@ public class AppletInfoEndpoint {
      * 实名认证详情
      */
     @GetMapping("/identification/detail")
-    public TavernResponse queryWorkerInfo(@RequestHeader(value = "userId", defaultValue = "1234") String registerId) {
+    public TavernResponse queryWorkerInfo(@RequestHeader(value = TavernRequestAuthFields.USER_ID) String registerId) {
         try {
             WorkerInfo workerInfo = this.workerInfoService.queryWorkerInfo(registerId);
             return TavernResponse.ok(workerInfo);
