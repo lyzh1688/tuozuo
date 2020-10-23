@@ -9,7 +9,6 @@ import com.tuozuo.tavern.xinruyi.convert.ModelConverterFactory;
 import com.tuozuo.tavern.xinruyi.dao.EventInfoDao;
 import com.tuozuo.tavern.xinruyi.dao.ProjectStaffInfoDao;
 import com.tuozuo.tavern.xinruyi.dao.WorkerInfoDao;
-import com.tuozuo.tavern.xinruyi.dict.CompanyStatus;
 import com.tuozuo.tavern.xinruyi.dict.EventType;
 import com.tuozuo.tavern.xinruyi.dict.WorkerAuthStatus;
 import com.tuozuo.tavern.xinruyi.model.*;
@@ -80,7 +79,7 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
         workerInfo.setIdNumber(vo.getIdNo());
         workerInfo.setContact(vo.getContact());
         workerInfo.setName(workerInfo.getName());
-        this.setWorkerInfoFiles(vo.getVideo(), vo.getIdPicUp(), vo.getIdPicDown(), workerInfo);
+        this.setWorkerInfoFiles(vo.getVideo(), vo.getSignPic(),vo.getIdPicUp(), vo.getIdPicBack(), workerInfo);
         this.workerInfoDao.insertOrUpdate(workerInfo);
 
 
@@ -101,12 +100,12 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
         eventTodoList.setEventOwnerId(vo.getIdNo());
         this.eventInfoDao.insertEventTodo(eventTodoList);
 
-        //创建用户
+       /* //创建用户
         UserVO userVO = ModelConverterFactory.authInfoToUserVO(vo.getRegisterId(), null, UserTypeDict.worker,UserPrivilege.VISITOR_PRIVILEGE_XINRUYI);
         TavernResponse response = this.authorityService.createUser(userVO);
         if (response.getCode() != 0) {
             throw new Exception("用户创建失败");
-        }
+        }*/
 
     }
 
@@ -142,6 +141,7 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
         //4、同步更新用户状态
         WorkerInfo workerInfo = this.workerInfoDao.selectById(registerId);
         workerInfo.setRegisterId(registerId);
+        workerInfo.setRemark(remark);
         if(result.equals("0")){
             workerInfo.setIsCertificate(WorkerAuthStatus.FAILED.getStatus());
         }else {
@@ -167,7 +167,7 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
 
         if (result.equals("1")) {
             UserVO userVO = ModelConverterFactory.authInfoToUserVO(registerId, UserPrivilege.COMMON_PRIVILEGE_XINRUYI);
-            TavernResponse response = this.authorityService.modifyUser(userVO);
+            TavernResponse response = this.authorityService.createUser(userVO);
             if (response.getCode() != 0) {
                 throw new Exception("小程序用户修改失败");
             }
@@ -177,6 +177,7 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
 
 
     private void setWorkerInfoFiles(MultipartFile video,
+                                    MultipartFile signPic,
                                     MultipartFile idPicUp,
                                     MultipartFile idPicBack,
                                     WorkerInfo workerInfo) throws Exception {
@@ -184,6 +185,11 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
             String videoUrl = this.storeWorkerFile(workerInfo.getIdNumber(), video);
             LOGGER.info("videoUrl: {}", videoUrl);
             workerInfo.setVideo(videoUrl);
+        }
+        if (signPic != null) {
+            String signPicUrl = this.storeWorkerFile(workerInfo.getIdNumber(), signPic);
+            LOGGER.info("signPicUrl: {}", signPicUrl);
+            workerInfo.setSignPic(signPicUrl);
         }
         if (idPicUp != null) {
             String idPicUpUrl = this.storeWorkerFile(workerInfo.getIdNumber(), idPicUp);

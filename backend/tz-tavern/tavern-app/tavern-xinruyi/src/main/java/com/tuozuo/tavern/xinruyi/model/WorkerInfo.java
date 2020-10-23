@@ -28,6 +28,25 @@ public class WorkerInfo {
     @TableField(exist = false)
     private String staffId;
 
+    private String remark;
+    private String signPic;
+
+    public String getSignPic() {
+        return signPic;
+    }
+
+    public void setSignPic(String signPic) {
+        this.signPic = signPic;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     public String getStaffId() {
         return staffId;
     }

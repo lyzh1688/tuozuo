@@ -2,7 +2,6 @@ package com.tuozuo.tavern.xinruyi.endpoint;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.tuozuo.tavern.common.protocol.TavernRequestAuthFields;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.xinruyi.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.xinruyi.dto.*;
@@ -186,11 +185,32 @@ public class AppletInfoEndpoint {
     public TavernResponse workerAuth(@ModelAttribute WorkerAuthVO vo,
                                      @RequestHeader(value = "userId", defaultValue = "1234") String registerId,
                                      @RequestParam(name = "video") MultipartFile video,
+                                     @RequestParam(name = "signPic") MultipartFile signPic,
                                      @RequestParam(name = "idPicUp") MultipartFile idPicUp,
-                                     @RequestParam(name = "idPicDown") MultipartFile idPicDown
+                                     @RequestParam(name = "idPicBack") MultipartFile idPicBack
     ) {
         try {
-            this.setWorkAuthInfo(vo, registerId, video, idPicUp, idPicDown);
+            this.setWorkAuthInfo(vo, registerId, video,signPic, idPicUp, idPicBack);
+            this.workerInfoService.addWorker(vo);
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[实名认证] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+    /**
+     * 实名认证修改
+     */
+    @PutMapping("/custom/identification")
+    public TavernResponse modifyWorkerAuth(@ModelAttribute WorkerAuthVO vo,
+                                     @RequestHeader(value = "userId", defaultValue = "1234") String registerId,
+                                     @RequestParam(name = "video",required = false) MultipartFile video,
+                                     @RequestParam(name = "signPic",required = false) MultipartFile signPic,
+                                     @RequestParam(name = "idPicUp",required = false) MultipartFile idPicUp,
+                                     @RequestParam(name = "idPicBack",required = false) MultipartFile idPicBack
+    ) {
+        try {
+            this.setWorkAuthInfo(vo, registerId, video,signPic, idPicUp, idPicBack);
             this.workerInfoService.addWorker(vo);
             return TavernResponse.OK;
         } catch (Exception e) {
@@ -258,13 +278,29 @@ public class AppletInfoEndpoint {
         }
     }
 
+    /**
+     * 实名认证详情
+     */
+    @GetMapping("/identification/detail")
+    public TavernResponse queryWorkerInfo(@RequestHeader(value = "userId", defaultValue = "1234") String registerId) {
+        try {
+            WorkerInfo workerInfo = this.workerInfoService.queryWorkerInfo(registerId);
+            return TavernResponse.ok(workerInfo);
+        } catch (Exception e) {
+            LOGGER.error("[实名认证详情] failed", e);
+            return TavernResponse.bizFailure("实名认证详情查询异常");
+        }
+    }
+
     private void setWorkAuthInfo(WorkerAuthVO vo, String registerId, MultipartFile video,
+                                 MultipartFile signPic,
                                  MultipartFile idPicUp,
-                                 MultipartFile idPicDown) {
+                                 MultipartFile idPicBack) {
         vo.setRegisterId(registerId);
         vo.setVideo(video);
+        vo.setSignPic(signPic);
         vo.setIdPicUp(idPicUp);
-        vo.setIdPicDown(idPicDown);
+        vo.setIdPicBack(idPicBack);
     }
 
 }

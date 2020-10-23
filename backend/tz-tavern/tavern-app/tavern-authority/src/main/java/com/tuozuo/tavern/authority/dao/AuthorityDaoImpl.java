@@ -75,7 +75,7 @@ public class AuthorityDaoImpl extends ServiceImpl<AuthUserMapper, User> implemen
 
     @Override
     public boolean createUser(User user) {
-        return this.save(user);
+        return this.saveOrUpdate(user);
     }
 
     @Override

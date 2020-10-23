@@ -23,11 +23,20 @@ public class WorkerAuthVO {
     private String name;
     @NotNull(message = "idNo is not null")
     private String idNo;
+    private MultipartFile signPic;
     private MultipartFile video;
     private MultipartFile idPicUp;
-    private MultipartFile idPicDown;
+    private MultipartFile idPicBack;
     @NotNull(message = "idNo is not null")
     private String contact;
+
+    public MultipartFile getSignPic() {
+        return signPic;
+    }
+
+    public void setSignPic(MultipartFile signPic) {
+        this.signPic = signPic;
+    }
 
     public String getRegisterId() {
         return registerId;
@@ -69,12 +78,12 @@ public class WorkerAuthVO {
         this.idPicUp = idPicUp;
     }
 
-    public MultipartFile getIdPicDown() {
-        return idPicDown;
+    public MultipartFile getIdPicBack() {
+        return idPicBack;
     }
 
-    public void setIdPicDown(MultipartFile idPicDown) {
-        this.idPicDown = idPicDown;
+    public void setIdPicBack(MultipartFile idPicBack) {
+        this.idPicBack = idPicBack;
     }
 
     public String getContact() {
