@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.xinruyi.model;
 
+import com.tuozuo.tavern.xinruyi.dict.WorkerAuthStatus;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
@@ -15,7 +16,7 @@ public class WorkerSummaryInfo {
     }
 
     public static WorkerSummaryInfo defaultWorkerSummaryInfo() {
-        return new WorkerSummaryInfo(0, BigDecimal.ZERO, "0");
+        return new WorkerSummaryInfo(0, BigDecimal.ZERO, WorkerAuthStatus.UNREGISTER.getStatus());
     }
 
     public WorkerSummaryInfo(int projectNum, BigDecimal totalSalary, String authStatus) {
@@ -45,6 +46,9 @@ public class WorkerSummaryInfo {
         }
         if (this.authStatus.equals("2")) {
             this.statusDesc = "已认证";
+        }
+        if (this.authStatus.equals("3")) {
+            this.statusDesc = "认证失败";
         }
     }
 

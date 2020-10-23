@@ -79,6 +79,7 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
         workerInfo.setIdNumber(vo.getIdNo());
         workerInfo.setContact(vo.getContact());
         workerInfo.setName(workerInfo.getName());
+        workerInfo.setIsCertificate(WorkerAuthStatus.REGISTERING.getStatus());
         this.setWorkerInfoFiles(vo.getVideo(), vo.getSignPic(),vo.getIdPicUp(), vo.getIdPicBack(), workerInfo);
         this.workerInfoDao.insertOrUpdate(workerInfo);
 
