@@ -11,7 +11,8 @@ const apiList = {
   staffCertification: process.env.VUE_APP_SYSTEM_URL + '/v1/staff/certification',
   projectConfirmation: process.env.VUE_APP_SYSTEM_URL + '/v1/project/confirmation',
   customJoinProject: process.env.VUE_APP_SYSTEM_URL + '/v1/staff/participation/',
-  customIdentification: process.env.VUE_APP_SYSTEM_URL + '/v1/staff/identification/'
+  customIdentification: process.env.VUE_APP_SYSTEM_URL + '/v1/staff/identification/',
+  identificationDetail: process.env.VUE_APP_SYSTEM_URL + '/v1/staff/identification/detail/'
 
 }
 /**
@@ -26,6 +27,16 @@ const apiList = {
 export function getAllEventList (companyId, projectId, eventId, status, pageNo, pageSize) {
     return request({
         url: apiList.allEventList + '?companyId=' + companyId + '&projectId=' + projectId + '&eventId=' + eventId + '&status=' + status + '&pageNo=' + pageNo + '&pageSize=' + pageSize,
+        method: 'get'
+    })
+}
+/**
+ * 查询待办列表
+ * @param {String} registerId 注册Id
+ */
+export function getIdentificationDetai (registerId) {
+    return request({
+        url: apiList.identificationDetail + registerId,
         method: 'get'
     })
 }

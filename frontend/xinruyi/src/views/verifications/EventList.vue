@@ -302,6 +302,15 @@
       @cancel="handleCancel"
       @ok="handleOk"
     ></firestaffform>
+    <identificationform
+      ref="identificationform"
+      :visible="identificationVisible"
+      :loading="confirmLoading"
+      :model="identificationMdl"
+      :isShowOnly="isShowOnly"
+      @cancel="handleCancel"
+      @ok="handleOk"
+    ></identificationform>
     <joinprojectform
       ref="joinprojectform"
       :visible="joinprojectVisible"
@@ -378,7 +387,9 @@ import {
   docompanySpot,
   doprojectConfirmation,
   dodecruitment,
-  doJoinProject
+  doJoinProject,
+  doCustomIdentification,
+  getIdentificationDetai
 } from '@/api/events'
 import { getCommonDict } from '@/api/dictionary'
 import { uploadFile, doVerifySalary, doConfirmSalary } from '@/api/salary'
@@ -392,6 +403,7 @@ import uploadfileform from '@/views/salary/forms/uploadFileForm'
 import verifysalary from '@/views/salary/forms/VerifySalary'
 import salarydetailwithlist from '@/views/salary/forms/SalaryDetailWithList'
 import joinprojectform from './form/JoinProjectForm'
+import identificationform from './form/IdentificationForm'
 const columns = [
   {
     title: '编号',
@@ -582,10 +594,12 @@ export default {
       salaryVisible: false,
       salaryMdl: {},
       salaryDetailMdl: {},
+      identificationMdl: {},
       joinprojectMdl: {},
       salaryDetailVisible: false,
       salaryVerifyVisible: false,
       joinprojectVisible: false,
+      identificationVisible: false,
       verificationMdl: {},
       verifyType: '',
       isverify: false,
@@ -712,7 +726,8 @@ export default {
     uploadfileform,
     verifysalary,
     salarydetailwithlist,
-    joinprojectform
+    joinprojectform,
+    identificationform
   },
   activated () {
     fetch('', (data) => {
@@ -1201,6 +1216,44 @@ export default {
           }
         })
       }
+      if (this.verifyType === '6') {
+        const form = this.$refs.identificationform.form
+        form.validateFields((errors, values) => {
+          if (!errors) {
+            this.confirmLoading = true
+            doCustomIdentification(values)
+              .then((response) => {
+                const result = response
+                if (success(result)) {
+                  this.$notification.success({
+                    message: '审核成功'
+                  })
+                  this.$refs.table.refresh(true)
+                  this.$refs.table2.refresh(true)
+                  this.identificationVisible = false
+                  this.confirmLoading = false
+                } else {
+                  this.confirmLoading = false
+                  this.$notification.error({
+                    message: errorMessage(result),
+                    description: '审核失败'
+                  })
+                }
+                if (needLogin(result)) {
+                  this.identificationVisible = false
+                  this.confirmLoading = false
+                }
+              })
+              .catch((error) => {
+                this.$notification.error({
+                  message: '审核失败。请稍后再试',
+                  description: error
+                })
+                this.confirmLoading = false
+              })
+          }
+        })
+      }
       if (this.verifyType === '7') {
         const form = this.$refs.firestaffform.form
         form.validateFields((errors, values) => {
@@ -1279,6 +1332,33 @@ export default {
       } else if (this.verifyType === '5') {
         this.joinprojectMdl = { ...JSON.parse(record.snapshot), eventId: record.eventId }
         this.joinprojectVisible = true
+      } else if (this.verifyType === '6') {
+        const tmp = JSON.parse(record.snapshot)
+        getIdentificationDetai(tmp.registerId)
+              .then((response) => {
+                const result = response
+                if (success(result)) {
+                this.identificationMdl = { ...response.data, registerId: tmp.registerId }
+                  this.identificationVisible = true
+                  this.confirmLoading = false
+                } else {
+                  this.confirmLoading = false
+                  this.$notification.error({
+                    message: errorMessage(result),
+                    description: '查询实名审核详情失败'
+                  })
+                }
+                if (needLogin(result)) {
+                  this.confirmLoading = false
+                }
+              })
+              .catch((error) => {
+                this.$notification.error({
+                  message: '查询实名审核详情失败。请稍后再试',
+                  description: error
+                })
+                this.confirmLoading = false
+              })
       } else if (this.verifyType === '7') {
         const snapshotBody = JSON.parse(record.snapshot)
         this.verificationMdl = {
@@ -1393,6 +1473,7 @@ export default {
             this.fireStaffVisible = false
             this.salaryVisible = false
             this.joinprojectVisible = false
+            this.identificationVisible = false
           },
           onCancel () {}
         })
