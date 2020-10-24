@@ -2,6 +2,7 @@ package com.tuozuo.tavern.authority.dao;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tuozuo.tavern.authority.mapper.UserPrivilegeMapper;
 import com.tuozuo.tavern.authority.model.Privilege;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import java.util.Optional;
  * Created by 刘悦之 on 2020/8/29.
  */
 @Repository
-public class PrivilegeDaoImpl implements PrivilegeDao {
+public class PrivilegeDaoImpl extends ServiceImpl<UserPrivilegeMapper, Privilege> implements PrivilegeDao {
 
     @Autowired
     private UserPrivilegeMapper privilegeMapper;
@@ -34,7 +35,7 @@ public class PrivilegeDaoImpl implements PrivilegeDao {
 
     @Override
     public boolean addPrivilege(Privilege privilege) {
-        return this.privilegeMapper.insert(privilege) > 0 ? true : false;
+        return this.saveOrUpdate(privilege);
     }
 
     @Override

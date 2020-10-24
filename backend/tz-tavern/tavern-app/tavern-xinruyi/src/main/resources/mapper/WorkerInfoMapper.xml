@@ -24,18 +24,16 @@
   <select id="selectWorkerSumInfo" resultMap="BaseWorkerSumMap">
     SELECT
     t1.project_num,
-    t1.is_certificate,
-    t2.total_salary
+    t3.is_certificate,
+    ifNull(t2.total_salary,0) total_salary
     FROM
     (
     SELECT
     count( 1 ) project_num,
-    is_certificate ,
     register_id
     FROM
     (
     SELECT
-    t1.is_certificate,
     t1.register_id
     FROM
     worker_info t1,
@@ -58,9 +56,14 @@
     WHERE
     t2.staff_id = t3.staff_id
     AND t2.register_id = #{registerId}
-    ) t2
-    WHERE
-    t1.register_id = t2.register_id
+    ) t2,
+    (
+    select t.register_id,t.is_certificate from worker_info t
+    where t.register_id = #{registerId}
+    ) t3
+    group by  t1.project_num,
+    t3.is_certificate,
+    t2.total_salary
 
   </select>
 </mapper>

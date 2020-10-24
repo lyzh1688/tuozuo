@@ -70,15 +70,18 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
 
     @Transactional
     @Override
-    public void addWorker(WorkerAuthVO vo) throws Exception {
-
+    public synchronized void addWorker(WorkerAuthVO vo) throws Exception {
+        EventTodoList checkTodoList = this.eventInfoDao.selectWorkerTodo(vo.getRegisterId(), EventType.STAFF_AUTH.getStatus());
+        if(checkTodoList != null){
+            return;
+        }
 
         //1、新增用户
         WorkerInfo workerInfo = new WorkerInfo();
         workerInfo.setRegisterId(vo.getRegisterId());
         workerInfo.setIdNumber(vo.getIdNo());
         workerInfo.setContact(vo.getContact());
-        workerInfo.setName(workerInfo.getName());
+        workerInfo.setName(vo.getName());
         workerInfo.setIsCertificate(WorkerAuthStatus.REGISTERING.getStatus());
         this.setWorkerInfoFiles(vo.getVideo(), vo.getSignPic(),vo.getIdPicUp(), vo.getIdPicBack(), workerInfo);
         this.workerInfoDao.insertOrUpdate(workerInfo);
@@ -98,7 +101,6 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
         eventTodoList.setEventOwnerName(vo.getName());
         eventTodoList.setEventDate(LocalDateTime.now());
         eventTodoList.setRegisterId(vo.getRegisterId());
-        eventTodoList.setEventOwnerId(vo.getIdNo());
         this.eventInfoDao.insertEventTodo(eventTodoList);
 
        /* //创建用户
@@ -135,11 +137,16 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
 
     @Transactional
     @Override
-    public void auditForWorkerInfo(String registerId, String remark, String result) throws Exception {
+    public synchronized void auditForWorkerInfo(String registerId, String remark, String result) throws Exception {
         //1、对事件进行处理
         //2、更改认证状态
         //3、增加员工关系
         //4、同步更新用户状态
+        EventTodoList checkTodoList = this.eventInfoDao.selectWorkerTodo(registerId, EventType.STAFF_AUTH.getStatus());
+        if(checkTodoList == null){
+            return;
+        }
+
         WorkerInfo workerInfo = this.workerInfoDao.selectById(registerId);
         workerInfo.setRegisterId(registerId);
         workerInfo.setRemark(remark);
@@ -147,10 +154,6 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
             workerInfo.setIsCertificate(WorkerAuthStatus.FAILED.getStatus());
         }else {
             workerInfo.setIsCertificate(WorkerAuthStatus.REGISTERED.getStatus());
-            WorkerStaffRel rel = new WorkerStaffRel();
-            rel.setRegisterId(registerId);
-            rel.setStaffId(workerInfo.getStaffId());
-            this.workerInfoDao.insertStaffRel(rel);
         }
         this.workerInfoDao.insertOrUpdate(workerInfo);
 
@@ -167,7 +170,7 @@ public class WorkerInfoServiceImpl implements WorkerInfoService {
         this.eventInfoDao.insertEventFinish(eventFinishList);
 
         if (result.equals("1")) {
-            UserVO userVO = ModelConverterFactory.authInfoToUserVO(registerId, UserPrivilege.COMMON_PRIVILEGE_XINRUYI);
+            UserVO userVO = ModelConverterFactory.authInfoToUserVO(registerId, null,UserTypeDict.worker,UserPrivilege.COMMON_PRIVILEGE_XINRUYI);
             TavernResponse response = this.authorityService.createUser(userVO);
             if (response.getCode() != 0) {
                 throw new Exception("小程序用户修改失败");

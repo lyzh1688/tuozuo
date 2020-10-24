@@ -444,8 +444,14 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         return detailDTO;
     }
 
+    @Transactional
     @Override
-    public void applyForProject(ProjectParticipateVO vo) throws Exception {
+    public synchronized void  applyForProject(ProjectParticipateVO vo) throws Exception {
+        EventTodoList checkTodoList = this.eventInfoDao.selectWorkerTodo(vo.getRegisterId(), EventType.STAFF_JOIN.getStatus());
+        if(checkTodoList != null){
+            return;
+        }
+
         WorkerInfo workerInfo = this.workerInfoDao.selectById(vo.getRegisterId());
         if (workerInfo == null) {
             throw new Exception("您尚未认证，无法加入项目");
@@ -494,9 +500,12 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     @Transactional
     @Override
-    public void auditWorkerParticipation(AuditWorkerVO vo) throws Exception {
+    public synchronized void auditWorkerParticipation(AuditWorkerVO vo) throws Exception {
         //1、处理事件
         EventTodoList eventTodoList = this.eventInfoDao.selectEventById(vo.getEventId());
+        if(eventTodoList == null){
+            return;
+        }
         EventFinishList eventFinishList = new EventFinishList();
         BeanUtils.copyProperties(eventTodoList, eventFinishList);
         JSONObject snapshot = JSON.parseObject(eventTodoList.getSnapshot());

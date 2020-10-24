@@ -23,6 +23,7 @@ public class WorkerSummaryInfo {
         this.projectNum = projectNum;
         this.totalSalary = totalSalary;
         this.authStatus = authStatus;
+        this.setStatusDesc();
     }
 
     private int projectNum;
