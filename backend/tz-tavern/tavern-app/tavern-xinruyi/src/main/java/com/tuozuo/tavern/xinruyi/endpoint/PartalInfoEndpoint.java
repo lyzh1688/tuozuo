@@ -39,7 +39,7 @@ public class PartalInfoEndpoint {
     /**
      * 网站项目列表
      */
-    @GetMapping("/list")
+    @GetMapping("/project/list")
     public TavernResponse queryPartalProjectList(@ModelAttribute @Valid ProjectListVo vo) {
         try {
             ProjectInfoListDTO dto = new ProjectInfoListDTO();
