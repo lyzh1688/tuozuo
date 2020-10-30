@@ -1,0 +1,1030 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicons
+    ================================================== -->
+    <link rel="icon" href="images/favicon.png" type="image/x-icon"> 
+    <!-- LOAD CSS FILES -->
+    <link href="style.css" rel="stylesheet" type="text/css">  
+
+    <!-- color scheme -->
+    <link rel="stylesheet" href="switcher/demo.css" type="text/css">
+    <link rel="stylesheet" href="switcher/colors/blue.css" type="text/css" id="colors">     
+</head>
+
+<body>
+    <!-- Preload images start //-->
+    <div class="images-preloader" id="images-preloader">
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
+    <!-- Preload images end //-->
+    
+    <div id="wrapper">
+
+        <!-- header begin -->
+        <header class="site-header-2 site-header">
+        
+            <div id="sticked-menu" class="sticky-header">
+                <!-- Main bar start -->
+                <div class="main-bar">
+                    <div class="container">                
+                        <div class="row">                    
+                            <div class="col-md-12">
+
+                                <!-- logo begin -->
+                                <div id="logo" class="pull-left">                            
+                                    <a href="index.html">
+                                        <img src="images/logo.png" alt="" class="logo">
+                                    </a>
+                                </div>
+                                <!-- logo close -->
+
+                                <!-- btn-mobile menu begin -->
+                                <a id="show-mobile-menu" class="btn-mobile-menu hidden-lg hidden-md"><i class="fa fa-bars"></i></a>
+                                <!-- btn-mobile menu close --> 
+
+                                <!-- Header Group Button Right begin -->
+                                <div class="header-buttons pull-right hidden-xs">
+                                    <div class="header-contact">
+                                        <ul class="clearfix">
+                                            <li class="contact"><i class="fa fa-envelope"></i> <span>XXX</span></li>
+                                            <li class="phone"><i class="fa fa-phone"></i> <span>XXX</span></li>                                        
+                                            <li class="border-line">|</li>
+                                        </ul>
+                                    </div> 
+
+                                    <div class="cart-button hidden-sm">
+                                        <a href="#" class="dropdown-toggle cart-contents" data-toggle="dropdown" ><i class="fa fa-shopping-bag"></i> <span class="mini-cart-counter">3</span></a>
+
+                                        <div class="dropdown-menu top_cart_list_product">
+                                            <ul class="cart_list product_list_widget clearfix">
+                                                <li class="mini_cart_item">
+                                                    <div class="img-thumb">
+                                                        <img alt="" class="attachment-shop_thumbnail" src="images/shop/thumb/product-thumb-1.jpg">
+                                                    </div>
+                                                    <div class="product-detail">
+                                                        <a class="remove" href=""><i class="fa fa-times"></i></a>
+                                                        <a href="#">Bed Dream</a>                                                                
+                                                        <span class="quantity">1 × 
+                                                            <span class="amount">$600</span>
+                                                        </span>
+                                                    </div>                                            
+                                                </li>
+                                                <li class="mini_cart_item">
+                                                    <div class="img-thumb">
+                                                        <img alt="" class="attachment-shop_thumbnail" src="images/shop/thumb/product-thumb-2.jpg">
+                                                    </div>
+                                                    <div class="product-detail">
+                                                        <a class="remove" href=""><i class="fa fa-times"></i></a>
+                                                        <a href="#">Bed Gravida</a>                                                                
+                                                        <span class="quantity">2 × 
+                                                            <span class="amount">$550</span>
+                                                        </span>
+                                                    </div>                                            
+                                                </li>
+                                                <li class="mini_cart_item">
+                                                    <div class="img-thumb">
+                                                        <img alt="" class="attachment-shop_thumbnail" src="images/shop/thumb/product-thumb-3.jpg">
+                                                    </div>
+                                                    <div class="product-detail">
+                                                        <a class="remove" href=""><i class="fa fa-times"></i></a>
+                                                        <a href="#">Bed Wood</a>                                                                
+                                                        <span class="quantity">1 × 
+                                                            <span class="amount">$450</span>
+                                                        </span>
+                                                    </div>                                            
+                                                </li>
+                                            </ul>
+                                            <p class="total"><strong>Subtotal:</strong> <span class="amount">$2,150</span></p>
+                                            <p class="buttons">
+                                                <a class="button wc-forward btn btn-primary" href="">View Cart</a>
+                                                <a class="button checkout wc-forward btn btn-secondary pull-right" href="">Checkout</a>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Button For Menu OffCanvas right begin -->
+                                    <div class="navright-button hidden-sm">
+                                        <a href="" id="btn-offcanvas-menu"><i class="fa fa-bars"></i></a>                                        
+                                    </div> 
+                                    <!-- Button For Menu OffCanvas right close -->
+
+                                </div>
+                                <!-- Header Group Button Right close -->
+
+                                <!-- mobile menu begin -->
+                                <nav id="mobile-menu" class="site-mobile-menu hidden-lg hidden-md">
+                                    <ul></ul>
+                                </nav>  
+                                <!-- mobile menu close -->    
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-header">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <!-- desktop menu begin -->
+                                <nav id="desktop-menu" class="site-desktop-menu hidden-xs hidden-sm">
+                                    <ul class="clearfix">
+                                            <li class="active"><a href="index.html">首页</a>
+                                                <ul>
+                                                    <li><a href="index.html">模板 1</a></li>
+                                                    <li><a href="index2.html">模板 2</a></li>
+                                                    <li><a href="index3.html">模板 3</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#">特性</a>
+                                                <ul>
+                                                    <li><a href="comingsoon.html">敬请期待</a></li>
+                                                    <li><a href="404.html">404 Error</a></li>
+                                                    <li><a href="#">二级菜单</a>
+                                                        <ul>
+                                                            <li><a href="sub-header.html">二级菜单 1</a></li>
+                                                            <li><a href="sub-header1.html">二级菜单 2</a></li>
+                                                            <li><a href="sub-header2.html">二级菜单 3</a></li>
+                                                            <li><a href="sub-header3.html">二级菜单 4</a></li>
+                                                        </ul>
+                                                    </li> 
+                                                    <li><a href="#">三级菜单</a>
+                                                        <ul>
+                                                            <li><a href="#">三级菜单 1</a></li>
+                                                            <li><a href="#">三级菜单 2</a></li>
+                                                        </ul>
+                                                    </li>                                           
+                                                </ul>
+                                            </li>
+                                            <li><a href="#">薪如意</a>
+                                                <ul>
+                                                    <li><a href="xinruyi-projects.html">项目页面</a></li>
+                                                    <li><a href="xinruyi-company-spot.html">企业入驻</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#">页面</a>
+                                                <ul>
+                                                    <li><a href="about.html">关于我们</a></li>
+                                                    <li><a href="service.html">服务</a></li>
+                                                    <li><a href="pricing.html">价格列表</a></li>
+                                                    <li><a href="typography.html">拓扑图</a></li>
+                                                    <li><a href="element.html">元素图</a></li>
+                                                    <li><a href="faqs.html">FAQs</a></li>  
+                                                </ul>
+                                            </li>
+                                            <li><a href="projects.html">套图</a>
+                                                <ul>
+                                                    <li><a href="projects-3-cols.html">套图 3 列</a></li>
+                                                    <li><a href="projects-4-cols.html">套图 4 列</a></li>
+                                                    <li><a href="projects-5-cols.html">套图 5 咧</a></li>
+                                                    <li><a href="project-detail.html">单个项目</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#">商城</a>
+                                                <ul>
+                                                    <li><a href="shop-catalog.html">在线商城列表</a></li>
+                                                    <li><a href="shop-cart.html">在线商城购物车</a></li>
+                                                    <li><a href="shop-checkout.html">在线商城付款</a></li>
+                                                    <li><a href="shop-single.html">单个产品</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="blog.html">Blog</a>
+                                                <ul>
+                                                    <li><a href="blog-list.html">Blog List</a></li>
+                                                    <li><a href="blog-grid.html">Blog Grid</a></li>
+                                                    <li><a href="blog-single.html">Blog Article</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#">联系我们</a>
+                                                <ul>
+                                                    <li><a href="contact1.html">联系我们 01</a></li>
+                                                    <li><a href="contact2.html">联系我们 02</a></li>
+                                                    <li><a href="contact3.html">联系我们 03</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                </nav>
+                                <!-- desktop menu close --> 
+
+                                <div class="search-bar pull-right">                                
+                                    <form role="search" method="get" class="search-form" action="">
+                                        <span class="search-box">
+                                            <input type="search" class="search-field" placeholder="Search..." value="" title="" />
+                                            <button type="submit" class="search-submit"><i class="fa fa-search"></i></button>
+                                        </span>
+                                    </form>                                        
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>                               
+                </div>
+            </div>
+        </header>
+        <!-- header close -->
+        <div class="gray-line gray-line-2"></div>
+
+        <!-- Menu OffCanvas right begin -->
+        <div class="navright-button hidden-sm">
+            <div class="compact-menu-canvas" id="offcanvas-menu">
+                <h3>menu</h3><a id="btn-close-canvasmenu"><i class="fa fa-close"></i></a>
+                <nav>
+                  <ul class="clearfix">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="features.html">Features</a></li>
+                        <li><a href="pages.html">Pages</a></li>
+                        <li><a href="portfolio.html">Portfolios</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>                
+                </nav>
+            </div>
+        </div> 
+        <!-- Menu OffCanvas right close -->
+
+        <!-- slider -->
+        <div id="slider">
+            <!-- revolution slider begin -->
+            <div class="fullwidthbanner-container narrow-dark">
+                <div id="revolution-slider-2">
+                    <ul>
+                        <li data-transition="fade" data-slotamount="7" data-masterspeed="2500" data-delay="5000">
+                            <!--  BACKGROUND IMAGE -->
+                            <img src="img-rev-slider/bg-5.jpg" alt="">
+
+                            <div class="tp-caption lft custom-font-3"
+                                data-x="200"
+                                data-y="130"
+                                data-speed="400"
+                                data-start="400"
+                                data-easing="easeInOutCubic">
+                                Amazing
+                            </div>
+
+                            <div class="tp-caption sfr custom-font-4"
+                                data-x="200"
+                                data-y="220"
+                                data-speed="400"
+                                data-start="600"
+                                data-easing="easeInOutCubic">
+                                Content Strategy
+                            </div>
+
+                            <div class="tp-caption sfr custom-font-4"
+                                data-x="200"
+                                data-y="270"
+                                data-speed="400"
+                                data-start="800"
+                                data-easing="easeInOutCubic">
+                                Project Management
+                            </div>
+
+                            <div class="tp-caption sfr custom-font-4"
+                                data-x="200"
+                                data-y="320"
+                                data-speed="400"
+                                data-start="1000"
+                                data-easing="easeInOutCubic">
+                                Visual Design
+                            </div>
+
+                            <div class="tp-caption sfb"
+                                data-x="200"
+                                data-y="380"
+                                data-speed="400"
+                                data-start="1200"
+                                data-easing="easeInOutCubic">
+                                <a class="btn btn-slider btn-small" href="#">Buy Theme</a>
+                            </div>
+
+                            <div class="tp-caption sfb"
+                                data-x="570"
+                                data-y="30"
+                                data-speed="600"
+                                data-start="1400"
+                                data-easing="easeInOutCubic">
+                                <img src="img-rev-slider/thumb/thumb-1.png" alt="">
+                            </div>
+                        </li>
+
+                        <li data-transition="fade" data-slotamount="7" data-masterspeed="2500" data-delay="5000">
+                            <!--  BACKGROUND IMAGE -->
+                            <img src="img-rev-slider/bg-4.jpg" alt="">
+
+                            <div class="tp-caption lft custom-font-3"
+                                data-x="200"
+                                data-y="130"
+                                data-speed="400"
+                                data-start="400"
+                                data-easing="easeInOutCubic">
+                                Amazing
+                            </div>
+
+                            <div class="tp-caption sfr custom-font-4"
+                                data-x="200"
+                                data-y="220"
+                                data-speed="400"
+                                data-start="600"
+                                data-easing="easeInOutCubic">
+                                Content Strategy
+                            </div>
+
+                            <div class="tp-caption sfr custom-font-4"
+                                data-x="200"
+                                data-y="270"
+                                data-speed="400"
+                                data-start="800"
+                                data-easing="easeInOutCubic">
+                                Project Management
+                            </div>
+
+                            <div class="tp-caption sfr custom-font-4"
+                                data-x="200"
+                                data-y="320"
+                                data-speed="400"
+                                data-start="1000"
+                                data-easing="easeInOutCubic">
+                                Visual Design
+                            </div>
+
+                            <div class="tp-caption sfb"
+                                data-x="200"
+                                data-y="380"
+                                data-speed="400"
+                                data-start="1200"
+                                data-easing="easeInOutCubic">
+                                <a class="btn btn-slider btn-small" href="#">Buy Theme</a>
+                            </div>
+
+                            <div class="tp-caption sfb"
+                                data-x="570"
+                                data-y="30"
+                                data-speed="600"
+                                data-start="1400"
+                                data-easing="easeInOutCubic">
+                                <img src="img-rev-slider/thumb/thumb-2.png" alt="">
+                            </div>
+                        </li>
+
+                        <li data-transition="fade" data-slotamount="7" data-masterspeed="2500" data-delay="5000">
+                            <!--  BACKGROUND IMAGE -->
+                            <img src="img-rev-slider/bg-6.jpg" alt="">
+
+                            <div class="tp-caption lft custom-font-3"
+                                data-x="200"
+                                data-y="130"
+                                data-speed="400"
+                                data-start="400"
+                                data-easing="easeInOutCubic">
+                                Amazing
+                            </div>
+
+                            <div class="tp-caption sfr custom-font-4"
+                                data-x="200"
+                                data-y="220"
+                                data-speed="400"
+                                data-start="600"
+                                data-easing="easeInOutCubic">
+                                Content Strategy
+                            </div>
+
+                            <div class="tp-caption sfr custom-font-4"
+                                data-x="200"
+                                data-y="270"
+                                data-speed="400"
+                                data-start="800"
+                                data-easing="easeInOutCubic">
+                                Project Management
+                            </div>
+
+                            <div class="tp-caption sfr custom-font-4"
+                                data-x="200"
+                                data-y="320"
+                                data-speed="400"
+                                data-start="1000"
+                                data-easing="easeInOutCubic">
+                                Visual Design
+                            </div>
+
+                            <div class="tp-caption sfb"
+                                data-x="200"
+                                data-y="380"
+                                data-speed="400"
+                                data-start="1200"
+                                data-easing="easeInOutCubic">
+                                <a class="btn btn-slider btn-small" href="#">Buy Theme</a>
+                            </div>
+
+                            <div class="tp-caption sfb"
+                                data-x="570"
+                                data-y="30"
+                                data-speed="600"
+                                data-start="1400"
+                                data-easing="easeInOutCubic">
+                                <img src="img-rev-slider/thumb/thumb-3.png" alt="">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- revolution slider close -->
+        </div>
+        <!-- slider close -->
+
+        <div class="clearfix"></div>
+
+        <!-- content begin -->
+        <div id="content" class="no-padding">
+            <!-- section begin -->
+            <section id="section-service">
+                <div class="container">
+                    <div class="row"> 
+                        <div class="col-md-4">
+                            <div class="service-box">
+                                <img src="images/services/thumb-1.png" alt="" class="img-responsive">
+                                <div class="service-content">
+                                    <h3>Mobile Ready</h3>
+                                    <p>Fusce at accumsan justo. Nulla lacus efficitur vel aliquam sed, fringilla sit amet neque.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="service-box">
+                                <img src="images/services/thumb-2.png" alt="" class="img-responsive">
+                                <div class="service-content">
+                                    <h3>Very Easy Customizie</h3>
+                                    <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="service-box">
+                                <img src="images/services/thumb-3.png" alt="" class="img-responsive">
+                                <div class="service-content">
+                                    <h3>Free Icon Font Awesome</h3>
+                                    <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section> 
+            <!-- section close -->                   
+
+            <!-- section begin -->
+            <section id="section-about" class="bg-grey">
+                <div class="container">
+                    <div class="row">                    
+                        <div class="text-center">
+                            <h2 class="box-title">We are Compact</h2>                                
+                            <div class="tiny-border"></div>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <img src="images/computer.png" alt="about image" class="img-responsive">
+                        </div>                        
+                        <div class="col-md-6 col-sm-6">
+                            <div class="about-history">
+                                <p>Morbi vehicula a nibh in commodo. Aliquam quis dolor eget lectus pulvinar malesuada. Suspendisse eu rhoncus ligula. Class aptent taciti sociosqu ad litora torquent per conubia nostra, Etiam volutpat felis in sagittis porttitor</p>
+
+                                <h5>Our Skills</h5>
+
+                                <div class="skills-name">Web Design</div>
+                                <div class="pro-bar-container pro-bar-margin"> 
+                                    <div class="text-in-bar"><span class="counter-skills">90</span>%</div>
+                                    <div class="pro-bar bar-90" data-pro-bar-percent="90"></div>
+                                </div>
+
+                                <div class="skills-name">HTML5/CSS3</div>
+                                <div class="pro-bar-container pro-bar-margin">                  
+                                    <div class="text-in-bar"><span class="counter-skills">85</span>%</div> 
+                                    <div class="pro-bar bar-85" data-pro-bar-percent="85"></div>
+                                </div>                                                                                                       
+
+                                <div class="skills-name">WordPress</div>
+                                <div class="pro-bar-container pro-bar-margin">                  
+                                    <div class="text-in-bar"><span class="counter-skills">95</span>%</div>
+                                    <div class="pro-bar bar-95" data-pro-bar-percent="95"></div>
+                                </div>                                                                            
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>        
+            </section>
+            <!-- section close -->
+
+            <!-- section begin -->
+            <section id="section-project">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="latest-projects-2 clearfix">                                
+                                <div class="latest-projects-wrapper">
+                                    <div class="text-center">
+                                        <h2 class="box-title">Latest Projects</h2>                                
+                                        <div class="tiny-border"></div>
+                                    </div>
+                                    <div id="latest-projects-items-2" class="latest-projects-items">
+                                        <div class="item">
+                                            <img src="images/projects/small-1.jpg" alt="" class="img-responsive">
+                                            <div class="project-details">
+                                                <p class="folio-title"><a href="#">Plan For Your Bussiness</a></p>
+                                                <p class="folio-cate"><i class="fa fa-tag"></i><a href="#">Finance</a>, <a href="#">Marketing</a></p>
+                                                <div class="folio-buttons">
+                                                    <a href="images/projects/medium-1.jpg" title="Plan For Your Bussiness" class="folio"><i class="fa fa-search"></i></a>
+                                                    <a href="#"><i class="fa fa-link"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                            <img src="images/projects/small-2.jpg" alt="" class="img-responsive">
+                                            <div class="project-details">
+                                                <p class="folio-title"><a href="#">Business Growth Solutions</a></p>
+                                                <p class="folio-cate"><i class="fa fa-tag"></i><a href="#">Finance</a>, <a href="#">Marketing</a></p>
+                                                <div class="folio-buttons">
+                                                    <a href="images/projects/medium-2.jpg" title="Business Growth Solutions" class="folio"><i class="fa fa-search"></i></a>
+                                                    <a href="#"><i class="fa fa-link"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                            <img src="images/projects/small-3.jpg" alt="" class="img-responsive">
+                                            <div class="project-details">
+                                                <p class="folio-title"><a href="#">Enterprise Development</a></p>
+                                                <p class="folio-cate"><i class="fa fa-tag"></i><a href="#">Finance</a>, <a href="#">Marketing</a></p>
+                                                <div class="folio-buttons">
+                                                    <a href="images/projects/medium-3.jpg" title="Enterprise Development" class="folio"><i class="fa fa-search"></i></a>
+                                                    <a href="#"><i class="fa fa-link"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                            <img src="images/projects/small-4.jpg" alt="" class="img-responsive">
+                                            <div class="project-details">
+                                                <p class="folio-title"><a href="#">Successful Business</a></p>
+                                                <p class="folio-cate"><i class="fa fa-tag"></i><a href="#">Finance</a>, <a href="#">Marketing</a></p>
+                                                <div class="folio-buttons">
+                                                    <a href="images/projects/medium-4.jpg" title="Successful Business" class="folio"><i class="fa fa-search"></i></a>
+                                                    <a href="#"><i class="fa fa-link"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                            <img src="images/projects/small-5.jpg" alt="" class="img-responsive">
+                                            <div class="project-details">
+                                                <p class="folio-title"><a href="#">Marketing Strategy</a></p>
+                                                <p class="folio-cate"><i class="fa fa-tag"></i><a href="#">Finance</a>, <a href="#">Marketing</a></p>
+                                                <div class="folio-buttons">
+                                                    <a href="images/projects/medium-5.jpg" title="Marketing Strategy" class="folio"><i class="fa fa-search"></i></a>
+                                                    <a href="#"><i class="fa fa-link"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                            <img src="images/projects/small-6.jpg" alt="" class="img-responsive">
+                                            <div class="project-details">
+                                                <p class="folio-title"><a href="#">Effective Recruitment</a></p>
+                                                <p class="folio-cate"><i class="fa fa-tag"></i><a href="#">Finance</a>, <a href="#">Marketing</a></p>
+                                                <div class="folio-buttons">
+                                                    <a href="images/projects/medium-6.jpg" title="Effective Recruitment" class="folio"><i class="fa fa-search"></i></a>
+                                                    <a href="#"><i class="fa fa-link"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>        
+            </section>
+            <!-- section close -->
+
+            <!-- section begin -->
+            <section id="section-testimonial" class="bg-grey">
+                <div class="container">
+                    <div class="row">                        
+                        <div class="col-md-6 col-md-offset-3">
+                            <div class="testimonials-slider-wrapper">
+                                <div class="text-center">
+                                    <h2 class="box-title">Testimonials</h2>                                
+                                    <div class="tiny-border"></div>
+                                </div>
+                                
+                                <div class="testimonials-slider-2 text-center">
+                                    <div class="item">
+                                        <div class="testi-boxes">
+                                            <div class="testi-info clearfix">
+                                                <img alt="" src="images/testimonial/thumb-1.png" class="img-circle">
+                                                <div class="testi-details">
+                                                    <span>Cheryl Cruz</span>
+                                                    Maketing Manager
+                                                </div>
+                                            </div>
+                                            <blockquote>
+                                                Morbi auctor vel mauris facilisis lacinia. Aenean suscipit lorem leo, et hendrerit odio fermentum et. Donec ac dolor eros. Mauris arcu nunc, iaculis sit amet lacus iaculis, faucibus faucibus nunc. Vestibulum sit amet lacinia massa
+                                            </blockquote>
+                                            
+                                        </div>   
+                                    </div>
+                                    <div class="item">
+                                        <div class="testi-boxes">
+                                            <div class=" testi-info clearfix">
+                                                <img alt="" src="images/testimonial/thumb-2.png" class="img-circle">
+                                                <div class="testi-details">
+                                                    <span>John Walker</span>
+                                                    Developent 
+                                                </div>
+                                            </div>
+                                            <blockquote>
+                                                Morbi auctor vel mauris facilisis lacinia. Aenean suscipit lorem leo, et hendrerit odio fermentum et. Donec ac dolor eros. Mauris arcu nunc, iaculis sit amet lacus iaculis, faucibus faucibus nunc. Vestibulum sit amet lacinia massa
+                                            </blockquote>
+                                            
+                                        </div> 
+                                    </div>
+                                    <div class="item">
+                                        <div class="testi-boxes">
+                                            <div class="testi-info clearfix">
+                                                <img alt="" src="images/testimonial/thumb-3.png" class="img-circle">
+                                                <div class="testi-details">
+                                                    <span>Frank Furius</span>
+                                                    Art Director
+                                                </div>
+                                            </div>
+                                            <blockquote>
+                                                Morbi auctor vel mauris facilisis lacinia. Aenean suscipit lorem leo, et hendrerit odio fermentum et. Donec ac dolor eros. Mauris arcu nunc, iaculis sit amet lacus iaculis, faucibus faucibus nunc. Vestibulum sit amet lacinia massa
+                                            </blockquote>
+                                            
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>        
+            </section>
+            <!-- section close -->
+
+            <!-- section begin -->
+            <section id="section-pricing">
+                <div class="container">
+                    <div class="row"> 
+                        <div class="col-md-12">
+                            <div class="text-center">
+                                <h2 class="box-title">Pricing table</h2>                                
+                                <div class="tiny-border"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-4 col-md-offset-3 col-sm-offset-2">
+                            <div class="pricing-item featured">                   
+                                <div class="plan-price">
+                                    <sup>$</sup>49                                   
+                                </div>
+                                <div class="plan-name">- Gold -</div>
+                                <div class="plan-details">                                    
+                                    <ul>
+                                        <li><b>10</b> Theme Features</li>
+                                        <li><b>5</b> Colors &amp; Fonts</li>
+                                        <li><b>03</b> Month Support</li>                                        
+                                    </ul>
+                                </div>
+                                <p class="plan-btn"><a href="#" class="btn btn-primary">Buy Now</a></p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-4">
+                            <div class="pricing-item">                   
+                                <div class="plan-price">
+                                    <sup>$</sup>79                                   
+                                </div>
+                                <div class="plan-name">- Platium -</div>
+                                <div class="plan-details">                                    
+                                    <ul>
+                                        <li><b>Unlimited</b> Theme Features</li>
+                                        <li><b>Unlimited</b> Colors &amp; Fonts</li>
+                                        <li><b>12</b> Month Support</li> 
+                                    </ul>
+                                </div>
+                                <p class="plan-btn"><a href="#" class="btn btn-primary">Buy Now</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section> 
+            <!-- section close -->   
+
+            <!-- section begin -->
+            <section id="section-latest-news">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="latest-blog-posts">
+                                <div class="text-center">
+                                    <h2 class="box-title">Latest blog Posts</h2>                                
+                                    <div class="tiny-border"></div>
+                                </div>
+
+                                <div class="latest-news-items-2">
+                                    <div class="item margin_15">
+                                        <div class="latest-blog-post-img">
+                                            <img src="images/news/thumb/thumb-1.jpg" alt="image name">
+                                            <div class="latest-blog-post-date">
+                                                06 <span>May</span>
+                                            </div>
+                                        </div>
+                                        <div class="latest-blog-post-details">
+                                            <p class="title"><a href="#">Help your business to success</a></p>
+                                            <p>Morbi vehicula a nibh in commodo. Aliquam quis dolor eget lectus pulvinar eu rhoncus ligula. Ut leo mauris, molestie imperdiet consequat in.</p>
+                                            <div class="latest-blog-post-data">
+                                                <span class="tags"><i class="fa fa-tags"></i> <a href="#">Development,</a> <a href="#">Maketing</a></span>
+                                                <span class="btn-read"><a href="#"><i class="fa fa-plus-square"></i> Read more</a></span>
+                                            </div>
+                                        </div>                                            
+                                    </div>
+                                    <div class="item margin_15">
+                                        <div class="latest-blog-post-img">
+                                            <img src="images/news/thumb/thumb-2.jpg" alt="image name">
+                                            <div class="latest-blog-post-date">
+                                                02 <span>May</span>
+                                            </div>
+                                        </div>
+                                        <div class="latest-blog-post-details">
+                                            <p class="title"><a href="#">Manage for collective creativity</a></p>
+                                            <p>Morbi vehicula a nibh in commodo. Aliquam quis dolor eget lectus pulvinar eu rhoncus ligula. Ut leo mauris, molestie imperdiet consequat in.</p>
+                                            <div class="latest-blog-post-data">
+                                                <span class="tags"><i class="fa fa-tags"></i> <a href="#">Development,</a> <a href="#">Maketing</a></span>
+                                                <span class="btn-read"><a href="#"><i class="fa fa-plus-square"></i> Read more</a></span>
+                                            </div>
+                                        </div>                                            
+                                    </div>
+                                    <div class="item margin_15">
+                                        <div class="latest-blog-post-img">
+                                            <img src="images/news/thumb/thumb-3.jpg" alt="image name">
+                                            <div class="latest-blog-post-date">
+                                                22 <span>Mar</span>
+                                            </div>
+                                        </div>
+                                        <div class="latest-blog-post-details">
+                                            <p class="title"><a href="#">Why Designers Need Marketing Skills</a></p>
+                                            <p>Morbi vehicula a nibh in commodo. Aliquam quis dolor eget lectus pulvinar eu rhoncus ligula. Ut leo mauris, molestie imperdiet consequat in.</p>
+                                            <div class="latest-blog-post-data">
+                                                <span class="tags"><i class="fa fa-tags"></i> <a href="#">Development,</a> <a href="#">Maketing</a></span>
+                                                <span class="btn-read"><a href="#"><i class="fa fa-plus-square"></i> Read more</a></span>
+                                            </div>
+                                        </div>                                            
+                                    </div>
+
+                                    <div class="item margin_15">
+                                        <div class="latest-blog-post-img">
+                                            <img src="images/news/thumb/thumb-4.jpg" alt="image name">
+                                            <div class="latest-blog-post-date">
+                                                18 <span>Mar</span>
+                                            </div>
+                                        </div>
+                                        <div class="latest-blog-post-details">
+                                            <p class="title"><a href="#">Design For The Human Brain</a></p>
+                                            <p>Morbi vehicula a nibh in commodo. Aliquam quis dolor eget lectus pulvinar eu rhoncus ligula. Ut leo mauris, molestie imperdiet consequat in.</p>
+                                            <div class="latest-blog-post-data">
+                                                <span class="tags"><i class="fa fa-tags"></i> <a href="#">Development,</a> <a href="#">Maketing</a></span>
+                                                <span class="btn-read"><a href="#"><i class="fa fa-plus-square"></i> Read more</a></span>
+                                            </div>
+                                        </div>                                            
+                                    </div>
+                                    <div class="item margin_15">
+                                        <div class="latest-blog-post-img">
+                                            <img src="images/news/thumb/thumb-5.jpg" alt="image name">
+                                            <div class="latest-blog-post-date">
+                                                08 <span>Feb</span>
+                                            </div>
+                                        </div>
+                                        <div class="latest-blog-post-details">
+                                            <p class="title"><a href="#">UX Design Trends For 2016</a></p>
+                                            <p>Morbi vehicula a nibh in commodo. Aliquam quis dolor eget lectus pulvinar eu rhoncus ligula. Ut leo mauris, molestie imperdiet consequat in.</p>
+                                            <div class="latest-blog-post-data">
+                                                <span class="tags"><i class="fa fa-tags"></i> <a href="#">Development,</a> <a href="#">Maketing</a></span>
+                                                <span class="btn-read"><a href="#"><i class="fa fa-plus-square"></i> Read more</a></span>
+                                            </div>
+                                        </div>                                            
+                                    </div>
+                                    <div class="item margin_15">
+                                        <div class="latest-blog-post-img">
+                                            <img src="images/news/thumb/thumb-6.jpg" alt="image name">
+                                            <div class="latest-blog-post-date">
+                                                06 <span>Feb</span>
+                                            </div>
+                                        </div>
+                                        <div class="latest-blog-post-details">
+                                            <p class="title"><a href="#">Mobile UX And User Expectations</a></p>
+                                            <p>Morbi vehicula a nibh in commodo. Aliquam quis dolor eget lectus pulvinar eu rhoncus ligula. Ut leo mauris, molestie imperdiet consequat in.</p>
+                                            <div class="latest-blog-post-data">
+                                                <span class="tags"><i class="fa fa-tags"></i> <a href="#">Development,</a> <a href="#">Maketing</a></span>
+                                                <span class="btn-read"><a href="#"><i class="fa fa-plus-square"></i> Read more</a></span>
+                                            </div>
+                                        </div>                                            
+                                    </div>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>        
+            </section>
+            <!-- section close -->
+
+            <!-- section begin -->
+            <section id="section-partner" class="bg-grey">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="text-center">
+                                <h2 class="box-title">Our Partners</h2>                                
+                                <div class="tiny-border"></div>
+                            </div>
+                            <div id="client-logo" class="our-partner">
+                                <div class="item"><img src="images/client/envato.png" alt="envato"></div>
+                                <div class="item"><img src="images/client/pinterest.png" alt="pinterest"></div>
+                                <div class="item"><img src="images/client/envato.png" alt="envato"></div>
+                                <div class="item"><img src="images/client/wordpress.png" alt="wordpress"></div>
+                                <div class="item"><img src="images/client/dribbble.png" alt="dribbble"></div>
+                                <div class="item"><img src="images/client/envato.png" alt="envato"></div>
+                                <div class="item"><img src="images/client/envato.png" alt="envato"></div>
+                                <div class="item"><img src="images/client/pinterest.png" alt="pinterest"></div>
+                                <div class="item"><img src="images/client/envato.png" alt="envato"></div>
+                                <div class="item"><img src="images/client/wordpress.png" alt="wordpress"></div>
+                                <div class="item"><img src="images/client/dribbble.png" alt="dribbble"></div>
+                                <div class="item"><img src="images/client/envato.png" alt="envato"></div> 
+                                <div class="item"><img src="images/client/envato.png" alt="envato"></div>
+                                <div class="item"><img src="images/client/pinterest.png" alt="pinterest"></div>
+                                <div class="item"><img src="images/client/envato.png" alt="envato"></div>
+                                <div class="item"><img src="images/client/wordpress.png" alt="wordpress"></div>
+                                <div class="item"><img src="images/client/dribbble.png" alt="dribbble"></div>
+                                <div class="item"><img src="images/client/envato.png" alt="envato"></div>                                 
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+            </section> 
+            <!-- section close -->   
+
+            <!-- section begin -->
+            <section id="section-cta">
+                <div class="sep-background-mask"></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="quick_newsletter">
+                            <div class="newsletter-info col-md-4 col-sm-4">
+                                <h3>Subscribe to Newsletters</h3> 
+                                <p>And stay informed about our news and events</p>                          
+                            </div>
+                            <div class="newsletter-element">
+                                <form action="" method="post">
+                                    <p class="col-md-3 col-sm-3"><input class="newsletter-firstname input-text" type="text" placeholder="Your Name"></p>
+                                    <p class="col-md-3 col-sm-3"><input class="newsletter-email input-text" type="email" placeholder="Enter email"></p>
+                                    <p class="col-md-2 col-sm-2"><button class="newsletter-submit btn" type="submit" ><i class="fa fa-paper-plane"></i> Subscribe</button></p>
+                                </form>
+                            </div>
+                        </div>                                                                   
+                    </div>
+                </div>        
+            </section>
+            <!-- section close -->
+            
+        </div>
+        <!-- content close -->
+       
+        <!-- footer begin -->
+        <footer class="footer-2 bg-color-2">
+
+            <!-- main footer begin -->
+            <div class="main-footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <img class="logo-footer" src="images/logo-footer2.png" alt="compact company">
+                            <p>Compact is a clean Templates suitable for corporate, You can customize it <br> very easy to fit your needs</p>
+                            <div class="footer-contact">
+                                <ul class="contact-info">
+                                    <li><i class="fa fa-building-o"></i>379 5th Ave  New York, United States <span>|</span></li>
+                                    <li><i class="fa fa-phone"></i>XXX</li>
+                                    <li><i class="fa fa-fax"></i>XXX <span>|</span></li>
+                                    <li><i class="fa fa-envelope"></i>XXX</li>
+                                </ul>
+                            </div>
+                            <div class="social-icons-2 clearfix">
+                                <a href="#" class="facebook tipped" data-title="facebook"  data-tipper-options='{"direction":"top","follow":"true"}'><i class="fa fa-facebook"></i></a>
+                                <a href="#" class="twitter tipped" data-title="twitter"  data-tipper-options='{"direction":"top","follow":"true"}'><i class="fa fa-twitter"></i></a>
+                                <a href="#" class="google tipped" data-title="google +"  data-tipper-options='{"direction":"top","follow":"true"}'><i class="fa fa-google-plus"></i></a>
+                                <a href="#" class="youtube tipped" data-title="youtube"  data-tipper-options='{"direction":"top","follow":"true"}'><i class="fa fa-youtube-play"></i></a>
+                                <a href="#" class="linkedin tipped" data-title="linkedin"  data-tipper-options='{"direction":"top","follow":"true"}'><i class="fa fa-linkedin"></i></a>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>            
+            <!-- main footer close -->
+
+            <!-- sub footer begin -->
+            <div class="sub-footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            Copyright &copy; 2020.Company name All rights reserved.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- sub footer close -->
+
+        </footer>
+        <!-- footer close -->
+    </div>
+
+    <a id="to-the-top" ><i class="fa fa-angle-up"></i></a>
+
+    <!-- LOAD JS FILES -->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script src="js/imagesloaded.pkgd.min.js"></script>
+    <script type="text/javascript" src="js/easing.js"></script>
+    <script type="text/javascript" src="js/owl.carousel.js"></script>
+    <script type="text/javascript" src="js/jquery.fitvids.js"></script>    
+    <script type="text/javascript" src="js/wow.min.js"></script>
+    <script type="text/javascript" src="js/jquery.magnific-popup.min.js"></script>
+
+    <!-- Waypoints-->
+    <script type="text/javascript" src="js/jquery.counterup.min.js"></script>
+    <script type="text/javascript" src="js/jquery.waypoints.min.js"></script>
+    <script type="text/javascript" src="js/visible.min.js"></script>
+    <script type="text/javascript" src="js/pro-bars.js"></script>
+    <script type="text/javascript" src="js/sticky.min.js"></script>
+
+    <script src="js/tipper.js"></script>
+    <script src="js/compact.js"></script>
+    <script src="js/custom-index2.js"></script>
+
+    <!-- SLIDER REVOLUTION SCRIPTS  -->
+    <script type="text/javascript" src="rs-plugin/js/jquery.themepunch.plugins.min.js"></script>
+    <script type="text/javascript" src="rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
+    <script src="js/revslider-custom.js"></script>  
+
+    <script src="switcher/demo.js"></script>
+    <div id="switcher">
+        <span class="custom-close"></span>
+        <span class="custom-show"></span>
+
+        <a class="btn btn-primary width" href="">Buy Now</a>  
+
+        <div class="clearfix"></div>  
+
+        <span class="sw-title">Layout Style</span>
+        <select name="switcher" id="tm-layout-switch">
+            <option value="wide" selected="selected">Wide</option>
+            <option value="boxed">Boxed</option>
+        </select>
+        <div class="clearfix spacing-10"></div>
+
+        <span class="sw-title">Boxed Background</span>
+        <ul id="tm-boxed-bg">
+            <li class="bg1" data-value="01"></li>
+            <li class="bg2" data-value="02"></li>
+            <li class="bg3" data-value="03"></li>
+            <li class="bg4" data-value="04"></li>
+            <li class="bg5" data-value="05"></li>
+            <li class="bg6" data-value="06"></li>
+            <li class="bg7" data-value="07"></li>
+            <li class="bg8" data-value="08"></li>
+            <li class="jpg9" data-value="09"></li>
+            <li class="jpg10" data-value="10"></li>
+            <li class="jpg11" data-value="11"></li>
+            <li class="jpg12" data-value="12"></li>
+            <li class="jpg13" data-value="13"></li>
+            <li class="jpg14" data-value="14"></li>
+        </ul>
+        <div class="clearfix spacing-10"></div>
+
+        <span class="sw-title">Main Colors:</span>
+        <ul id="tm-color">
+            <li class="color1"></li>
+            <li class="color2"></li>
+            <li class="color3"></li>
+            <li class="color4"></li>
+            <li class="color5"></li>
+            <li class="color6"></li>
+            <li class="color7"></li>
+            <li class="color8"></li>
+            <li class="color9"></li>
+            <li class="color10"></li>
+        </ul>
+    </div>
+
+</body>
+</html>
