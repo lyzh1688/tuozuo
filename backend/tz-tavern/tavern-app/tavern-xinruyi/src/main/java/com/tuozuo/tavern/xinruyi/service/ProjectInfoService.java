@@ -15,6 +15,8 @@ public interface ProjectInfoService {
 
     List<ProjectInfo> queryProjectInfo(String companyId, String projectName, int queryCnt, Boolean all, String roleGroup);
 
+    List<ProjectInfo> queryProjectInfo(String projectName, int queryCnt, Boolean all);
+
     IPage<ProjectStaffInfo> queryProjectStaffInfo(int pageNo, int pageSize, String companyId, String projectId, String roleGroup);
 
     void addProjectStaff(ProjectStaff projectStaff);
@@ -24,6 +26,8 @@ public interface ProjectInfoService {
     void delProjectStaff(String projectId, String staffId, String companyId) throws Exception;
 
     IPage<ProjectInfo> queryProjectInfo(ProjectListVo vo, String companyId);
+
+    IPage<ProjectInfo> queryProjectInfo(ProjectListVo vo);
 
     void addProjectInfo(ProjectAddVO vo, String companyId) throws Exception;
 
@@ -69,7 +73,6 @@ public interface ProjectInfoService {
     void applyForProject(ProjectParticipateVO vo) throws Exception;
 
     void auditWorkerParticipation(AuditWorkerVO vo) throws Exception;
-
 
 
 }

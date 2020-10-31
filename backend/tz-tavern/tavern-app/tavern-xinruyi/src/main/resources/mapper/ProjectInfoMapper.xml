@@ -5,6 +5,7 @@
         <id column="project_id" jdbcType="VARCHAR" property="projectId"/>
         <result column="company_id" jdbcType="VARCHAR" property="companyId"/>
         <result column="project_industry" jdbcType="VARCHAR" property="projectIndustry"/>
+        <result column="industry_name" jdbcType="VARCHAR" property="industryName"/>
         <result column="project_name" jdbcType="VARCHAR" property="projectName"/>
         <result column="publish_date" jdbcType="DATE" property="publishDate"/>
         <result column="period" jdbcType="DECIMAL" property="period"/>
@@ -57,13 +58,15 @@
     <select id="selectProjectPage" resultMap="BaseResultMap">
         select t1.project_id,t1.project_name, t1.company_id, t1.project_industry, t1.publish_date, t1.period, t1.contract_person,
         t1.contract_phone, t1.project_member_count, t1.province,t1.city,t1.district, t1.on_spot, t1.file_material, t1.project_desc,
-        t1.remark, t1.fee, t1.status, t1.budget,t2.company_name,t3.company_logo,t4.business_name statusDesc
-        from project_info t1 ,company_info t2,company_info_ext t3,business_dict t4
+        t1.remark, t1.fee, t1.status, t1.budget,t2.company_name,t3.company_logo,t4.business_name statusDesc,t5.business_name industry_name
+        from project_info t1 ,company_info t2,company_info_ext t3,business_dict t4,business_dict t5
         <where>
             t1.company_id = t2.company_id
             and t2.company_id = t3.company_id
             and  t1.status = t4.business_id
             and t4.business_group = 'projectStatus'
+            and  t1.project_industry = t5.business_id
+            and t5.business_group = 'industryType'
             <if test="companyId != null and companyId != ''">
                 and t1.company_id = #{companyId}
             </if>
@@ -74,10 +77,10 @@
                 and  t1.project_industry = #{industryType}
             </if>
             <if test="downLimitBudget != null and downLimitBudget != ''">
-                and t1. budget >= #{downLimitBudget}
+                and t1. budget >= CONVERT(#{downLimitBudget},SIGNED)
             </if>
             <if test="upperLimitBudget != null and upperLimitBudget != ''">
-                and t1.budget <![CDATA[ <= ]]> #{upperLimitBudget}
+                and t1.budget <![CDATA[ <= ]]>  CONVERT(#{upperLimitBudget},SIGNED)
             </if>
             <if test="requirementStatus != null and requirementStatus != ''">
                 and  t1.status = #{requirementStatus}
@@ -89,6 +92,7 @@
                 and t1.publish_date <![CDATA[ <= ]]> STR_TO_DATE(#{endDate}, '%Y%m%d')
             </if>
         </where>
+        order by t1.publish_date desc
     </select>
 
     <update id="updateStatus">

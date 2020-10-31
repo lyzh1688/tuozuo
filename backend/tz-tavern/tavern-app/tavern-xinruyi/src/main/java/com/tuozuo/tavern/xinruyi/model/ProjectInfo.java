@@ -18,6 +18,8 @@ public class ProjectInfo {
     private String companyName;
     @TableField(exist = false)
     private String companyLogo;
+    @TableField(exist = false)
+    private String industryName;
 
     private String projectIndustry;
 
@@ -59,6 +61,14 @@ public class ProjectInfo {
     @TableField(exist = false)
     private long workDays;
 
+
+    public String getIndustryName() {
+        return industryName;
+    }
+
+    public void setIndustryName(String industryName) {
+        this.industryName = industryName;
+    }
 
     public long getWorkDays() {
         return workDays;

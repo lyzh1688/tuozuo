@@ -88,6 +88,15 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     }
 
     @Override
+    public List<ProjectInfo> queryProjectInfo(String projectName, int queryCnt, Boolean all) {
+        if (all) {
+            return this.projectInfoDao.selectAllProjectInfo(projectName);
+        } else {
+            return this.projectInfoDao.selectProjectInfo(projectName, queryCnt);
+        }
+    }
+
+    @Override
     public IPage<ProjectStaffInfo> queryProjectStaffInfo(int pageNo, int pageSize, String companyId, String projectId, String roleGroup) {
         if (roleGroup.equals(UserTypeDict.staff)) {
             companyId = null;
@@ -167,6 +176,11 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
                 vo.getBeginDate(),
                 vo.getEndDate());
 
+    }
+
+    @Override
+    public IPage<ProjectInfo> queryProjectInfo(ProjectListVo vo) {
+        return this.queryProjectInfo(vo,null);
     }
 
     @Transactional
@@ -446,9 +460,9 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
 
     @Transactional
     @Override
-    public synchronized void  applyForProject(ProjectParticipateVO vo) throws Exception {
+    public synchronized void applyForProject(ProjectParticipateVO vo) throws Exception {
         EventTodoList checkTodoList = this.eventInfoDao.selectWorkerTodo(vo.getRegisterId(), EventType.STAFF_JOIN.getStatus());
-        if(checkTodoList != null){
+        if (checkTodoList != null) {
             return;
         }
 
@@ -456,7 +470,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
         if (workerInfo == null) {
             throw new Exception("您尚未认证，无法加入项目");
         }
-        if (this.eventInfoDao.hasEvent(vo.getRegisterId(), EventType.STAFF_JOIN.getStatus(),vo.getProjectId())) {
+        if (this.eventInfoDao.hasEvent(vo.getRegisterId(), EventType.STAFF_JOIN.getStatus(), vo.getProjectId())) {
             throw new Exception("您已申请加入过该项目");
         }
         StaffResourcePool staffResourcePool = this.staffInfoDao.selectStaffInfo(vo.getCompanyId(), workerInfo.getIdNumber());
@@ -503,7 +517,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
     public synchronized void auditWorkerParticipation(AuditWorkerVO vo) throws Exception {
         //1、处理事件
         EventTodoList eventTodoList = this.eventInfoDao.selectEventById(vo.getEventId());
-        if(eventTodoList == null){
+        if (eventTodoList == null) {
             return;
         }
         EventFinishList eventFinishList = new EventFinishList();
@@ -531,7 +545,7 @@ public class ProjectInfoServiceImpl implements ProjectInfoService {
                 this.workerInfoDao.insertStaffRel(rel);
             }
             //员工状态修改
-            ProjectStaff projectStaff= new ProjectStaff();
+            ProjectStaff projectStaff = new ProjectStaff();
             projectStaff.setIsSigned("1");
             projectStaff.setProjectId(eventTodoList.getProjectId());
             projectStaff.setStaffId(staffResourcePool.getStaffId());

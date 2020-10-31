@@ -65,6 +65,7 @@ public class ModelConverterFactory {
         dto.setCompanyLogo(projectInfo.getCompanyLogo());
         dto.setProjectDesc(projectInfo.getProjectDesc());
         dto.setProjectStatusDesc(projectInfo.getStatusDesc());
+        dto.setIndustryName(projectInfo.getIndustryName());
         return dto;
     }
 
