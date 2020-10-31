@@ -17,6 +17,33 @@ public class ProjectInfoDTO {
     private String endDate;
     private String projectStatus;
     private String industryType;
+    private String companyLogo;
+    private String projectDesc;
+    private String projectStatusDesc;
+
+    public String getCompanyLogo() {
+        return companyLogo;
+    }
+
+    public void setCompanyLogo(String companyLogo) {
+        this.companyLogo = companyLogo;
+    }
+
+    public String getProjectDesc() {
+        return projectDesc;
+    }
+
+    public void setProjectDesc(String projectDesc) {
+        this.projectDesc = projectDesc;
+    }
+
+    public String getProjectStatusDesc() {
+        return projectStatusDesc;
+    }
+
+    public void setProjectStatusDesc(String projectStatusDesc) {
+        this.projectStatusDesc = projectStatusDesc;
+    }
 
     public String getIndustryType() {
         return industryType;

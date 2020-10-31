@@ -57,10 +57,13 @@
     <select id="selectProjectPage" resultMap="BaseResultMap">
         select t1.project_id,t1.project_name, t1.company_id, t1.project_industry, t1.publish_date, t1.period, t1.contract_person,
         t1.contract_phone, t1.project_member_count, t1.province,t1.city,t1.district, t1.on_spot, t1.file_material, t1.project_desc,
-        t1.remark, t1.fee, t1.status, t1.budget,t2.company_name
-        from project_info t1 ,company_info t2
+        t1.remark, t1.fee, t1.status, t1.budget,t2.company_name,t3.company_logo,t4.business_name statusDesc
+        from project_info t1 ,company_info t2,company_info_ext t3,business_dict t4
         <where>
             t1.company_id = t2.company_id
+            and t2.company_id = t3.company_id
+            and  t1.status = t4.business_id
+            and t4.business_group = 'projectStatus'
             <if test="companyId != null and companyId != ''">
                 and t1.company_id = #{companyId}
             </if>

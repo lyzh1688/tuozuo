@@ -62,6 +62,9 @@ public class ModelConverterFactory {
         dto.setEndDate(DateUtils.formatDate(endDate, DateUtils.SIMPLE_8_FORMATTER));
         dto.setProjectStatus(projectInfo.getStatus());
         dto.setIndustryType(projectInfo.getProjectIndustry());
+        dto.setCompanyLogo(projectInfo.getCompanyLogo());
+        dto.setProjectDesc(projectInfo.getProjectDesc());
+        dto.setProjectStatusDesc(projectInfo.getStatusDesc());
         return dto;
     }
 
