@@ -3,8 +3,6 @@ server:
 
 tavern.security.jwt.secret: tavern
 
-def.user.switch: false
-
 mybatis-plus:
   # MyBatis Mapper所对应的XML文件位置
   mapper-locations: classpath*:mapper/*Mapper.xml

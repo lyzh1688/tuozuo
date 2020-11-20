@@ -1,5 +1,8 @@
 package com.tuozuo.tavern.organ.biz.model;
 
+import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 
 /**
@@ -42,5 +45,24 @@ public class CompanyName {
 
     public void setReference(String reference) {
         this.reference = reference;
+    }
+
+    public static CompanyName create(String result,String isTwoWords){
+        String[] strs = StringUtils.split(result,"@");
+        CompanyName companyName = new CompanyName();
+        companyName.setFullName(strs[0]);
+        companyName.setName(strs[1]);
+        List<Integer> numList = Lists.newArrayList();
+        if(isTwoWords.equals("true")){
+            numList.add(Integer.parseInt(strs[2]));
+            numList.add(Integer.parseInt(strs[3]));
+        }else {
+            numList.add(Integer.parseInt(strs[2]));
+            numList.add(Integer.parseInt(strs[3]));
+            numList.add(Integer.parseInt(strs[4]));
+        }
+        companyName.setStrokeNums(numList);
+        companyName.setReference(strs[5]);
+        return companyName;
     }
 }

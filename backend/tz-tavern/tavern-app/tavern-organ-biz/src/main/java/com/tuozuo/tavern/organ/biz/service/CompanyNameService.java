@@ -1,6 +1,7 @@
 package com.tuozuo.tavern.organ.biz.service;
 
 
+import com.tuozuo.tavern.organ.biz.exeception.ExecuteException;
 import com.tuozuo.tavern.organ.biz.model.CompanyName;
 
 import java.util.List;
@@ -15,6 +16,8 @@ public interface CompanyNameService {
                                        String industry,
                                        String source,
                                        String preferWord,
-                                       Boolean isTwoWords);
+                                       String isTwoWords,
+                                       String type,
+                                       int pageNo) throws ExecuteException;
 
 }

@@ -10,7 +10,17 @@ public class BuildNameVO {
     private String industry;
     private String source;
     private String preferWord;
-    private Boolean isTwoWords;
+    private String isTwoWords;
+    private String type;
+    private int pageNo;
+
+    public int getPageNo() {
+        return pageNo;
+    }
+
+    public void setPageNo(int pageNo) {
+        this.pageNo = pageNo;
+    }
 
     public String getArea() {
         return area;
@@ -44,11 +54,19 @@ public class BuildNameVO {
         this.preferWord = preferWord;
     }
 
-    public Boolean getTwoWords() {
+    public String getIsTwoWords() {
         return isTwoWords;
     }
 
-    public void setTwoWords(Boolean twoWords) {
-        isTwoWords = twoWords;
+    public void setIsTwoWords(String isTwoWords) {
+        this.isTwoWords = isTwoWords;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
