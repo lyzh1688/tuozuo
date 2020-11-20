@@ -3,7 +3,7 @@ package com.tuozuo.tavern.organ.biz.model;
 import java.util.List;
 
 //用户输入公司名称
-public class userCompanyName {
+public class UserCompanyName {
     String area;//公司名称地域
     String name;//公司名称
     List<String> namePinYingList;//名称的单字拼音列表，按照原顺序排列好的

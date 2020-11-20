@@ -3,11 +3,11 @@ package com.tuozuo.tavern.organ.biz.model;
 import java.util.List;
 
 //处理后的公司名称记录
-public class recordItem {
+public class RecordItem {
     String industryDesc;//记录的行业描述
     String name;//记录的公司名称
     List<String> namePinYingList;//记录的单字拼音列表，按照原顺序排列好的
-    List<recordMark> markers;//记录的标记列表
+    List<RecordMark> markers;//记录的标记列表
 
     @Override
     public String toString() {
@@ -43,11 +43,11 @@ public class recordItem {
         this.namePinYingList = namePinYingList;
     }
 
-    public List<recordMark> getMarkers() {
+    public List<RecordMark> getMarkers() {
         return markers;
     }
 
-    public void setMarkers(List<recordMark> markers) {
+    public void setMarkers(List<RecordMark> markers) {
         this.markers = markers;
     }
 }

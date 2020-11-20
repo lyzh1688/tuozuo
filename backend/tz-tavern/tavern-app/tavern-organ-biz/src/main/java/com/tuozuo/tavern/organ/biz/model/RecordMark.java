@@ -3,7 +3,7 @@ package com.tuozuo.tavern.organ.biz.model;
 import java.util.List;
 
 //记录的标记
-public class recordMark {
+public class RecordMark {
     String word;//词根
     List<String> wordPinYingList;//词根的单字拼音列表，按照原顺序排列好的
 

@@ -3,7 +3,7 @@ package com.tuozuo.tavern.organ.biz.model;
 import java.math.BigDecimal;
 
 //搜索记录处理结果
-public class recordResult {
+public class RecordResult {
     String recordName;//记录名称
     String industryDesc;//记录行业描述
     BigDecimal totalMinusScore;//总扣减分数
