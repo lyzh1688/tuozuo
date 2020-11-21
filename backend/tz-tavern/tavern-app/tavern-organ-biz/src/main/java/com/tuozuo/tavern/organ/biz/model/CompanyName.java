@@ -4,13 +4,14 @@ import com.google.common.collect.Lists;
 import com.tuozuo.tavern.organ.biz.util.ProcessUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Code Monkey: 何彪 <br>
  * Dev Time: 2020/11/20 <br>
  */
-public class CompanyName {
+public class CompanyName implements Serializable {
     private String fullName;
     private String name;
     private List<Integer> strokeNums;
@@ -73,5 +74,15 @@ public class CompanyName {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "CompanyName{" +
+                "fullName='" + fullName + '\'' +
+                ", name='" + name + '\'' +
+                ", strokeNums=" + strokeNums +
+                ", reference='" + reference + '\'' +
+                '}';
     }
 }
