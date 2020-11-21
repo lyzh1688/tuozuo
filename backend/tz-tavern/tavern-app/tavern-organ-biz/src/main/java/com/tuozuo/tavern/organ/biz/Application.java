@@ -2,6 +2,7 @@ package com.tuozuo.tavern.organ.biz;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
  * Code Monkey: 何彪 <br>

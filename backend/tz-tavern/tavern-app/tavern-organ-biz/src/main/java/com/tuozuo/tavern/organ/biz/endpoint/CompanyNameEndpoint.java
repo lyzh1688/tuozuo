@@ -1,6 +1,7 @@
 package com.tuozuo.tavern.organ.biz.endpoint;
 
 import com.tuozuo.tavern.common.protocol.TavernResponse;
+import com.tuozuo.tavern.organ.biz.dto.BuildNameDTO;
 import com.tuozuo.tavern.organ.biz.model.CompanyName;
 import com.tuozuo.tavern.organ.biz.service.CompanyNameService;
 import com.tuozuo.tavern.organ.biz.vo.BuildNameVO;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -31,8 +33,12 @@ public class CompanyNameEndpoint {
     public TavernResponse createCompanyName(@ModelAttribute @Valid BuildNameVO vo) {
         try {
 
-            List<CompanyName> companyNameList = this.companyNameService.queryCompanyName(vo.getSource(),vo.getArea(), vo.getIndustry(),  vo.getPreferWord(), vo.getIsTwoWords(), vo.getType());
-            return TavernResponse.ok(companyNameList);
+            List<CompanyName> resultList = this.companyNameService.queryCompanyName(vo.getSource(), vo.getArea(), vo.getIndustry(), vo.getPreferWord(), vo.getIsTwoWords(), vo.getType());
+            List<CompanyName> pageList = resultList.stream().skip((vo.getPageNo() - 1) * vo.getPageSize()).limit(vo.getPageSize()).collect(Collectors.toList());
+            BuildNameDTO dto = new BuildNameDTO();
+            dto.setNames(pageList);
+            dto.setTotalNum(resultList.size());
+            return TavernResponse.ok(dto);
         } catch (Exception e) {
             LOGGER.error("[公司起名] failed", e);
             return TavernResponse.bizFailure("系统查询异常，请稍后再试");

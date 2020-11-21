@@ -25,35 +25,6 @@ public class PythonExecutor implements Executor {
     private static final String cmd = "python";
     private static final Logger LOGGER = LoggerFactory.getLogger(PythonExecutor.class);
 
-
-    /* @Override
-     public List<String> executor(String... args) throws ExecuteException {
-
-         String cmds = complete(args);
-         long time = System.currentTimeMillis();
-         Process process;
-         try {
-             process = Runtime.getRuntime().exec(cmds);
-             process.waitFor();
-         } catch (IOException | InterruptedException e) {
-             LOGGER.error("执行异常：", e);
-             throw new ExecuteException();
-         }
-         List<String> resultList = Lists.newArrayList();
-         try {
-             if (ProcessUtils.isError(process)) {
-                 LOGGER.error("执行器={} 标识={} 错误信息={}", args[0], args[1], ProcessUtils.getErrorMsg(process));
- //                return resultList;
-             }
-             resultList = ProcessUtils.getProcessResult(process);
-         } catch (IOException e) {
-             LOGGER.error("执行器={} 标识={} 耗时={}ms", args[0], args[1], time);
-         }
-         time = System.currentTimeMillis() - time;
-         LOGGER.error("执行器={} 标识={} 耗时={}ms", args[0], args[1], time);
-
-         return resultList;
-     }*/
     @Override
     public List<String> executor(String... args) throws ExecuteException, IOException {
 

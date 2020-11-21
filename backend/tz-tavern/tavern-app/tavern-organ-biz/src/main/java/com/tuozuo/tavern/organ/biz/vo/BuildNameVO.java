@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
  * Code Monkey: 何彪 <br>
  * Dev Time: 2020/11/20 <br>
  */
-public class BuildNameVO {
+public class BuildNameVO extends PageVO{
 
     @NotNull(message = "area is not null")
     private String area;
@@ -20,6 +20,8 @@ public class BuildNameVO {
     private String isTwoWords;
     @NotNull(message = "type is not null")
     private String type;
+
+
 
     public String getArea() {
         return area;
