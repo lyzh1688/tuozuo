@@ -1,26 +1,25 @@
 package com.tuozuo.tavern.organ.biz.vo;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Code Monkey: 何彪 <br>
  * Dev Time: 2020/11/20 <br>
  */
 public class BuildNameVO {
 
+    @NotNull(message = "area is not null")
     private String area;
+    @NotNull(message = "industry is not null")
     private String industry;
+    @NotNull(message = "source is not null")
     private String source;
+    @NotNull(message = "preferWord is not null")
     private String preferWord;
+    @NotNull(message = "isTwoWords is not null")
     private String isTwoWords;
+    @NotNull(message = "type is not null")
     private String type;
-    private int pageNo;
-
-    public int getPageNo() {
-        return pageNo;
-    }
-
-    public void setPageNo(int pageNo) {
-        this.pageNo = pageNo;
-    }
 
     public String getArea() {
         return area;

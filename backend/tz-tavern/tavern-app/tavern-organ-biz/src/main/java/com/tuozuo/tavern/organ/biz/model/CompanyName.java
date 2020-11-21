@@ -1,6 +1,7 @@
 package com.tuozuo.tavern.organ.biz.model;
 
 import com.google.common.collect.Lists;
+import com.tuozuo.tavern.organ.biz.util.ProcessUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -47,22 +48,30 @@ public class CompanyName {
         this.reference = reference;
     }
 
-    public static CompanyName create(String result,String isTwoWords){
-        String[] strs = StringUtils.split(result,"@");
-        CompanyName companyName = new CompanyName();
-        companyName.setFullName(strs[0]);
-        companyName.setName(strs[1]);
-        List<Integer> numList = Lists.newArrayList();
-        if(isTwoWords.equals("true")){
-            numList.add(Integer.parseInt(strs[2]));
-            numList.add(Integer.parseInt(strs[3]));
-        }else {
-            numList.add(Integer.parseInt(strs[2]));
-            numList.add(Integer.parseInt(strs[3]));
-            numList.add(Integer.parseInt(strs[4]));
+    public static CompanyName create(String result, String isTwoWords) {
+        try {
+            String[] strs = StringUtils.split(result, "@");
+            if(ProcessUtils.hasDigit(strs[1])){
+                return null;
+            }
+            CompanyName companyName = new CompanyName();
+            companyName.setFullName(strs[0]);
+            companyName.setName(strs[1]);
+            List<Integer> numList = Lists.newArrayList();
+            if (isTwoWords.equals("true")) {
+                numList.add(Integer.parseInt(strs[2]));
+                numList.add(Integer.parseInt(strs[3]));
+            } else {
+                numList.add(Integer.parseInt(strs[2]));
+                numList.add(Integer.parseInt(strs[3]));
+                numList.add(Integer.parseInt(strs[4]));
+            }
+            companyName.setStrokeNums(numList);
+            companyName.setReference(strs[5]);
+            return companyName;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        companyName.setStrokeNums(numList);
-        companyName.setReference(strs[5]);
-        return companyName;
+        return null;
     }
 }

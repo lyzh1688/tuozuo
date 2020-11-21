@@ -2,6 +2,7 @@ package com.tuozuo.tavern.organ.biz.executor;
 
 import com.tuozuo.tavern.organ.biz.exeception.ExecuteException;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -18,6 +19,6 @@ public interface Executor {
      * @return 执行结果
      * @throws ExecuteException 执行异常
      */
-    List<String> executor(String... args) throws ExecuteException;
+    List<String> executor(String... args) throws ExecuteException, IOException;
 
 }

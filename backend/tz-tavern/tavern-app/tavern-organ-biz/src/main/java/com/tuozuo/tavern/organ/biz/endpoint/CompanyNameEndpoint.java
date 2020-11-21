@@ -30,7 +30,8 @@ public class CompanyNameEndpoint {
     @GetMapping("/creation")
     public TavernResponse createCompanyName(@ModelAttribute @Valid BuildNameVO vo) {
         try {
-            List<CompanyName> companyNameList = this.companyNameService.queryCompanyName(vo.getArea(), vo.getIndustry(), vo.getSource(), vo.getPreferWord(), vo.getIsTwoWords(), vo.getType(), vo.getPageNo());
+
+            List<CompanyName> companyNameList = this.companyNameService.queryCompanyName(vo.getSource(),vo.getArea(), vo.getIndustry(),  vo.getPreferWord(), vo.getIsTwoWords(), vo.getType());
             return TavernResponse.ok(companyNameList);
         } catch (Exception e) {
             LOGGER.error("[公司起名] failed", e);
