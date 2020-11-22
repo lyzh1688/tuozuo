@@ -7,9 +7,9 @@ public class RecordResult {
     String recordName;//记录名称
     String industryDesc;//记录行业描述
     BigDecimal totalMinusScore;//总扣减分数
-    BigDecimal pinYingDupMinusScore;//谐音重复扣减分值
+    BigDecimal pinYinDupMinusScore;//谐音重复扣减分值
     BigDecimal wordDupMinusScore;//字号重复扣减分值
-    BigDecimal pinYingPosMinusScore;//谐音偏移扣减分值
+    BigDecimal pinYinPosMinusScore;//谐音偏移扣减分值
     BigDecimal wordPosMinusScore;//字号偏移扣减分值
     BigDecimal industryDescMinusScore;//行业描述扣减分值
 
@@ -19,9 +19,9 @@ public class RecordResult {
                 "recordName='" + recordName + '\'' +
                 ", industryDesc='" + industryDesc + '\'' +
                 ", totalMinusScore=" + totalMinusScore +
-                ", pinYingDupMinusScore=" + pinYingDupMinusScore +
+                ", pinYinDupMinusScore=" + pinYinDupMinusScore +
                 ", wordDupMinusScore=" + wordDupMinusScore +
-                ", pinYingPosMinusScore=" + pinYingPosMinusScore +
+                ", pinYinPosMinusScore=" + pinYinPosMinusScore +
                 ", wordPosMinusScore=" + wordPosMinusScore +
                 ", industryDescMinusScore=" + industryDescMinusScore +
                 '}';
@@ -51,12 +51,12 @@ public class RecordResult {
         this.totalMinusScore = totalMinusScore;
     }
 
-    public BigDecimal getPinYingDupMinusScore() {
-        return pinYingDupMinusScore;
+    public BigDecimal getPinYinDupMinusScore() {
+        return pinYinDupMinusScore;
     }
 
-    public void setPinYingDupMinusScore(BigDecimal pinYingDupMinusScore) {
-        this.pinYingDupMinusScore = pinYingDupMinusScore;
+    public void setPinYinDupMinusScore(BigDecimal pinYinDupMinusScore) {
+        this.pinYinDupMinusScore = pinYinDupMinusScore;
     }
 
     public BigDecimal getWordDupMinusScore() {
@@ -67,12 +67,12 @@ public class RecordResult {
         this.wordDupMinusScore = wordDupMinusScore;
     }
 
-    public BigDecimal getPinYingPosMinusScore() {
-        return pinYingPosMinusScore;
+    public BigDecimal getPinYinPosMinusScore() {
+        return pinYinPosMinusScore;
     }
 
-    public void setPinYingPosMinusScore(BigDecimal pinYingPosMinusScore) {
-        this.pinYingPosMinusScore = pinYingPosMinusScore;
+    public void setPinYinPosMinusScore(BigDecimal pinYinPosMinusScore) {
+        this.pinYinPosMinusScore = pinYinPosMinusScore;
     }
 
     public BigDecimal getWordPosMinusScore() {

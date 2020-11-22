@@ -6,7 +6,7 @@ import java.util.List;
 public class UserCompanyName {
     String area;//公司名称地域
     String name;//公司名称
-    List<String> namePinYingList;//名称的单字拼音列表，按照原顺序排列好的
+    List<String> namePinYinList;//名称的单字拼音列表，按照原顺序排列好的
     String industryDesc;//行业描述
 
     @Override
@@ -14,7 +14,7 @@ public class UserCompanyName {
         return "userCompanyName{" +
                 "area='" + area + '\'' +
                 ", name='" + name + '\'' +
-                ", namePinYingList=" + namePinYingList +
+                ", namePinYinList=" + namePinYinList +
                 ", industryDesc='" + industryDesc + '\'' +
                 '}';
     }
@@ -35,12 +35,12 @@ public class UserCompanyName {
         this.name = name;
     }
 
-    public List<String> getNamePinYingList() {
-        return namePinYingList;
+    public List<String> getNamePinYinList() {
+        return namePinYinList;
     }
 
-    public void setNamePinYingList(List<String> namePinYingList) {
-        this.namePinYingList = namePinYingList;
+    public void setNamePinYinList(List<String> namePinYinList) {
+        this.namePinYinList = namePinYinList;
     }
 
     public String getIndustryDesc() {

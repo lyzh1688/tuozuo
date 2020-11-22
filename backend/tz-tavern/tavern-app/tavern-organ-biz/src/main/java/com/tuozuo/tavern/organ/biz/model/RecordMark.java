@@ -5,13 +5,13 @@ import java.util.List;
 //记录的标记
 public class RecordMark {
     String word;//词根
-    List<String> wordPinYingList;//词根的单字拼音列表，按照原顺序排列好的
+    List<String> wordPinYinList;//词根的单字拼音列表，按照原顺序排列好的
 
     @Override
     public String toString() {
         return "recordMark{" +
                 "word='" + word + '\'' +
-                ", wordPinYingList=" + wordPinYingList +
+                ", wordPinYinList=" + wordPinYinList +
                 '}';
     }
 
@@ -23,11 +23,11 @@ public class RecordMark {
         this.word = word;
     }
 
-    public List<String> getWordPinYingList() {
-        return wordPinYingList;
+    public List<String> getWordPinYinList() {
+        return wordPinYinList;
     }
 
-    public void setWordPinYingList(List<String> wordPinYingList) {
-        this.wordPinYingList = wordPinYingList;
+    public void setWordPinYinList(List<String> wordPinYinList) {
+        this.wordPinYinList = wordPinYinList;
     }
 }

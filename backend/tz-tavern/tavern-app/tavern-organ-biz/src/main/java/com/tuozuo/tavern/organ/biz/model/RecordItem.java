@@ -6,7 +6,7 @@ import java.util.List;
 public class RecordItem {
     String industryDesc;//记录的行业描述
     String name;//记录的公司名称
-    List<String> namePinYingList;//记录的单字拼音列表，按照原顺序排列好的
+    List<String> namePinYinList;//记录的单字拼音列表，按照原顺序排列好的
     List<RecordMark> markers;//记录的标记列表
 
     @Override
@@ -14,7 +14,7 @@ public class RecordItem {
         return "recordItem{" +
                 "industryDesc='" + industryDesc + '\'' +
                 ", name='" + name + '\'' +
-                ", namePinYingList=" + namePinYingList +
+                ", namePinYinList=" + namePinYinList +
                 ", markers=" + markers +
                 '}';
     }
@@ -35,12 +35,12 @@ public class RecordItem {
         this.name = name;
     }
 
-    public List<String> getNamePinYingList() {
-        return namePinYingList;
+    public List<String> getNamePinYinList() {
+        return namePinYinList;
     }
 
-    public void setNamePinYingList(List<String> namePinYingList) {
-        this.namePinYingList = namePinYingList;
+    public void setNamePinYinList(List<String> namePinYinList) {
+        this.namePinYinList = namePinYinList;
     }
 
     public List<RecordMark> getMarkers() {
