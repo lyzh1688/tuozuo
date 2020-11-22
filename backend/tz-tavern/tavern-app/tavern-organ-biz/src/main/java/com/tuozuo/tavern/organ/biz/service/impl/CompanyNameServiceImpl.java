@@ -5,6 +5,7 @@ import com.tuozuo.tavern.organ.biz.exeception.ExecuteException;
 import com.tuozuo.tavern.organ.biz.executor.PythonExecutor;
 import com.tuozuo.tavern.organ.biz.model.CompanyName;
 import com.tuozuo.tavern.organ.biz.service.CompanyNameService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,8 @@ public class CompanyNameServiceImpl implements CompanyNameService {
                                               String preferWord,
                                               String isTwoWords,
                                               String type) throws ExecuteException, IOException {
-        List<String> resultList = this.pythonExecutor.executor(scriptPath, source, area, industry, preferWord, isTwoWords, type);
+
+        List<String> resultList = this.pythonExecutor.executor(scriptPath, source, area, industry, convertPreferWord(preferWord), isTwoWords, type);
         List<CompanyName> companyNameList = resultList
                 .stream()
                 .map(r -> CompanyName.create(r, isTwoWords))
@@ -51,6 +53,12 @@ public class CompanyNameServiceImpl implements CompanyNameService {
             Collections.shuffle(companyNameList);
         }
         return companyNameList;
+    }
+
+    //兼容python程序中对特殊字符的处理
+    private String convertPreferWord(String preferWord) {
+        String defWord = StringUtils.isEmpty(preferWord) ? "nul" : preferWord;
+        return defWord;
     }
 
 

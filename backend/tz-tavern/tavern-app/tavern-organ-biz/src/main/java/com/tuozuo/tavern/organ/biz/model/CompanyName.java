@@ -62,13 +62,14 @@ public class CompanyName implements Serializable {
             if (isTwoWords.equals("true")) {
                 numList.add(Integer.parseInt(strs[2]));
                 numList.add(Integer.parseInt(strs[3]));
+                companyName.setReference(strs[4]);
             } else {
                 numList.add(Integer.parseInt(strs[2]));
                 numList.add(Integer.parseInt(strs[3]));
                 numList.add(Integer.parseInt(strs[4]));
+                companyName.setReference(strs[5]);
             }
             companyName.setStrokeNums(numList);
-            companyName.setReference(strs[5]);
             return companyName;
         } catch (Exception e) {
             e.printStackTrace();

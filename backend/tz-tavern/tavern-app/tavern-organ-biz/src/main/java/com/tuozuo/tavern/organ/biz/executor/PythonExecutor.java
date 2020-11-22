@@ -84,10 +84,10 @@ public class PythonExecutor implements Executor {
             //可能导致进程阻塞，甚至死锁
             int ret = process.waitFor();
             if (ret == 1) {
-                LOGGER.error("执行器={} 标识={} 错误信息={}", args[0], args[2], ProcessUtils.getErrorMsg(process));
+                LOGGER.error("执行器={} 标识={} 错误信息={}", args[0], args[1], ProcessUtils.getErrorMsg(process));
                 return new ArrayList<>();
             } else {
-                LOGGER.info("执行器={} 标识={} ", args[0], args[2]);
+                LOGGER.info("执行器={} 标识={} ", args[0], args[1]);
             }
         } catch (Exception ex) {
             ex.printStackTrace();

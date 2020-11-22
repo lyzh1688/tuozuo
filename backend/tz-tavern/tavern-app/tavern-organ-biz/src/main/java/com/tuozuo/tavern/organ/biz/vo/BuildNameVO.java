@@ -14,7 +14,6 @@ public class BuildNameVO extends PageVO{
     private String industry;
     @NotNull(message = "source is not null")
     private String source;
-    @NotNull(message = "preferWord is not null")
     private String preferWord;
     @NotNull(message = "isTwoWords is not null")
     private String isTwoWords;

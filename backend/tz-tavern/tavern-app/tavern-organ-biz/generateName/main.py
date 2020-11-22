@@ -20,6 +20,8 @@ def contain_bad_word(first_name):
 
 def contain_preder_word(first_name):
     for word in first_name:
+        if sys.argv[4] in ("nul"):
+            return True
         if word in sys.argv[4]:
             return True
     return False
@@ -55,7 +57,6 @@ else:
     #print(">>输出结果...")
     names.sort()
     for i in names:
-        #print(">>i: "+ str(i))
         if to_bool(str(sys.argv[5])):
             #f.write(sys.argv[2]+str(i.first_name)+sys.argv[3] + "\t"+i.first_name[0] + "\t" + \
            #i.first_name[1] + "\t" + \
