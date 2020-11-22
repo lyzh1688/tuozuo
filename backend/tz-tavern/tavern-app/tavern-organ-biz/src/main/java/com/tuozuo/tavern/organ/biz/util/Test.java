@@ -7,22 +7,18 @@ package com.tuozuo.tavern.organ.biz.util;
 public class Test {
 
     public static void main(String[] args) {
-        String str = "阿里巴巴";
-        comb(str.toCharArray());
+        String str = "阿里";
+
+        char[] chr = str.toCharArray();
+        String target = "";
+
+        for (int i = chr.length - 1; i >= 0; i--) {
+            target += chr[i];
+        }
+        System.out.println(chr);
+
+
     }
 
-    public static void comb(char[] chs) {
-        int len = chs.length;
-        int nbits = 1 << len;
-        for (int i = 0; i < nbits; ++i) {
-            int t;
-            for (int j = 0; j < len; j++) {
-                t = 1 << j;
-                if ((t & i) != 0) { // 与运算，同为1时才会是1
-                    System.out.print(chs[j]);
-                }
-            }
-        }
-    }
 
 }

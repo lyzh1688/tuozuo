@@ -9,6 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <scm>
+        <connection>scm:git:git@github.com:huaban/jieba-analysis.git</connection>
+        <developerConnection>scm:git:git@github.com:huaban/jieba-analysis.git</developerConnection>
+        <url>git@github.com:huaban/jieba-analysis.git</url>
+    </scm>
+
     <artifactId>tavern-organ-biz</artifactId>
     <dependencies>
         <dependency>
@@ -77,6 +83,16 @@
             <artifactId>mapstruct-processor</artifactId>
             <version>${mapstruct.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.huaban</groupId>
+            <artifactId>jieba-analysis</artifactId>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
