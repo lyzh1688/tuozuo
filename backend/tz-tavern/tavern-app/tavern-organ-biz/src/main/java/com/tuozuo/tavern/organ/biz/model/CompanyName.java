@@ -1,7 +1,7 @@
 package com.tuozuo.tavern.organ.biz.model;
 
 import com.google.common.collect.Lists;
-import com.tuozuo.tavern.organ.biz.util.ProcessUtils;
+import com.tuozuo.tavern.organ.biz.util.PythonProcessUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -52,7 +52,7 @@ public class CompanyName implements Serializable {
     public static CompanyName create(String result, String isTwoWords) {
         try {
             String[] strs = StringUtils.split(result, "@");
-            if(ProcessUtils.hasDigit(strs[1])){
+            if(PythonProcessUtils.hasDigit(strs[1])){
                 return null;
             }
             CompanyName companyName = new CompanyName();

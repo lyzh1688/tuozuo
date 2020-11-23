@@ -3,6 +3,7 @@ package com.tuozuo.tavern.organ.biz.service;
 
 import com.tuozuo.tavern.organ.biz.exeception.ExecuteException;
 import com.tuozuo.tavern.organ.biz.model.CompanyName;
+import com.tuozuo.tavern.organ.biz.model.CompanyVerifyResult;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,6 +22,8 @@ public interface CompanyNameService {
             String isTwoWords,
             String type) throws ExecuteException, IOException;
 
+
+    CompanyVerifyResult queryCompanyResult(String name,String industryDesc);
 
 
 

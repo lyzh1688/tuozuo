@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * Dev Time: 2020/11/20 <br>
  */
 @Service
-public class CompanyNameServiceImpl implements CompanyNameService {
+public class CompanyNameServiceImpl extends CompanyNameTemplate {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyNameServiceImpl.class);
 

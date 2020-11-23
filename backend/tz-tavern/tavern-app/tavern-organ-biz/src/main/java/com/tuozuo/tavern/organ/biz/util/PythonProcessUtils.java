@@ -16,8 +16,8 @@ import java.util.regex.Pattern;
  * Code Monkey: 何彪 <br>
  * Dev Time: 2020/11/20 <br>
  */
-public class ProcessUtils {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProcessUtils.class);
+public class PythonProcessUtils {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PythonProcessUtils.class);
 
     public static List<String> getProcessResult(Process process) throws IOException {
         List<String> resultList = Lists.newArrayList();

@@ -2,7 +2,7 @@ package com.tuozuo.tavern.organ.biz.executor;
 
 import com.google.common.collect.Lists;
 import com.tuozuo.tavern.organ.biz.exeception.ExecuteException;
-import com.tuozuo.tavern.organ.biz.util.ProcessUtils;
+import com.tuozuo.tavern.organ.biz.util.PythonProcessUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,7 @@ public class PythonExecutor implements Executor {
         Process process = Runtime.getRuntime().exec(cmds);
         List<String> resultList = Lists.newArrayList();
         try {
-            resultList = ProcessUtils.getProcessResult(process);
+            resultList = PythonProcessUtils.getProcessResult(process);
             //获取进程的标准输入流
             final InputStream is1 = process.getInputStream();
             //获取进城的错误流
@@ -84,7 +84,7 @@ public class PythonExecutor implements Executor {
             //可能导致进程阻塞，甚至死锁
             int ret = process.waitFor();
             if (ret == 1) {
-                LOGGER.error("执行器={} 标识={} 错误信息={}", args[0], args[1], ProcessUtils.getErrorMsg(process));
+                LOGGER.error("执行器={} 标识={} 错误信息={}", args[0], args[1], PythonProcessUtils.getErrorMsg(process));
                 return new ArrayList<>();
             } else {
                 LOGGER.info("执行器={} 标识={} ", args[0], args[1]);
