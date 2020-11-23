@@ -26,7 +26,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.tuozuo.tavern</groupId>
+            <artifactId>tavern-rpc-libs</artifactId>
+            <version>${tavern.version}</version>
+        </dependency>
         <!--mybatis-->
         <dependency>
             <groupId>com.baomidou</groupId>

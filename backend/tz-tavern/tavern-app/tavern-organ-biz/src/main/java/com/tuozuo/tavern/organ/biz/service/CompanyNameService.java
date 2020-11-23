@@ -1,7 +1,6 @@
 package com.tuozuo.tavern.organ.biz.service;
 
 
-import com.tuozuo.tavern.organ.biz.dto.BuildNameDTO;
 import com.tuozuo.tavern.organ.biz.exeception.ExecuteException;
 import com.tuozuo.tavern.organ.biz.model.CompanyName;
 
@@ -21,5 +20,9 @@ public interface CompanyNameService {
             String preferWord,
             String isTwoWords,
             String type) throws ExecuteException, IOException;
+
+
+
+
 
 }

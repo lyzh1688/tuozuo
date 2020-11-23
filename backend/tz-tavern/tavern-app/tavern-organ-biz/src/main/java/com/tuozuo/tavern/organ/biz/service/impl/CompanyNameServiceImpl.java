@@ -1,6 +1,5 @@
 package com.tuozuo.tavern.organ.biz.service.impl;
 
-import com.tuozuo.tavern.organ.biz.dto.BuildNameDTO;
 import com.tuozuo.tavern.organ.biz.exeception.ExecuteException;
 import com.tuozuo.tavern.organ.biz.executor.PythonExecutor;
 import com.tuozuo.tavern.organ.biz.model.CompanyName;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -47,7 +47,7 @@ public class CompanyNameServiceImpl implements CompanyNameService {
         List<CompanyName> companyNameList = resultList
                 .stream()
                 .map(r -> CompanyName.create(r, isTwoWords))
-                .filter(c -> c != null)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
         for (int i = 0; i < 5; i++) {
             Collections.shuffle(companyNameList);
