@@ -1615,7 +1615,7 @@ textarea::-webkit-input-placeholder {
   width: 54px;
   height: 54px;
   margin: 0 auto;
-  background: url("/assets/img/icon.png") no-repeat;
+  /* background: url("/assets/img/icon.png") no-repeat; */
   background-size: 622px 243px;
 }
 .toname_panel .item h1.icon2 {

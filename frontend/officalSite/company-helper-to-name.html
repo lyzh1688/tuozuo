@@ -18,6 +18,92 @@
     <!-- color scheme -->
     <link rel="stylesheet" href="switcher/demo.css" type="text/css">
     <link rel="stylesheet" href="switcher/colors/blue.css" type="text/css" id="colors">
+    <style>
+        .verBox {
+            width: 100%;
+            text-align: center;
+            transition: all 0.8s;
+            padding-top: 300px;
+        }
+
+        .slider-btn {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            left: 0;
+            top: -7px;
+            z-index: 12;
+            cursor: pointer;
+            background-image: url(./images/sprite.3.2.0.png);
+            background-position: 0 -84px;
+            transition: inherit
+        }
+
+        .ver-tips {
+            position: absolute;
+            left: 0;
+            bottom: -22px;
+            background: rgba(255, 255, 255, .9);
+            height: 22px;
+            line-height: 22px;
+            font-size: 12px;
+            width: 100%;
+            margin: 0;
+            text-align: left;
+            padding: 0 8px;
+            transition: all .4s
+        }
+
+        .slider-tips {
+            bottom: 0
+        }
+
+        .ver-tips i {
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            vertical-align: top;
+            background-image: url(./images/sprite.3.2.0.png);
+            background-position: -4px -1229px
+        }
+
+        .ver-tips span {
+            display: inline-block;
+            vertical-align: top;
+            line-height: 22px;
+            color: #455
+        }
+
+        .active-tips {
+            display: block
+        }
+
+        .hidden {
+            display: none
+        }
+
+        .re-btn {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 28px;
+            padding: 0 16px
+        }
+
+        .re-btn a {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            margin: 7px 0;
+            background-image: url(./images/sprite.3.2.0.png);
+            background-position: 0 -1179px;
+            cursor: pointer
+        }
+
+        .re-btn a:hover {
+            background-position: 0 -1193px
+        }
+    </style>
 </head>
 
 <body>
@@ -331,7 +417,7 @@
                                                 readonly="">
                                             <div class="arrow-down"></div>
                                         </dd>
-                                        
+
                                     </dl>
                                     <dl class="input w210 simulation_ul">
                                         <dl class="input w244">
@@ -342,6 +428,9 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="verBox">
+                        <div hidden=true id="imgVer" style="display:inline-block;"></div>
                     </div>
                 </div>
                 <div class="container">
@@ -556,7 +645,8 @@
     <script type="text/javascript" src="js/owl.carousel.js"></script>
     <script src="js/smk-accordion.js"></script>
     <script src="js/tabs.js"></script>
-    <script src="js/xinruyi-projects.js"></script>
+    <script src="js/to-name.js"></script>
+    <script src="js/img_ver.js"></script>
     <script src="js/fancyTable.min.js"></script>
     <script type="text/javascript" src="js/b.page.min.js"></script>
     <!-- Waypoints-->
@@ -565,7 +655,6 @@
     <script type="text/javascript" src="js/pro-bars.js"></script>
     <script src="js/sticky.min.js"></script>
     <script src="js/compact.js"></script>
-    <script src="js/custom-product-single.js"></script>
 
     <script src="switcher/demo.js"></script>
     <div id="switcher">
