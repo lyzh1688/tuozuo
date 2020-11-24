@@ -1,18 +1,18 @@
 package com.tuozuo.tavern.organ.biz.service.impl;
 
 import com.google.common.collect.Lists;
-import com.tuozuo.tavern.organ.biz.dao.CompanyDataRecordDao;
+import com.tuozuo.tavern.organ.biz.dao.CompanyNameRecordDao;
 import com.tuozuo.tavern.organ.biz.exeception.ExecuteException;
 import com.tuozuo.tavern.organ.biz.executor.PythonExecutor;
 import com.tuozuo.tavern.organ.biz.facade.qcc.model.CompanyBizData;
 import com.tuozuo.tavern.organ.biz.facade.qcc.model.CompanyBizResult;
 import com.tuozuo.tavern.organ.biz.facade.service.QccCompanyDataService;
-import com.tuozuo.tavern.organ.biz.facade.service.impl.QccCompanyDataServiceImpl;
-import com.tuozuo.tavern.organ.biz.model.CompanyDataRecord;
+import com.tuozuo.tavern.organ.biz.model.CompanyNameRecord;
 import com.tuozuo.tavern.organ.biz.model.CompanyName;
 import com.tuozuo.tavern.organ.biz.model.RecordItem;
 import com.tuozuo.tavern.organ.biz.service.CalculateRecordService;
 import com.tuozuo.tavern.organ.biz.util.CharacterProcUtils;
+import com.tuozuo.tavern.organ.biz.util.FilterUtils;
 import com.tuozuo.tavern.organ.biz.util.PinyinProcUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -49,11 +49,13 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
     PythonExecutor pythonExecutor;
 
     @Autowired
-    private CompanyDataRecordDao companyDataRecordDao;
+    private CompanyNameRecordDao companyNameRecordDao;
     @Autowired
     private QccCompanyDataService qccCompanyDataService;
     @Autowired
     private CalculateRecordService calculateRecordService;
+    @Autowired
+    private FilterUtils filterUtils;
 
 
     @Cacheable(value = "build_company_name", key = "#area +'.'+ #industry+'.'+ #source+'.'+ #preferWord+'.'+ #isTwoWords+'.'+ #type")
@@ -110,30 +112,34 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
         List<String> names = Lists.newArrayList();
         for (String pinyin : pinyinList) {
             //1、先查数据库，有则取数据库
-            List<String> dbNames = this.companyDataRecordDao.queryCompanyRecords(pinyin)
+            List<String> dbNames = this.companyNameRecordDao.queryCompanyRecords(pinyin)
                     .stream()
-                    .map(CompanyDataRecord::getFullName)
+                    .map(CompanyNameRecord::getFullName)
                     .collect(Collectors.toList());
             if (!dbNames.isEmpty()) {
                 names.addAll(dbNames);
-            }else {
+            } else {
                 //2、api接口查询
                 List<String> qccNames = this.getCompanyFromQcc(pinyin);
                 names.addAll(qccNames);
             }
-
         }
         return names;
     }
 
     @Override
-    public RecordItem processCompanyName(List<String> companyNameList) {
+    public List<RecordItem> processCompanyName(List<String> companyNameList) {
         //拆词
         //1、过滤特殊字符
         //2、过滤地方字符
         //3、过滤类型字符
         //4、筛出行业：无行业传空字符串
         //5、筛出名称
+        for (String name : companyNameList) {
+            name = filterUtils.filterSpecialChar(name);
+
+
+        }
 
 
         return null;
@@ -162,6 +168,9 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
             return result;
         } else {
             for (int i = 2; i <= pageNum; i++) {
+                if (i > 5) {
+                    break;
+                }
                 CompanyBizResult pageResult = this.qccCompanyDataService.queryCompanyData(pinyin, i, pageSize);
                 List<String> pageName = pageResult.getBizData().stream().map(CompanyBizData::getName).collect(Collectors.toList());
                 result.addAll(pageName);

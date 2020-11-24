@@ -1,23 +1,23 @@
 package com.tuozuo.tavern.organ.biz.model;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.time.LocalDateTime;
-
-/**
- * Code Monkey: 何彪 <br>
- * Dev Time: 2020/11/24 <br>
- */
-@TableName("company_data_record")
-public class CompanyDataRecord {
-    @TableId
+@TableName("company_name_record")
+public class CompanyNameRecord extends Model<CompanyNameRecord> {
     private String pinyin;
-    private String area;
-    private String industry;
-    private String type;
-    private String rootName;
+
     private String fullName;
+
+    private String name;
+
+    private String area;
+
+    private String industry;
+
+    private String type;
+
     private LocalDateTime updateDate;
 
     public String getPinyin() {
@@ -25,39 +25,7 @@ public class CompanyDataRecord {
     }
 
     public void setPinyin(String pinyin) {
-        this.pinyin = pinyin;
-    }
-
-    public String getArea() {
-        return area;
-    }
-
-    public void setArea(String area) {
-        this.area = area;
-    }
-
-    public String getIndustry() {
-        return industry;
-    }
-
-    public void setIndustry(String industry) {
-        this.industry = industry;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getRootName() {
-        return rootName;
-    }
-
-    public void setRootName(String rootName) {
-        this.rootName = rootName;
+        this.pinyin = pinyin == null ? null : pinyin.trim();
     }
 
     public String getFullName() {
@@ -65,7 +33,39 @@ public class CompanyDataRecord {
     }
 
     public void setFullName(String fullName) {
-        this.fullName = fullName;
+        this.fullName = fullName == null ? null : fullName.trim();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area == null ? null : area.trim();
+    }
+
+    public String getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(String industry) {
+        this.industry = industry == null ? null : industry.trim();
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public LocalDateTime getUpdateDate() {

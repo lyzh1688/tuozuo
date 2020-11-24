@@ -33,7 +33,7 @@ public class CharacterProcUtils {
         JiebaSegmenter segmenter = new JiebaSegmenter();
 //        String sentences = "上海拓佑财务咨询有限公司";
 //        String sentences = "杭州东方网升科技股份有限公司";
-        String sentences = "天天开";
+        String sentences = "霍邱福润肉类加工有限公司";
         List<String> resultist = segmenter.sentenceProcess(sentences).stream()
                 .filter(r -> r.length() != 1)
                 .collect(Collectors.toList());

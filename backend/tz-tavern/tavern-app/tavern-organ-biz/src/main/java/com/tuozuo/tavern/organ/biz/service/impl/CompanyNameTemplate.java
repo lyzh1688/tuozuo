@@ -21,7 +21,7 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
 
     public abstract List<String> getCompanyName(List<String> pinyinList);
 
-    public abstract RecordItem processCompanyName(List<String> companyNameList);
+    public abstract List<RecordItem> processCompanyName(List<String> companyNameList);
 
     @Override
     public CompanyVerifyResult queryCompanyResult(String area, String name, String industryDesc) {
