@@ -24,4 +24,11 @@ public interface CompanyBizDataService {
                                        @Param("pageSize") int pageSize,
                                        @Param("pageIndex") int pageIndex,
                                        @Param("dtype") String dtype);
+    @RequestLine("GET /ECIV4/Search?key={key}&keyword={keyword}&pageIndex={pageIndex}&pageSize={pageSize}&dtype={dtype}")
+    CompanyBizResult getCompanyBizData(@HeaderMap Map<String, String> headerMap,
+                                       @Param("key") String key,
+                                       @Param("keyword") String keyword,
+                                       @Param("pageSize") int pageSize,
+                                       @Param("pageIndex") int pageIndex,
+                                       @Param("dtype") String dtype);
 }

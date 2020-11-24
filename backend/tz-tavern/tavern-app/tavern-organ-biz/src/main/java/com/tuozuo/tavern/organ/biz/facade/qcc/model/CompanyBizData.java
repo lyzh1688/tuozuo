@@ -77,4 +77,17 @@ public class CompanyBizData {
     public void setCreditCode(String creditCode) {
         this.creditCode = creditCode;
     }
+
+    @Override
+    public String toString() {
+        return "CompanyBizData{" +
+                "keyNo='" + keyNo + '\'' +
+                ", name='" + name + '\'' +
+                ", operName='" + operName + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", status='" + status + '\'' +
+                ", no='" + no + '\'' +
+                ", creditCode='" + creditCode + '\'' +
+                '}';
+    }
 }

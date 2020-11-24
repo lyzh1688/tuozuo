@@ -1,7 +1,13 @@
 package com.tuozuo.tavern.organ.biz.service.impl;
 
 import com.tuozuo.tavern.organ.biz.model.CompanyVerifyResult;
+import com.tuozuo.tavern.organ.biz.model.RecordItem;
+import com.tuozuo.tavern.organ.biz.model.UserCompanyName;
 import com.tuozuo.tavern.organ.biz.service.CompanyNameService;
+import com.tuozuo.tavern.organ.biz.util.PinyinProcUtils;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -9,13 +15,16 @@ import com.tuozuo.tavern.organ.biz.service.CompanyNameService;
  */
 public abstract class CompanyNameTemplate implements CompanyNameService {
 
+    public abstract List<String> splitName(String name);
 
+    public abstract List<String> transferPinyin(List<String> name);
 
+    public abstract List<String> getCompanyName(List<String> pinyinList);
 
-
+    public abstract RecordItem processCompanyName(List<String> companyNameList);
 
     @Override
-    public CompanyVerifyResult queryCompanyResult(String name, String industryDesc) {
+    public CompanyVerifyResult queryCompanyResult(String area, String name, String industryDesc) {
         //1、二个字倒序，二个字以上拆词
 
         //2、拼音转换
@@ -25,8 +34,16 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
         //4、
 
 
-
-
         return null;
+    }
+
+    private UserCompanyName createUserCompanyName(String area, String name, String industryDesc){
+        UserCompanyName userCompanyName = new UserCompanyName();
+        userCompanyName.setArea(area);
+        userCompanyName.setIndustryDesc(industryDesc);
+        userCompanyName.setName(name);
+        List<String> pinyin = Arrays.asList(PinyinProcUtils.getPinyin(name,","),",");
+        userCompanyName.setNamePinYinList(pinyin);
+        return userCompanyName;
     }
 }

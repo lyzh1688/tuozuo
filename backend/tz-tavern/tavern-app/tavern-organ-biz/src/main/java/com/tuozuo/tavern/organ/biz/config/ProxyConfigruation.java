@@ -2,7 +2,7 @@ package com.tuozuo.tavern.organ.biz.config;
 
 import com.tuoyou.tavern.rpc.libs.core.hystrix.HystrixParam;
 import com.tuoyou.tavern.rpc.libs.core.hystrix.HystrixProxy;
-import com.tuozuo.tavern.organ.biz.facade.CompanyBizDataServiceFallback;
+import com.tuozuo.tavern.organ.biz.facade.service.CompanyBizDataServiceFallback;
 import com.tuozuo.tavern.organ.biz.facade.qcc.CompanyBizDataService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

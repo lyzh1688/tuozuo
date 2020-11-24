@@ -19,6 +19,10 @@ public class PinyinProcUtils {
     }
 
 
+
+    public static String getPinyin(String text) {
+        return getPinyin(text,"");
+    }
     /**
      * 将汉字转换为全拼
      *

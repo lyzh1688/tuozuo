@@ -12,14 +12,24 @@ import java.util.List;
  */
 @JsonIgnoreProperties
 public class CompanyBizResult {
+    @JsonProperty("Paging")
+    private CompanyBizPage page;
     @JsonProperty("OrderNumber")
     private String orderNumber;
     @JsonProperty("Result")
     private List<CompanyBizData> bizData = Lists.newArrayList();
     @JsonProperty("Status")
-    private int status;
+    private String status;
     @JsonProperty("Message")
     private String message;
+
+    public CompanyBizPage getPage() {
+        return page;
+    }
+
+    public void setPage(CompanyBizPage page) {
+        this.page = page;
+    }
 
     public String getOrderNumber() {
         return orderNumber;
@@ -37,11 +47,11 @@ public class CompanyBizResult {
         this.bizData = bizData;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -51,5 +61,15 @@ public class CompanyBizResult {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    @Override
+    public String toString() {
+        return "CompanyBizResult{" +
+                "orderNumber='" + orderNumber + '\'' +
+                ", bizData=" + bizData +
+                ", status='" + status + '\'' +
+                ", message='" + message + '\'' +
+                '}';
     }
 }

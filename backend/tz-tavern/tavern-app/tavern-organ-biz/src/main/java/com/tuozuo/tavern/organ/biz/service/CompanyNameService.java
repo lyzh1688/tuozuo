@@ -23,7 +23,7 @@ public interface CompanyNameService {
             String type) throws ExecuteException, IOException;
 
 
-    CompanyVerifyResult queryCompanyResult(String name,String industryDesc);
+    CompanyVerifyResult queryCompanyResult(String area,String name,String industryDesc);
 
 
 

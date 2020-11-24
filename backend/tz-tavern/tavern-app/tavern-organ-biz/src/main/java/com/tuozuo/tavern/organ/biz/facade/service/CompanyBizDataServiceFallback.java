@@ -1,4 +1,4 @@
-package com.tuozuo.tavern.organ.biz.facade;
+package com.tuozuo.tavern.organ.biz.facade.service;
 
 import com.netflix.hystrix.exception.HystrixTimeoutException;
 import com.tuoyou.tavern.rpc.libs.core.hystrix.HystrixProxy;

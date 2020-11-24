@@ -27,13 +27,13 @@ import org.springframework.boot.configurationprocessor.json.JSONObject;
  *          日期：2019年7月31日 下午2:23:41
  */
 public class MainApp {
-	// 请登录http://yjapi.com/DataCenter/MyData
+	/*// 请登录http://yjapi.com/DataCenter/MyData
 	// 查看我的秘钥 我的Key
 	private static final String appkey = "我的接口:我的Key";
 	private static final String seckey = "我的接口:我的秘钥";
 
 	public static void main(String[] args) {
-		/*String reqInterNme = "http://api.qichacha.com/ECIV4/Search";
+		String reqInterNme = "http://api.qichacha.com/ECIV4/Search";
 		String paramStr = "keyword=新疆庆华能源集团有限公司";
 		String status = "";
 		try {
@@ -90,6 +90,6 @@ public class MainApp {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}*/
-	}
+		}
+	}*/
 }

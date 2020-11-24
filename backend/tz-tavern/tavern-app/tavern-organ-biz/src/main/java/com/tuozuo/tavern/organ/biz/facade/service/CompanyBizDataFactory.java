@@ -25,4 +25,10 @@ public class CompanyBizDataFactory extends BaseServiceFactory implements Company
         LOGGER.error("[企查查企业工商信息查询接口失败], keyword: {}",key);
         return null;
     }
+
+    @Override
+    public CompanyBizResult getCompanyBizData(Map<String, String> headerMap, String key, String keyword, int pageSize, int pageIndex, String dtype) {
+        LOGGER.error("[企查查企业工商信息查询接口失败], keyword: {}",key);
+        return null;
+    }
 }
