@@ -13,6 +13,7 @@
     <link rel="icon" href="images/favicon.png" type="image/x-icon">
 
     <!-- LOAD CSS FILES -->
+    <link href="css/common.min.css" rel="stylesheet" type="text/css">
     <link href="style.css" rel="stylesheet" type="text/css">
     <!-- color scheme -->
     <link rel="stylesheet" href="switcher/demo.css" type="text/css">
@@ -274,13 +275,13 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <h1>项目列表</h1>
+                        <h1>公司起名</h1>
                         <ul class="breadcrumbs">
                             <li><a href="index.html">首页</a></li>
                             <b>/</b>
-                            <li><a href="#">鑫如意</a></li>
+                            <li><a href="#">公司助手</a></li>
                             <b>/</b>
-                            <li class="active">项目列表</li>
+                            <li class="active">公司起名</li>
                         </ul>
                     </div>
                 </div>
@@ -290,68 +291,153 @@
         <!-- content begin -->
         <div id="content" class="no-padding">
             <section class="shopping-cart">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="col-one-fifth">
-                                <span>项目名称:</span>
-                                <input  id="projectName" placeholder="项目名称"/>
-                                <input hidden=true  id="projectId" placeholder="项目名称"/>
+                <div class="banner-toname">
+                    <div class="container_78">
+                        <div class="item-flex mt218">
+                            <div>
+                                <h1>基于三才五格的免费公司在线起名系统</h1>
+                                <h2>已为 <span class="yellow" id="totalCount"
+                                        style="min-width:94px;display:inline-block">5,449,404</span> 位创业者提供起名服务</h2>
+                                <div class="search3" id="step1">
+                                    <dl class="input" id="cityWrap">
+                                        <dt class="c_note">注册地区丨</dt>
+                                        <dd class="c_title"><input type="text" class="current" placeholder="请选择"
+                                                id="area" readonly="" disabled="">
+                                            <div class="arrow-down"></div>
+                                        </dd>
+                                        <div class="moni_select hide" id="cityList">
+                                            <ul></ul>
+                                        </div>
+                                    </dl>
+                                    <dl class="input w373 search-results">
+                                        <dt class="c_note">所属行业丨</dt>
+                                        <dd class="c_title"><input type="search" id="Keyword"
+                                                placeholder="请选择经营行业,如：网络科技">
+                                            <div class="arrow-down"></div>
+                                        </dd>
+                                        <div class="moni_select result" style="display:none">
+                                            <ul></ul>
+                                        </div>
+                                    </dl>
+                                    <dl class="input w210 simulation_ul">
+                                        <dl class="input w244">
+                                            <dt class="c_note">请输入您较喜欢的一个字 | </dt>
+                                            <dd class="c_title"><input type="text" id="keyword2" placeholder="选填"></dd>
+                                        </dl>
+                                    </dl>
+                                    <dl class="input w210 simulation_ul active">
+                                        <dt class="c_note">企业类型丨</dt>
+                                        <dd class="c_title"><input type="text" value="有限公司" id="companyType"
+                                                readonly="">
+                                            <div class="arrow-down"></div>
+                                        </dd>
+                                        
+                                    </dl>
+                                    <dl class="input w210 simulation_ul">
+                                        <dl class="input w244">
+                                            <dt class="c_note">词库 | </dt>
+                                            <dd class="c_title"><input type="text" id="keyword2" placeholder="选填"></dd>
+                                        </dl>
+                                    </dl><button id="to_next" class="current">下一步</button>
+                                </div>
                             </div>
-                            <div class="col-one-fifth">
-                                <span>行业类型:</span>
-                                <select style="width: 65%;height: 30px;" type="text" id="industryType" placeholder="行业类型"></select>
-                            </div>
-                            <div class="col-one-fifth">
-                                <span>金额预算:</span>
-                                <select style="width: 65%;height: 30px;" type="text" id="budget" placeholder="金额预算"></select>
-                            </div>
-                            <div class="col-one-fifth">
-                                <span>项目状态:</span>
-                                <select style="width: 65%;height: 30px;" type="text" id="projectStatus" placeholder="项目状态"></select>
-                            </div>
-                            <button id="search" type="button" class="button btn btn-primary btn-radius">搜索</button>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <table cellspacing="0" class="shop_table shop_table_responsive cart">
-                                <thead>
-                                    <tr>
-                                        <th class="product-thumbnail">&nbsp;</th>
-                                        <th class="product-name">项目名称</th>
-                                        <th class="product-price">预算金额</th>
-                                        <th class="product-quantity">项目人员</th>
-                                        <th class="product-quantity">项目周期</th>
-                                        <th class="product-name">项目状态</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="logList" >
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="5">
-                                            <div class="pull-left" style="margin-top: 8px;">
-                                                <span id="summary"></span>
-                                            </div>
-                                            <div class="pull-right">
-                                                <form class="form-inline">
-                                                    <button id="firstPage" type="button" class="button btn btn-primary btn-radius">首页</button>
-                                                    <button id="previousPage" type="button" class="button btn btn-primary btn-radius">上一页</button>
-                                                    <button id="nextPage" type="button" class="button btn btn-primary btn-radius">下一页</button>
-                                                    <button id="lastPage" type="button" class="button btn btn-primary btn-radius">尾页</button>
-                                                    <span>跳转到</span>
-                                                    <input type="text" class="form-control" name="page_num" style="width:60px;"/>
-                                                    <span>页</span>
-                                                    <button id="jump" type="button" class="button btn btn-primary btn-radius">跳转</button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
+                </div>
+                <div class="container">
 
+                    <div class="toname_panel">
+                        <h1 class="PingFangSC-Thin">公司起名常见问题</h1>
+                        <div class="container wrap mt60">
+                            <div class="item">
+                                <div class="info_c">
+                                    <div class="info">
+                                        <h1 class="img icon2">
+                                            <i class="blue fa fa-repeat"></i>
+                                        </h1>
+                                        <h2>重名</h2>
+                                        <h3>同行业(相似行业)不能重名, 比如“企<br>名通”信息有限公司和“企名通”科<br>技有限公司</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item margin">
+                                <div class="info_c">
+                                    <div class="info">
+                                        <h1 class="img icon2">
+                                            <i class="orange fa fa-bookmark"></i>
+                                        </h1>
+                                        <h2>使用繁体字、数字、英文</h2>
+                                        <h3>公司名称只能使用简体中文</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item margin">
+                                <div class="info_c">
+                                    <div class="info">
+                                        <h1 class="img icon2">
+                                            <i class="green fa fa-hospital-o"></i>
+                                        </h1>
+                                        <h2>使用社会组织名称</h2>
+                                        <h3>比如“共青团”有限公司</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item margin">
+                                <div class="info_c">
+                                    <div class="info">
+                                        <h1 class="img icon2">
+                                            <i class="grey fa fa-globe"></i>
+                                        </h1>
+                                        <h2>使用行政地区名称</h2>
+                                        <h3>“沪”“京”“嘉兴”等不可当成字号</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="info_c">
+                                    <div class="info">
+                                        <h1 class="img icon2">
+                                            <i class="gluegreen fa fa-gear"></i>
+                                        </h1>
+                                        <h2>字号有行业用语</h2>
+                                        <h3>比如“饮料”有限公司</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item margin">
+                                <div class="info_c">
+                                    <div class="info">
+                                        <h1 class="img icon2">
+                                            <i class="mediumblue fa fa-users"></i>
+                                        </h1>
+                                        <h2>知名人士作为字号</h2>
+                                        <h3>比如“马化腾”有限公司</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item margin">
+                                <div class="info_c">
+                                    <div class="info">
+                                        <h1 class="img icon2">
+                                            <i class="c_note fa fa-legal"></i>
+                                        </h1>
+                                        <h2>使用地区和宗教名称</h2>
+                                        <h3>比如“赞比亚”有限公司</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item margin">
+                                <div class="info_c">
+                                    <div class="info">
+                                        <h1 class="img icon2">
+                                            <i class="yellow fa fa-building-o"></i>
+                                        </h1>
+                                        <h2>含有其他企业名称</h2>
+                                        <h3>比如“小米魅族”有限公司</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
