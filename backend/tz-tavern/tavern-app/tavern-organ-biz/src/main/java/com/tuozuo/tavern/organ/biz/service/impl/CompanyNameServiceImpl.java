@@ -4,11 +4,10 @@ import com.google.common.collect.Lists;
 import com.tuozuo.tavern.organ.biz.dao.CompanyNameRecordDao;
 import com.tuozuo.tavern.organ.biz.exeception.ExecuteException;
 import com.tuozuo.tavern.organ.biz.executor.PythonExecutor;
-import com.tuozuo.tavern.organ.biz.facade.qcc.model.CompanyBizData;
 import com.tuozuo.tavern.organ.biz.facade.qcc.model.CompanyBizResult;
 import com.tuozuo.tavern.organ.biz.facade.service.QccCompanyDataService;
-import com.tuozuo.tavern.organ.biz.model.CompanyNameRecord;
 import com.tuozuo.tavern.organ.biz.model.CompanyName;
+import com.tuozuo.tavern.organ.biz.model.CompanyNameRecord;
 import com.tuozuo.tavern.organ.biz.model.RecordItem;
 import com.tuozuo.tavern.organ.biz.service.CalculateRecordService;
 import com.tuozuo.tavern.organ.biz.util.CharacterProcUtils;
@@ -108,19 +107,16 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
     }
 
     @Override
-    public List<String> getCompanyName(List<String> pinyinList) {
-        List<String> names = Lists.newArrayList();
+    public List<CompanyNameRecord> getCompanyName(List<String> pinyinList) {
+        List<CompanyNameRecord> names = Lists.newArrayList();
         for (String pinyin : pinyinList) {
             //1、先查数据库，有则取数据库
-            List<String> dbNames = this.companyNameRecordDao.queryCompanyRecords(pinyin)
-                    .stream()
-                    .map(CompanyNameRecord::getFullName)
-                    .collect(Collectors.toList());
+            List<CompanyNameRecord> dbNames = this.companyNameRecordDao.queryCompanyRecords(pinyin);
             if (!dbNames.isEmpty()) {
                 names.addAll(dbNames);
             } else {
                 //2、api接口查询
-                List<String> qccNames = this.getCompanyFromQcc(pinyin);
+                List<CompanyNameRecord> qccNames = this.getCompanyFromQcc(pinyin);
                 names.addAll(qccNames);
             }
         }
@@ -128,15 +124,24 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
     }
 
     @Override
-    public List<RecordItem> processCompanyName(List<String> companyNameList) {
+    public List<RecordItem> processCompanyName(List<CompanyNameRecord> companyNameList) {
         //拆词
         //1、过滤特殊字符
         //2、过滤地方字符
         //3、过滤类型字符
         //4、筛出行业：无行业传空字符串
         //5、筛出名称
-        for (String name : companyNameList) {
-            name = filterUtils.filterSpecialChar(name);
+        for (CompanyNameRecord record : companyNameList) {
+           String name = filterUtils.filterSpecialChar(record.getFullName());
+           List<String> splitList = CharacterProcUtils.splitSearchCharacters(name);
+            splitList = filterUtils.filterAreaChar(splitList);
+            splitList = filterUtils.filterTypeChar(splitList);
+            String industryType = filterUtils.getIndustryChar(splitList);
+            if(industryType == null){
+                int length = splitList.size();
+                //1、1：直接拿，2
+            }
+
 
 
         }
@@ -151,17 +156,23 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
         return pageNum;
     }
 
-    private List<String> getCompanyFromQcc(String pinyin) {
-        List<String> result = Lists.newArrayList();
+    private List<CompanyNameRecord> getCompanyFromQcc(String pinyin) {
+        List<CompanyNameRecord> result = Lists.newArrayList();
         CompanyBizResult companyBizResult = this.qccCompanyDataService.queryCompanyData(pinyin, pageStart, pageSize);
         if (Objects.isNull(companyBizResult)) {
             return Collections.emptyList();
         }
-        if (!HttpCodeRegex.isAbnormalRequest(companyBizResult.getStatus())) {
+        if (HttpCodeRegex.isAbnormalRequest(companyBizResult.getStatus())) {
             LOGGER.error("[企查查查询接口返回异常] error: {}", companyBizResult.toString());
+            return Collections.emptyList();
         }
 
-        List<String> firstPage = companyBizResult.getBizData().stream().map(CompanyBizData::getName).collect(Collectors.toList());
+        List<CompanyNameRecord> firstPage = companyBizResult.getBizData().stream().map(r -> {
+            CompanyNameRecord record = new CompanyNameRecord();
+            record.setPinyin(pinyin);
+            record.setFullName(r.getName());
+            return record;
+        }).collect(Collectors.toList());
         result.addAll(firstPage);
         int pageNum = this.getPageNum(pageSize, companyBizResult.getPage().getTotal());
         if (pageNum == 1) {
@@ -172,7 +183,12 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
                     break;
                 }
                 CompanyBizResult pageResult = this.qccCompanyDataService.queryCompanyData(pinyin, i, pageSize);
-                List<String> pageName = pageResult.getBizData().stream().map(CompanyBizData::getName).collect(Collectors.toList());
+                List<CompanyNameRecord> pageName = pageResult.getBizData().stream().map(r -> {
+                    CompanyNameRecord record = new CompanyNameRecord();
+                    record.setPinyin(pinyin);
+                    record.setFullName(r.getName());
+                    return record;
+                }).collect(Collectors.toList());
                 result.addAll(pageName);
             }
         }

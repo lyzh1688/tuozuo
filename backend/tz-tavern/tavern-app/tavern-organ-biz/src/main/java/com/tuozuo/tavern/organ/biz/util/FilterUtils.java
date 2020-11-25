@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.organ.biz.util;
 
+import com.google.common.collect.Lists;
 import com.tuozuo.tavern.organ.biz.store.CompanyPropertyStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,26 +27,70 @@ public class FilterUtils {
     }
 
     public List<String> filterAreaChar(List<String> str) {
+        List<String> result = Lists.newArrayList();
         for (int i = 0; i < str.size(); i++) {
-            if (companyPropertyStore.getAreaMap().containsKey(str.get(i))) {
-                str.remove(i);
+            if (!companyPropertyStore.getAreaMap().containsKey(str.get(i))) {
+                result.add(str.get(i));
             }
         }
 
-        return str;
+        return result;
     }
+
     public List<String> filterTypeChar(List<String> str) {
+//        [南京, 延锋安道, 拓, 座椅, 有限公司, 无锡, 分公司]
+        List<String> filterResult = Lists.newArrayList();
         for (int i = 0; i < str.size(); i++) {
             if (companyPropertyStore.getTypeMap().containsKey(str.get(i))) {
-                for (int j = i; j < str.size(); j++) {
-                    str.remove(j);
-
-                }
+                break;
+            } else {
+                filterResult.add(str.get(i));
             }
         }
-
-        return str;
+        return filterResult;
     }
 
+    public String getIndustryChar(List<String> str) {
+//        [南京, 延锋安道, 拓, 座椅, 有限公司, 无锡, 分公司]
+        String industry = null;
+        List<String> result = Lists.newArrayList();
+        for (int i = 0; i < str.size(); i++) {
+            if (companyPropertyStore.getTypeMap().containsKey(str.get(i))) {
+                industry += str.get(i);
+            } else {
+                result.add(str.get(i));
+            }
+        }
+        str = result;
+        return industry;
+    }
+
+
+    //方法1、通过String的indexOf(String str, int fromIndex)方法
+    private static void matchStringByIndexOf(String parent, String child) {
+        int count = 0;
+        int index = 0;
+        while ((index = parent.indexOf(child, index)) != -1) {
+            index = index + child.length();
+            count++;
+        }
+        System.out.println("匹配个数为" + count);                              //结果输出
+    }
+
+    private static void matchStringByRegularExpression(String parent, String child) {
+
+        int count = 0;
+        Pattern p = Pattern.compile(child);
+        Matcher m = p.matcher(parent);
+        while (m.find()) {
+            count++;
+            System.out.println("匹配项" + count + "：" + m.group()); //group方法返回由以前匹配操作所匹配的输入子序列。
+        }
+        System.out.println("匹配个数为" + count);                              //结果输出
+    }
+
+    public static void main(String[] args) {
+        matchStringByRegularExpression("网络科技", "科技");
+    }
 
 }
