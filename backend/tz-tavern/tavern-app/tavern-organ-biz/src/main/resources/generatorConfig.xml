@@ -51,7 +51,7 @@
                 </table>-->
         <!-- <table tableName="hot_project_info" domainObjectName="HotProjectInfo">
                 </table>-->
-         <table tableName="company_name_record" domainObjectName="CompanyNameRecord">
+         <table tableName="company_name_property" domainObjectName="CompanyNameProperty">
                 </table>
 
 

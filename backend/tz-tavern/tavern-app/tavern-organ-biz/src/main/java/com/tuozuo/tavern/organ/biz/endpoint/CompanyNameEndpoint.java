@@ -1,22 +1,24 @@
 package com.tuozuo.tavern.organ.biz.endpoint;
 
 import com.tuozuo.tavern.common.protocol.TavernResponse;
+import com.tuozuo.tavern.organ.biz.dict.CompanyPropertyType;
 import com.tuozuo.tavern.organ.biz.dto.BuildNameDTO;
+import com.tuozuo.tavern.organ.biz.dto.CompanyPropertyDTO;
 import com.tuozuo.tavern.organ.biz.model.CompanyName;
+import com.tuozuo.tavern.organ.biz.model.CompanyNameProperty;
 import com.tuozuo.tavern.organ.biz.model.CompanyVerifyResult;
 import com.tuozuo.tavern.organ.biz.service.CompanyNameService;
+import com.tuozuo.tavern.organ.biz.service.CompanyPropertyService;
 import com.tuozuo.tavern.organ.biz.vo.BuildNameVO;
 import com.tuozuo.tavern.organ.biz.vo.VerifyNameVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -29,6 +31,8 @@ public class CompanyNameEndpoint {
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyNameEndpoint.class);
     @Autowired
     private CompanyNameService companyNameService;
+    @Autowired
+    private CompanyPropertyService companyPropertyService;
 
 
     @GetMapping("/creation")
@@ -54,6 +58,33 @@ public class CompanyNameEndpoint {
             return TavernResponse.ok(result);
         } catch (Exception e) {
             LOGGER.error("[公司核名] failed", e);
+            return TavernResponse.bizFailure("系统查询异常，请稍后再试");
+        }
+    }
+
+    @GetMapping("/dict/{dict}")
+    public TavernResponse queryCompanyDict(@PathVariable("dict") String dict) {
+        try {
+            List<CompanyNameProperty> properties = this.companyPropertyService.queryCompanyProperty(CompanyPropertyType.valueOf(dict));
+            Map<String, List<CompanyNameProperty>> map = properties.parallelStream().collect(Collectors.groupingBy(CompanyNameProperty::getSuperClass));
+            List<CompanyPropertyDTO> companyPropertyDTOList = map.entrySet()
+                    .stream()
+                    .map(entry -> {
+                        List<String> companyNameProperties = entry.getValue()
+                                .stream()
+                                .map(CompanyNameProperty::getSubClass)
+                                .filter(c -> c != null && !c.equals(""))
+                                .collect(Collectors.toList());
+                        CompanyPropertyDTO companyPropertyDTO = new CompanyPropertyDTO();
+                        companyPropertyDTO.setSuperClass(entry.getKey());
+                        companyPropertyDTO.setSubClass(companyNameProperties);
+                        return companyPropertyDTO;
+                    }).collect(Collectors.toList());
+
+
+            return TavernResponse.ok(companyPropertyDTOList);
+        } catch (Exception e) {
+            LOGGER.error("[公司起名字典] failed", e);
             return TavernResponse.bizFailure("系统查询异常，请稍后再试");
         }
     }

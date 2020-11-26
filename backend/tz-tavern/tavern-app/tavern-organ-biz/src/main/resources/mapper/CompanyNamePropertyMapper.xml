@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuozuo.tavern.organ.biz.mapper.CompanyNamePropertyMapper">
+  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.organ.biz.model.CompanyNameProperty">
+    <result column="super_class" jdbcType="VARCHAR" property="superClass" />
+    <result column="sub_class" jdbcType="VARCHAR" property="subClass" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+  </resultMap>
+  <insert id="insert" parameterType="com.tuozuo.tavern.organ.biz.model.CompanyNameProperty">
+    insert into company_name_property (super_class, sub_class, type
+      )
+    values (#{superClass,jdbcType=VARCHAR}, #{subClass,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}
+      )
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select super_class, sub_class, type
+    from company_name_property
+  </select>
+</mapper>

@@ -73,8 +73,8 @@ public class CompanyProperyStoreTask implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        this.companyIndustryStore();
-        this.companyAreaStore();
-        this.companyTypeStore();
+//        this.companyIndustryStore();
+//        this.companyAreaStore();
+//        this.companyTypeStore();
     }
 }
