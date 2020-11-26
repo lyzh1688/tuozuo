@@ -26,7 +26,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../daima/paly" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -69,6 +69,7 @@
       <updated>1605679949822</updated>
       <workItem from="1605680109214" duration="8035000" />
       <workItem from="1605930741600" duration="3060000" />
+      <workItem from="1606409807011" duration="479000" />
     </task>
     <servers />
   </component>
@@ -112,10 +113,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1876" height="342" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1606321160695" />
-    <state x="461" y="151" key="SettingsEditor" timestamp="1605930875644">
+    <state x="461" y="151" key="SettingsEditor" timestamp="1606410285600">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="461" y="151" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1605930875644" />
+    <state x="461" y="151" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1606410285600" />
     <state x="1075" y="172" width="596" height="584" key="find.popup" timestamp="1605930946524">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

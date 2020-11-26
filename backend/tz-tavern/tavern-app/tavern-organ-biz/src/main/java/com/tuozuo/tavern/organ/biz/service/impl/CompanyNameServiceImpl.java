@@ -39,7 +39,8 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
     private final int pageSize = 20;
 
 
-    @Value("${company.name.build.script.path:tavern-app/tavern-organ-biz/generateName/main.py}")
+//    @Value("${company.name.build.script.path:tavern-app/tavern-organ-biz/generateName/main.py}")
+    @Value("${company.name.build.script.path:/opt/tuozuo/script/generateName/main.py}")
     private String scriptPath;
     @Value("${company.perfect.scores:100}")
     private int perfectScores;

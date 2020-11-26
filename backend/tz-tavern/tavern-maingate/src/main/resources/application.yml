@@ -32,6 +32,10 @@ zuul:
       path: /tuozuo/xinruyi/applet/v1/**
       url: http://127.0.0.1:8084/
       stripPrefix: false
+    tavern-organ-biz:
+      path: /tuozuo/organbiz/v1/**
+      url: http://127.0.0.1:8085/
+      stripPrefix: false
   host:
     connect-timeout-millis: 10000
     socket-timeout-millis: 60000

@@ -75,7 +75,7 @@ def get_intersect(names, exist_name):
 
 # 加载名字库
 def get_name_valid(path, exist_names):
-    with open('tavern-app/tavern-organ-biz/generateName/data/' + path + '.dat', encoding='utf-8') as f:
+    with open('/opt/tuozuo/script/generateName/data/' + path + '.dat', encoding='utf-8') as f:
         for line in f:
             data = line.split(',')
             name = data[0][1:]
@@ -88,7 +88,7 @@ def get_name_valid(path, exist_names):
 
 
 def get_name_dat(path, names, stroke_list):
-    with open('tavern-app/tavern-organ-biz/generateName/data/' + path + '.dat', encoding='utf-8') as f:
+    with open('/opt/tuozuo/script/generateName/data/' + path + '.dat', encoding='utf-8') as f:
         line_list = f.readlines()
         size = len(line_list)
         progress = 0
@@ -117,7 +117,7 @@ def get_name_dat(path, names, stroke_list):
 
 
 def get_name_txt(path, names, stroke_list):
-    with open('tavern-app/tavern-organ-biz/generateName/data/' + path + '.txt', encoding='utf-8') as f:
+    with open('/opt/tuozuo/script/generateName/data/' + path + '.txt', encoding='utf-8') as f:
         line_list = f.readlines()
         size = len(line_list)
         progress = 0
@@ -135,7 +135,7 @@ def get_name_txt(path, names, stroke_list):
 
 
 def get_name_json(path, names, column, stroke_list):
-    with open('tavern-app/tavern-organ-biz/generateName/data/' + path + '.json', encoding='utf-8') as f:
+    with open('/opt/tuozuo/script/generateName/data/' + path + '.json', encoding='utf-8') as f:
         data = json.loads(f.read())
         size = len(data)
         progress = 0
@@ -197,7 +197,7 @@ def check_resource(name):
 
 
 def check_name_json(path, name, column):
-    with open('tavern-app/tavern-organ-biz/generateName/data/' + path + '.json', encoding='utf-8') as f:
+    with open('/opt/tuozuo/script/generateName/data/' + path + '.json', encoding='utf-8') as f:
         data = json.loads(f.read())
         size = len(data)
         for i in range(0, size):
@@ -219,7 +219,7 @@ def check_name_json(path, name, column):
 
 
 def check_name_txt(path, name):
-    with open('tavern-app/tavern-organ-biz/generateName/data/' + path + '.txt', encoding='utf-8') as f:
+    with open('/opt/tuozuo/script/generateName/data/' + path + '.txt', encoding='utf-8') as f:
         line_list = f.readlines()
         size = len(line_list)
         for i in range(0, size):

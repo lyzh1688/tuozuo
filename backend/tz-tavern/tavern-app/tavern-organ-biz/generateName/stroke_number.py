@@ -1,7 +1,7 @@
 ﻿import re
 
 stroke_dic = dict()
-with open('tavern-app/tavern-organ-biz/generateName/data/stoke.dat', encoding='utf-8') as f:
+with open('/opt/tuozuo/script/generateName/data/stoke.dat', encoding='utf-8') as f:
     data = f.readlines()
     for string in data:
         temp = string.split("|")
@@ -9,7 +9,7 @@ with open('tavern-app/tavern-organ-biz/generateName/data/stoke.dat', encoding='u
         stroke_dic[temp[1]] = int(temp[2])
 
 split_dic = dict()
-with open('tavern-app/tavern-organ-biz/generateName/data/chaizi-ft.dat', encoding='utf-8') as f:
+with open('/opt/tuozuo/script/generateName/data/chaizi-ft.dat', encoding='utf-8') as f:
     data = f.readlines()
     for string in data:
         temp = re.split("\s", string)

@@ -5,5 +5,5 @@ package com.tuozuo.tavern.organ.biz.dict;
  * Dev Time: 2020/11/26 <br>
  */
 public enum CompanyPropertyType {
-    area,industry,type
+    area,industry,type,reference
 }
