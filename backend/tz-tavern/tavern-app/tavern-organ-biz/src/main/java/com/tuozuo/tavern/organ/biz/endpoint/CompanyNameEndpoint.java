@@ -3,8 +3,10 @@ package com.tuozuo.tavern.organ.biz.endpoint;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.organ.biz.dto.BuildNameDTO;
 import com.tuozuo.tavern.organ.biz.model.CompanyName;
+import com.tuozuo.tavern.organ.biz.model.CompanyVerifyResult;
 import com.tuozuo.tavern.organ.biz.service.CompanyNameService;
 import com.tuozuo.tavern.organ.biz.vo.BuildNameVO;
+import com.tuozuo.tavern.organ.biz.vo.VerifyNameVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,17 @@ public class CompanyNameEndpoint {
             return TavernResponse.ok(dto);
         } catch (Exception e) {
             LOGGER.error("[公司起名] failed", e);
+            return TavernResponse.bizFailure("系统查询异常，请稍后再试");
+        }
+    }
+
+    @GetMapping("/verification")
+    public TavernResponse verifyCompanyName(@ModelAttribute @Valid VerifyNameVO vo) {
+        try {
+            CompanyVerifyResult result = this.companyNameService.queryCompanyResult(vo.getArea(), vo.getName(), vo.getIndustry());
+            return TavernResponse.ok(result);
+        } catch (Exception e) {
+            LOGGER.error("[公司核名] failed", e);
             return TavernResponse.bizFailure("系统查询异常，请稍后再试");
         }
     }

@@ -23,4 +23,9 @@ public class CompanyNameRecordDaoImpl extends ServiceImpl<CompanyNameRecordMappe
                 .lambda()
                 .eq(CompanyNameRecord::getPinyin, pinyin));
     }
+
+    @Override
+    public void mergeCompanyRecords(List<CompanyNameRecord> companyNameRecordList) {
+        this.saveOrUpdateBatch(companyNameRecordList);
+    }
 }

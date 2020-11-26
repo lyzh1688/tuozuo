@@ -11,12 +11,25 @@ import java.util.List;
  */
 public class CompanyVerifyResult {
 
+    private static final BigDecimal DEF_SCORES = new BigDecimal(50);
+
     private BigDecimal scores;
     private List<String> pinyinDupRecords = Lists.newArrayList();
     private List<String> wordDupRecords = Lists.newArrayList();
     private List<String> pinYinPosDupRecords = Lists.newArrayList();
     private List<String> wordPosRecords = Lists.newArrayList();
     private List<String> industryDescRecords = Lists.newArrayList();
+
+    public CompanyVerifyResult() {
+    }
+
+    public CompanyVerifyResult(BigDecimal scores) {
+        this.scores = scores;
+    }
+
+    public static CompanyVerifyResult defCompanyNameRecord() {
+        return new CompanyVerifyResult(DEF_SCORES);
+    }
 
 
     public BigDecimal getScores() {

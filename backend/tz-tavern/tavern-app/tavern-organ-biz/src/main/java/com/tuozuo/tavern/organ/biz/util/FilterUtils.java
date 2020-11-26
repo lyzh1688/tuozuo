@@ -52,17 +52,17 @@ public class FilterUtils {
 
     public String getIndustryChar(List<String> str) {
 //        [南京, 延锋安道, 拓, 座椅, 有限公司, 无锡, 分公司]
-        String industry = null;
+        StringBuilder industry = new StringBuilder();
         List<String> result = Lists.newArrayList();
         for (int i = 0; i < str.size(); i++) {
             if (companyPropertyStore.getTypeMap().containsKey(str.get(i))) {
-                industry += str.get(i);
+                industry.append(str.get(i));
             } else {
                 result.add(str.get(i));
             }
         }
         str = result;
-        return industry;
+        return industry.toString();
     }
 
 
@@ -90,7 +90,8 @@ public class FilterUtils {
     }
 
     public static void main(String[] args) {
-        matchStringByRegularExpression("网络科技", "科技");
+        StringBuilder builder = new StringBuilder();
+        System.out.println(builder.toString().equals(""));
     }
 
 }

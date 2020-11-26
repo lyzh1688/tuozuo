@@ -12,4 +12,6 @@ public interface CompanyNameRecordDao {
 
     List<CompanyNameRecord> queryCompanyRecords(String pinyin);
 
+    void mergeCompanyRecords(List<CompanyNameRecord> companyNameRecordList);
+
 }
