@@ -6,6 +6,10 @@ tavern.security.jwt.secret: tavern
 qcc.key: 2fd58c707a164dbdaaf9ba9d71a30022
 qcc.secretKey: 36D8F15080D2D68F213DFD64108B61A1
 
+company.industry.path: "D://项目//tuozuo.git//backend//tz-tavern//tavern-app//tavern-organ-biz//company//industry.txt"
+company.area.path: "D://项目//tuozuo.git//backend//tz-tavern//tavern-app//tavern-organ-biz//company//area.txt"
+company.type.path: "D://项目//tuozuo.git//backend//tz-tavern//tavern-app//tavern-organ-biz//company//type.txt"
+
 mybatis-plus:
   # MyBatis Mapper所对应的XML文件位置
   mapper-locations: classpath*:mapper/*Mapper.xml
@@ -19,8 +23,8 @@ spring:
     password: y2iaciej
     url: jdbc:mysql://119.3.19.171:3306/xinruyi?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&allowMultiQueries=true
     max-idle: 0
-    max-wait: 10000
+    max-wait: 1000
     min-idle: 1
-    initial-size: 2
+    initial-size: 1
   application:
     name: tavern-organ-biz

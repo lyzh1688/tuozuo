@@ -38,7 +38,7 @@ public class QccCompanyDataServiceImpl implements QccCompanyDataService {
         String[] autherHeader = this.randomAuthentHeader();
         reqHeader.put("Token", autherHeader[0]);
         reqHeader.put("Timespan", autherHeader[1]);
-        CompanyBizResult companyBizResult = this.companyBizDataService.getCompanyBizData(reqHeader, key, pinyin, pageNo, pageSize, DataType.json.name());
+        CompanyBizResult companyBizResult = this.companyBizDataService.getCompanyBizData(reqHeader, key, pinyin, pageSize,pageNo , DataType.json.name());
 
         return companyBizResult;
     }

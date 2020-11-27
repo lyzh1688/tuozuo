@@ -1,6 +1,7 @@
 package com.tuozuo.tavern.organ.biz.service.impl;
 
 import com.google.common.collect.Lists;
+import com.tuozuo.tavern.organ.biz.exeception.QccException;
 import com.tuozuo.tavern.organ.biz.model.*;
 import com.tuozuo.tavern.organ.biz.service.CompanyNameService;
 import com.tuozuo.tavern.organ.biz.util.PinyinProcUtils;
@@ -27,7 +28,7 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
 
     public abstract List<CompanyNameRecord> transferPinyin(List<String> name);
 
-    public abstract List<CompanyNameRecord> getCompanyName(List<CompanyNameRecord> recordList);
+    public abstract List<CompanyNameRecord> getCompanyName(List<CompanyNameRecord> recordList) throws QccException;
 
     public abstract List<RecordItem> processCompanyName(List<CompanyNameRecord> companyNameList);
 
@@ -36,7 +37,7 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
     public abstract void storeCompanyNameRecord(List<CompanyNameRecord> companyNameRecordList);
 
     @Override
-    public CompanyVerifyResult queryCompanyResult(String area, String name, String industryDesc) {
+    public CompanyVerifyResult queryCompanyResult(String area, String name, String industryDesc) throws QccException {
 
         UserCompanyName userCompanyName = this.createUserCompanyName(area, name, industryDesc);
 

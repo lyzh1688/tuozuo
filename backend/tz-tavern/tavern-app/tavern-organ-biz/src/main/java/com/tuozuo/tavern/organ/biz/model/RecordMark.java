@@ -1,11 +1,13 @@
 package com.tuozuo.tavern.organ.biz.model;
 
+import com.google.common.collect.Lists;
+
 import java.util.List;
 
 //记录的标记
 public class RecordMark {
     String word;//词根
-    List<String> wordPinYinList;//词根的单字拼音列表，按照原顺序排列好的
+    List<String> wordPinYinList = Lists.newArrayList();//词根的单字拼音列表，按照原顺序排列好的
 
     @Override
     public String toString() {

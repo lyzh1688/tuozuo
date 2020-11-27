@@ -33,11 +33,11 @@ public class CompanyPropertyStore {
     }
 
     public void updateIndustryMap(String industry) {
-        this.areaMap.putIfAbsent(industry, industry);
+        this.industryMap.putIfAbsent(industry, industry);
     }
 
     public void updateTypeMap(String type) {
-        this.areaMap.putIfAbsent(type, type);
+        this.typeMap.putIfAbsent(type, type);
     }
 
 

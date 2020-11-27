@@ -2,6 +2,7 @@ package com.tuozuo.tavern.organ.biz.util;
 
 import com.google.common.collect.Lists;
 import com.tuozuo.tavern.organ.biz.store.CompanyPropertyStore;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,14 +28,13 @@ public class FilterUtils {
     }
 
     public List<String> filterAreaChar(List<String> str) {
-        List<String> result = Lists.newArrayList();
         for (int i = 0; i < str.size(); i++) {
-            if (!companyPropertyStore.getAreaMap().containsKey(str.get(i))) {
-                result.add(str.get(i));
+            if (companyPropertyStore.getAreaMap().containsKey(str.get(i))) {
+                str.remove(i);
+                break;
             }
         }
-
-        return result;
+        return str;
     }
 
     public List<String> filterTypeChar(List<String> str) {
@@ -52,17 +52,24 @@ public class FilterUtils {
 
     public String getIndustryChar(List<String> str) {
 //        [南京, 延锋安道, 拓, 座椅, 有限公司, 无锡, 分公司]
-        StringBuilder industry = new StringBuilder();
-        List<String> result = Lists.newArrayList();
+        StringBuilder ind = new StringBuilder();
         for (int i = 0; i < str.size(); i++) {
-            if (companyPropertyStore.getTypeMap().containsKey(str.get(i))) {
-                industry.append(str.get(i));
-            } else {
-                result.add(str.get(i));
+            if (companyPropertyStore.getIndustryMap().containsKey(str.get(i))) {
+                ind.append(str.get(i));
             }
         }
-        str = result;
-        return industry.toString();
+        return ind.toString();
+    }
+
+    public String getCompanySimpleName(List<String> str) {
+//        [南京, 延锋安道, 拓, 座椅, 有限公司, 无锡, 分公司]
+        StringBuilder name = new StringBuilder();
+        for (int i = 0; i < str.size(); i++) {
+            if (!companyPropertyStore.getIndustryMap().containsKey(str.get(i))) {
+                name.append(str.get(i));
+            }
+        }
+        return name.toString();
     }
 
 

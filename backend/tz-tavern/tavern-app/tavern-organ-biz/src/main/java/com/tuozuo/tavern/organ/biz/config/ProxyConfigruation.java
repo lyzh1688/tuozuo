@@ -16,15 +16,11 @@ import org.springframework.context.annotation.Configuration;
 public class ProxyConfigruation {
 
     @Value("${qcc.company.data.http.url:http://api.qichacha.com}")
-    private String snapshotUrl;
+    private String qccUrl;
 
     @Bean(name = "CompanyBizDataService")
     public CompanyBizDataService companyBizDataService() {
-        HystrixParam hystrixParam = new HystrixParam();
-        hystrixParam.setThreadPoolCoreSize(100);
-        hystrixParam.setMaxQueueSizePerThread(-1);
-        hystrixParam.setQueueSizeRejectionThresholdPerThread(100);
-        return new HystrixProxy<CompanyBizDataService>().newProxy("CompanyBizData", CompanyBizDataService.class, new CompanyBizDataServiceFallback(), hystrixParam);
+        return new HystrixProxy<CompanyBizDataService>().newProxy( CompanyBizDataService.class, qccUrl,new CompanyBizDataServiceFallback());
     }
 
 }

@@ -2,6 +2,7 @@ package com.tuozuo.tavern.organ.biz.service;
 
 
 import com.tuozuo.tavern.organ.biz.exeception.ExecuteException;
+import com.tuozuo.tavern.organ.biz.exeception.QccException;
 import com.tuozuo.tavern.organ.biz.model.CompanyName;
 import com.tuozuo.tavern.organ.biz.model.CompanyVerifyResult;
 
@@ -23,7 +24,7 @@ public interface CompanyNameService {
             String type) throws ExecuteException, IOException;
 
 
-    CompanyVerifyResult queryCompanyResult(String area,String name,String industryDesc);
+    CompanyVerifyResult queryCompanyResult(String area,String name,String industryDesc) throws QccException;
 
 
 

@@ -24,11 +24,11 @@ public class CompanyProperyStoreTask implements InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyProperyStoreTask.class);
 
-    @Value("${company.industry.path:tavern-app/tavern-organ-biz/industry.txt}")
+    @Value("${company.industry.path:/opt/tuozuo/script/company/industry.txt}")
     private String industryPath;
-    @Value("${company.area.path:tavern-app/tavern-organ-biz/area.txt}")
+    @Value("${company.area.path:/opt/tuozuo/script/company/area.txt}")
     private String areaPath;
-    @Value("${company.type.path:tavern-app/tavern-organ-biz/type.txt}")
+    @Value("${company.type.path:/opt/tuozuo/script/company/type.txt}")
     private String typePath;
 
     @Autowired
@@ -73,8 +73,8 @@ public class CompanyProperyStoreTask implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-//        this.companyIndustryStore();
-//        this.companyAreaStore();
-//        this.companyTypeStore();
+        this.companyIndustryStore();
+        this.companyAreaStore();
+        this.companyTypeStore();
     }
 }

@@ -15,7 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 public class PinyinProcUtils {
 
     public static void main(String[] args) {
-        System.out.println(getPinyin("小青蛙呱呱呱"," "));
+        System.out.println(getPinyin("天鹿兮"," "));
     }
 
 

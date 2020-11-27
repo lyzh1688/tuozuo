@@ -19,7 +19,7 @@ public class FileUtils {
         List<String> resultList = Lists.newArrayList();
         BufferedReader reader = null;
         try {
-            reader = Files.newBufferedReader(Paths.get(path), StandardCharsets.ISO_8859_1);
+            reader = Files.newBufferedReader(Paths.get(path), StandardCharsets.UTF_8);
             String str = null;
             while ((str = reader.readLine()) != null) {
                 resultList.add(str);
