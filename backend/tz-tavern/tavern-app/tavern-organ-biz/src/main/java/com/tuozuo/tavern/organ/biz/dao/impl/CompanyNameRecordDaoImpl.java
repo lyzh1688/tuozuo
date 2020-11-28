@@ -17,6 +17,9 @@ import java.util.List;
 @Repository
 public class CompanyNameRecordDaoImpl extends ServiceImpl<CompanyNameRecordMapper, CompanyNameRecord> implements CompanyNameRecordDao {
 
+    @Autowired
+    private CompanyNameRecordMapper companyNameRecordMapper;
+
     @Override
     public List<CompanyNameRecord> queryCompanyRecords(String pinyin) {
         return this.list(Wrappers.<CompanyNameRecord>query()
@@ -26,6 +29,6 @@ public class CompanyNameRecordDaoImpl extends ServiceImpl<CompanyNameRecordMappe
 
     @Override
     public void mergeCompanyRecords(List<CompanyNameRecord> companyNameRecordList) {
-        this.saveOrUpdateBatch(companyNameRecordList);
+        this.companyNameRecordMapper.mergeBatch(companyNameRecordList);
     }
 }

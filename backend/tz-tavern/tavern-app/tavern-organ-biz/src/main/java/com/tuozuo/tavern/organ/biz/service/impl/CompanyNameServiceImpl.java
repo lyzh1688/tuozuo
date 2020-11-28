@@ -124,14 +124,15 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
         List<CompanyNameRecord> names = Lists.newArrayList();
         for (CompanyNameRecord record : recordList) {
             //1、先查数据库，有则取数据库
-//            List<CompanyNameRecord> dbNames = this.companyNameRecordDao.queryCompanyRecords(record.getPinyin());
-            List<CompanyNameRecord> dbNames = Lists.newArrayList();
+            List<CompanyNameRecord> dbNames = this.companyNameRecordDao.queryCompanyRecords(record.getPinyin());
+//            List<CompanyNameRecord> dbNames = Lists.newArrayList();
             if (!dbNames.isEmpty()) {
                 names.addAll(dbNames);
             } else {
                 //2、api接口查询
-                List<CompanyNameRecord> qccNames = this.getCompanyFromQcc(record);
-                names.addAll(qccNames);
+//                List<CompanyNameRecord> qccNames = this.getCompanyFromQcc(record);
+//                names.addAll(qccNames);
+//                this.storeCompanyNameRecord(qccNames);
             }
         }
         return names;
@@ -164,19 +165,18 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
             }
             List<String> pinyinList = Arrays.asList(StringUtils.split(PinyinProcUtils.getPinyin(rootName, ","), ","));
             item.setNamePinYinList(pinyinList);
+            List<String> recordPinyinList = Arrays.asList(StringUtils.split(PinyinProcUtils.getPinyin(record.getName(), ","), ","));
+            RecordMark recordMark = new RecordMark();
+            recordMark.setWord(record.getName());
+            recordMark.setWordPinYinList(recordPinyinList);
             if (dupRecordMap.containsKey(record.getFullName())) {
-                List<String> recordPinyinList = Arrays.asList(StringUtils.split(PinyinProcUtils.getPinyin(record.getName(), ","), ","));
                 RecordItem dupItem = dupRecordMap.get(record.getFullName());
-                RecordMark recordMark = new RecordMark();
-                recordMark.setWord(record.getName());
-                recordMark.setWordPinYinList(recordPinyinList);
                 List<RecordMark> recordMarks = dupItem.getMarkers();
-                if (recordMarks == null || recordMarks.size() == 0) {
-                    recordMarks = Lists.newArrayList();
-                    recordMarks.add(recordMark);
-                } else {
-                    recordMarks.add(recordMark);
-                }
+                recordMarks.add(recordMark);
+                item.setMarkers(recordMarks);
+            } else {
+                List<RecordMark> recordMarks = Lists.newArrayList();
+                recordMarks.add(recordMark);
                 item.setMarkers(recordMarks);
             }
             dupRecordMap.put(record.getFullName(), item);

@@ -1,13 +1,15 @@
 package com.tuozuo.tavern.organ.biz.model;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.time.LocalDateTime;
 @TableName("company_name_record")
 public class CompanyNameRecord extends Model<CompanyNameRecord> {
+    @TableId
     private String pinyin;
-
+    @TableId
     private String fullName;
 
     private String name;

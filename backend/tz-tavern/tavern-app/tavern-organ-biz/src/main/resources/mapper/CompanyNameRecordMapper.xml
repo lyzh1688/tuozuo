@@ -10,37 +10,25 @@
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="map">
-    delete from company_name_record
-    where pinyin = #{pinyin,jdbcType=VARCHAR}
-      and full_name = #{fullName,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.tuozuo.tavern.organ.biz.model.CompanyNameRecord">
-    insert into company_name_record (pinyin, full_name, name, 
-      area, industry, type, 
-      update_date)
-    values (#{pinyin,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{area,jdbcType=VARCHAR}, #{industry,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
-      #{updateDate,jdbcType=TIMESTAMP})
+  <insert id="mergeBatch" parameterType="list">
+    insert into company_name_record (pinyin, full_name, name,
+    area, industry, type,
+    update_date)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (
+      #{item.pinyin,jdbcType=VARCHAR}, #{item.fullName,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR},
+      #{item.area,jdbcType=VARCHAR}, #{item.industry,jdbcType=VARCHAR}, #{item.type,jdbcType=VARCHAR},
+      now()
+      )
+    </foreach>
+
+    ON DUPLICATE KEY UPDATE
+
+    name=VALUES(name),
+    area=VALUES(area),
+    industry=VALUES(industry),
+    type=VALUES(type),
+    update_date=now()
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.organ.biz.model.CompanyNameRecord">
-    update company_name_record
-    set name = #{name,jdbcType=VARCHAR},
-      area = #{area,jdbcType=VARCHAR},
-      industry = #{industry,jdbcType=VARCHAR},
-      type = #{type,jdbcType=VARCHAR},
-      update_date = #{updateDate,jdbcType=TIMESTAMP}
-    where pinyin = #{pinyin,jdbcType=VARCHAR}
-      and full_name = #{fullName,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
-    select pinyin, full_name, name, area, industry, type, update_date
-    from company_name_record
-    where pinyin = #{pinyin,jdbcType=VARCHAR}
-      and full_name = #{fullName,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select pinyin, full_name, name, area, industry, type, update_date
-    from company_name_record
-  </select>
 </mapper>
