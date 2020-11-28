@@ -55,10 +55,15 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
         BigDecimal perfectScores = this.getPerfectScores();
         List<RecordResult> recordResults = Lists.newArrayList();
         for (RecordItem item : recordItemList) {
+//            LOGGER.info("[核名扣分入参] :[{}] ", item.toString());
             RecordResult recordResult = this.calculateRecord(item, userCompanyName);
-            LOGGER.error("[核名扣分结果] area:[{}] name:[{}] industryDesc:[{}],recordResult:[{}] ", area, item.getName(), item.getIndustryDesc(),recordResult.toString());
-            perfectScores = (perfectScores.subtract(recordResult.getTotalMinusScore())).setScale(2,BigDecimal.ROUND_HALF_UP);
+            LOGGER.info("[核名扣分结果] area:[{}] name:[{}],pinyin: [{}], industryDesc:[{}],recordResult:[{}] ", area, item.getName(), item.getNamePinYinList(), item.getIndustryDesc(), recordResult.toString());
+            perfectScores = (perfectScores.subtract(recordResult.getTotalMinusScore())).setScale(2, BigDecimal.ROUND_HALF_UP);
             recordResults.add(recordResult);
+        }
+        if (perfectScores.compareTo(BigDecimal.ZERO) < 0) {
+            LOGGER.info("[核名扣分超过阀值] ");
+            perfectScores = BigDecimal.ZERO;
         }
         //4、计算最高的三条数据
         CompanyVerifyResult companyVerifyResult = this.statCompanyVerifyResult(recordResults);
@@ -74,7 +79,7 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
         userCompanyName.setArea(area);
         userCompanyName.setIndustryDesc(industryDesc);
         userCompanyName.setName(name);
-        List<String> pinyin = Arrays.asList(PinyinProcUtils.getPinyin(name, ","), ",");
+        List<String> pinyin = Arrays.asList(StringUtils.split(PinyinProcUtils.getPinyin(name, ","), ","));
         userCompanyName.setNamePinYinList(pinyin);
         return userCompanyName;
     }
@@ -82,27 +87,32 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
     private CompanyVerifyResult statCompanyVerifyResult(List<RecordResult> recordResultList) {
         List<String> pinYinDupMinusScoreRank = recordResultList
                 .parallelStream()
-                .sorted((r1,r2) -> r2.getPinYinDupMinusScore().compareTo(r1.getPinYinDupMinusScore()))
+                .filter(r -> !r.getPinYinDupMinusScore().equals(BigDecimal.ZERO))
+                .sorted((r1, r2) -> r2.getPinYinDupMinusScore().compareTo(r1.getPinYinDupMinusScore()))
                 .map(RecordResult::getFullName)
                 .collect(Collectors.toList());
         List<String> wordDupMinusScoreRank = recordResultList
                 .parallelStream()
-                .sorted((r1,r2) -> r2.getWordDupMinusScore().compareTo(r1.getWordDupMinusScore()))
+                .filter(r -> !r.getWordDupMinusScore().equals(BigDecimal.ZERO))
+                .sorted((r1, r2) -> r2.getWordDupMinusScore().compareTo(r1.getWordDupMinusScore()))
                 .map(RecordResult::getFullName)
                 .collect(Collectors.toList());
         List<String> pinYinPosMinusScoreRank = recordResultList
                 .parallelStream()
-                .sorted((r1,r2) -> r2.getPinYinPosMinusScore().compareTo(r1.getPinYinPosMinusScore()))
+                .filter(r -> !r.getPinYinPosMinusScore().equals(BigDecimal.ZERO))
+                .sorted((r1, r2) -> r2.getPinYinPosMinusScore().compareTo(r1.getPinYinPosMinusScore()))
                 .map(RecordResult::getFullName)
                 .collect(Collectors.toList());
         List<String> wordPosMinusScoreRank = recordResultList
                 .parallelStream()
-                .sorted((r1,r2) -> r2.getWordPosMinusScore().compareTo(r1.getWordPosMinusScore()))
+                .filter(r -> !r.getWordPosMinusScore().equals(BigDecimal.ZERO))
+                .sorted((r1, r2) -> r2.getWordPosMinusScore().compareTo(r1.getWordPosMinusScore()))
                 .map(RecordResult::getFullName)
                 .collect(Collectors.toList());
         List<String> industryDescMinusScoreRank = recordResultList
                 .parallelStream()
-                .sorted((r1,r2) -> r2.getIndustryDescMinusScore().compareTo(r1.getIndustryDescMinusScore()))
+                .filter(r -> !r.getIndustryDescMinusScore().equals(BigDecimal.ZERO))
+                .sorted((r1, r2) -> r2.getIndustryDescMinusScore().compareTo(r1.getIndustryDescMinusScore()))
                 .map(RecordResult::getFullName)
                 .collect(Collectors.toList());
 
@@ -114,11 +124,22 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
 
 
         CompanyVerifyResult companyVerifyResult = new CompanyVerifyResult();
-        companyVerifyResult.setPinyinDupRecords(pinYinDupMinusScoreList.get(0));
-        companyVerifyResult.setWordDupRecords(wordDupMinusScoreList.get(0));
-        companyVerifyResult.setPinYinPosDupRecords(pinYinPosMinusScoreList.get(0));
-        companyVerifyResult.setWordPosRecords(wordPosMinusScoreList.get(0));
-        companyVerifyResult.setIndustryDescRecords(industryDescMinusScoreList.get(0));
+        if (pinYinDupMinusScoreRank.size() != 0) {
+            companyVerifyResult.setPinyinDupRecords(pinYinDupMinusScoreList.get(0));
+        }
+        if (wordDupMinusScoreRank.size() != 0) {
+            companyVerifyResult.setWordDupRecords(wordDupMinusScoreList.get(0));
+        }
+        if (pinYinPosMinusScoreRank.size() != 0) {
+            companyVerifyResult.setPinYinPosDupRecords(pinYinPosMinusScoreList.get(0));
+        }
+        if (wordPosMinusScoreRank.size() != 0) {
+            companyVerifyResult.setWordPosRecords(wordPosMinusScoreList.get(0));
+        }
+        if (industryDescMinusScoreRank.size() != 0) {
+            companyVerifyResult.setIndustryDescRecords(industryDescMinusScoreList.get(0));
+        }
+
 
         return companyVerifyResult;
 

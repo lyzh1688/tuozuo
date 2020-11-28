@@ -66,7 +66,7 @@ public class CalculateRecordServiceImpl implements CalculateRecordService {
             recordResult.setIndustryDesc(item.getIndustryDesc());
             recordResult.setRecordName(item.getName());
             recordResult.setFullName(item.getFullName());
-            if (pinyinInOriginPct.equals(BigDecimal.ONE.setScale(6)) && pinyinInRecordPct.equals(BigDecimal.ONE.setScale(6))) {
+            if (pinyinInOriginPct.equals(BigDecimal.ONE.setScale(6)) && pinyinInRecordPct.equals(BigDecimal.ONE.setScale(6)) && item.getName().length() == companyName.getName().length()) {
                 if (isIndustryTypeSame) {
                     recordResult.setTotalMinusScore(totalScore);
                     recordResult.setPinYinDupMinusScore(BigDecimal.valueOf(25));

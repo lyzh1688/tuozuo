@@ -59,7 +59,7 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
     private FilterUtils filterUtils;
 
 
-//    @Cacheable(value = "build_company_name", key = "#area +'.'+ #industry+'.'+ #source+'.'+ #preferWord+'.'+ #isTwoWords+'.'+ #type")
+    //    @Cacheable(value = "build_company_name", key = "#area +'.'+ #industry+'.'+ #source+'.'+ #preferWord+'.'+ #isTwoWords+'.'+ #type")
     @Override
     public List<CompanyName> queryCompanyName(String source,
                                               String area,
@@ -164,9 +164,13 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
                 continue;
             }
             List<String> pinyinList = Arrays.asList(StringUtils.split(PinyinProcUtils.getPinyin(rootName, ","), ","));
+            List<String> recordPinyinList = Arrays.asList(StringUtils.split(PinyinProcUtils.getPinyin(record.getName(), ","), ","));
+            //若读音不一致，则删除
+            if (!pinyinDupItem(pinyinList, recordPinyinList)) {
+                continue;
+            }
             item.setNamePinYinList(pinyinList);
             item.setFullName(record.getFullName());
-            List<String> recordPinyinList = Arrays.asList(StringUtils.split(PinyinProcUtils.getPinyin(record.getName(), ","), ","));
             RecordMark recordMark = new RecordMark();
             recordMark.setWord(record.getName());
             recordMark.setWordPinYinList(recordPinyinList);
@@ -175,6 +179,7 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
                 List<RecordMark> recordMarks = dupItem.getMarkers();
                 recordMarks.add(recordMark);
                 item.setMarkers(recordMarks);
+                continue;
             } else {
                 List<RecordMark> recordMarks = Lists.newArrayList();
                 recordMarks.add(recordMark);
@@ -186,14 +191,16 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
         return recordItemList;
     }
 
-  /*  public static void main(String[] args) {
-        List<CompanyNameRecord> companyNameList = Lists.newArrayList();
-        CompanyNameRecord companyNameRecord = new CompanyNameRecord();
-        companyNameRecord.setFullName("广州晴隆投资有限公司");
-        companyNameRecord.setPinyin("qinglong");
-        companyNameList.add(companyNameRecord);
-        System.out.println(processCompanyName(companyNameList));
-    }*/
+    private boolean pinyinDupItem(List<String> pinyinList, List<String> recordPinyinList) {
+        int size = pinyinList.stream()
+                .map(t -> recordPinyinList.stream().filter(s -> Objects.nonNull(s) && Objects.nonNull(s) && Objects.equals(t, s)).findAny().orElse(null))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList())
+                .size();
+
+        return size > 0;
+    }
+
 
     @Override
     public RecordResult calculateRecord(RecordItem recordItem, UserCompanyName userCompanyName) {
