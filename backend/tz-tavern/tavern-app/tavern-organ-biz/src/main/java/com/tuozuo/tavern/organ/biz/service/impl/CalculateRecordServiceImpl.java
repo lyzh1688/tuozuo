@@ -65,6 +65,7 @@ public class CalculateRecordServiceImpl implements CalculateRecordService {
             RecordResult recordResult = new RecordResult();
             recordResult.setIndustryDesc(item.getIndustryDesc());
             recordResult.setRecordName(item.getName());
+            recordResult.setFullName(item.getFullName());
             if (pinyinInOriginPct.equals(BigDecimal.ONE.setScale(6)) && pinyinInRecordPct.equals(BigDecimal.ONE.setScale(6))) {
                 if (isIndustryTypeSame) {
                     recordResult.setTotalMinusScore(totalScore);
@@ -116,6 +117,9 @@ public class CalculateRecordServiceImpl implements CalculateRecordService {
     }
 
     private static BigDecimal getPositionPct(List<String> wordList, List<String> source, List<String> target) {
+        if(wordList.size() == 0){
+            return BigDecimal.ZERO;
+        }
         BigDecimal posNum = BigDecimal.ZERO;
         for (String item : wordList) {
             String tmp1 = "";

@@ -10,15 +10,26 @@ public class RecordItem {
     String name;//记录的公司名称
     List<String> namePinYinList = Lists.newArrayList();//记录的单字拼音列表，按照原顺序排列好的
     List<RecordMark> markers = Lists.newArrayList();//记录的标记列表
+    String fullName;
+
 
     @Override
     public String toString() {
-        return "recordItem{" +
+        return "RecordItem{" +
                 "industryDesc='" + industryDesc + '\'' +
                 ", name='" + name + '\'' +
                 ", namePinYinList=" + namePinYinList +
                 ", markers=" + markers +
+                ", fullName='" + fullName + '\'' +
                 '}';
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getIndustryDesc() {

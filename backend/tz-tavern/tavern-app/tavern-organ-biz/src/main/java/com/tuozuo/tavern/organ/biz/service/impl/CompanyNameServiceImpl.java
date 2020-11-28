@@ -59,7 +59,7 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
     private FilterUtils filterUtils;
 
 
-    @Cacheable(value = "build_company_name", key = "#area +'.'+ #industry+'.'+ #source+'.'+ #preferWord+'.'+ #isTwoWords+'.'+ #type")
+//    @Cacheable(value = "build_company_name", key = "#area +'.'+ #industry+'.'+ #source+'.'+ #preferWord+'.'+ #isTwoWords+'.'+ #type")
     @Override
     public List<CompanyName> queryCompanyName(String source,
                                               String area,
@@ -165,6 +165,7 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
             }
             List<String> pinyinList = Arrays.asList(StringUtils.split(PinyinProcUtils.getPinyin(rootName, ","), ","));
             item.setNamePinYinList(pinyinList);
+            item.setFullName(record.getFullName());
             List<String> recordPinyinList = Arrays.asList(StringUtils.split(PinyinProcUtils.getPinyin(record.getName(), ","), ","));
             RecordMark recordMark = new RecordMark();
             recordMark.setWord(record.getName());

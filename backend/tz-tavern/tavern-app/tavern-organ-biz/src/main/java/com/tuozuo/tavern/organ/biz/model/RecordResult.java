@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 public class RecordResult {
     String recordName;//记录名称
     String industryDesc;//记录行业描述
+    String fullName;
     BigDecimal totalMinusScore;//总扣减分数
     BigDecimal pinYinDupMinusScore;//谐音重复扣减分值
     BigDecimal wordDupMinusScore;//字号重复扣减分值
@@ -13,11 +14,13 @@ public class RecordResult {
     BigDecimal wordPosMinusScore;//字号偏移扣减分值
     BigDecimal industryDescMinusScore;//行业描述扣减分值
 
+
     @Override
     public String toString() {
-        return "recordResult{" +
+        return "RecordResult{" +
                 "recordName='" + recordName + '\'' +
                 ", industryDesc='" + industryDesc + '\'' +
+                ", fullName='" + fullName + '\'' +
                 ", totalMinusScore=" + totalMinusScore +
                 ", pinYinDupMinusScore=" + pinYinDupMinusScore +
                 ", wordDupMinusScore=" + wordDupMinusScore +
@@ -25,6 +28,14 @@ public class RecordResult {
                 ", wordPosMinusScore=" + wordPosMinusScore +
                 ", industryDescMinusScore=" + industryDescMinusScore +
                 '}';
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getRecordName() {

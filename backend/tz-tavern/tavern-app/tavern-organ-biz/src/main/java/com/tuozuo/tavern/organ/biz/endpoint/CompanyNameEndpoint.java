@@ -1,5 +1,8 @@
 package com.tuozuo.tavern.organ.biz.endpoint;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.organ.biz.dict.CompanyPropertyType;
 import com.tuozuo.tavern.organ.biz.dto.BuildNameDTO;
@@ -42,6 +45,7 @@ public class CompanyNameEndpoint {
             List<CompanyName> resultList = this.companyNameService.queryCompanyName(vo.getSource(), vo.getArea(), vo.getIndustry(), vo.getPreferWord(), vo.getIsTwoWords(), vo.getType());
             List<CompanyName> pageList = resultList.stream().skip((vo.getPageNo() - 1) * vo.getPageSize()).limit(vo.getPageSize()).collect(Collectors.toList());
             BuildNameDTO dto = new BuildNameDTO();
+//            dto.setNames(creat());
             dto.setNames(pageList);
             dto.setTotalNum(resultList.size());
             return TavernResponse.ok(dto);
@@ -49,6 +53,24 @@ public class CompanyNameEndpoint {
             LOGGER.error("[公司起名] failed", e);
             return TavernResponse.bizFailure("系统查询异常，请稍后再试");
         }
+    }
+
+    private List<CompanyName> creat() {
+        List<CompanyName> companyNameList = Lists.newArrayList();
+        for (int i = 0; i < 10; i++) {
+            CompanyName companyName = new CompanyName();
+            companyName.setName("天邦之");
+            companyName.setFullName("上海天邦之电子商务有限责任公司");
+            companyName.setReference("念餘「邦」「之」橫陷兮，宗鬼神「之」無次。");
+            List<Integer> list = Lists.newArrayList();
+            list.add(4);
+            list.add(11);
+            list.add(4);
+            companyName.setStrokeNums(list);
+            companyNameList.add(companyName);
+        }
+
+        return companyNameList;
     }
 
     @GetMapping("/verification")
