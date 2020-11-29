@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -23,6 +23,8 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyNameTemplate.class);
 
     public abstract BigDecimal getPerfectScores();
+
+    public abstract BigDecimal getMaxMinusScores();
 
     public abstract List<String> splitName(String name);
 
@@ -60,14 +62,18 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
             LOGGER.info("[核名扣分结果] area:[{}] name:[{}],pinyin: [{}], industryDesc:[{}],recordResult:[{}] ", area, item.getName(), item.getNamePinYinList(), item.getIndustryDesc(), recordResult.toString());
             perfectScores = (perfectScores.subtract(recordResult.getTotalMinusScore())).setScale(2, BigDecimal.ROUND_HALF_UP);
             recordResults.add(recordResult);
-        }
-        if (perfectScores.compareTo(BigDecimal.ZERO) < 0) {
-            LOGGER.info("[核名扣分超过阀值] ");
-            perfectScores = BigDecimal.ZERO;
+            if (perfectScores.compareTo(BigDecimal.ZERO) < 0) {
+                LOGGER.info("[核名扣分超过阀值] ");
+                perfectScores = BigDecimal.ZERO;
+                break;
+            }
         }
         //4、计算最高的三条数据
-        CompanyVerifyResult companyVerifyResult = this.statCompanyVerifyResult(recordResults);
-        companyVerifyResult.setScores(perfectScores);
+        CompanyVerifyResult companyVerifyResult = this.statCompanyNameRankScores(recordResults);
+        this.statCompanyItemScores(recordResults, companyVerifyResult);
+        companyVerifyResult.setTotalScores(perfectScores);
+        RecordResult maxScoreRecord = this.getMaxScoreRecord(recordResults);
+        companyVerifyResult.setMaxScoreRecord(maxScoreRecord);
         this.storeCompanyNameRecord(companyNameRecords);
 
 
@@ -84,43 +90,89 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
         return userCompanyName;
     }
 
-    private CompanyVerifyResult statCompanyVerifyResult(List<RecordResult> recordResultList) {
-        List<String> pinYinDupMinusScoreRank = recordResultList
+    private RecordResult getMaxScoreRecord(List<RecordResult> recordResultList) {
+
+        Optional<RecordResult> op = recordResultList.parallelStream()
+                .filter(r -> r.getTotalMinusScore().equals(this.getMaxMinusScores()))
+                .findFirst();
+        if (!op.isPresent()) {
+            return null;
+        }
+        return op.get();
+    }
+
+    private CompanyVerifyResult statCompanyItemScores(List<RecordResult> recordResultList, CompanyVerifyResult companyVerifyResult) {
+        BigDecimal pinYinDupMinusScore = recordResultList
                 .parallelStream()
-                .filter(r -> !r.getPinYinDupMinusScore().equals(BigDecimal.ZERO))
+                .map(r -> r.getPinYinDupMinusScore().setScale(2, BigDecimal.ROUND_HALF_UP))
+                .reduce(BigDecimal::add).get();
+        BigDecimal wordDupMinusScore = recordResultList
+                .parallelStream()
+                .map(r -> r.getWordDupMinusScore().setScale(2, BigDecimal.ROUND_HALF_UP))
+                .reduce(BigDecimal::add).get();
+        BigDecimal pinYinPosMinusScore = recordResultList
+                .parallelStream()
+                .map(r -> r.getPinYinPosMinusScore().setScale(2, BigDecimal.ROUND_HALF_UP))
+                .reduce(BigDecimal::add).get();
+        BigDecimal wordPosMinusScore = recordResultList
+                .parallelStream()
+                .map(r -> r.getWordPosMinusScore().setScale(2, BigDecimal.ROUND_HALF_UP))
+                .reduce(BigDecimal::add).get();
+        BigDecimal industryDescMinusScore = recordResultList
+                .parallelStream()
+                .map(r -> r.getIndustryDescMinusScore().setScale(2, BigDecimal.ROUND_HALF_UP))
+                .reduce(BigDecimal::add).get();
+        companyVerifyResult.setWordDupScores(wordDupMinusScore);
+        companyVerifyResult.setWordPosScores(wordPosMinusScore);
+        companyVerifyResult.setPinYinPosScores(pinYinPosMinusScore);
+        companyVerifyResult.setPinyinDupScores(pinYinDupMinusScore);
+        companyVerifyResult.setIndustryScores(industryDescMinusScore);
+
+        return companyVerifyResult;
+    }
+
+    private CompanyVerifyResult statCompanyNameRankScores(List<RecordResult> recordResultList) {
+        List<CompanyNameScore> pinYinDupMinusScoreRank = recordResultList
+                .parallelStream()
+                .filter(r -> r.getTotalMinusScore().compareTo(this.getMaxMinusScores()) < 0)
+                .filter(r -> r.getPinYinDupMinusScore().setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue() != 0)
                 .sorted((r1, r2) -> r2.getPinYinDupMinusScore().compareTo(r1.getPinYinDupMinusScore()))
-                .map(RecordResult::getFullName)
+                .map(r -> CompanyNameScore.createNameScore(r.getFullName(), r.getPinYinDupMinusScore()))
                 .collect(Collectors.toList());
-        List<String> wordDupMinusScoreRank = recordResultList
+        List<CompanyNameScore> wordDupMinusScoreRank = recordResultList
                 .parallelStream()
-                .filter(r -> !r.getWordDupMinusScore().equals(BigDecimal.ZERO))
+                .filter(r -> r.getTotalMinusScore().compareTo(this.getMaxMinusScores()) < 0)
+                .filter(r -> r.getWordDupMinusScore().setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue() != 0)
                 .sorted((r1, r2) -> r2.getWordDupMinusScore().compareTo(r1.getWordDupMinusScore()))
-                .map(RecordResult::getFullName)
+                .map(r -> CompanyNameScore.createNameScore(r.getFullName(), r.getWordDupMinusScore()))
                 .collect(Collectors.toList());
-        List<String> pinYinPosMinusScoreRank = recordResultList
+        List<CompanyNameScore> pinYinPosMinusScoreRank = recordResultList
                 .parallelStream()
-                .filter(r -> !r.getPinYinPosMinusScore().equals(BigDecimal.ZERO))
+                .filter(r -> r.getTotalMinusScore().compareTo(this.getMaxMinusScores()) < 0)
+                .filter(r -> r.getPinYinPosMinusScore().setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue() != 0)
                 .sorted((r1, r2) -> r2.getPinYinPosMinusScore().compareTo(r1.getPinYinPosMinusScore()))
-                .map(RecordResult::getFullName)
+                .map(r -> CompanyNameScore.createNameScore(r.getFullName(), r.getPinYinPosMinusScore()))
                 .collect(Collectors.toList());
-        List<String> wordPosMinusScoreRank = recordResultList
+        List<CompanyNameScore> wordPosMinusScoreRank = recordResultList
                 .parallelStream()
-                .filter(r -> !r.getWordPosMinusScore().equals(BigDecimal.ZERO))
+                .filter(r -> r.getTotalMinusScore().compareTo(this.getMaxMinusScores()) < 0)
+                .filter(r -> r.getWordPosMinusScore().setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue() != 0)
                 .sorted((r1, r2) -> r2.getWordPosMinusScore().compareTo(r1.getWordPosMinusScore()))
-                .map(RecordResult::getFullName)
+                .map(r -> CompanyNameScore.createNameScore(r.getFullName(), r.getWordPosMinusScore()))
                 .collect(Collectors.toList());
-        List<String> industryDescMinusScoreRank = recordResultList
+        List<CompanyNameScore> industryDescMinusScoreRank = recordResultList
                 .parallelStream()
-                .filter(r -> !r.getIndustryDescMinusScore().equals(BigDecimal.ZERO))
+                .filter(r -> r.getTotalMinusScore().compareTo(this.getMaxMinusScores()) < 0)
+                .filter(r -> r.getIndustryDescMinusScore().setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue() != 0)
                 .sorted((r1, r2) -> r2.getIndustryDescMinusScore().compareTo(r1.getIndustryDescMinusScore()))
-                .map(RecordResult::getFullName)
+                .map(r -> CompanyNameScore.createNameScore(r.getFullName(), r.getIndustryDescMinusScore()))
                 .collect(Collectors.toList());
 
-        List<List<String>> pinYinDupMinusScoreList = Lists.partition(pinYinDupMinusScoreRank, 3);
-        List<List<String>> wordDupMinusScoreList = Lists.partition(wordDupMinusScoreRank, 3);
-        List<List<String>> pinYinPosMinusScoreList = Lists.partition(pinYinPosMinusScoreRank, 3);
-        List<List<String>> wordPosMinusScoreList = Lists.partition(wordPosMinusScoreRank, 3);
-        List<List<String>> industryDescMinusScoreList = Lists.partition(industryDescMinusScoreRank, 3);
+        List<List<CompanyNameScore>> pinYinDupMinusScoreList = Lists.partition(pinYinDupMinusScoreRank, 3);
+        List<List<CompanyNameScore>> wordDupMinusScoreList = Lists.partition(wordDupMinusScoreRank, 3);
+        List<List<CompanyNameScore>> pinYinPosMinusScoreList = Lists.partition(pinYinPosMinusScoreRank, 3);
+        List<List<CompanyNameScore>> wordPosMinusScoreList = Lists.partition(wordPosMinusScoreRank, 3);
+        List<List<CompanyNameScore>> industryDescMinusScoreList = Lists.partition(industryDescMinusScoreRank, 3);
 
 
         CompanyVerifyResult companyVerifyResult = new CompanyVerifyResult();
@@ -144,5 +196,6 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
         return companyVerifyResult;
 
     }
+
 
 }

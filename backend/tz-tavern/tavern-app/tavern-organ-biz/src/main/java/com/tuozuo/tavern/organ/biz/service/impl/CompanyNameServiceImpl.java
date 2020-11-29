@@ -45,6 +45,8 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
     private String scriptPath;
     @Value("${company.perfect.scores:100}")
     private int perfectScores;
+    @Value("${company.max.minus.scores:90}")
+    private int maxMinusScores;
 
     @Autowired
     PythonExecutor pythonExecutor;
@@ -93,6 +95,11 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
     }
 
     @Override
+    public BigDecimal getMaxMinusScores() {
+        return BigDecimal.valueOf(maxMinusScores);
+    }
+
+    @Override
     public List<String> splitName(String name) {
         List<String> list = Lists.newArrayList();
         list.add(name);
@@ -130,9 +137,9 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
                 names.addAll(dbNames);
             } else {
                 //2、api接口查询
-//                List<CompanyNameRecord> qccNames = this.getCompanyFromQcc(record);
-//                names.addAll(qccNames);
-//                this.storeCompanyNameRecord(qccNames);
+                List<CompanyNameRecord> qccNames = this.getCompanyFromQcc(record);
+                names.addAll(qccNames);
+                this.storeCompanyNameRecord(qccNames);
             }
         }
         return names;
@@ -159,7 +166,7 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
             RecordItem item = new RecordItem();
             item.setIndustryDesc(industryType);
             item.setName(rootName);
-            LOGGER.info("[industryType]: {},[rootName]: {},[fullName]: {}", industryType, rootName, record.getFullName());
+//            LOGGER.info("[industryType]: {},[rootName]: {},[fullName]: {}", industryType, rootName, record.getFullName());
             if (StringUtils.isEmpty(rootName)) {
                 continue;
             }
