@@ -1438,7 +1438,7 @@ textarea::-webkit-input-placeholder {
   background: #fcfcfc url("/images/tonamebg.jpg") top center no-repeat;
 }
 .home_panel2.checkname_bg2 {
-  background: #fcfcfc url("/assets/img/banner/checkname.png") top center no-repeat;
+  background: #fcfcfc url("/images/checkName.jpg") top center no-repeat;
 }
 .home_panel2 .PingFangSC-Thin {
   font-size: 40px;
@@ -2113,6 +2113,117 @@ textarea::-webkit-input-placeholder {
 }
 .banner-toname .search p.industry .result,
 .banner-toname .search .input-wrap.industry .result {
+  margin-top: 30px;
+  margin-left: -5px;
+  width: 306px;
+}
+.banner-checkname {
+  width: 100%;
+  height: 690px;
+  font-size: 0;
+  font-family: PingFangSC-Regular, PingFangSC-Regular, Microsoft Yahei, arial, Hiragino Sans GB;
+  text-align: center;
+  background: url("./../images/checkName.jpg") top center no-repeat;
+  background-size: cover;
+  position: relative;
+}
+.banner-checkname:nth-child(1):after {
+  content: "";
+  width: 1px;
+  height: 550px;
+  background: #669BE7;
+  position: absolute;
+  right: 0;
+  top: -28px;
+  z-index: 1;
+}
+.banner-checkname h1 {
+  font-size: 47px;
+  font-weight: bold;
+  font-family: PingFangSC-Regular, PingFangSC-Regular, Microsoft Yahei, arial, Hiragino Sans GB;
+  color: rgb(255, 255, 255);
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.514);
+  font-weight: normal;
+}
+.banner-checkname h2 {
+  color: #FFF;
+  font-size: 20px;
+  font-family: PingFangSC-Regular, PingFangSC-Regular, Microsoft Yahei, arial, Hiragino Sans GB;
+  font-weight: 500;
+  margin-top: 13px;
+}
+.banner-checkname h3 {
+  font-size: 24px;
+  color: #FFD458;
+  font-weight: normal;
+}
+.banner-checkname .search {
+  width: 430px;
+  background: #F6F6F6;
+  margin: 0 auto;
+  padding-bottom: 30px;
+  display: inline-block;
+  letter-spacing: normal;
+  word-spacing: normal;
+}
+.banner-checkname .search .tip {
+  width: 390px;
+  margin: 0 auto;
+  color: #BFBFBF;
+  font-size: 14px;
+  text-align: left;
+}
+.banner-checkname .search p,
+.banner-checkname .search .input-wrap {
+  width: 390px;
+  height: 40px;
+  line-height: 40px;
+  background: #FFF;
+  text-align: left;
+  border: 1px solid #BFBFBF;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  margin: 0 auto;
+  color: #BFBFBF;
+  font-size: 14px;
+  white-space: nowrap;
+  font-size: 0;
+}
+.banner-checkname .search p.focus,
+.banner-checkname .search .input-wrap.focus {
+  border-color: #27AA74;
+}
+.banner-checkname .search p .input,
+.banner-checkname .search .input-wrap .input {
+  color: #3B3A40;
+}
+.banner-checkname .search p .input input,
+.banner-checkname .search .input-wrap .input input {
+  border: none;
+  width: 280px;
+  padding-left: 20px;
+}
+.banner-checkname .search p .text,
+.banner-checkname .search .input-wrap .text {
+  margin-left: 20px;
+  width: 66px;
+}
+.banner-checkname .search p .input,
+.banner-checkname .search .input-wrap .input,
+.banner-checkname .search p .text,
+.banner-checkname .search .input-wrap .text {
+  font-size: 14px;
+  vertical-align: top;
+  margin-top: 9px;
+  display: inline-block;
+  letter-spacing: normal;
+  word-spacing: normal;
+}
+.banner-checkname .search p.industry .result,
+.banner-checkname .search .input-wrap.industry .result {
   margin-top: 30px;
   margin-left: -5px;
   width: 306px;

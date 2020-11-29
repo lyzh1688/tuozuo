@@ -14,12 +14,102 @@
 
     <!-- LOAD CSS FILES -->
     <link href="css/common.min.css" rel="stylesheet" type="text/css">
+    <link href="css/mloading.css" rel="stylesheet" type="text/css">
     <link href="style.css" rel="stylesheet" type="text/css">
     <!-- color scheme -->
     <link rel="stylesheet" href="switcher/demo.css" type="text/css">
     <link rel="stylesheet" href="switcher/colors/blue.css" type="text/css" id="colors">
     <style>
-        .verBox {
+        .txts {
+            display: inline-block;
+            background-size: 100% 100% !important;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .recomment_industry {
+            position: absolute;
+            top: 100px;
+            left: 100px;
+            width: 738px;
+            height: auto;
+            max-height: 297px;
+            overflow: auto;
+            background: #FFF;
+            border: 1px solid #9B9B9B;
+            border-radius: 4px;
+            z-index: 5;
+        }
+
+        .moni_select {
+            position: absolute;
+            top: 64px;
+            left: 0px;
+            width: 100%;
+            padding: 10px 0;
+            background: #FFF;
+            border-radius: 4px;
+            z-index: 5;
+            border: 1px solid #9B9B9B;
+        }
+
+        .moni_select ul {
+            min-height: 60px;
+            max-height: 220px;
+            overflow: auto;
+        }
+
+        .moni_select ul li {
+            line-height: 1;
+            font-size: 14px;
+            color: #666;
+            padding: 10px 19px;
+        }
+
+        .moni_select ul li:hover {
+            background: #E7E7E7;
+            cursor: pointer;
+        }
+
+        .recomment_industry .info {
+            padding: 12px;
+            font-size: 0;
+        }
+
+        .recomment_industry .info dl {
+            font-size: 0;
+        }
+
+        .recomment_industry .info dl dt,
+        .recomment_industry .info dl dd {
+            font-size: 14px;
+            vertical-align: top;
+        }
+
+        .recomment_industry .info dl dt {
+            color: #3B3A40;
+            font-weight: bold;
+            line-height: 1;
+            margin: 12px 0 8px 0;
+        }
+
+        .recomment_industry .info dl dd {
+            color: #666;
+            font-size: 0;
+        }
+
+        .recomment_industry .info dl dd span {
+            line-height: 1;
+            margin: 8px 16px 8px 0;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 12px;
+        }
+
+        #confirm_companyn .verBox {
             width: 100%;
             text-align: center;
             transition: all 0.8s;
@@ -185,7 +275,7 @@
                                     <li><a href="#">企业帮手</a>
                                         <ul>
                                             <li><a href="company-helper-to-name.html">公司起名</a></li>
-                                            <li><a href="xinruyi-company-spot.html">公司核名</a></li>
+                                            <li><a href="company-helper-check-name.html">公司核名</a></li>
                                         </ul>
                                     </li>
                                     <li><a href="#">页面</a>
@@ -382,49 +472,57 @@
                         <div class="item-flex mt218">
                             <div>
                                 <h1>基于三才五格的免费公司在线起名系统</h1>
-                                <h2>已为 <span class="yellow" id="totalCount"
-                                        style="min-width:94px;display:inline-block">5,449,404</span> 位创业者提供起名服务</h2>
                                 <div class="search3" id="step1">
-                                    <dl class="input" id="cityWrap">
+                                    <dl class="input w177 area-search-results">
                                         <dt class="c_note">注册地区丨</dt>
-                                        <dd class="c_title"><input type="text" class="current" placeholder="请选择"
-                                                id="area" readonly="" disabled="">
-                                            <div class="arrow-down"></div>
-                                        </dd>
-                                        <div class="moni_select hide" id="cityList">
-                                            <ul></ul>
-                                        </div>
-                                    </dl>
-                                    <dl class="input w373 search-results">
-                                        <dt class="c_note">所属行业丨</dt>
-                                        <dd class="c_title"><input type="search" id="Keyword"
-                                                placeholder="请选择经营行业,如：网络科技">
-                                            <div class="arrow-down"></div>
+                                        <dd class="c_title"><input type="search" id="area-Keyword" placeholder="请选择地区">
+                                            <div class="area arrow-down"></div>
                                         </dd>
                                         <div class="moni_select result" style="display:none">
-                                            <ul></ul>
+                                            <ul class=""></ul>
                                         </div>
                                     </dl>
-                                    <dl class="input w210 simulation_ul">
-                                        <dl class="input w244">
-                                            <dt class="c_note">请输入您较喜欢的一个字 | </dt>
-                                            <dd class="c_title"><input type="text" id="keyword2" placeholder="选填"></dd>
-                                        </dl>
+                                    <dl class="input w230 industry-search-results">
+                                        <dt class="c_note">所属行业丨</dt>
+                                        <dd class="c_title"><input type="search" id="industry-Keyword"
+                                                placeholder="请选择行业">
+                                            <div class="industry arrow-down"></div>
+                                        </dd>
+                                        <div class="moni_select result" style="display:none">
+                                            <ul class=""></ul>
+                                        </div>
                                     </dl>
                                     <dl class="input w210 simulation_ul active">
                                         <dt class="c_note">企业类型丨</dt>
-                                        <dd class="c_title"><input type="text" value="有限公司" id="companyType"
-                                                readonly="">
-                                            <div class="arrow-down"></div>
+                                        <dd class="c_title">
+                                            <select style="width: 100%;height: 40px;border-color: white;" type="text"
+                                                id="companyType" placeholder="企业类型"></select>
                                         </dd>
-
+                                    </dl>
+                                    <dl class="input w210 simulation_ul active">
+                                        <dt class="c_note">词库丨</dt>
+                                        <dd class="c_title">
+                                            <select style="width: 100%;height: 40px;border-color: white;" type="text"
+                                                id="dictType" placeholder="词库"></select>
+                                        </dd>
                                     </dl>
                                     <dl class="input w210 simulation_ul">
-                                        <dl class="input w244">
-                                            <dt class="c_note">词库 | </dt>
-                                            <dd class="c_title"><input type="text" id="keyword2" placeholder="选填"></dd>
-                                        </dl>
-                                    </dl><button id="to_next" class="current">下一步</button>
+                                        <dt class="c_note">喜爱字丨</dt>
+                                        <dd class="c_title"><input type="text" id="keyword2" placeholder="选填"></dd>
+                                    </dl>
+                                    <dl class="input w210 simulation_ul" id="wordNumContainer">
+                                        <dt class="c_note">名字字数丨</dt>
+                                        <dd class="c_title">
+                                            <select style="width: 100%;height: 40px;border-color: white;" type="text"
+                                                id="wordNum" placeholder="字数">
+                                                <option value="true">两字</option>
+                                                <option value="false">三字</option>
+                                            </select>
+                                        </dd>
+                                    </dl>
+
+                                    <button id="to_next" class="current">起名</button>
+                                    <div class="txts" style="background: url(images/bgtian.png);">恒</div>
                                 </div>
                             </div>
                         </div>
@@ -434,7 +532,6 @@
                     </div>
                 </div>
                 <div class="container">
-
                     <div class="toname_panel">
                         <h1 class="PingFangSC-Thin">公司起名常见问题</h1>
                         <div class="container wrap mt60">
@@ -646,6 +743,10 @@
     <script src="js/smk-accordion.js"></script>
     <script src="js/tabs.js"></script>
     <script src="js/to-name.js"></script>
+    <script src="js/tipper.js"></script>
+    <script src="js/mloading.js"></script>
+    <script src="js/industry-search.js"></script>
+    <script src="js/area-search.js"></script>
     <script src="js/img_ver.js"></script>
     <script src="js/fancyTable.min.js"></script>
     <script type="text/javascript" src="js/b.page.min.js"></script>

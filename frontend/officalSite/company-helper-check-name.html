@@ -13,10 +13,177 @@
     <link rel="icon" href="images/favicon.png" type="image/x-icon">
 
     <!-- LOAD CSS FILES -->
+    <link href="css/common.min.css" rel="stylesheet" type="text/css">
+    <link href="css/mloading.css" rel="stylesheet" type="text/css">
     <link href="style.css" rel="stylesheet" type="text/css">
     <!-- color scheme -->
     <link rel="stylesheet" href="switcher/demo.css" type="text/css">
     <link rel="stylesheet" href="switcher/colors/blue.css" type="text/css" id="colors">
+    <style>
+        .recomment_industry {
+            position: absolute;
+            top: 100px;
+            left: 100px;
+            width: 738px;
+            height: auto;
+            max-height: 297px;
+            overflow: auto;
+            background: #FFF;
+            border: 1px solid #9B9B9B;
+            border-radius: 4px;
+            z-index: 5;
+        }
+
+        .moni_select {
+            position: absolute;
+            top: 64px;
+            left: 0px;
+            width: 100%;
+            padding: 10px 0;
+            background: #FFF;
+            border-radius: 4px;
+            z-index: 5;
+            border: 1px solid #9B9B9B;
+        }
+
+        .moni_select ul {
+            min-height: 60px;
+            max-height: 220px;
+            overflow: auto;
+        }
+
+        .moni_select ul li {
+            line-height: 1;
+            font-size: 14px;
+            color: #666;
+            padding: 10px 19px;
+        }
+
+        .moni_select ul li:hover {
+            background: #E7E7E7;
+            cursor: pointer;
+        }
+
+        .recomment_industry .info {
+            padding: 12px;
+            font-size: 0;
+        }
+
+        .recomment_industry .info dl {
+            font-size: 0;
+        }
+
+        .recomment_industry .info dl dt,
+        .recomment_industry .info dl dd {
+            font-size: 14px;
+            vertical-align: top;
+        }
+
+        .recomment_industry .info dl dt {
+            color: #3B3A40;
+            font-weight: bold;
+            line-height: 1;
+            margin: 12px 0 8px 0;
+        }
+
+        .recomment_industry .info dl dd {
+            color: #666;
+            font-size: 0;
+        }
+
+        .recomment_industry .info dl dd span {
+            line-height: 1;
+            margin: 8px 16px 8px 0;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 12px;
+        }
+
+        #confirm_companyn .verBox {
+            width: 100%;
+            text-align: center;
+            transition: all 0.8s;
+            padding-top: 300px;
+        }
+
+        .slider-btn {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            left: 0;
+            top: -7px;
+            z-index: 12;
+            cursor: pointer;
+            background-image: url(./images/sprite.3.2.0.png);
+            background-position: 0 -84px;
+            transition: inherit
+        }
+
+        .ver-tips {
+            position: absolute;
+            left: 0;
+            bottom: -22px;
+            background: rgba(255, 255, 255, .9);
+            height: 22px;
+            line-height: 22px;
+            font-size: 12px;
+            width: 100%;
+            margin: 0;
+            text-align: left;
+            padding: 0 8px;
+            transition: all .4s
+        }
+
+        .slider-tips {
+            bottom: 0
+        }
+
+        .ver-tips i {
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            vertical-align: top;
+            background-image: url(./images/sprite.3.2.0.png);
+            background-position: -4px -1229px
+        }
+
+        .ver-tips span {
+            display: inline-block;
+            vertical-align: top;
+            line-height: 22px;
+            color: #455
+        }
+
+        .active-tips {
+            display: block
+        }
+
+        .hidden {
+            display: none
+        }
+
+        .re-btn {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 28px;
+            padding: 0 16px
+        }
+
+        .re-btn a {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            margin: 7px 0;
+            background-image: url(./images/sprite.3.2.0.png);
+            background-position: 0 -1179px;
+            cursor: pointer
+        }
+
+        .re-btn a:hover {
+            background-position: 0 -1193px
+        }
+    </style>
 </head>
 
 <body>
@@ -274,13 +441,13 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <h1>项目列表</h1>
+                        <h1>公司核名</h1>
                         <ul class="breadcrumbs">
                             <li><a href="index.html">首页</a></li>
                             <b>/</b>
-                            <li><a href="#">鑫如意</a></li>
+                            <li><a href="#">公司助手</a></li>
                             <b>/</b>
-                            <li class="active">项目列表</li>
+                            <li class="active">公司核名</li>
                         </ul>
                     </div>
                 </div>
@@ -290,68 +457,138 @@
         <!-- content begin -->
         <div id="content" class="no-padding">
             <section class="shopping-cart">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="col-one-fifth">
-                                <span>项目名称:</span>
-                                <input  id="projectName" placeholder="项目名称"/>
-                                <input hidden=true  id="projectId" placeholder="项目名称"/>
+                <div class="banner-checkname">
+                    <div class="container_78">
+                        <div class="item-flex mt218">
+                            <div>
+                                <h1>基于工商数据库的综合评级核名系统</h1>
+                                <div class="search3" id="step1">
+                                    <dl class="input w177 area-search-results">
+                                        <dt class="c_note">注册地区丨</dt>
+                                        <dd class="c_title"><input type="search" id="area-Keyword" placeholder="请选择地区">
+                                            <div class="area arrow-down"></div>
+                                        </dd>
+                                        <div class="moni_select result" style="display:none">
+                                            <ul class=""></ul>
+                                        </div>
+                                    </dl>
+                                    <dl class="input w210 simulation_ul">
+                                        <dt class="c_note">名称丨</dt>
+                                        <dd class="c_title"><input type="text" id="keyword2" placeholder="选填"></dd>
+                                    </dl>
+                                    <dl class="input w230 industry-search-results">
+                                        <dt class="c_note">所属行业丨</dt>
+                                        <dd class="c_title"><input type="search" id="industry-Keyword"
+                                                placeholder="请选择行业">
+                                            <div class="industry arrow-down"></div>
+                                        </dd>
+                                        <div class="moni_select result" style="display:none">
+                                            <ul class=""></ul>
+                                        </div>
+                                    </dl>
+                                    <button id="to_next" class="current">核名</button>
+                                </div>
                             </div>
-                            <div class="col-one-fifth">
-                                <span>行业类型:</span>
-                                <select style="width: 65%;height: 30px;" type="text" id="industryType" placeholder="行业类型"></select>
-                            </div>
-                            <div class="col-one-fifth">
-                                <span>金额预算:</span>
-                                <select style="width: 65%;height: 30px;" type="text" id="budget" placeholder="金额预算"></select>
-                            </div>
-                            <div class="col-one-fifth">
-                                <span>项目状态:</span>
-                                <select style="width: 65%;height: 30px;" type="text" id="projectStatus" placeholder="项目状态"></select>
-                            </div>
-                            <button id="search" type="button" class="button btn btn-primary btn-radius">搜索</button>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <table cellspacing="0" class="shop_table shop_table_responsive cart">
-                                <thead>
-                                    <tr>
-                                        <th class="product-thumbnail">&nbsp;</th>
-                                        <th class="product-name">项目名称</th>
-                                        <th class="product-price">预算金额</th>
-                                        <th class="product-quantity">项目人员</th>
-                                        <th class="product-quantity">项目周期</th>
-                                        <th class="product-name">项目状态</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="logList" >
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="5">
-                                            <div class="pull-left" style="margin-top: 8px;">
-                                                <span id="summary"></span>
-                                            </div>
-                                            <div class="pull-right">
-                                                <form class="form-inline">
-                                                    <button id="firstPage" type="button" class="button btn btn-primary btn-radius">首页</button>
-                                                    <button id="previousPage" type="button" class="button btn btn-primary btn-radius">上一页</button>
-                                                    <button id="nextPage" type="button" class="button btn btn-primary btn-radius">下一页</button>
-                                                    <button id="lastPage" type="button" class="button btn btn-primary btn-radius">尾页</button>
-                                                    <span>跳转到</span>
-                                                    <input type="text" class="form-control" name="page_num" style="width:60px;"/>
-                                                    <span>页</span>
-                                                    <button id="jump" type="button" class="button btn btn-primary btn-radius">跳转</button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
+                    <div class="verBox">
+                        <div hidden=true id="imgVer" style="display:inline-block;"></div>
+                    </div>
+                </div>
+                <div class="container">
 
+                    <div class="toname_panel">
+                        <h1 class="PingFangSC-Thin">公司起名常见问题</h1>
+                        <div class="container wrap mt60">
+                            <div class="item">
+                                <div class="info_c">
+                                    <div class="info">
+                                        <h1 class="img icon2">
+                                            <i class="blue fa fa-repeat"></i>
+                                        </h1>
+                                        <h2>重名</h2>
+                                        <h3>同行业(相似行业)不能重名, 比如“企<br>名通”信息有限公司和“企名通”科<br>技有限公司</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item margin">
+                                <div class="info_c">
+                                    <div class="info">
+                                        <h1 class="img icon2">
+                                            <i class="orange fa fa-bookmark"></i>
+                                        </h1>
+                                        <h2>使用繁体字、数字、英文</h2>
+                                        <h3>公司名称只能使用简体中文</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item margin">
+                                <div class="info_c">
+                                    <div class="info">
+                                        <h1 class="img icon2">
+                                            <i class="green fa fa-hospital-o"></i>
+                                        </h1>
+                                        <h2>使用社会组织名称</h2>
+                                        <h3>比如“共青团”有限公司</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item margin">
+                                <div class="info_c">
+                                    <div class="info">
+                                        <h1 class="img icon2">
+                                            <i class="grey fa fa-globe"></i>
+                                        </h1>
+                                        <h2>使用行政地区名称</h2>
+                                        <h3>“沪”“京”“嘉兴”等不可当成字号</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="info_c">
+                                    <div class="info">
+                                        <h1 class="img icon2">
+                                            <i class="gluegreen fa fa-gear"></i>
+                                        </h1>
+                                        <h2>字号有行业用语</h2>
+                                        <h3>比如“饮料”有限公司</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item margin">
+                                <div class="info_c">
+                                    <div class="info">
+                                        <h1 class="img icon2">
+                                            <i class="mediumblue fa fa-users"></i>
+                                        </h1>
+                                        <h2>知名人士作为字号</h2>
+                                        <h3>比如“马化腾”有限公司</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item margin">
+                                <div class="info_c">
+                                    <div class="info">
+                                        <h1 class="img icon2">
+                                            <i class="c_note fa fa-legal"></i>
+                                        </h1>
+                                        <h2>使用地区和宗教名称</h2>
+                                        <h3>比如“赞比亚”有限公司</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item margin">
+                                <div class="info_c">
+                                    <div class="info">
+                                        <h1 class="img icon2">
+                                            <i class="yellow fa fa-building-o"></i>
+                                        </h1>
+                                        <h2>含有其他企业名称</h2>
+                                        <h3>比如“小米魅族”有限公司</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -470,7 +707,12 @@
     <script type="text/javascript" src="js/owl.carousel.js"></script>
     <script src="js/smk-accordion.js"></script>
     <script src="js/tabs.js"></script>
-    <script src="js/xinruyi-projects.js"></script>
+    <script src="js/check-name.js"></script>
+    <script src="js/tipper.js"></script>
+    <script src="js/mloading.js"></script>
+    <script src="js/industry-search.js"></script>
+    <script src="js/area-search.js"></script>
+    <script src="js/img_ver.js"></script>
     <script src="js/fancyTable.min.js"></script>
     <script type="text/javascript" src="js/b.page.min.js"></script>
     <!-- Waypoints-->
@@ -479,7 +721,6 @@
     <script type="text/javascript" src="js/pro-bars.js"></script>
     <script src="js/sticky.min.js"></script>
     <script src="js/compact.js"></script>
-    <script src="js/custom-product-single.js"></script>
 
     <script src="switcher/demo.js"></script>
     <div id="switcher">

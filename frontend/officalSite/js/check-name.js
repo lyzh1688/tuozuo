@@ -42,9 +42,8 @@
                 $("body").mLoading("show")
                 $.ajax({
                     type: "get",
-                    url: "http://119.3.19.171/tuozuo/organbiz/v1/name/creation?area=" + $("#area-Keyword").val() + "&industry=" + $("#industry-Keyword").val()
-                        + "&source=" + $("#dictType").val() + "&preferWord=" + $("#keyword2").val() + "&isTwoWords=" + $("#wordNum").val()
-                        + "&type=" + $("#companyType").val() + "&pageNo=1&pageSize=5",
+                    url: "http://119.3.19.171/tuozuo/organbiz/v1/name/verification?area=" + $("#area-Keyword").val() + "&industry=" + $("#industry-Keyword").val()
+                        + "&name=" + $("#keyword2").val(),
                     async: true,
                     dataType: "json",
                     success: function (data) {
@@ -114,31 +113,6 @@
         // $("body").mLoading("true")
         getdictionary('type', 'companyType')
         getdictionary('reference', 'dictType')
-        $("#wordNumContainer").hide()
-        console.log($("#wordNum").val())
-        $("#keyword2").on("input focus", function () {
-
-            var t = $(this).val();
-            if (t == "") {
-                $("#wordNum").val("true")
-                $("#wordNumContainer").hide()
-            } else {
-                $("#wordNumContainer").show()
-            }
-        }).on("blur", function () {
-            var t = /[\u4e00-\u9fa5]{1,10}/g
-                , i = $("#keyword2").val().match(t);
-            if (i) {
-                $("#keyword2").val(i[0][0])
-                if (i[0][0] == "") {
-                    $("#wordNum").val("true")
-                    $("#wordNumContainer").hide()
-                } else {
-                    $("#wordNumContainer").show()
-                }
-            }
-
-        })
         $("#to_next").on('click', function () {
             console.log("click")
             if ($("#area-Keyword").val() == null || $("#area-Keyword").val() == '') {
@@ -149,12 +123,8 @@
                 alert('请选择行业类型！')
                 return
             }
-            if ($("#companyType").val() == null || $("#companyType").val() == '') {
-                alert('公司类型必须填写')
-                return
-            }
-            if ($("#dictType").val() == null || $("#dictType").val() == '') {
-                alert('请选择词库类型')
+            if ($("#keyword2").val() == null || $("#keyword2").val() == '') {
+                alert('公司名称必须填写')
                 return
             }
             $(".container_78").hide()
