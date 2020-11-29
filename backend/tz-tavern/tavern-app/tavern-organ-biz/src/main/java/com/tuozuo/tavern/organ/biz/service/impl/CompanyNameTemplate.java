@@ -72,8 +72,8 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
         CompanyVerifyResult companyVerifyResult = this.statCompanyNameRankScores(recordResults);
         this.statCompanyItemScores(recordResults, companyVerifyResult);
         companyVerifyResult.setTotalScores(perfectScores);
-        RecordResult maxScoreRecord = this.getMaxScoreRecord(recordResults);
-        companyVerifyResult.setMaxScoreRecord(maxScoreRecord);
+        List<RecordResult> maxScoreRecords = this.getMaxScoreRecord(recordResults);
+        companyVerifyResult.setMaxScoreRecords(maxScoreRecords);
         this.storeCompanyNameRecord(companyNameRecords);
 
 
@@ -90,15 +90,12 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
         return userCompanyName;
     }
 
-    private RecordResult getMaxScoreRecord(List<RecordResult> recordResultList) {
+    private List<RecordResult> getMaxScoreRecord(List<RecordResult> recordResultList) {
 
-        Optional<RecordResult> op = recordResultList.parallelStream()
+        List<RecordResult> maxScoreRecordList = recordResultList.parallelStream()
                 .filter(r -> r.getTotalMinusScore().equals(this.getMaxMinusScores()))
-                .findFirst();
-        if (!op.isPresent()) {
-            return null;
-        }
-        return op.get();
+                .collect(Collectors.toList());
+        return maxScoreRecordList;
     }
 
     private CompanyVerifyResult statCompanyItemScores(List<RecordResult> recordResultList, CompanyVerifyResult companyVerifyResult) {

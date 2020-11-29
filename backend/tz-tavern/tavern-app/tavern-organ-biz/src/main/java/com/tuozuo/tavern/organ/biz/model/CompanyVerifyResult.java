@@ -25,7 +25,7 @@ public class CompanyVerifyResult {
     private List<CompanyNameScore> wordPosRecords = Lists.newArrayList();
     private List<CompanyNameScore> industryDescRecords = Lists.newArrayList();
 
-    private RecordResult maxScoreRecord;
+    private List<RecordResult> maxScoreRecords = Lists.newArrayList();
 
     public CompanyVerifyResult() {
     }
@@ -39,12 +39,12 @@ public class CompanyVerifyResult {
     }
 
 
-    public RecordResult getMaxScoreRecord() {
-        return maxScoreRecord;
+    public List<RecordResult> getMaxScoreRecords() {
+        return maxScoreRecords;
     }
 
-    public void setMaxScoreRecord(RecordResult maxScoreRecord) {
-        this.maxScoreRecord = maxScoreRecord;
+    public void setMaxScoreRecords(List<RecordResult> maxScoreRecords) {
+        this.maxScoreRecords = maxScoreRecords;
     }
 
     public BigDecimal getPinyinDupScores() {

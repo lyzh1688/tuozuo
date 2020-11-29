@@ -1,7 +1,5 @@
 package com.tuozuo.tavern.organ.biz.endpoint;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.organ.biz.dict.CompanyPropertyType;
@@ -42,10 +40,10 @@ public class CompanyNameEndpoint {
     public TavernResponse createCompanyName(@ModelAttribute @Valid BuildNameVO vo) {
         try {
 
-            List<CompanyName> resultList = this.companyNameService.queryCompanyName(vo.getSource(), vo.getArea(), vo.getIndustry(), vo.getPreferWord(), vo.getIsTwoWords(), vo.getType());
+//            List<CompanyName> resultList = this.companyNameService.queryCompanyName(vo.getSource(), vo.getArea(), vo.getIndustry(), vo.getPreferWord(), vo.getIsTwoWords(), vo.getType());
+            List<CompanyName> resultList = defResult();
             List<CompanyName> pageList = resultList.stream().skip((vo.getPageNo() - 1) * vo.getPageSize()).limit(vo.getPageSize()).collect(Collectors.toList());
             BuildNameDTO dto = new BuildNameDTO();
-//            dto.setNames(creat());
             dto.setNames(pageList);
             dto.setTotalNum(resultList.size());
             return TavernResponse.ok(dto);
@@ -55,9 +53,9 @@ public class CompanyNameEndpoint {
         }
     }
 
-    private List<CompanyName> creat() {
+    private List<CompanyName> defResult() {
         List<CompanyName> companyNameList = Lists.newArrayList();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             CompanyName companyName = new CompanyName();
             companyName.setName("天邦之");
             companyName.setFullName("上海天邦之电子商务有限责任公司");
