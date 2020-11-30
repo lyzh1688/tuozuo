@@ -9,6 +9,9 @@
     /* Intro Video*/
     $(document).ready(function () {
         let areaSearch = new areaSearchTip
+        let totalNum = 0
+        let currentpage = 1
+        let pagesize = 6
         // console.log(areaSearch)
         areaSearch.start({
             result: ".area-search-results",
@@ -24,6 +27,7 @@
             maxLength: 2
         })
         $("#imgVer").hide()
+        $("#result-container").hide()
         imgVer({
             el: '$("#imgVer")',
             width: '260',
@@ -44,25 +48,33 @@
                     type: "get",
                     url: "http://119.3.19.171/tuozuo/organbiz/v1/name/creation?area=" + $("#area-Keyword").val() + "&industry=" + $("#industry-Keyword").val()
                         + "&source=" + $("#dictType").val() + "&preferWord=" + $("#keyword2").val() + "&isTwoWords=" + $("#wordNum").val()
-                        + "&type=" + $("#companyType").val() + "&pageNo=1&pageSize=5",
+                        + "&type=" + $("#companyType").val() + "&pageNo=1&pageSize=" + pagesize,
                     async: true,
                     dataType: "json",
                     success: function (data) {
+                        $("#result-container").show()
                         $("body").mLoading("hide")
+                        $("#result-content").html("");
                         console.log(data)
                         if (data.code == 0) {
-                            var getlogList = data.data;
-                            $("#" + groupid).append(
-                                '<option value =""></option>'
-                            );
-                            for (var i = 0; i < getlogList.length; i++) {
-                                $("#" + groupid).append(
-                                    '<option value ="' +
-                                    getlogList[i].superClass +
-                                    '">' +
-                                    (getlogList[i].subClass.length !== 0 ? getlogList[i].subClass[0] : getlogList[i].superClass) +
-                                    '</option>'
-                                );
+                            totalNum = data.data.totalNum
+                            currentpage = 1
+                            let obj = []
+                            for(let i of data.data.names){
+                                let tmpstr = "<div style=\"border: 2px solid black;width: 45%;margin: 10px;\"><p style=\"font-size: 18px;font-weight: bold;\">全称："
+                                +i.fullName+"</p>"
+                                for(let j in i.strokeNums){
+                                    tmpstr += "<div class=\"txts-container\"><div class=\"txts\" style=\"background: url(images/bgtian.png);\">"
+                                    +i.name[j]+"</div><span style=\"padding:3px;\">笔画：22"
+                                    +i.strokeNums[j]+"</span></div>"
+                                }
+                                tmpstr += "<div style=\"font-size: 18px;font-weight: bold;padding-top: 10px;\">来源：</div><div style=\"font-size: 18px;font-weight: bold;padding: 10px;\">"
+                                +i.reference+"</div></div>"
+                                obj.push(tmpstr)
+                            }
+                            $("#result-content").html(obj.join(""));
+                            if(pagesize>=totalNum){
+                                $("#change-group").hide()
                             }
                         }
                         if (data.code != 0) {
@@ -138,6 +150,51 @@
                 }
             }
 
+        })
+        $("#change-group").on('click', function () {
+            currentpage += 1
+            $("body").mLoading("show")
+            $.ajax({
+                type: "get",
+                url: "http://119.3.19.171/tuozuo/organbiz/v1/name/creation?area=" + $("#area-Keyword").val() + "&industry=" + $("#industry-Keyword").val()
+                    + "&source=" + $("#dictType").val() + "&preferWord=" + $("#keyword2").val() + "&isTwoWords=" + $("#wordNum").val()
+                    + "&type=" + $("#companyType").val() + "&pageNo="+currentpage+"&pageSize=" + pagesize,
+                async: true,
+                dataType: "json",
+                success: function (data) {
+                    $("#result-container").show()
+                    $("body").mLoading("hide")
+                    $("#result-content").html("");
+                    console.log(data)
+                    if (data.code == 0) {
+                        totalNum = data.data.totalNum
+                        let obj = []
+                        for(let i of data.data.names){
+                            let tmpstr = "<div style=\"border: 2px solid black;width: 45%;margin: 10px;\"><p style=\"font-size: 18px;font-weight: bold;\">全称："
+                            +i.fullName+"</p>"
+                            for(let j in i.strokeNums){
+                                tmpstr += "<div class=\"txts-container\"><div class=\"txts\" style=\"background: url(images/bgtian.png);\">"
+                                +i.name[j]+"</div><span style=\"padding:3px;\">笔画："
+                                +i.strokeNums[j]+"</span></div>"
+                            }
+                            tmpstr += "<div style=\"font-size: 18px;font-weight: bold;padding-top: 10px;\">来源：</div><div style=\"font-size: 18px;font-weight: bold;padding: 10px;\">"
+                            +i.reference+"</div></div>"
+                            obj.push(tmpstr)
+                        }
+                        $("#result-content").html(obj.join(""));
+                        if((totalNum-pagesize*currentpage)<=pagesize){
+                            $("#change-group").hide()
+                        }
+                    }
+                    if (data.code != 0) {
+                        alert(data.msg);
+                    }
+                },
+                error: function () {
+                    $("body").mLoading("hide")
+                    alert("系统繁忙，请联系管理员");
+                }
+            });
         })
         $("#to_next").on('click', function () {
             console.log("click")

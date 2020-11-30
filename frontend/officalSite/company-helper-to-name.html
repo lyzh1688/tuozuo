@@ -20,6 +20,19 @@
     <link rel="stylesheet" href="switcher/demo.css" type="text/css">
     <link rel="stylesheet" href="switcher/colors/blue.css" type="text/css" id="colors">
     <style>
+        .change-group{
+            align-content: center;
+    width: 144px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    background: #27AA74;
+    border: none;
+    border-radius: 4px;
+    margin-left: 6px;
+    color: #FFF;
+    font-size: 16px;
+        }
         .txts {
             display: inline-block;
             background-size: 100% 100% !important;
@@ -27,6 +40,11 @@
             height: 40px;
             line-height: 40px;
             font-size: 28px;
+            text-align: center;
+        }
+
+        .txts-container {
+            display: inline-block;
             text-align: center;
         }
 
@@ -109,7 +127,8 @@
             font-size: 12px;
         }
 
-        #confirm_companyn .verBox {
+        .verBox {
+            display: inline-block;
             width: 100%;
             text-align: center;
             transition: all 0.8s;
@@ -522,13 +541,41 @@
                                     </dl>
 
                                     <button id="to_next" class="current">起名</button>
-                                    <div class="txts" style="background: url(images/bgtian.png);">恒</div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="verBox">
                         <div hidden=true id="imgVer" style="display:inline-block;"></div>
+                    </div>
+                </div>
+                <div class="container" id="result-container">
+                    <div class="toname_panel" >
+                        <h1 class="PingFangSC-Thin">起名结果</h1>
+                        <div id="result-content" style="display: flex;flex-wrap: wrap;justify-content: space-between;">
+                            <!-- <div style="border: 2px solid black;width: 45%;margin: 10px;box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176);">
+                                <p style="font-size: 18px;font-weight: bold;">全称：上海天邦之电子商务有限责任公司</p>
+                                <div class="txts-container">
+                                    <div class="txts" style="background: url(images/bgtian.png);">天</div>
+                                    <span>笔画：4</span>
+                                </div>
+                                <div class="txts-container">
+                                    <div class="txts" style="background: url(images/bgtian.png);">邦</div>
+                                    <span>笔画：11</span>
+                                </div>
+                                <div class="txts-container">
+                                    <div class="txts" style="background: url(images/bgtian.png);">之</div>
+                                    <span>笔画：4</span>
+                                </div>
+                                <div style="font-size: 18px;font-weight: bold;padding-top: 10px;">来源：</div>
+                                <div style="font-size: 18px;font-weight: bold;padding: 10px;">念餘「邦」「之」橫陷兮，宗鬼神「之」無次。
+                                </div>
+                            </div> -->
+                        </div>
+                        <div style="display: flex; justify-content: center;">
+                            <button id="change-group" class="change-group ">换一批</button>
+                        </div>
                     </div>
                 </div>
                 <div class="container">
