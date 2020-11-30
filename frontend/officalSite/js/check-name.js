@@ -8,6 +8,56 @@
     ];
     /* Intro Video*/
     $(document).ready(function () {
+        var radar_chart = echarts.init(document.getElementById("chart"));
+        var option = {
+          title: {
+            text: '重复度分布图'
+          },
+          tooltip: {},
+      //    legend: {
+      //      data: ['预算分配（Allocated Budget）', '实际开销（Actual Spending）']
+      //    },
+          radar: {
+            // shape: 'circle',
+            name: {
+              textStyle: {
+                color: '#fff',
+                backgroundColor: '#999',
+                borderRadius: 3,
+                padding: [3, 5]
+              }
+            },
+            indicator: [
+              { name: '字号重复度', max: 60},
+              { name: '谐音重复度', max: 60},
+              { name: '字号顺序', max: 60},
+              { name: '谐音顺序', max: 60},
+              { name: '行业描述', max: 60}
+            ],
+            radius: 90
+          },
+          series: [{
+            // name: '预算 vs 开销（Budget vs spending）',
+            type: 'radar',
+            areaStyle: {normal: {}},
+            itemStyle: {
+              normal: {
+                color: '#a8bcd4'
+              }
+            },
+            data : [
+              {
+                value : [50.8, 40, 40.8, 30, 0],
+                name : '名称重复度'
+              },
+              //  {
+              //     value : [5000, 14000, 28000, 31000, 42000, 21000],
+              //     name : '实际开销（Actual Spending）'
+              // }
+            ]
+          }]
+        };
+        radar_chart.setOption(option);
         let areaSearch = new areaSearchTip
         // console.log(areaSearch)
         areaSearch.start({

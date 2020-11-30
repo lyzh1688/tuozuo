@@ -99,9 +99,10 @@
             font-size: 12px;
         }
 
-        #confirm_companyn .verBox {
+        .verBox {
             width: 100%;
             text-align: center;
+            display: inline-block;
             transition: all 0.8s;
             padding-top: 300px;
         }
@@ -487,6 +488,7 @@
                                         </div>
                                     </dl>
                                     <button id="to_next" class="current">核名</button>
+
                                 </div>
                             </div>
                         </div>
@@ -495,99 +497,70 @@
                         <div hidden=true id="imgVer" style="display:inline-block;"></div>
                     </div>
                 </div>
-                <div class="container">
+                <div>
 
+
+                </div>
+                <div class="container">
                     <div class="toname_panel">
-                        <h1 class="PingFangSC-Thin">公司起名常见问题</h1>
-                        <div class="container wrap mt60">
-                            <div class="item">
-                                <div class="info_c">
-                                    <div class="info">
-                                        <h1 class="img icon2">
-                                            <i class="blue fa fa-repeat"></i>
-                                        </h1>
-                                        <h2>重名</h2>
-                                        <h3>同行业(相似行业)不能重名, 比如“企<br>名通”信息有限公司和“企名通”科<br>技有限公司</h3>
-                                    </div>
+                        <h1 class="PingFangSC-Thin">核名结果</h1>
+                        <div style="display: flex;">
+                            <div style="width: 50%;">
+                                <div style="font-size: 20px;font-weight: bold;">核对名称：恶趣味经济发展</div>
+                                <div style="padding-top: 10px;"><span
+                                        style="font-size: 20px;font-weight: bold;">通过概率：</span><span
+                                        style="font-size: 40px;font-weight: bold;color:red;">6.48%</span></div>
+                                <div style="padding-top: 10px;">
+                                    <h3 class="widget-title">特别相似记录</h3>
+                                    <div class="tiny-border"></div>
+                                    <table cellspacing="0" class="shop_table shop_table_responsive shop-checkout">
+                                        <tbody>
+                                            <tr>
+                                                <th class="product-name">名称</th>
+                                                <th class="product-price">重复度</th>
+                                            </tr>
+                                            <tr class="cart_item">
+                                                <td class="product-name">南京恶趣味网络科技有限公司</td>
+                                                <td class="product-total"><strong>90</strong></td>
+                                            </tr>
+                                            <tr class="cart_item">
+                                                <td class="product-name">南京恶趣味网络科技有限公司</td>
+                                                <td class="product-total"><strong>90</strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
+                                
                             </div>
-                            <div class="item margin">
-                                <div class="info_c">
-                                    <div class="info">
-                                        <h1 class="img icon2">
-                                            <i class="orange fa fa-bookmark"></i>
-                                        </h1>
-                                        <h2>使用繁体字、数字、英文</h2>
-                                        <h3>公司名称只能使用简体中文</h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item margin">
-                                <div class="info_c">
-                                    <div class="info">
-                                        <h1 class="img icon2">
-                                            <i class="green fa fa-hospital-o"></i>
-                                        </h1>
-                                        <h2>使用社会组织名称</h2>
-                                        <h3>比如“共青团”有限公司</h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item margin">
-                                <div class="info_c">
-                                    <div class="info">
-                                        <h1 class="img icon2">
-                                            <i class="grey fa fa-globe"></i>
-                                        </h1>
-                                        <h2>使用行政地区名称</h2>
-                                        <h3>“沪”“京”“嘉兴”等不可当成字号</h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="info_c">
-                                    <div class="info">
-                                        <h1 class="img icon2">
-                                            <i class="gluegreen fa fa-gear"></i>
-                                        </h1>
-                                        <h2>字号有行业用语</h2>
-                                        <h3>比如“饮料”有限公司</h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item margin">
-                                <div class="info_c">
-                                    <div class="info">
-                                        <h1 class="img icon2">
-                                            <i class="mediumblue fa fa-users"></i>
-                                        </h1>
-                                        <h2>知名人士作为字号</h2>
-                                        <h3>比如“马化腾”有限公司</h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item margin">
-                                <div class="info_c">
-                                    <div class="info">
-                                        <h1 class="img icon2">
-                                            <i class="c_note fa fa-legal"></i>
-                                        </h1>
-                                        <h2>使用地区和宗教名称</h2>
-                                        <h3>比如“赞比亚”有限公司</h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item margin">
-                                <div class="info_c">
-                                    <div class="info">
-                                        <h1 class="img icon2">
-                                            <i class="yellow fa fa-building-o"></i>
-                                        </h1>
-                                        <h2>含有其他企业名称</h2>
-                                        <h3>比如“小米魅族”有限公司</h3>
-                                    </div>
-                                </div>
-                            </div>
+                            <div id="chart" style="height: 450px;width: 50%"></div>
+                        </div>
+                        <div style="padding-top: 10px;">
+                            <h3 class="widget-title">分项重点记录</h3>
+                            <div class="tiny-border"></div>
+                            <table cellspacing="0" class="shop_table shop_table_responsive shop-checkout">
+                                <tbody>
+                                    <tr>
+                                        <th class="product-name">类别</th>
+                                        <th class="product-name">名称</th>
+                                        <th class="product-price">重复度</th>
+                                    </tr>
+                                    <tr class="cart_item">
+                                        <td class="product-name">谐音重复度</td>
+                                        <td class="product-name">青岛恶趣味安防玻璃科技有限公司</td>
+                                        <td class="product-total"><strong>0.96</strong></td>
+                                    </tr>
+                                    <tr class="cart_item">
+                                        <td class="product-name">谐音重复度</td>
+                                        <td class="product-name">青岛恶趣味安防玻璃科技有限公司</td>
+                                        <td class="product-total"><strong>0.96</strong></td>
+                                    </tr>
+                                    <tr class="cart_item">
+                                        <td class="product-name">字号重复度</td>
+                                        <td class="product-name">青岛恶趣味安防玻璃科技有限公司</td>
+                                        <td class="product-total"><strong>0.96</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -712,6 +685,8 @@
     <script src="js/mloading.js"></script>
     <script src="js/industry-search.js"></script>
     <script src="js/area-search.js"></script>
+    <script src="js/echarts.helper.js"></script>
+    <script src="js/echarts.min.js"></script>
     <script src="js/img_ver.js"></script>
     <script src="js/fancyTable.min.js"></script>
     <script type="text/javascript" src="js/b.page.min.js"></script>
