@@ -22,7 +22,7 @@ import java.util.List;
 @Repository
 public class PythonExecutor implements Executor {
 
-    private static final String cmd = "python";
+    private static final String cmd = "python3";
     private static final Logger LOGGER = LoggerFactory.getLogger(PythonExecutor.class);
 
     @Override
