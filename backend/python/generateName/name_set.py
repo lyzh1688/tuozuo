@@ -7,9 +7,9 @@ from name import Name
 from stroke_number import get_stroke_number
 
 # 简体转繁体
-s2tConverter = opencc.OpenCC('s2t.json')
+s2tConverter = opencc.OpenCC('s2t')
 # 繁体转简体
-t2sConverter = opencc.OpenCC('t2s.json')
+t2sConverter = opencc.OpenCC('t2s')
 
 
 def get_source(source, validate, stroke_list):
@@ -25,34 +25,34 @@ def get_source(source, validate, stroke_list):
     # 诗经
     elif source == 1:
         print('>>加载诗经...')
-        get_name_json('诗经', names, 'content', stroke_list)
+        get_name_json('shijing', names, 'content', stroke_list)
     # 楚辞
     elif source == 2:
         print('>>加载楚辞...')
-        get_name_txt('楚辞', names, stroke_list)
+        get_name_txt('chuci', names, stroke_list)
     # 论语
     elif source == 3:
         print('>>加载论语...')
-        get_name_json('论语', names, 'paragraphs', stroke_list)
+        get_name_json('lunyu', names, 'paragraphs', stroke_list)
     # 周易
     elif source == 4:
         print('>>加载周易...')
-        get_name_txt('周易', names, stroke_list)
+        get_name_txt('zhouyi', names, stroke_list)
     # 唐诗
     elif source == 5:
         print('>>加载唐诗...')
         for i in range(0, 58000, 1000):
-            get_name_json('唐诗/poet.tang.' + str(i), names, 'paragraphs', stroke_list)
+            get_name_json('angshi/poet.tang.' + str(i), names, 'paragraphs', stroke_list)
     # 宋诗
     elif source == 6:
         print('>>加载宋诗...')
         for i in range(0, 255000, 1000):
-            get_name_json('宋诗/poet.song.' + str(i), names, 'paragraphs', stroke_list)
+            get_name_json('songshi/poet.song.' + str(i), names, 'paragraphs', stroke_list)
     # 宋词
     elif source == 7:
         print('>>加载宋词...')
         for i in range(0, 22000, 1000):
-            get_name_json('宋词/ci.song.' + str(i), names, 'paragraphs', stroke_list)
+            get_name_json('songci/ci.song.' + str(i), names, 'paragraphs', stroke_list)
     else:
         print('词库号输入错误')
 

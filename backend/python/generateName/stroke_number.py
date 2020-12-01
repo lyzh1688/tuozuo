@@ -1,4 +1,7 @@
 import re
+import os, sys
+
+os.chdir(sys.path[0])
 
 stroke_dic = dict()
 with open('data/stoke.dat', encoding='utf-8') as f:
