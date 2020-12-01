@@ -87,7 +87,7 @@
               let obj = [];
               for (let i of data.data.names) {
                 let tmpstr =
-                  '<div style="border: 2px solid black;width: 45%;margin: 10px;"><p style="font-size: 18px;font-weight: bold;">全称：' +
+                  '<div class="item-name "><p style="font-size: 18px;font-weight: bold;">全称：' +
                   i.fullName +
                   "</p>";
                 for (let j in i.strokeNums) {
@@ -112,11 +112,15 @@
               }
               $("#result-content").html(obj.join(""));
               $(".to-check-name").on("click", function () {
-                console.log($(this).context.dataset, $(".to-check-name"));
+                // console.log($(this).context.dataset, $(".to-check-name"));
+                window.open("company-helper-check-name.html?name="+$(this).context.dataset.name+"&area="+$(this).context.dataset.area+"&industry="+$(this).context.dataset.industry)
               });
               if (pagesize >= totalNum) {
                 $("#change-group").hide();
               }
+              $('html, body').animate({
+                scrollTop: $("#result-container").offset().top
+            }, 500);
             }
             if (data.code != 0) {
               alert(data.msg);
@@ -226,7 +230,7 @@
             let obj = [];
             for (let i of data.data.names) {
               let tmpstr =
-                '<div style="border: 2px solid black;width: 45%;margin: 10px;"><p style="font-size: 18px;font-weight: bold;">全称：' +
+                '<div class="item-name " ><p style="font-size: 18px;font-weight: bold;">全称：' +
                 i.fullName +
                 "</p>";
               for (let j in i.strokeNums) {
@@ -251,12 +255,15 @@
             }
             $("#result-content").html(obj.join(""));
             $(".to-check-name").on("click", function () {
-                console.log($(this).context.dataset, $(".to-check-name"));
+                // console.log($(this).context.dataset, $(".to-check-name"));
                 window.open("company-helper-check-name.html?name="+$(this).context.dataset.name+"&area="+$(this).context.dataset.area+"&industry="+$(this).context.dataset.industry)
               });
             if (totalNum - pagesize * currentpage <= pagesize) {
               $("#change-group").hide();
             }
+            $('html, body').animate({
+              scrollTop: $("#result-container").offset().top
+          }, 500);
           }
           if (data.code != 0) {
             alert(data.msg);

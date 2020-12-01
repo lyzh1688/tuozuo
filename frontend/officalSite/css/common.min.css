@@ -1593,7 +1593,25 @@ textarea::-webkit-input-placeholder {
   word-spacing: normal;
   color: #3B3A40;
 }
+.toname_panel .item-name {
+  width: 45%;
+  height: 245px;
+  margin-bottom: 20px;
+  border: 1px solid #D7D7D7;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  letter-spacing: normal;
+  word-spacing: normal;
+  color: #3B3A40;
+  padding: 20px;
+}
 .toname_panel .item:hover {
+  border-color: #27AA74;
+  background: #FFF;
+}
+.toname_panel .item-name:hover {
   border-color: #27AA74;
   background: #FFF;
 }
