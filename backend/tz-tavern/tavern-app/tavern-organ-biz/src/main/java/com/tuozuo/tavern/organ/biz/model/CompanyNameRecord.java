@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.time.LocalDateTime;
+
 @TableName("company_name_record")
 public class CompanyNameRecord extends Model<CompanyNameRecord> {
     @TableId
@@ -21,6 +22,20 @@ public class CompanyNameRecord extends Model<CompanyNameRecord> {
     private String type;
 
     private LocalDateTime updateDate;
+
+    public static CompanyNameRecord defRecord(String pinyin, String fullName, String name, String industry) {
+        return new CompanyNameRecord(pinyin, fullName, name, industry);
+    }
+
+    public CompanyNameRecord() {
+    }
+
+    public CompanyNameRecord(String pinyin, String fullName, String name, String industry) {
+        this.pinyin = pinyin;
+        this.fullName = fullName;
+        this.name = name;
+        this.industry = industry;
+    }
 
     public String getPinyin() {
         return pinyin;

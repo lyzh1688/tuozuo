@@ -12,6 +12,7 @@ import java.util.List;
 public class CompanyVerifyResult {
 
     private static final BigDecimal DEF_SCORES = new BigDecimal(80);
+    private static final BigDecimal PERFECT_SCORES = new BigDecimal(60);
 
     private BigDecimal totalScores;
     private BigDecimal pinyinDupScores;
@@ -30,12 +31,26 @@ public class CompanyVerifyResult {
     public CompanyVerifyResult() {
     }
 
+    public CompanyVerifyResult(BigDecimal totalScores, BigDecimal pinyinDupScores, BigDecimal wordDupScores, BigDecimal pinYinPosScores, BigDecimal wordPosScores, BigDecimal industryScores, List<RecordResult> maxScoreRecords) {
+        this.totalScores = totalScores;
+        this.pinyinDupScores = pinyinDupScores;
+        this.wordDupScores = wordDupScores;
+        this.pinYinPosScores = pinYinPosScores;
+        this.wordPosScores = wordPosScores;
+        this.industryScores = industryScores;
+        this.maxScoreRecords = maxScoreRecords;
+    }
+
     public CompanyVerifyResult(BigDecimal totalScores) {
         this.totalScores = totalScores;
     }
 
     public static CompanyVerifyResult defCompanyNameRecord() {
         return new CompanyVerifyResult(DEF_SCORES);
+    }
+
+    public static CompanyVerifyResult perfectCompanyNameRecord(List<RecordResult> perfectRecord) {
+        return new CompanyVerifyResult(BigDecimal.ZERO, PERFECT_SCORES, PERFECT_SCORES, PERFECT_SCORES, PERFECT_SCORES, PERFECT_SCORES, perfectRecord);
     }
 
 

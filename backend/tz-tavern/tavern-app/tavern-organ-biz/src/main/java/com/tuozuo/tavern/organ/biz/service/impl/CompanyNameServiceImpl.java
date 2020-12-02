@@ -6,6 +6,7 @@ import com.tuozuo.tavern.organ.biz.dao.CompanyNameRecordDao;
 import com.tuozuo.tavern.organ.biz.exeception.ExecuteException;
 import com.tuozuo.tavern.organ.biz.exeception.QccException;
 import com.tuozuo.tavern.organ.biz.executor.PythonExecutor;
+import com.tuozuo.tavern.organ.biz.facade.qcc.model.CompanyBizData;
 import com.tuozuo.tavern.organ.biz.facade.qcc.model.CompanyBizResult;
 import com.tuozuo.tavern.organ.biz.facade.service.QccCompanyDataService;
 import com.tuozuo.tavern.organ.biz.model.*;
@@ -90,6 +91,54 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
 
 
     @Override
+    public CompanyVerifyResult getSimilarResult(String name, String industryDesc) throws QccException {
+        String perfectName = StringUtils.join(name, industryDesc);
+        String pinyin = StringUtils.join(StringUtils.split(PinyinProcUtils.getPinyin(name, ","), ","));
+        List<String> recordResults = Lists.newArrayList();
+        List<RecordResult> results = Lists.newArrayList();
+        List<CompanyNameRecord> dbNames = this.companyNameRecordDao.queryCompanyRecords(pinyin);
+        if (!dbNames.isEmpty()) {
+            LOGGER.info("get similar result from db");
+            List<String> dbNameList = dbNames.stream().map(CompanyNameRecord::getFullName).collect(Collectors.toList());
+            recordResults.addAll(dbNameList);
+        } else {
+            CompanyBizResult companyBizResult = this.getCompanyBizResult(perfectName);
+            if (companyBizResult.getBizData().size() == 0) {
+                return null;
+            }
+            List<String> qccNameList = companyBizResult.getBizData().stream().map(CompanyBizData::getName).collect(Collectors.toList());
+            recordResults.addAll(qccNameList);
+        }
+
+        for (String bizData : recordResults) {
+            String fullName = filterUtils.filterSpecialChar(bizData);
+            List<String> splitList = CharacterProcUtils.splitSearchCharacters(fullName);
+            splitList = filterUtils.filterAreaChar(splitList);
+            splitList = filterUtils.filterTypeChar(splitList);
+            String industryType = filterUtils.getIndustryChar(splitList);
+            String rootName = filterUtils.getCompanySimpleName(splitList);
+            String perfectResult = StringUtils.join(rootName, industryType);
+            if (perfectResult.equals(perfectName)) {
+                LOGGER.info("[完全匹配核名名称] name: [{}],result name: [{}]", perfectName, fullName);
+                results.add(RecordResult.perfectMatchResult(rootName, industryType, bizData));
+            }
+        }
+
+        if (results.size() == 0) {
+            return null;
+        } else {
+            List<CompanyNameRecord> companyNameRecords = results
+                    .parallelStream()
+                    .map(r -> CompanyNameRecord.defRecord(pinyin, r.getFullName(), r.getRecordName(), r.getIndustryDesc()))
+                    .collect(Collectors.toList());
+            this.storeCompanyNameRecord(companyNameRecords);
+            return CompanyVerifyResult.perfectCompanyNameRecord(results);
+        }
+
+    }
+
+
+    @Override
     public BigDecimal getPerfectScores() {
         return BigDecimal.valueOf(perfectScores);
     }
@@ -134,6 +183,7 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
             List<CompanyNameRecord> dbNames = this.companyNameRecordDao.queryCompanyRecords(record.getPinyin());
 //            List<CompanyNameRecord> dbNames = Lists.newArrayList();
             if (!dbNames.isEmpty()) {
+                LOGGER.info("get company name result from db");
                 names.addAll(dbNames);
             } else {
                 //2、api接口查询
@@ -226,15 +276,8 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
 
     private List<CompanyNameRecord> getCompanyFromQcc(CompanyNameRecord record) throws QccException {
         List<CompanyNameRecord> result = Lists.newArrayList();
-        CompanyBizResult companyBizResult = this.qccCompanyDataService.queryCompanyData(record.getPinyin(), pageStart, pageSize);
-        if (Objects.isNull(companyBizResult) || companyBizResult.getBizData() == null || companyBizResult.getBizData().size() == 0) {
-            return Collections.emptyList();
-        }
-        if (HttpCodeRegex.isAbnormalRequest(companyBizResult.getStatus())) {
-            LOGGER.error("[企查查查询接口返回异常] error: {}", companyBizResult.toString());
-            throw new QccException("企查查查询接口返回异常");
-        }
 
+        CompanyBizResult companyBizResult = this.getCompanyBizResult(record.getPinyin());
         createCompanyRecord(record, result, companyBizResult);
         int pageNum = this.getPageNum(pageSize, companyBizResult.getPage().getTotal());
         if (pageNum <= 1) {
@@ -249,6 +292,19 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
             }
         }
         return result;
+    }
+
+    private CompanyBizResult getCompanyBizResult(String keyword) throws QccException {
+        CompanyBizResult companyBizResult = this.qccCompanyDataService.queryCompanyData(keyword, pageStart, pageSize);
+        if (Objects.isNull(companyBizResult)) {
+            LOGGER.error("[企查查查询接口返回异常] error: null");
+            throw new QccException("企查查查询接口返回异常");
+        }
+        if (HttpCodeRegex.isAbnormalRequest(companyBizResult.getStatus())) {
+            LOGGER.error("[企查查查询接口返回异常] error: {}", companyBizResult.toString());
+            throw new QccException("企查查查询接口返回异常");
+        }
+        return companyBizResult;
     }
 
     private void createCompanyRecord(CompanyNameRecord nameRecord, List<CompanyNameRecord> result, CompanyBizResult pageResult) {

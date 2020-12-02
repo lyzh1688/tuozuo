@@ -14,6 +14,31 @@ public class RecordResult {
     BigDecimal wordPosMinusScore;//字号偏移扣减分值
     BigDecimal industryDescMinusScore;//行业描述扣减分值
 
+    private static final BigDecimal PERFECT_MATCH_MINUS_SCORE = BigDecimal.valueOf(100);
+    private static final BigDecimal PERFECT_ITEM_MINUS_SCORE = BigDecimal.valueOf(60);
+
+    public static RecordResult perfectMatchResult(String recordName, String industryDesc, String fullName) {
+       return new RecordResult(recordName,industryDesc,fullName,PERFECT_MATCH_MINUS_SCORE,
+               PERFECT_ITEM_MINUS_SCORE,PERFECT_ITEM_MINUS_SCORE,
+               PERFECT_ITEM_MINUS_SCORE,PERFECT_ITEM_MINUS_SCORE,
+               PERFECT_ITEM_MINUS_SCORE);
+    }
+
+
+    public RecordResult(String recordName, String industryDesc, String fullName, BigDecimal totalMinusScore, BigDecimal pinYinDupMinusScore, BigDecimal wordDupMinusScore, BigDecimal pinYinPosMinusScore, BigDecimal wordPosMinusScore, BigDecimal industryDescMinusScore) {
+        this.recordName = recordName;
+        this.industryDesc = industryDesc;
+        this.fullName = fullName;
+        this.totalMinusScore = totalMinusScore;
+        this.pinYinDupMinusScore = pinYinDupMinusScore;
+        this.wordDupMinusScore = wordDupMinusScore;
+        this.pinYinPosMinusScore = pinYinPosMinusScore;
+        this.wordPosMinusScore = wordPosMinusScore;
+        this.industryDescMinusScore = industryDescMinusScore;
+    }
+
+    public RecordResult() {
+    }
 
     @Override
     public String toString() {

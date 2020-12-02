@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
 public abstract class CompanyNameTemplate implements CompanyNameService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyNameTemplate.class);
 
+    public abstract CompanyVerifyResult getSimilarResult(String name, String industryDesc) throws QccException;
+
     public abstract BigDecimal getPerfectScores();
 
     public abstract BigDecimal getMaxMinusScores();
@@ -42,6 +44,10 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
     public CompanyVerifyResult queryCompanyResult(String area, String name, String industryDesc) throws QccException {
 
         UserCompanyName userCompanyName = this.createUserCompanyName(area, name, industryDesc);
+        CompanyVerifyResult similarVerifyResult = this.getSimilarResult(name, industryDesc);
+        if (similarVerifyResult != null) {
+            return similarVerifyResult;
+        }
 
         //1、二个字倒序，二个字以上拆词
         List<String> splitNames = this.splitName(name);
