@@ -99,7 +99,7 @@
                     "</span></div>";
                 }
                 tmpstr +=
-                  '<div style="font-size: 18px;font-weight: bold;padding-top: 10px;">来源：</div><div style="font-size: 18px;font-weight: bold;padding: 10px;">' +
+                  '<div style="font-size: 18px;font-weight: bold;padding-top: 10px;">来源：</div><div style="font-size: 18px;font-weight: bold;padding: 10px;word-wrap: break-word;word-break:break-all;">' +
                   i.reference +
                   '</div><a class="to-check-name" data-name="' +
                   i.name +
@@ -242,7 +242,7 @@
                   "</span></div>";
               }
               tmpstr +=
-                '<div style="font-size: 18px;font-weight: bold;padding-top: 10px;">来源：</div><div style="font-size: 18px;font-weight: bold;padding: 10px;">' +
+                '<div style="font-size: 18px;font-weight: bold;padding-top: 10px;">来源：</div><div style="font-size: 18px;font-weight: bold;padding: 10px;word-wrap: break-word;word-break:break-all;">' +
                 i.reference +
                 '</div><a class="to-check-name" data-name="' +
                 i.name +

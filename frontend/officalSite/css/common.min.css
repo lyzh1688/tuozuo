@@ -1595,7 +1595,7 @@ textarea::-webkit-input-placeholder {
 }
 .toname_panel .item-name {
   width: 45%;
-  height: 245px;
+  min-height: 245px;
   margin-bottom: 20px;
   border: 1px solid #D7D7D7;
   -webkit-box-sizing: border-box;
