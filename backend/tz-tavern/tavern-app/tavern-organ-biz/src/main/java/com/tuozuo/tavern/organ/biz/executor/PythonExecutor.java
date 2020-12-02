@@ -100,7 +100,7 @@ public class PythonExecutor implements Executor {
             }
         }
         time = System.currentTimeMillis() - time;
-        LOGGER.error("执行器={} 标识={} 耗时={}ms", args[0], args[2], time);
+        LOGGER.info("执行器={} 标识={} 耗时={}ms", args[0], args[2], time);
         return resultList;
     }
 
