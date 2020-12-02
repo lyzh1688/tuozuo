@@ -84,7 +84,7 @@
             }
             for (let i of data.data.pinYinPosDupRecords) {
               htmlstr +=
-                '<tr class="cart_item"><td class="product-name">字号顺序</td><td class="product-name">' +
+                '<tr class="cart_item"><td class="product-name">谐音顺序</td><td class="product-name">' +
                 i.name +
                 '</td><td class="product-total"><strong>' +
                 i.score +
@@ -92,7 +92,7 @@
             }
             for (let i of data.data.wordPosRecords) {
               htmlstr +=
-                '<tr class="cart_item"><td class="product-name">谐音顺序</td><td class="product-name">' +
+                '<tr class="cart_item"><td class="product-name">字号顺序</td><td class="product-name">' +
                 i.name +
                 '</td><td class="product-total"><strong>' +
                 i.score +
