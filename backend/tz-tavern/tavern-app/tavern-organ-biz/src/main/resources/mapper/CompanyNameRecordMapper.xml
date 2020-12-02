@@ -11,8 +11,8 @@
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <insert id="mergeBatch" parameterType="list">
-    insert into company_name_record (pinyin, full_name, name,
-    area, industry, type,
+    insert into company_name_record (pinyin, full_name, `name`,
+    area, industry, `type`,
     update_date)
     values
     <foreach collection="list" item="item" index="index" separator=",">
@@ -25,10 +25,10 @@
 
     ON DUPLICATE KEY UPDATE
 
-    name=VALUES(name),
+    `name`=VALUES(`name`),
     area=VALUES(area),
     industry=VALUES(industry),
-    type=VALUES(type),
+    `type`=VALUES(`type`),
     update_date=now()
   </insert>
 </mapper>

@@ -57,6 +57,9 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
         BigDecimal perfectScores = this.getPerfectScores();
         List<RecordResult> recordResults = Lists.newArrayList();
         for (RecordItem item : recordItemList) {
+            LOGGER.info("[核名扣分入参] :area:[{}] name:[{}],industryDesc:[{}],RecordItem: [{}] ", area, name, industryDesc, item.toString());
+        }
+        for (RecordItem item : recordItemList) {
 //            LOGGER.info("[核名扣分入参] :[{}] ", item.toString());
             RecordResult recordResult = this.calculateRecord(item, userCompanyName);
             LOGGER.info("[核名扣分结果] area:[{}] name:[{}],pinyin: [{}], industryDesc:[{}],recordResult:[{}] ", area, item.getName(), item.getNamePinYinList(), item.getIndustryDesc(), recordResult.toString());
@@ -93,7 +96,7 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
     private List<RecordResult> getMaxScoreRecord(List<RecordResult> recordResultList) {
 
         List<RecordResult> maxScoreRecordList = recordResultList.parallelStream()
-                .filter(r -> r.getTotalMinusScore().equals(this.getMaxMinusScores()))
+                .filter(r -> r.getTotalMinusScore().compareTo(this.getMaxMinusScores()) > 0)
                 .collect(Collectors.toList());
         return maxScoreRecordList;
     }

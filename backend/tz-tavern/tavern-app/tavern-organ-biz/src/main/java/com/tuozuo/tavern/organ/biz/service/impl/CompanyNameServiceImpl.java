@@ -45,7 +45,7 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
     private String scriptPath;
     @Value("${company.perfect.scores:100}")
     private int perfectScores;
-    @Value("${company.max.minus.scores:90}")
+    @Value("${company.max.minus.scores:3}")
     private int maxMinusScores;
 
     @Autowired
@@ -139,7 +139,6 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
                 //2、api接口查询
                 List<CompanyNameRecord> qccNames = this.getCompanyFromQcc(record);
                 names.addAll(qccNames);
-                this.storeCompanyNameRecord(qccNames);
             }
         }
         return names;

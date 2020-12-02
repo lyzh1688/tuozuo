@@ -22,10 +22,10 @@ public class CalculateRecordServiceImpl implements CalculateRecordService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CalculateRecordServiceImpl.class);
 
-    private static BigDecimal wordDupScore = BigDecimal.valueOf(2);
-    private static BigDecimal pinyinDupScore = BigDecimal.valueOf(2);
-    private static BigDecimal wordPosScore = BigDecimal.valueOf(1);
-    private static BigDecimal pinyinPosScore = BigDecimal.valueOf(1);
+    private static BigDecimal wordDupScore = BigDecimal.valueOf(1);
+    private static BigDecimal pinyinDupScore = BigDecimal.valueOf(1);
+    private static BigDecimal wordPosScore = BigDecimal.valueOf(0.5);
+    private static BigDecimal pinyinPosScore = BigDecimal.valueOf(0.5);
     private static BigDecimal industryParam = BigDecimal.valueOf(0.8);
     private static BigDecimal totalScore = BigDecimal.valueOf(100);
     //计算公式 总扣减分数=（wordDupScore*字号重复度*字号占原名称占比+pinyinDupScore*拼音重复度*拼音占原名称占比+
@@ -66,7 +66,7 @@ public class CalculateRecordServiceImpl implements CalculateRecordService {
             recordResult.setIndustryDesc(item.getIndustryDesc());
             recordResult.setRecordName(item.getName());
             recordResult.setFullName(item.getFullName());
-            if (pinyinInOriginPct.equals(BigDecimal.ONE.setScale(6)) && pinyinInRecordPct.equals(BigDecimal.ONE.setScale(6)) && item.getName().length() == companyName.getName().length()) {
+            if (wordInOriginPct.equals(BigDecimal.ONE.setScale(6)) && wordInRecordPct.equals(BigDecimal.ONE.setScale(6)) && item.getName().length() == companyName.getName().length()) {
                 if (isIndustryTypeSame) {
                     recordResult.setTotalMinusScore(totalScore);
                     recordResult.setPinYinDupMinusScore(BigDecimal.valueOf(25));
@@ -81,6 +81,24 @@ public class CalculateRecordServiceImpl implements CalculateRecordService {
                     recordResult.setWordDupMinusScore(BigDecimal.valueOf(25));
                     recordResult.setPinYinPosMinusScore(BigDecimal.valueOf(20));
                     recordResult.setWordPosMinusScore(BigDecimal.valueOf(20));
+                    recordResult.setIndustryDescMinusScore(BigDecimal.ZERO);
+                    return recordResult;
+                }
+            } else if (pinyinInOriginPct.equals(BigDecimal.ONE.setScale(6)) && pinyinInRecordPct.equals(BigDecimal.ONE.setScale(6)) && item.getName().length() == companyName.getName().length() && pinyinPosPct.equals(BigDecimal.ONE.setScale(6)) && wordInRecordPct.compareTo(BigDecimal.ZERO.setScale(6))>0) {
+                if (isIndustryTypeSame) {
+                    recordResult.setTotalMinusScore(BigDecimal.valueOf(50));
+                    recordResult.setPinYinDupMinusScore(BigDecimal.valueOf(13));
+                    recordResult.setWordDupMinusScore(BigDecimal.valueOf(13));
+                    recordResult.setPinYinPosMinusScore(BigDecimal.valueOf(8));
+                    recordResult.setWordPosMinusScore(BigDecimal.valueOf(8));
+                    recordResult.setIndustryDescMinusScore(BigDecimal.valueOf(8));
+                    return recordResult;
+                } else {
+                    recordResult.setTotalMinusScore(BigDecimal.valueOf(30));
+                    recordResult.setPinYinDupMinusScore(BigDecimal.valueOf(10));
+                    recordResult.setWordDupMinusScore(BigDecimal.valueOf(10));
+                    recordResult.setPinYinPosMinusScore(BigDecimal.valueOf(5));
+                    recordResult.setWordPosMinusScore(BigDecimal.valueOf(5));
                     recordResult.setIndustryDescMinusScore(BigDecimal.ZERO);
                     return recordResult;
                 }
@@ -117,7 +135,7 @@ public class CalculateRecordServiceImpl implements CalculateRecordService {
     }
 
     private static BigDecimal getPositionPct(List<String> wordList, List<String> source, List<String> target) {
-        if(wordList.size() == 0){
+        if (wordList.size() == 0) {
             return BigDecimal.ZERO;
         }
         BigDecimal posNum = BigDecimal.ZERO;
