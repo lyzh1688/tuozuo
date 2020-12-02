@@ -61,7 +61,7 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
     private FilterUtils filterUtils;
 
 
-    //    @Cacheable(value = "build_company_name", key = "#area +'.'+ #industry+'.'+ #source+'.'+ #preferWord+'.'+ #isTwoWords+'.'+ #type")
+    @Cacheable(value = "build_company_name", key = "#area +'.'+ #industry+'.'+ #source+'.'+ #preferWord+'.'+ #isTwoWords+'.'+ #type")
     @Override
     public List<CompanyName> queryCompanyName(String source,
                                               String area,

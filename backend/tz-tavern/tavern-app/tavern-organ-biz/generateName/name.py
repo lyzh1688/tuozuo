@@ -1,4 +1,4 @@
-﻿from opencc import OpenCC
+from opencc import OpenCC
 
 from stroke_number import get_stroke_number
 

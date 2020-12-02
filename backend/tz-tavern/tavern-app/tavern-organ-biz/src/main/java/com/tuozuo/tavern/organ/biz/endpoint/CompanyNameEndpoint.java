@@ -40,8 +40,7 @@ public class CompanyNameEndpoint {
     public TavernResponse createCompanyName(@ModelAttribute @Valid BuildNameVO vo) {
         try {
 
-//            List<CompanyName> resultList = this.companyNameService.queryCompanyName(vo.getSource(), vo.getArea(), vo.getIndustry(), vo.getPreferWord(), vo.getIsTwoWords(), vo.getType());
-            List<CompanyName> resultList = defResult();
+            List<CompanyName> resultList = this.companyNameService.queryCompanyName(vo.getSource(), vo.getArea(), vo.getIndustry(), vo.getPreferWord(), vo.getIsTwoWords(), vo.getType());
             List<CompanyName> pageList = resultList.stream().skip((vo.getPageNo() - 1) * vo.getPageSize()).limit(vo.getPageSize()).collect(Collectors.toList());
             BuildNameDTO dto = new BuildNameDTO();
             dto.setNames(pageList);

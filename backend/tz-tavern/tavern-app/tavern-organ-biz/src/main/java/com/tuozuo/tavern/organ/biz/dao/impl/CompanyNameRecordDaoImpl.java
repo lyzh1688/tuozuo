@@ -29,6 +29,7 @@ public class CompanyNameRecordDaoImpl extends ServiceImpl<CompanyNameRecordMappe
 
     @Override
     public void mergeCompanyRecords(List<CompanyNameRecord> companyNameRecordList) {
-        this.companyNameRecordMapper.mergeBatch(companyNameRecordList);
+//        this.companyNameRecordMapper.mergeBatch(companyNameRecordList);
+        this.saveOrUpdateBatch(companyNameRecordList);
     }
 }

@@ -1,6 +1,4 @@
-import io
 import sys
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='gb18030')
 from stroke_number import get_stroke_number
 from config import name_source, last_name, dislike_words, \
     min_stroke_count, max_stroke_count, allow_general, name_validate, gender, \
