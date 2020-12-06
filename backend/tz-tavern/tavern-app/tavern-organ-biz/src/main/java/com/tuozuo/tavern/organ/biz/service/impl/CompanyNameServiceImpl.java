@@ -182,7 +182,7 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
             //1、先查数据库，有则取数据库
             List<CompanyNameRecord> dbNames = this.companyNameRecordDao.queryCompanyRecords(record.getPinyin());
 //            List<CompanyNameRecord> dbNames = Lists.newArrayList();
-            if (!dbNames.isEmpty()) {
+            if (!dbNames.isEmpty() && dbNames.size() > pageSize) {
                 LOGGER.info("get company name result from db");
                 names.addAll(dbNames);
             } else {
