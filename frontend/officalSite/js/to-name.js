@@ -94,7 +94,7 @@
                   tmpstr +=
                     '<div class="txts-container"><div class="txts" style="background: url(images/bgtian.png);">' +
                     i.name[j] +
-                    '</div><span style="padding:3px;">笔画：22' +
+                    '</div><span style="padding:3px;">笔画：' +
                     i.strokeNums[j] +
                     "</span></div>";
                 }
