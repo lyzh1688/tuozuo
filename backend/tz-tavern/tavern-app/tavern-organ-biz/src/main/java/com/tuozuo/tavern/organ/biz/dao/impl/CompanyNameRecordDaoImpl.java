@@ -28,6 +28,13 @@ public class CompanyNameRecordDaoImpl extends ServiceImpl<CompanyNameRecordMappe
     }
 
     @Override
+    public List<CompanyNameRecord> queryCompanyRecordsByName(String name) {
+        return this.list(Wrappers.<CompanyNameRecord>query()
+                .lambda()
+                .eq(CompanyNameRecord::getName, name));
+    }
+
+    @Override
     public void mergeCompanyRecords(List<CompanyNameRecord> companyNameRecordList) {
         this.companyNameRecordMapper.mergeBatch(companyNameRecordList);
 //        this.saveOrUpdateBatch(companyNameRecordList);

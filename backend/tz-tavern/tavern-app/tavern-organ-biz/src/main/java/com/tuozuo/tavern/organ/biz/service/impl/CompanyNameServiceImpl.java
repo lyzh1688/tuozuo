@@ -2,6 +2,7 @@ package com.tuozuo.tavern.organ.biz.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuozuo.tavern.organ.biz.dao.CompanyNameCountDao;
 import com.tuozuo.tavern.organ.biz.dao.CompanyNameRecordDao;
 import com.tuozuo.tavern.organ.biz.exeception.ExecuteException;
 import com.tuozuo.tavern.organ.biz.exeception.QccException;
@@ -60,6 +61,8 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
     private CalculateRecordService calculateRecordService;
     @Autowired
     private FilterUtils filterUtils;
+    @Autowired
+    private CompanyNameCountDao companyNameCountDao;
 
 
     @Cacheable(value = "build_company_name", key = "#area +'.'+ #industry+'.'+ #source+'.'+ #preferWord+'.'+ #isTwoWords+'.'+ #type")
@@ -96,7 +99,7 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
         String pinyin = StringUtils.join(StringUtils.split(PinyinProcUtils.getPinyin(name, ","), ","));
         List<String> recordResults = Lists.newArrayList();
         List<RecordResult> results = Lists.newArrayList();
-        List<CompanyNameRecord> dbNames = this.companyNameRecordDao.queryCompanyRecords(pinyin);
+        List<CompanyNameRecord> dbNames = this.companyNameRecordDao.queryCompanyRecordsByName(name);
         if (!dbNames.isEmpty()) {
             LOGGER.info("get similar result from db");
             List<String> dbNameList = dbNames.stream().map(CompanyNameRecord::getFullName).collect(Collectors.toList());
@@ -181,8 +184,18 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
         for (CompanyNameRecord record : recordList) {
             //1、先查数据库，有则取数据库
             List<CompanyNameRecord> dbNames = this.companyNameRecordDao.queryCompanyRecords(record.getPinyin());
+            //是否需要更新数据
+            CompanyNameCount companyNameCount = this.companyNameCountDao.queryCompanyNameCount(record.getPinyin());
+            boolean isUpdate = false;
+            if (companyNameCount != null) {
+                int cnt = companyNameCount.getQueryCnt();
+                int mod = cnt % 10;
+                if (mod == 0) {
+                    isUpdate = true;
+                }
+            }
 //            List<CompanyNameRecord> dbNames = Lists.newArrayList();
-            if (!dbNames.isEmpty() && dbNames.size() > pageSize) {
+            if (!dbNames.isEmpty() && dbNames.size() > pageSize && !isUpdate) {
                 LOGGER.info("get company name result from db");
                 names.addAll(dbNames);
             } else {
@@ -190,6 +203,12 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
                 List<CompanyNameRecord> qccNames = this.getCompanyFromQcc(record);
                 names.addAll(qccNames);
             }
+            //更新调用次数
+            if (companyNameCount == null) {
+                companyNameCount = CompanyNameCount.create(record.getPinyin(), record.getName());
+            }
+            companyNameCount.setQueryCnt(companyNameCount.getQueryCnt() + 1);
+            this.companyNameCountDao.updateCompanyNameCount(companyNameCount);
         }
         return names;
     }
@@ -212,6 +231,7 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
             splitList = filterUtils.filterTypeChar(splitList);
             String industryType = filterUtils.getIndustryChar(splitList);
             String rootName = filterUtils.getCompanySimpleName(splitList);
+            record.setIndustry(industryType);
             RecordItem item = new RecordItem();
             item.setIndustryDesc(industryType);
             item.setName(rootName);

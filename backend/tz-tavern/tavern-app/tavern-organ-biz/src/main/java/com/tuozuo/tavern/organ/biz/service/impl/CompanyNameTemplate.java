@@ -85,7 +85,6 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
         companyVerifyResult.setMaxScoreRecords(maxScoreRecords);
         this.storeCompanyNameRecord(companyNameRecords);
 
-
         return companyVerifyResult;
     }
 

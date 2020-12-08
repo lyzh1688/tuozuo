@@ -13,18 +13,8 @@ import java.util.stream.Collectors;
 public class Test {
 
     public static void main(String[] args) {
-        List<String> pinyinList = Lists.newArrayList();
-        pinyinList.add("qing");
-        pinyinList.add("long");
-        List<String> recordPinyinList = Lists.newArrayList();
-        recordPinyinList.add("qin");
-        recordPinyinList.add("lon");
-        int size = pinyinList.stream()
-                .map(t -> recordPinyinList.stream().filter(s -> Objects.nonNull(s) && Objects.nonNull(s) && Objects.equals(t, s)).findAny().orElse(null))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList())
-                .size();
-        System.out.println(size);
+        int s = 35%10;
+        System.out.println(s);
     }
 
 

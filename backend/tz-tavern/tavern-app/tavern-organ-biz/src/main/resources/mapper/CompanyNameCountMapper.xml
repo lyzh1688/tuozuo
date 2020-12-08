@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuozuo.tavern.organ.biz.mapper.CompanyNameCountMapper">
+  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.organ.biz.model.CompanyNameCount">
+    <result column="pinyin" jdbcType="VARCHAR" property="pinyin" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="query_cnt" jdbcType="INTEGER" property="queryCnt" />
+  </resultMap>
+  <insert id="insert" parameterType="com.tuozuo.tavern.organ.biz.model.CompanyNameCount">
+    insert into company_name_count (pinyin, name, query_cnt
+      )
+    values (#{pinyin,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{queryCnt,jdbcType=INTEGER}
+      )
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select pinyin, name, query_cnt
+    from company_name_count
+  </select>
+</mapper>
