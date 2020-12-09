@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -31,6 +30,8 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
     public abstract List<String> splitName(String name);
 
     public abstract List<CompanyNameRecord> transferPinyin(List<String> name);
+
+    public abstract List<CompanyNameRecord> getCompanyNameByFullName(String area, String name, String industryDesc) throws QccException;
 
     public abstract List<CompanyNameRecord> getCompanyName(List<CompanyNameRecord> recordList) throws QccException;
 
@@ -54,7 +55,11 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
         //2、拼音转换
         List<CompanyNameRecord> pinyinRecords = this.transferPinyin(splitNames);
         //3、查询数据库或调用接口
-        List<CompanyNameRecord> companyNameRecords = this.getCompanyName(pinyinRecords);
+        List<CompanyNameRecord> companyNameRecords = Lists.newArrayList();
+        List<CompanyNameRecord> fullNameRecords = this.getCompanyNameByFullName(area, name, industryDesc);
+        List<CompanyNameRecord> queryRecords = this.getCompanyName(pinyinRecords);
+        companyNameRecords.addAll(fullNameRecords);
+        companyNameRecords.addAll(queryRecords);
         if (companyNameRecords.isEmpty()) {
             LOGGER.error("[核名未获取任何匹配结果] area:[{}] name:[{}] industryDesc:[{}] ", area, name, industryDesc);
             return CompanyVerifyResult.defCompanyNameRecord();

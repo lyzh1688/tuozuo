@@ -99,7 +99,7 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
         String pinyin = StringUtils.join(StringUtils.split(PinyinProcUtils.getPinyin(name, ","), ","));
         List<String> recordResults = Lists.newArrayList();
         List<RecordResult> results = Lists.newArrayList();
-        List<CompanyNameRecord> dbNames = this.companyNameRecordDao.queryCompanyRecordsByName(name);
+        List<CompanyNameRecord> dbNames = this.companyNameRecordDao.queryCompanyRecordsByName(perfectName);
         if (!dbNames.isEmpty()) {
             LOGGER.info("get similar result from db");
             List<String> dbNameList = dbNames.stream().map(CompanyNameRecord::getFullName).collect(Collectors.toList());
@@ -179,38 +179,57 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
     }
 
     @Override
+    public List<CompanyNameRecord> getCompanyNameByFullName(String area, String name, String industryDesc) throws QccException {
+        List<CompanyNameRecord> names = Lists.newArrayList();
+        String keyword = StringUtils.join(name, industryDesc);
+        String pinyin = StringUtils.join(StringUtils.split(PinyinProcUtils.getPinyin(keyword, ","), ","));
+        List<CompanyNameRecord> results = this.getSingleCompanyName(keyword, pinyin, keyword, 1);
+        names.addAll(results);
+        return names;
+    }
+
+    @Override
     public List<CompanyNameRecord> getCompanyName(List<CompanyNameRecord> recordList) throws QccException {
         List<CompanyNameRecord> names = Lists.newArrayList();
         for (CompanyNameRecord record : recordList) {
-            //1、先查数据库，有则取数据库
-            List<CompanyNameRecord> dbNames = this.companyNameRecordDao.queryCompanyRecords(record.getPinyin());
-            //是否需要更新数据
-            CompanyNameCount companyNameCount = this.companyNameCountDao.queryCompanyNameCount(record.getPinyin());
-            boolean isUpdate = false;
-            if (companyNameCount != null) {
-                int cnt = companyNameCount.getQueryCnt();
-                int mod = cnt % 10;
-                if (mod == 0) {
-                    isUpdate = true;
-                }
-            }
-//            List<CompanyNameRecord> dbNames = Lists.newArrayList();
-            if (!dbNames.isEmpty() && dbNames.size() > pageSize && !isUpdate) {
-                LOGGER.info("get company name result from db");
-                names.addAll(dbNames);
-            } else {
-                //2、api接口查询
-                List<CompanyNameRecord> qccNames = this.getCompanyFromQcc(record);
-                names.addAll(qccNames);
-            }
-            //更新调用次数
-            if (companyNameCount == null) {
-                companyNameCount = CompanyNameCount.create(record.getPinyin(), record.getName());
-            }
-            companyNameCount.setQueryCnt(companyNameCount.getQueryCnt() + 1);
-            this.companyNameCountDao.updateCompanyNameCount(companyNameCount);
+            List<CompanyNameRecord> results = this.getSingleCompanyName(record.getPinyin(), record.getPinyin(), record.getName(), 5);
+            names.addAll(results);
         }
         return names;
+    }
+
+
+    private List<CompanyNameRecord> getSingleCompanyName(String keyword, String pinyin, String name, int times) throws QccException {
+
+        List<CompanyNameRecord> records;
+        //1、先查数据库，有则取数据库
+        List<CompanyNameRecord> dbNames = this.companyNameRecordDao.queryCompanyRecords(pinyin);
+        //是否需要更新数据
+        CompanyNameCount companyNameCount = this.companyNameCountDao.queryCompanyNameCount(pinyin);
+        boolean isUpdate = false;
+        if (companyNameCount != null) {
+            int cnt = companyNameCount.getQueryCnt();
+            int mod = cnt % 10;
+            if (mod == 0) {
+                isUpdate = true;
+            }
+        }
+//            List<CompanyNameRecord> dbNames = Lists.newArrayList();
+        if (!dbNames.isEmpty() && dbNames.size() > pageSize && !isUpdate) {
+            LOGGER.info("get company name result from db");
+            records = dbNames;
+        } else {
+            //2、api接口查询
+            List<CompanyNameRecord> qccNames = this.getCompanyFromQcc(keyword, name, pinyin, times);
+            records = qccNames;
+        }
+        //更新调用次数
+        if (companyNameCount == null) {
+            companyNameCount = CompanyNameCount.create(pinyin, name);
+        }
+        companyNameCount.setQueryCnt(companyNameCount.getQueryCnt() + 1);
+        this.companyNameCountDao.updateCompanyNameCount(companyNameCount);
+        return records;
     }
 
     @Override
@@ -224,6 +243,7 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
         //3、过滤类型字符
         //4、筛出行业：无行业传空字符串
         //5、筛出名称
+        List<RecordItem> recordItemList = Lists.newArrayList();
         for (CompanyNameRecord record : companyNameList) {
             String name = filterUtils.filterSpecialChar(record.getFullName());
             List<String> splitList = CharacterProcUtils.splitSearchCharacters(name);
@@ -262,8 +282,8 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
                 item.setMarkers(recordMarks);
             }
             dupRecordMap.put(record.getFullName(), item);
+            recordItemList.add(item);
         }
-        List<RecordItem> recordItemList = new ArrayList<>(dupRecordMap.values());
         return recordItemList;
     }
 
@@ -294,21 +314,21 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
         return pageNum;
     }
 
-    private List<CompanyNameRecord> getCompanyFromQcc(CompanyNameRecord record) throws QccException {
+    private List<CompanyNameRecord> getCompanyFromQcc(String keyword, String name, String pinyin, int times) throws QccException {
         List<CompanyNameRecord> result = Lists.newArrayList();
 
-        CompanyBizResult companyBizResult = this.getCompanyBizResult(record.getPinyin());
-        createCompanyRecord(record, result, companyBizResult);
+        CompanyBizResult companyBizResult = this.getCompanyBizResult(keyword);
+        createCompanyRecord(name, pinyin, result, companyBizResult);
         int pageNum = this.getPageNum(pageSize, companyBizResult.getPage().getTotal());
         if (pageNum <= 1) {
             return result;
         } else {
             for (int i = 2; i <= pageNum; i++) {
-                if (i > 5) {
+                if (i > times) {
                     break;
                 }
-                CompanyBizResult pageResult = this.qccCompanyDataService.queryCompanyData(record.getPinyin(), i, pageSize);
-                createCompanyRecord(record, result, pageResult);
+                CompanyBizResult pageResult = this.qccCompanyDataService.queryCompanyData(keyword, i, pageSize);
+                createCompanyRecord(name, pinyin, result, pageResult);
             }
         }
         return result;
@@ -327,11 +347,11 @@ public class CompanyNameServiceImpl extends CompanyNameTemplate {
         return companyBizResult;
     }
 
-    private void createCompanyRecord(CompanyNameRecord nameRecord, List<CompanyNameRecord> result, CompanyBizResult pageResult) {
+    private void createCompanyRecord(String name, String pinyin, List<CompanyNameRecord> result, CompanyBizResult pageResult) {
         List<CompanyNameRecord> pageName = pageResult.getBizData().stream().map(r -> {
             CompanyNameRecord record = new CompanyNameRecord();
-            record.setName(nameRecord.getName());
-            record.setPinyin(nameRecord.getPinyin());
+            record.setName(name);
+            record.setPinyin(pinyin);
             record.setFullName(r.getName());
             return record;
         }).collect(Collectors.toList());
