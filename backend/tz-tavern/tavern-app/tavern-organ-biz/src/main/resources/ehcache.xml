@@ -10,5 +10,8 @@
     <cache name="build_company_name" maxElementsInMemory="1000" maxElementsOnDisk="1000" overflowToDisk="true" eternal="false" timeToIdleSeconds="300"
            timeToLiveSeconds="300" />
 
+    <cache name="company_industry" maxElementsInMemory="1000" maxElementsOnDisk="1000" overflowToDisk="true" eternal="false" timeToIdleSeconds="300"
+           timeToLiveSeconds="36000" />
+
 
 </ehcache>

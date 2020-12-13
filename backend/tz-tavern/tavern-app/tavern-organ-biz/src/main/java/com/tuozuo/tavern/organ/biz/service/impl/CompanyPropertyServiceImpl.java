@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -39,5 +40,11 @@ public class CompanyPropertyServiceImpl implements CompanyPropertyService {
             return companyNamePropertyList;
         }
         return this.companyPropertyDao.selectByProperty(type.name());
+    }
+
+    @Override
+    public String queryIndustrySuperClass(String subClass) {
+        Map<String, String> industryMap = this.companyPropertyDao.selectIndustryAll(CompanyPropertyType.industry.name());
+        return industryMap.getOrDefault(subClass, subClass);
     }
 }

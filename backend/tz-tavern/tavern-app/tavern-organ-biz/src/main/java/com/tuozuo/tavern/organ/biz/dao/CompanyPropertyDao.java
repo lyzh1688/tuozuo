@@ -3,6 +3,7 @@ package com.tuozuo.tavern.organ.biz.dao;
 import com.tuozuo.tavern.organ.biz.model.CompanyNameProperty;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -11,5 +12,7 @@ import java.util.List;
 public interface CompanyPropertyDao {
 
     List<CompanyNameProperty> selectByProperty(String type);
+
+    Map<String, String> selectIndustryAll(String type);
 
 }

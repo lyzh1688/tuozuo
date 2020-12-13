@@ -14,4 +14,6 @@ public interface CompanyPropertyService {
 
     List<CompanyNameProperty> queryCompanyProperty(CompanyPropertyType type);
 
+    String queryIndustrySuperClass(String subClass);
+
 }

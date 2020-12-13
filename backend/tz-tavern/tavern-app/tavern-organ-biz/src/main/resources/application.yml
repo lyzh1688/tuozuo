@@ -6,9 +6,9 @@ tavern.security.jwt.secret: tavern
 qcc.key: 2fd58c707a164dbdaaf9ba9d71a30022
 qcc.secretKey: 36D8F15080D2D68F213DFD64108B61A1
 
-company.industry.path: "D://项目//tuozuo.git//backend//tz-tavern//tavern-app//tavern-organ-biz//company//industry.txt"
-company.area.path: "D://项目//tuozuo.git//backend//tz-tavern//tavern-app//tavern-organ-biz//company//area.txt"
-company.type.path: "D://项目//tuozuo.git//backend//tz-tavern//tavern-app//tavern-organ-biz//company//type.txt"
+#company.industry.path: "D://项目//tuozuo.git//backend//tz-tavern//tavern-app//tavern-organ-biz//company//industry.txt"
+#company.area.path: "D://项目//tuozuo.git//backend//tz-tavern//tavern-app//tavern-organ-biz//company//area.txt"
+#company.type.path: "D://项目//tuozuo.git//backend//tz-tavern//tavern-app//tavern-organ-biz//company//type.txt"
 
 mybatis-plus:
   # MyBatis Mapper所对应的XML文件位置
