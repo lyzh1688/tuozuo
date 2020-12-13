@@ -27,6 +27,14 @@ public class FilterUtils {
         return m.replaceAll("").trim();
     }
 
+    public String getAreaChar(List<String> str) {
+        for (int i = 0; i < str.size(); i++) {
+            if (companyPropertyStore.getAreaMap().containsKey(str.get(i))) {
+               return str.get(i);
+            }
+        }
+        return "";
+    }
     public List<String> filterAreaChar(List<String> str) {
         for (int i = 0; i < str.size(); i++) {
             if (companyPropertyStore.getAreaMap().containsKey(str.get(i))) {

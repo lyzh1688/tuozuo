@@ -23,14 +23,15 @@ public class CompanyNameRecord extends Model<CompanyNameRecord> {
 
     private LocalDateTime updateDate;
 
-    public static CompanyNameRecord defRecord(String pinyin, String fullName, String name, String industry) {
-        return new CompanyNameRecord(pinyin, fullName, name, industry);
+    public static CompanyNameRecord defRecord(String area, String pinyin, String fullName, String name, String industry) {
+        return new CompanyNameRecord(area, pinyin, fullName, name, industry);
     }
 
     public CompanyNameRecord() {
     }
 
-    public CompanyNameRecord(String pinyin, String fullName, String name, String industry) {
+    public CompanyNameRecord(String area, String pinyin, String fullName, String name, String industry) {
+        this.area = area;
         this.pinyin = pinyin;
         this.fullName = fullName;
         this.name = name;
