@@ -1,0 +1,2412 @@
+{
+  "Status": "200",
+  "Message": "查询成功",
+  "Result": [
+    {
+      "Province": "北京市",
+      "City": "北京市",
+      "ProvinceCode": "BJ",
+      "CityCode": "1"
+    },
+    {
+      "Province": "天津市",
+      "City": "天津市",
+      "ProvinceCode": "TJ",
+      "CityCode": "1"
+    },
+    {
+      "Province": "河北省",
+      "City": "石家庄市",
+      "ProvinceCode": "HB",
+      "CityCode": "1"
+    },
+    {
+      "Province": "河北省",
+      "City": "唐山市",
+      "ProvinceCode": "HB",
+      "CityCode": "2"
+    },
+    {
+      "Province": "河北省",
+      "City": "秦皇岛市",
+      "ProvinceCode": "HB",
+      "CityCode": "3"
+    },
+    {
+      "Province": "河北省",
+      "City": "邯郸市",
+      "ProvinceCode": "HB",
+      "CityCode": "4"
+    },
+    {
+      "Province": "河北省",
+      "City": "邢台市",
+      "ProvinceCode": "HB",
+      "CityCode": "5"
+    },
+    {
+      "Province": "河北省",
+      "City": "保定市",
+      "ProvinceCode": "HB",
+      "CityCode": "6"
+    },
+    {
+      "Province": "河北省",
+      "City": "张家口市",
+      "ProvinceCode": "HB",
+      "CityCode": "7"
+    },
+    {
+      "Province": "河北省",
+      "City": "承德市",
+      "ProvinceCode": "HB",
+      "CityCode": "8"
+    },
+    {
+      "Province": "河北省",
+      "City": "沧州市",
+      "ProvinceCode": "HB",
+      "CityCode": "9"
+    },
+    {
+      "Province": "河北省",
+      "City": "廊坊市",
+      "ProvinceCode": "HB",
+      "CityCode": "10"
+    },
+    {
+      "Province": "河北省",
+      "City": "衡水市",
+      "ProvinceCode": "HB",
+      "CityCode": "11"
+    },
+    {
+      "Province": "河北省",
+      "City": "省直辖县级行政区划",
+      "ProvinceCode": "HB",
+      "CityCode": "90"
+    },
+    {
+      "Province": "山西省",
+      "City": "太原市",
+      "ProvinceCode": "SX",
+      "CityCode": "1"
+    },
+    {
+      "Province": "山西省",
+      "City": "大同市",
+      "ProvinceCode": "SX",
+      "CityCode": "2"
+    },
+    {
+      "Province": "山西省",
+      "City": "阳泉市",
+      "ProvinceCode": "SX",
+      "CityCode": "3"
+    },
+    {
+      "Province": "山西省",
+      "City": "长治市",
+      "ProvinceCode": "SX",
+      "CityCode": "4"
+    },
+    {
+      "Province": "山西省",
+      "City": "晋城市",
+      "ProvinceCode": "SX",
+      "CityCode": "5"
+    },
+    {
+      "Province": "山西省",
+      "City": "朔州市",
+      "ProvinceCode": "SX",
+      "CityCode": "6"
+    },
+    {
+      "Province": "山西省",
+      "City": "晋中市",
+      "ProvinceCode": "SX",
+      "CityCode": "7"
+    },
+    {
+      "Province": "山西省",
+      "City": "运城市",
+      "ProvinceCode": "SX",
+      "CityCode": "8"
+    },
+    {
+      "Province": "山西省",
+      "City": "忻州市",
+      "ProvinceCode": "SX",
+      "CityCode": "9"
+    },
+    {
+      "Province": "山西省",
+      "City": "临汾市",
+      "ProvinceCode": "SX",
+      "CityCode": "10"
+    },
+    {
+      "Province": "山西省",
+      "City": "吕梁市",
+      "ProvinceCode": "SX",
+      "CityCode": "11"
+    },
+    {
+      "Province": "山西省",
+      "City": "忻州地区",
+      "ProvinceCode": "SX",
+      "CityCode": "22"
+    },
+    {
+      "Province": "山西省",
+      "City": "吕梁地区",
+      "ProvinceCode": "SX",
+      "CityCode": "23"
+    },
+    {
+      "Province": "山西省",
+      "City": "晋中地区",
+      "ProvinceCode": "SX",
+      "CityCode": "24"
+    },
+    {
+      "Province": "山西省",
+      "City": "临汾地区",
+      "ProvinceCode": "SX",
+      "CityCode": "26"
+    },
+    {
+      "Province": "山西省",
+      "City": "运城地区",
+      "ProvinceCode": "SX",
+      "CityCode": "27"
+    },
+    {
+      "Province": "内蒙古自治区",
+      "City": "呼和浩特市",
+      "ProvinceCode": "NMG",
+      "CityCode": "1"
+    },
+    {
+      "Province": "内蒙古自治区",
+      "City": "包头市",
+      "ProvinceCode": "NMG",
+      "CityCode": "2"
+    },
+    {
+      "Province": "内蒙古自治区",
+      "City": "乌海市",
+      "ProvinceCode": "NMG",
+      "CityCode": "3"
+    },
+    {
+      "Province": "内蒙古自治区",
+      "City": "赤峰市",
+      "ProvinceCode": "NMG",
+      "CityCode": "4"
+    },
+    {
+      "Province": "内蒙古自治区",
+      "City": "通辽市",
+      "ProvinceCode": "NMG",
+      "CityCode": "5"
+    },
+    {
+      "Province": "内蒙古自治区",
+      "City": "鄂尔多斯市",
+      "ProvinceCode": "NMG",
+      "CityCode": "6"
+    },
+    {
+      "Province": "内蒙古自治区",
+      "City": "呼伦贝尔市",
+      "ProvinceCode": "NMG",
+      "CityCode": "7"
+    },
+    {
+      "Province": "内蒙古自治区",
+      "City": "巴彦淖尔市",
+      "ProvinceCode": "NMG",
+      "CityCode": "8"
+    },
+    {
+      "Province": "内蒙古自治区",
+      "City": "乌兰察布市",
+      "ProvinceCode": "NMG",
+      "CityCode": "9"
+    },
+    {
+      "Province": "内蒙古自治区",
+      "City": "呼伦贝尔盟",
+      "ProvinceCode": "NMG",
+      "CityCode": "21"
+    },
+    {
+      "Province": "内蒙古自治区",
+      "City": "兴安盟",
+      "ProvinceCode": "NMG",
+      "CityCode": "22"
+    },
+    {
+      "Province": "内蒙古自治区",
+      "City": "哲里木盟",
+      "ProvinceCode": "NMG",
+      "CityCode": "23"
+    },
+    {
+      "Province": "内蒙古自治区",
+      "City": "锡林郭勒盟",
+      "ProvinceCode": "NMG",
+      "CityCode": "25"
+    },
+    {
+      "Province": "内蒙古自治区",
+      "City": "乌兰察布盟",
+      "ProvinceCode": "NMG",
+      "CityCode": "26"
+    },
+    {
+      "Province": "内蒙古自治区",
+      "City": "伊克昭盟",
+      "ProvinceCode": "NMG",
+      "CityCode": "27"
+    },
+    {
+      "Province": "内蒙古自治区",
+      "City": "巴彦淖尔盟",
+      "ProvinceCode": "NMG",
+      "CityCode": "28"
+    },
+    {
+      "Province": "内蒙古自治区",
+      "City": "阿拉善盟",
+      "ProvinceCode": "NMG",
+      "CityCode": "29"
+    },
+    {
+      "Province": "辽宁省",
+      "City": "沈阳市",
+      "ProvinceCode": "LN",
+      "CityCode": "1"
+    },
+    {
+      "Province": "辽宁省",
+      "City": "大连市",
+      "ProvinceCode": "LN",
+      "CityCode": "2"
+    },
+    {
+      "Province": "辽宁省",
+      "City": "鞍山市",
+      "ProvinceCode": "LN",
+      "CityCode": "3"
+    },
+    {
+      "Province": "辽宁省",
+      "City": "抚顺市",
+      "ProvinceCode": "LN",
+      "CityCode": "4"
+    },
+    {
+      "Province": "辽宁省",
+      "City": "本溪市",
+      "ProvinceCode": "LN",
+      "CityCode": "5"
+    },
+    {
+      "Province": "辽宁省",
+      "City": "丹东市",
+      "ProvinceCode": "LN",
+      "CityCode": "6"
+    },
+    {
+      "Province": "辽宁省",
+      "City": "锦州市",
+      "ProvinceCode": "LN",
+      "CityCode": "7"
+    },
+    {
+      "Province": "辽宁省",
+      "City": "营口市",
+      "ProvinceCode": "LN",
+      "CityCode": "8"
+    },
+    {
+      "Province": "辽宁省",
+      "City": "阜新市",
+      "ProvinceCode": "LN",
+      "CityCode": "9"
+    },
+    {
+      "Province": "辽宁省",
+      "City": "辽阳市",
+      "ProvinceCode": "LN",
+      "CityCode": "10"
+    },
+    {
+      "Province": "辽宁省",
+      "City": "盘锦市",
+      "ProvinceCode": "LN",
+      "CityCode": "11"
+    },
+    {
+      "Province": "辽宁省",
+      "City": "铁岭市",
+      "ProvinceCode": "LN",
+      "CityCode": "12"
+    },
+    {
+      "Province": "辽宁省",
+      "City": "朝阳市",
+      "ProvinceCode": "LN",
+      "CityCode": "13"
+    },
+    {
+      "Province": "辽宁省",
+      "City": "葫芦岛市",
+      "ProvinceCode": "LN",
+      "CityCode": "14"
+    },
+    {
+      "Province": "吉林省",
+      "City": "长春市",
+      "ProvinceCode": "JL",
+      "CityCode": "1"
+    },
+    {
+      "Province": "吉林省",
+      "City": "吉林市",
+      "ProvinceCode": "JL",
+      "CityCode": "2"
+    },
+    {
+      "Province": "吉林省",
+      "City": "四平市",
+      "ProvinceCode": "JL",
+      "CityCode": "3"
+    },
+    {
+      "Province": "吉林省",
+      "City": "辽源市",
+      "ProvinceCode": "JL",
+      "CityCode": "4"
+    },
+    {
+      "Province": "吉林省",
+      "City": "通化市",
+      "ProvinceCode": "JL",
+      "CityCode": "5"
+    },
+    {
+      "Province": "吉林省",
+      "City": "白山市",
+      "ProvinceCode": "JL",
+      "CityCode": "6"
+    },
+    {
+      "Province": "吉林省",
+      "City": "松原市",
+      "ProvinceCode": "JL",
+      "CityCode": "7"
+    },
+    {
+      "Province": "吉林省",
+      "City": "白城市",
+      "ProvinceCode": "JL",
+      "CityCode": "8"
+    },
+    {
+      "Province": "吉林省",
+      "City": "延边朝鲜族自治州",
+      "ProvinceCode": "JL",
+      "CityCode": "24"
+    },
+    {
+      "Province": "黑龙江省",
+      "City": "哈尔滨市",
+      "ProvinceCode": "HLJ",
+      "CityCode": "1"
+    },
+    {
+      "Province": "黑龙江省",
+      "City": "齐齐哈尔市",
+      "ProvinceCode": "HLJ",
+      "CityCode": "2"
+    },
+    {
+      "Province": "黑龙江省",
+      "City": "鸡西市",
+      "ProvinceCode": "HLJ",
+      "CityCode": "3"
+    },
+    {
+      "Province": "黑龙江省",
+      "City": "鹤岗市",
+      "ProvinceCode": "HLJ",
+      "CityCode": "4"
+    },
+    {
+      "Province": "黑龙江省",
+      "City": "双鸭山市",
+      "ProvinceCode": "HLJ",
+      "CityCode": "5"
+    },
+    {
+      "Province": "黑龙江省",
+      "City": "大庆市",
+      "ProvinceCode": "HLJ",
+      "CityCode": "6"
+    },
+    {
+      "Province": "黑龙江省",
+      "City": "伊春市",
+      "ProvinceCode": "HLJ",
+      "CityCode": "7"
+    },
+    {
+      "Province": "黑龙江省",
+      "City": "佳木斯市",
+      "ProvinceCode": "HLJ",
+      "CityCode": "8"
+    },
+    {
+      "Province": "黑龙江省",
+      "City": "七台河市",
+      "ProvinceCode": "HLJ",
+      "CityCode": "9"
+    },
+    {
+      "Province": "黑龙江省",
+      "City": "牡丹江市",
+      "ProvinceCode": "HLJ",
+      "CityCode": "10"
+    },
+    {
+      "Province": "黑龙江省",
+      "City": "黑河市",
+      "ProvinceCode": "HLJ",
+      "CityCode": "11"
+    },
+    {
+      "Province": "黑龙江省",
+      "City": "绥化市",
+      "ProvinceCode": "HLJ",
+      "CityCode": "12"
+    },
+    {
+      "Province": "黑龙江省",
+      "City": "绥化地区",
+      "ProvinceCode": "HLJ",
+      "CityCode": "23"
+    },
+    {
+      "Province": "黑龙江省",
+      "City": "大兴安岭地区",
+      "ProvinceCode": "HLJ",
+      "CityCode": "27"
+    },
+    {
+      "Province": "上海市",
+      "City": "上海市",
+      "ProvinceCode": "SH",
+      "CityCode": "1"
+    },
+    {
+      "Province": "江苏省",
+      "City": "南京市",
+      "ProvinceCode": "JS",
+      "CityCode": "1"
+    },
+    {
+      "Province": "江苏省",
+      "City": "无锡市",
+      "ProvinceCode": "JS",
+      "CityCode": "2"
+    },
+    {
+      "Province": "江苏省",
+      "City": "徐州市",
+      "ProvinceCode": "JS",
+      "CityCode": "3"
+    },
+    {
+      "Province": "江苏省",
+      "City": "常州市",
+      "ProvinceCode": "JS",
+      "CityCode": "4"
+    },
+    {
+      "Province": "江苏省",
+      "City": "苏州市",
+      "ProvinceCode": "JS",
+      "CityCode": "5"
+    },
+    {
+      "Province": "江苏省",
+      "City": "南通市",
+      "ProvinceCode": "JS",
+      "CityCode": "6"
+    },
+    {
+      "Province": "江苏省",
+      "City": "连云港市",
+      "ProvinceCode": "JS",
+      "CityCode": "7"
+    },
+    {
+      "Province": "江苏省",
+      "City": "淮安市",
+      "ProvinceCode": "JS",
+      "CityCode": "8"
+    },
+    {
+      "Province": "江苏省",
+      "City": "淮阴市",
+      "ProvinceCode": "JS",
+      "CityCode": "8"
+    },
+    {
+      "Province": "江苏省",
+      "City": "盐城市",
+      "ProvinceCode": "JS",
+      "CityCode": "9"
+    },
+    {
+      "Province": "江苏省",
+      "City": "扬州市",
+      "ProvinceCode": "JS",
+      "CityCode": "10"
+    },
+    {
+      "Province": "江苏省",
+      "City": "镇江市",
+      "ProvinceCode": "JS",
+      "CityCode": "11"
+    },
+    {
+      "Province": "江苏省",
+      "City": "泰州市",
+      "ProvinceCode": "JS",
+      "CityCode": "12"
+    },
+    {
+      "Province": "江苏省",
+      "City": "宿迁市",
+      "ProvinceCode": "JS",
+      "CityCode": "13"
+    },
+    {
+      "Province": "浙江省",
+      "City": "杭州市",
+      "ProvinceCode": "ZJ",
+      "CityCode": "1"
+    },
+    {
+      "Province": "浙江省",
+      "City": "宁波市",
+      "ProvinceCode": "ZJ",
+      "CityCode": "2"
+    },
+    {
+      "Province": "浙江省",
+      "City": "温州市",
+      "ProvinceCode": "ZJ",
+      "CityCode": "3"
+    },
+    {
+      "Province": "浙江省",
+      "City": "嘉兴市",
+      "ProvinceCode": "ZJ",
+      "CityCode": "4"
+    },
+    {
+      "Province": "浙江省",
+      "City": "湖州市",
+      "ProvinceCode": "ZJ",
+      "CityCode": "5"
+    },
+    {
+      "Province": "浙江省",
+      "City": "绍兴市",
+      "ProvinceCode": "ZJ",
+      "CityCode": "6"
+    },
+    {
+      "Province": "浙江省",
+      "City": "金华市",
+      "ProvinceCode": "ZJ",
+      "CityCode": "7"
+    },
+    {
+      "Province": "浙江省",
+      "City": "衢州市",
+      "ProvinceCode": "ZJ",
+      "CityCode": "8"
+    },
+    {
+      "Province": "浙江省",
+      "City": "舟山市",
+      "ProvinceCode": "ZJ",
+      "CityCode": "9"
+    },
+    {
+      "Province": "浙江省",
+      "City": "台州市",
+      "ProvinceCode": "ZJ",
+      "CityCode": "10"
+    },
+    {
+      "Province": "浙江省",
+      "City": "丽水市",
+      "ProvinceCode": "ZJ",
+      "CityCode": "11"
+    },
+    {
+      "Province": "浙江省",
+      "City": "丽水地区",
+      "ProvinceCode": "ZJ",
+      "CityCode": "25"
+    },
+    {
+      "Province": "安徽省",
+      "City": "合肥市",
+      "ProvinceCode": "AH",
+      "CityCode": "1"
+    },
+    {
+      "Province": "安徽省",
+      "City": "芜湖市",
+      "ProvinceCode": "AH",
+      "CityCode": "2"
+    },
+    {
+      "Province": "安徽省",
+      "City": "蚌埠市",
+      "ProvinceCode": "AH",
+      "CityCode": "3"
+    },
+    {
+      "Province": "安徽省",
+      "City": "淮南市",
+      "ProvinceCode": "AH",
+      "CityCode": "4"
+    },
+    {
+      "Province": "安徽省",
+      "City": "马鞍山市",
+      "ProvinceCode": "AH",
+      "CityCode": "5"
+    },
+    {
+      "Province": "安徽省",
+      "City": "淮北市",
+      "ProvinceCode": "AH",
+      "CityCode": "6"
+    },
+    {
+      "Province": "安徽省",
+      "City": "铜陵市",
+      "ProvinceCode": "AH",
+      "CityCode": "7"
+    },
+    {
+      "Province": "安徽省",
+      "City": "安庆市",
+      "ProvinceCode": "AH",
+      "CityCode": "8"
+    },
+    {
+      "Province": "安徽省",
+      "City": "黄山市",
+      "ProvinceCode": "AH",
+      "CityCode": "10"
+    },
+    {
+      "Province": "安徽省",
+      "City": "滁州市",
+      "ProvinceCode": "AH",
+      "CityCode": "11"
+    },
+    {
+      "Province": "安徽省",
+      "City": "阜阳市",
+      "ProvinceCode": "AH",
+      "CityCode": "12"
+    },
+    {
+      "Province": "安徽省",
+      "City": "宿州市",
+      "ProvinceCode": "AH",
+      "CityCode": "13"
+    },
+    {
+      "Province": "安徽省",
+      "City": "六安市",
+      "ProvinceCode": "AH",
+      "CityCode": "15"
+    },
+    {
+      "Province": "安徽省",
+      "City": "亳州市",
+      "ProvinceCode": "AH",
+      "CityCode": "16"
+    },
+    {
+      "Province": "安徽省",
+      "City": "池州市",
+      "ProvinceCode": "AH",
+      "CityCode": "17"
+    },
+    {
+      "Province": "安徽省",
+      "City": "宣城市",
+      "ProvinceCode": "AH",
+      "CityCode": "18"
+    },
+    {
+      "Province": "安徽省",
+      "City": "六安地区",
+      "ProvinceCode": "AH",
+      "CityCode": "24"
+    },
+    {
+      "Province": "安徽省",
+      "City": "宣城地区",
+      "ProvinceCode": "AH",
+      "CityCode": "25"
+    },
+    {
+      "Province": "安徽省",
+      "City": "巢湖地区",
+      "ProvinceCode": "AH",
+      "CityCode": "26"
+    },
+    {
+      "Province": "安徽省",
+      "City": "池州地区",
+      "ProvinceCode": "AH",
+      "CityCode": "29"
+    },
+    {
+      "Province": "福建省",
+      "City": "福州市",
+      "ProvinceCode": "FJ",
+      "CityCode": "1"
+    },
+    {
+      "Province": "福建省",
+      "City": "厦门市",
+      "ProvinceCode": "FJ",
+      "CityCode": "2"
+    },
+    {
+      "Province": "福建省",
+      "City": "莆田市",
+      "ProvinceCode": "FJ",
+      "CityCode": "3"
+    },
+    {
+      "Province": "福建省",
+      "City": "三明市",
+      "ProvinceCode": "FJ",
+      "CityCode": "4"
+    },
+    {
+      "Province": "福建省",
+      "City": "泉州市",
+      "ProvinceCode": "FJ",
+      "CityCode": "5"
+    },
+    {
+      "Province": "福建省",
+      "City": "漳州市",
+      "ProvinceCode": "FJ",
+      "CityCode": "6"
+    },
+    {
+      "Province": "福建省",
+      "City": "南平市",
+      "ProvinceCode": "FJ",
+      "CityCode": "7"
+    },
+    {
+      "Province": "福建省",
+      "City": "龙岩市",
+      "ProvinceCode": "FJ",
+      "CityCode": "8"
+    },
+    {
+      "Province": "福建省",
+      "City": "宁德市",
+      "ProvinceCode": "FJ",
+      "CityCode": "9"
+    },
+    {
+      "Province": "福建省",
+      "City": "宁德地区",
+      "ProvinceCode": "FJ",
+      "CityCode": "22"
+    },
+    {
+      "Province": "江西省",
+      "City": "南昌市",
+      "ProvinceCode": "JX",
+      "CityCode": "1"
+    },
+    {
+      "Province": "江西省",
+      "City": "景德镇市",
+      "ProvinceCode": "JX",
+      "CityCode": "2"
+    },
+    {
+      "Province": "江西省",
+      "City": "萍乡市",
+      "ProvinceCode": "JX",
+      "CityCode": "3"
+    },
+    {
+      "Province": "江西省",
+      "City": "九江市",
+      "ProvinceCode": "JX",
+      "CityCode": "4"
+    },
+    {
+      "Province": "江西省",
+      "City": "新余市",
+      "ProvinceCode": "JX",
+      "CityCode": "5"
+    },
+    {
+      "Province": "江西省",
+      "City": "鹰潭市",
+      "ProvinceCode": "JX",
+      "CityCode": "6"
+    },
+    {
+      "Province": "江西省",
+      "City": "赣州市",
+      "ProvinceCode": "JX",
+      "CityCode": "7"
+    },
+    {
+      "Province": "江西省",
+      "City": "吉安市",
+      "ProvinceCode": "JX",
+      "CityCode": "8"
+    },
+    {
+      "Province": "江西省",
+      "City": "宜春市",
+      "ProvinceCode": "JX",
+      "CityCode": "9"
+    },
+    {
+      "Province": "江西省",
+      "City": "抚州市",
+      "ProvinceCode": "JX",
+      "CityCode": "10"
+    },
+    {
+      "Province": "江西省",
+      "City": "上饶市",
+      "ProvinceCode": "JX",
+      "CityCode": "11"
+    },
+    {
+      "Province": "江西省",
+      "City": "宜春地区",
+      "ProvinceCode": "JX",
+      "CityCode": "22"
+    },
+    {
+      "Province": "江西省",
+      "City": "上饶地区",
+      "ProvinceCode": "JX",
+      "CityCode": "23"
+    },
+    {
+      "Province": "江西省",
+      "City": "吉安地区",
+      "ProvinceCode": "JX",
+      "CityCode": "24"
+    },
+    {
+      "Province": "江西省",
+      "City": "抚州地区",
+      "ProvinceCode": "JX",
+      "CityCode": "25"
+    },
+    {
+      "Province": "山东省",
+      "City": "济南市",
+      "ProvinceCode": "SD",
+      "CityCode": "1"
+    },
+    {
+      "Province": "山东省",
+      "City": "青岛市",
+      "ProvinceCode": "SD",
+      "CityCode": "2"
+    },
+    {
+      "Province": "山东省",
+      "City": "淄博市",
+      "ProvinceCode": "SD",
+      "CityCode": "3"
+    },
+    {
+      "Province": "山东省",
+      "City": "枣庄市",
+      "ProvinceCode": "SD",
+      "CityCode": "4"
+    },
+    {
+      "Province": "山东省",
+      "City": "东营市",
+      "ProvinceCode": "SD",
+      "CityCode": "5"
+    },
+    {
+      "Province": "山东省",
+      "City": "烟台市",
+      "ProvinceCode": "SD",
+      "CityCode": "6"
+    },
+    {
+      "Province": "山东省",
+      "City": "潍坊市",
+      "ProvinceCode": "SD",
+      "CityCode": "7"
+    },
+    {
+      "Province": "山东省",
+      "City": "济宁市",
+      "ProvinceCode": "SD",
+      "CityCode": "8"
+    },
+    {
+      "Province": "山东省",
+      "City": "泰安市",
+      "ProvinceCode": "SD",
+      "CityCode": "9"
+    },
+    {
+      "Province": "山东省",
+      "City": "威海市",
+      "ProvinceCode": "SD",
+      "CityCode": "10"
+    },
+    {
+      "Province": "山东省",
+      "City": "日照市",
+      "ProvinceCode": "SD",
+      "CityCode": "11"
+    },
+    {
+      "Province": "山东省",
+      "City": "莱芜市",
+      "ProvinceCode": "SD",
+      "CityCode": "12"
+    },
+    {
+      "Province": "山东省",
+      "City": "临沂市",
+      "ProvinceCode": "SD",
+      "CityCode": "13"
+    },
+    {
+      "Province": "山东省",
+      "City": "德州市",
+      "ProvinceCode": "SD",
+      "CityCode": "14"
+    },
+    {
+      "Province": "山东省",
+      "City": "聊城市",
+      "ProvinceCode": "SD",
+      "CityCode": "15"
+    },
+    {
+      "Province": "山东省",
+      "City": "滨州市",
+      "ProvinceCode": "SD",
+      "CityCode": "16"
+    },
+    {
+      "Province": "山东省",
+      "City": "菏泽市",
+      "ProvinceCode": "SD",
+      "CityCode": "17"
+    },
+    {
+      "Province": "山东省",
+      "City": "滨州地区",
+      "ProvinceCode": "SD",
+      "CityCode": "23"
+    },
+    {
+      "Province": "山东省",
+      "City": "菏泽地区",
+      "ProvinceCode": "SD",
+      "CityCode": "29"
+    },
+    {
+      "Province": "河南省",
+      "City": "郑州市",
+      "ProvinceCode": "HEN",
+      "CityCode": "1"
+    },
+    {
+      "Province": "河南省",
+      "City": "开封市",
+      "ProvinceCode": "HEN",
+      "CityCode": "2"
+    },
+    {
+      "Province": "河南省",
+      "City": "洛阳市",
+      "ProvinceCode": "HEN",
+      "CityCode": "3"
+    },
+    {
+      "Province": "河南省",
+      "City": "平顶山市",
+      "ProvinceCode": "HEN",
+      "CityCode": "4"
+    },
+    {
+      "Province": "河南省",
+      "City": "安阳市",
+      "ProvinceCode": "HEN",
+      "CityCode": "5"
+    },
+    {
+      "Province": "河南省",
+      "City": "鹤壁市",
+      "ProvinceCode": "HEN",
+      "CityCode": "6"
+    },
+    {
+      "Province": "河南省",
+      "City": "新乡市",
+      "ProvinceCode": "HEN",
+      "CityCode": "7"
+    },
+    {
+      "Province": "河南省",
+      "City": "焦作市",
+      "ProvinceCode": "HEN",
+      "CityCode": "8"
+    },
+    {
+      "Province": "河南省",
+      "City": "濮阳市",
+      "ProvinceCode": "HEN",
+      "CityCode": "9"
+    },
+    {
+      "Province": "河南省",
+      "City": "许昌市",
+      "ProvinceCode": "HEN",
+      "CityCode": "10"
+    },
+    {
+      "Province": "河南省",
+      "City": "漯河市",
+      "ProvinceCode": "HEN",
+      "CityCode": "11"
+    },
+    {
+      "Province": "河南省",
+      "City": "三门峡市",
+      "ProvinceCode": "HEN",
+      "CityCode": "12"
+    },
+    {
+      "Province": "河南省",
+      "City": "南阳市",
+      "ProvinceCode": "HEN",
+      "CityCode": "13"
+    },
+    {
+      "Province": "河南省",
+      "City": "商丘市",
+      "ProvinceCode": "HEN",
+      "CityCode": "14"
+    },
+    {
+      "Province": "河南省",
+      "City": "信阳市",
+      "ProvinceCode": "HEN",
+      "CityCode": "15"
+    },
+    {
+      "Province": "河南省",
+      "City": "周口市",
+      "ProvinceCode": "HEN",
+      "CityCode": "16"
+    },
+    {
+      "Province": "河南省",
+      "City": "驻马店市",
+      "ProvinceCode": "HEN",
+      "CityCode": "17"
+    },
+    {
+      "Province": "河南省",
+      "City": "驻马店地区",
+      "ProvinceCode": "HEN",
+      "CityCode": "28"
+    },
+    {
+      "Province": "河南省",
+      "City": "省直辖县级行政区划",
+      "ProvinceCode": "HEN",
+      "CityCode": "90"
+    },
+    {
+      "Province": "湖北省",
+      "City": "武汉市",
+      "ProvinceCode": "HUB",
+      "CityCode": "1"
+    },
+    {
+      "Province": "湖北省",
+      "City": "黄石市",
+      "ProvinceCode": "HUB",
+      "CityCode": "2"
+    },
+    {
+      "Province": "湖北省",
+      "City": "十堰市",
+      "ProvinceCode": "HUB",
+      "CityCode": "3"
+    },
+    {
+      "Province": "湖北省",
+      "City": "宜昌市",
+      "ProvinceCode": "HUB",
+      "CityCode": "5"
+    },
+    {
+      "Province": "湖北省",
+      "City": "襄阳市",
+      "ProvinceCode": "HUB",
+      "CityCode": "6"
+    },
+    {
+      "Province": "湖北省",
+      "City": "襄樊市",
+      "ProvinceCode": "HUB",
+      "CityCode": "6"
+    },
+    {
+      "Province": "湖北省",
+      "City": "鄂州市",
+      "ProvinceCode": "HUB",
+      "CityCode": "7"
+    },
+    {
+      "Province": "湖北省",
+      "City": "荆门市",
+      "ProvinceCode": "HUB",
+      "CityCode": "8"
+    },
+    {
+      "Province": "湖北省",
+      "City": "孝感市",
+      "ProvinceCode": "HUB",
+      "CityCode": "9"
+    },
+    {
+      "Province": "湖北省",
+      "City": "荆州市",
+      "ProvinceCode": "HUB",
+      "CityCode": "10"
+    },
+    {
+      "Province": "湖北省",
+      "City": "黄冈市",
+      "ProvinceCode": "HUB",
+      "CityCode": "11"
+    },
+    {
+      "Province": "湖北省",
+      "City": "咸宁市",
+      "ProvinceCode": "HUB",
+      "CityCode": "12"
+    },
+    {
+      "Province": "湖北省",
+      "City": "随州市",
+      "ProvinceCode": "HUB",
+      "CityCode": "13"
+    },
+    {
+      "Province": "湖北省",
+      "City": "恩施土家族苗族自治州",
+      "ProvinceCode": "HUB",
+      "CityCode": "28"
+    },
+    {
+      "Province": "湖北省",
+      "City": "省直辖县级行政区划",
+      "ProvinceCode": "HUB",
+      "CityCode": "90"
+    },
+    {
+      "Province": "湖南省",
+      "City": "长沙市",
+      "ProvinceCode": "HUN",
+      "CityCode": "1"
+    },
+    {
+      "Province": "湖南省",
+      "City": "株洲市",
+      "ProvinceCode": "HUN",
+      "CityCode": "2"
+    },
+    {
+      "Province": "湖南省",
+      "City": "湘潭市",
+      "ProvinceCode": "HUN",
+      "CityCode": "3"
+    },
+    {
+      "Province": "湖南省",
+      "City": "衡阳市",
+      "ProvinceCode": "HUN",
+      "CityCode": "4"
+    },
+    {
+      "Province": "湖南省",
+      "City": "邵阳市",
+      "ProvinceCode": "HUN",
+      "CityCode": "5"
+    },
+    {
+      "Province": "湖南省",
+      "City": "岳阳市",
+      "ProvinceCode": "HUN",
+      "CityCode": "6"
+    },
+    {
+      "Province": "湖南省",
+      "City": "常德市",
+      "ProvinceCode": "HUN",
+      "CityCode": "7"
+    },
+    {
+      "Province": "湖南省",
+      "City": "张家界市",
+      "ProvinceCode": "HUN",
+      "CityCode": "8"
+    },
+    {
+      "Province": "湖南省",
+      "City": "益阳市",
+      "ProvinceCode": "HUN",
+      "CityCode": "9"
+    },
+    {
+      "Province": "湖南省",
+      "City": "郴州市",
+      "ProvinceCode": "HUN",
+      "CityCode": "10"
+    },
+    {
+      "Province": "湖南省",
+      "City": "永州市",
+      "ProvinceCode": "HUN",
+      "CityCode": "11"
+    },
+    {
+      "Province": "湖南省",
+      "City": "怀化市",
+      "ProvinceCode": "HUN",
+      "CityCode": "12"
+    },
+    {
+      "Province": "湖南省",
+      "City": "娄底市",
+      "ProvinceCode": "HUN",
+      "CityCode": "13"
+    },
+    {
+      "Province": "湖南省",
+      "City": "娄底地区",
+      "ProvinceCode": "HUN",
+      "CityCode": "25"
+    },
+    {
+      "Province": "湖南省",
+      "City": "湘西土家族苗族自治州",
+      "ProvinceCode": "HUN",
+      "CityCode": "31"
+    },
+    {
+      "Province": "广东省",
+      "City": "广州市",
+      "ProvinceCode": "GD",
+      "CityCode": "1"
+    },
+    {
+      "Province": "广东省",
+      "City": "韶关市",
+      "ProvinceCode": "GD",
+      "CityCode": "2"
+    },
+    {
+      "Province": "广东省",
+      "City": "深圳市",
+      "ProvinceCode": "GD",
+      "CityCode": "3"
+    },
+    {
+      "Province": "广东省",
+      "City": "珠海市",
+      "ProvinceCode": "GD",
+      "CityCode": "4"
+    },
+    {
+      "Province": "广东省",
+      "City": "汕头市",
+      "ProvinceCode": "GD",
+      "CityCode": "5"
+    },
+    {
+      "Province": "广东省",
+      "City": "佛山市",
+      "ProvinceCode": "GD",
+      "CityCode": "6"
+    },
+    {
+      "Province": "广东省",
+      "City": "江门市",
+      "ProvinceCode": "GD",
+      "CityCode": "7"
+    },
+    {
+      "Province": "广东省",
+      "City": "湛江市",
+      "ProvinceCode": "GD",
+      "CityCode": "8"
+    },
+    {
+      "Province": "广东省",
+      "City": "茂名市",
+      "ProvinceCode": "GD",
+      "CityCode": "9"
+    },
+    {
+      "Province": "广东省",
+      "City": "肇庆市",
+      "ProvinceCode": "GD",
+      "CityCode": "12"
+    },
+    {
+      "Province": "广东省",
+      "City": "惠州市",
+      "ProvinceCode": "GD",
+      "CityCode": "13"
+    },
+    {
+      "Province": "广东省",
+      "City": "梅州市",
+      "ProvinceCode": "GD",
+      "CityCode": "14"
+    },
+    {
+      "Province": "广东省",
+      "City": "汕尾市",
+      "ProvinceCode": "GD",
+      "CityCode": "15"
+    },
+    {
+      "Province": "广东省",
+      "City": "河源市",
+      "ProvinceCode": "GD",
+      "CityCode": "16"
+    },
+    {
+      "Province": "广东省",
+      "City": "阳江市",
+      "ProvinceCode": "GD",
+      "CityCode": "17"
+    },
+    {
+      "Province": "广东省",
+      "City": "清远市",
+      "ProvinceCode": "GD",
+      "CityCode": "18"
+    },
+    {
+      "Province": "广东省",
+      "City": "东莞市",
+      "ProvinceCode": "GD",
+      "CityCode": "19"
+    },
+    {
+      "Province": "广东省",
+      "City": "中山市",
+      "ProvinceCode": "GD",
+      "CityCode": "20"
+    },
+    {
+      "Province": "广东省",
+      "City": "潮州市",
+      "ProvinceCode": "GD",
+      "CityCode": "51"
+    },
+    {
+      "Province": "广东省",
+      "City": "揭阳市",
+      "ProvinceCode": "GD",
+      "CityCode": "52"
+    },
+    {
+      "Province": "广东省",
+      "City": "云浮市",
+      "ProvinceCode": "GD",
+      "CityCode": "53"
+    },
+    {
+      "Province": "广西壮族自治区",
+      "City": "南宁市",
+      "ProvinceCode": "GX",
+      "CityCode": "1"
+    },
+    {
+      "Province": "广西壮族自治区",
+      "City": "柳州市",
+      "ProvinceCode": "GX",
+      "CityCode": "2"
+    },
+    {
+      "Province": "广西壮族自治区",
+      "City": "桂林市",
+      "ProvinceCode": "GX",
+      "CityCode": "3"
+    },
+    {
+      "Province": "广西壮族自治区",
+      "City": "梧州市",
+      "ProvinceCode": "GX",
+      "CityCode": "4"
+    },
+    {
+      "Province": "广西壮族自治区",
+      "City": "北海市",
+      "ProvinceCode": "GX",
+      "CityCode": "5"
+    },
+    {
+      "Province": "广西壮族自治区",
+      "City": "防城港市",
+      "ProvinceCode": "GX",
+      "CityCode": "6"
+    },
+    {
+      "Province": "广西壮族自治区",
+      "City": "钦州市",
+      "ProvinceCode": "GX",
+      "CityCode": "7"
+    },
+    {
+      "Province": "广西壮族自治区",
+      "City": "贵港市",
+      "ProvinceCode": "GX",
+      "CityCode": "8"
+    },
+    {
+      "Province": "广西壮族自治区",
+      "City": "玉林市",
+      "ProvinceCode": "GX",
+      "CityCode": "9"
+    },
+    {
+      "Province": "广西壮族自治区",
+      "City": "百色市",
+      "ProvinceCode": "GX",
+      "CityCode": "10"
+    },
+    {
+      "Province": "广西壮族自治区",
+      "City": "贺州市",
+      "ProvinceCode": "GX",
+      "CityCode": "11"
+    },
+    {
+      "Province": "广西壮族自治区",
+      "City": "河池市",
+      "ProvinceCode": "GX",
+      "CityCode": "12"
+    },
+    {
+      "Province": "广西壮族自治区",
+      "City": "来宾市",
+      "ProvinceCode": "GX",
+      "CityCode": "13"
+    },
+    {
+      "Province": "广西壮族自治区",
+      "City": "崇左市",
+      "ProvinceCode": "GX",
+      "CityCode": "14"
+    },
+    {
+      "Province": "广西壮族自治区",
+      "City": "南宁地区",
+      "ProvinceCode": "GX",
+      "CityCode": "21"
+    },
+    {
+      "Province": "广西壮族自治区",
+      "City": "柳州地区",
+      "ProvinceCode": "GX",
+      "CityCode": "22"
+    },
+    {
+      "Province": "广西壮族自治区",
+      "City": "贺州地区",
+      "ProvinceCode": "GX",
+      "CityCode": "24"
+    },
+    {
+      "Province": "广西壮族自治区",
+      "City": "百色地区",
+      "ProvinceCode": "GX",
+      "CityCode": "26"
+    },
+    {
+      "Province": "广西壮族自治区",
+      "City": "河池地区",
+      "ProvinceCode": "GX",
+      "CityCode": "27"
+    },
+    {
+      "Province": "海南省",
+      "City": "省直辖县级行政区划",
+      "ProvinceCode": "HAIN",
+      "CityCode": "0"
+    },
+    {
+      "Province": "海南省",
+      "City": "海口市",
+      "ProvinceCode": "HAIN",
+      "CityCode": "1"
+    },
+    {
+      "Province": "海南省",
+      "City": "三亚市",
+      "ProvinceCode": "HAIN",
+      "CityCode": "2"
+    },
+    {
+      "Province": "海南省",
+      "City": "三沙市",
+      "ProvinceCode": "HAIN",
+      "CityCode": "3"
+    },
+    {
+      "Province": "重庆市",
+      "City": "重庆市",
+      "ProvinceCode": "CQ",
+      "CityCode": "1"
+    },
+    {
+      "Province": "四川省",
+      "City": "成都市",
+      "ProvinceCode": "SC",
+      "CityCode": "1"
+    },
+    {
+      "Province": "四川省",
+      "City": "自贡市",
+      "ProvinceCode": "SC",
+      "CityCode": "3"
+    },
+    {
+      "Province": "四川省",
+      "City": "攀枝花市",
+      "ProvinceCode": "SC",
+      "CityCode": "4"
+    },
+    {
+      "Province": "四川省",
+      "City": "泸州市",
+      "ProvinceCode": "SC",
+      "CityCode": "5"
+    },
+    {
+      "Province": "四川省",
+      "City": "德阳市",
+      "ProvinceCode": "SC",
+      "CityCode": "6"
+    },
+    {
+      "Province": "四川省",
+      "City": "绵阳市",
+      "ProvinceCode": "SC",
+      "CityCode": "7"
+    },
+    {
+      "Province": "四川省",
+      "City": "广元市",
+      "ProvinceCode": "SC",
+      "CityCode": "8"
+    },
+    {
+      "Province": "四川省",
+      "City": "遂宁市",
+      "ProvinceCode": "SC",
+      "CityCode": "9"
+    },
+    {
+      "Province": "四川省",
+      "City": "内江市",
+      "ProvinceCode": "SC",
+      "CityCode": "10"
+    },
+    {
+      "Province": "四川省",
+      "City": "乐山市",
+      "ProvinceCode": "SC",
+      "CityCode": "11"
+    },
+    {
+      "Province": "四川省",
+      "City": "南充市",
+      "ProvinceCode": "SC",
+      "CityCode": "13"
+    },
+    {
+      "Province": "四川省",
+      "City": "眉山市",
+      "ProvinceCode": "SC",
+      "CityCode": "14"
+    },
+    {
+      "Province": "四川省",
+      "City": "宜宾市",
+      "ProvinceCode": "SC",
+      "CityCode": "15"
+    },
+    {
+      "Province": "四川省",
+      "City": "广安市",
+      "ProvinceCode": "SC",
+      "CityCode": "16"
+    },
+    {
+      "Province": "四川省",
+      "City": "达州市",
+      "ProvinceCode": "SC",
+      "CityCode": "17"
+    },
+    {
+      "Province": "四川省",
+      "City": "雅安市",
+      "ProvinceCode": "SC",
+      "CityCode": "18"
+    },
+    {
+      "Province": "四川省",
+      "City": "巴中市",
+      "ProvinceCode": "SC",
+      "CityCode": "19"
+    },
+    {
+      "Province": "四川省",
+      "City": "资阳市",
+      "ProvinceCode": "SC",
+      "CityCode": "20"
+    },
+    {
+      "Province": "四川省",
+      "City": "达川地区",
+      "ProvinceCode": "SC",
+      "CityCode": "30"
+    },
+    {
+      "Province": "四川省",
+      "City": "雅安地区",
+      "ProvinceCode": "SC",
+      "CityCode": "31"
+    },
+    {
+      "Province": "四川省",
+      "City": "阿坝藏族羌族自治州",
+      "ProvinceCode": "SC",
+      "CityCode": "32"
+    },
+    {
+      "Province": "四川省",
+      "City": "甘孜藏族自治州",
+      "ProvinceCode": "SC",
+      "CityCode": "33"
+    },
+    {
+      "Province": "四川省",
+      "City": "凉山彝族自治州",
+      "ProvinceCode": "SC",
+      "CityCode": "34"
+    },
+    {
+      "Province": "四川省",
+      "City": "巴中地区",
+      "ProvinceCode": "SC",
+      "CityCode": "37"
+    },
+    {
+      "Province": "四川省",
+      "City": "眉山地区",
+      "ProvinceCode": "SC",
+      "CityCode": "38"
+    },
+    {
+      "Province": "四川省",
+      "City": "资阳地区",
+      "ProvinceCode": "SC",
+      "CityCode": "39"
+    },
+    {
+      "Province": "贵州省",
+      "City": "贵阳市",
+      "ProvinceCode": "GZ",
+      "CityCode": "1"
+    },
+    {
+      "Province": "贵州省",
+      "City": "六盘水市",
+      "ProvinceCode": "GZ",
+      "CityCode": "2"
+    },
+    {
+      "Province": "贵州省",
+      "City": "遵义市",
+      "ProvinceCode": "GZ",
+      "CityCode": "3"
+    },
+    {
+      "Province": "贵州省",
+      "City": "安顺市",
+      "ProvinceCode": "GZ",
+      "CityCode": "4"
+    },
+    {
+      "Province": "贵州省",
+      "City": "毕节市",
+      "ProvinceCode": "GZ",
+      "CityCode": "5"
+    },
+    {
+      "Province": "贵州省",
+      "City": "铜仁市",
+      "ProvinceCode": "GZ",
+      "CityCode": "6"
+    },
+    {
+      "Province": "贵州省",
+      "City": "铜仁地区",
+      "ProvinceCode": "GZ",
+      "CityCode": "22"
+    },
+    {
+      "Province": "贵州省",
+      "City": "黔西南布依族苗族自治州",
+      "ProvinceCode": "GZ",
+      "CityCode": "23"
+    },
+    {
+      "Province": "贵州省",
+      "City": "毕节地区",
+      "ProvinceCode": "GZ",
+      "CityCode": "24"
+    },
+    {
+      "Province": "贵州省",
+      "City": "安顺地区",
+      "ProvinceCode": "GZ",
+      "CityCode": "25"
+    },
+    {
+      "Province": "贵州省",
+      "City": "黔东南苗族侗族自治州",
+      "ProvinceCode": "GZ",
+      "CityCode": "26"
+    },
+    {
+      "Province": "贵州省",
+      "City": "黔南布依族苗族自治州",
+      "ProvinceCode": "GZ",
+      "CityCode": "27"
+    },
+    {
+      "Province": "云南省",
+      "City": "昆明市",
+      "ProvinceCode": "YN",
+      "CityCode": "1"
+    },
+    {
+      "Province": "云南省",
+      "City": "曲靖市",
+      "ProvinceCode": "YN",
+      "CityCode": "3"
+    },
+    {
+      "Province": "云南省",
+      "City": "玉溪市",
+      "ProvinceCode": "YN",
+      "CityCode": "4"
+    },
+    {
+      "Province": "云南省",
+      "City": "保山市",
+      "ProvinceCode": "YN",
+      "CityCode": "5"
+    },
+    {
+      "Province": "云南省",
+      "City": "昭通市",
+      "ProvinceCode": "YN",
+      "CityCode": "6"
+    },
+    {
+      "Province": "云南省",
+      "City": "丽江市",
+      "ProvinceCode": "YN",
+      "CityCode": "7"
+    },
+    {
+      "Province": "云南省",
+      "City": "普洱市",
+      "ProvinceCode": "YN",
+      "CityCode": "8"
+    },
+    {
+      "Province": "云南省",
+      "City": "临沧市",
+      "ProvinceCode": "YN",
+      "CityCode": "9"
+    },
+    {
+      "Province": "云南省",
+      "City": "昭通地区",
+      "ProvinceCode": "YN",
+      "CityCode": "21"
+    },
+    {
+      "Province": "云南省",
+      "City": "楚雄彝族自治州",
+      "ProvinceCode": "YN",
+      "CityCode": "23"
+    },
+    {
+      "Province": "云南省",
+      "City": "红河哈尼族彝族自治州",
+      "ProvinceCode": "YN",
+      "CityCode": "25"
+    },
+    {
+      "Province": "云南省",
+      "City": "文山壮族苗族自治州",
+      "ProvinceCode": "YN",
+      "CityCode": "26"
+    },
+    {
+      "Province": "云南省",
+      "City": "思茅地区",
+      "ProvinceCode": "YN",
+      "CityCode": "27"
+    },
+    {
+      "Province": "云南省",
+      "City": "西双版纳傣族自治州",
+      "ProvinceCode": "YN",
+      "CityCode": "28"
+    },
+    {
+      "Province": "云南省",
+      "City": "大理白族自治州",
+      "ProvinceCode": "YN",
+      "CityCode": "29"
+    },
+    {
+      "Province": "云南省",
+      "City": "保山地区",
+      "ProvinceCode": "YN",
+      "CityCode": "30"
+    },
+    {
+      "Province": "云南省",
+      "City": "德宏傣族景颇族自治州",
+      "ProvinceCode": "YN",
+      "CityCode": "31"
+    },
+    {
+      "Province": "云南省",
+      "City": "丽江地区",
+      "ProvinceCode": "YN",
+      "CityCode": "32"
+    },
+    {
+      "Province": "云南省",
+      "City": "怒江傈僳族自治州",
+      "ProvinceCode": "YN",
+      "CityCode": "33"
+    },
+    {
+      "Province": "云南省",
+      "City": "迪庆藏族自治州",
+      "ProvinceCode": "YN",
+      "CityCode": "34"
+    },
+    {
+      "Province": "云南省",
+      "City": "临沧地区",
+      "ProvinceCode": "YN",
+      "CityCode": "35"
+    },
+    {
+      "Province": "西藏自治区",
+      "City": "拉萨市",
+      "ProvinceCode": "XZ",
+      "CityCode": "1"
+    },
+    {
+      "Province": "西藏自治区",
+      "City": "日喀则市",
+      "ProvinceCode": "XZ",
+      "CityCode": "2"
+    },
+    {
+      "Province": "西藏自治区",
+      "City": "昌都地区",
+      "ProvinceCode": "XZ",
+      "CityCode": "21"
+    },
+    {
+      "Province": "西藏自治区",
+      "City": "山南地区",
+      "ProvinceCode": "XZ",
+      "CityCode": "22"
+    },
+    {
+      "Province": "西藏自治区",
+      "City": "日喀则地区",
+      "ProvinceCode": "XZ",
+      "CityCode": "23"
+    },
+    {
+      "Province": "西藏自治区",
+      "City": "那曲地区",
+      "ProvinceCode": "XZ",
+      "CityCode": "24"
+    },
+    {
+      "Province": "西藏自治区",
+      "City": "阿里地区",
+      "ProvinceCode": "XZ",
+      "CityCode": "25"
+    },
+    {
+      "Province": "西藏自治区",
+      "City": "林芝地区",
+      "ProvinceCode": "XZ",
+      "CityCode": "26"
+    },
+    {
+      "Province": "陕西省",
+      "City": "西安市",
+      "ProvinceCode": "SAX",
+      "CityCode": "1"
+    },
+    {
+      "Province": "陕西省",
+      "City": "铜川市",
+      "ProvinceCode": "SAX",
+      "CityCode": "2"
+    },
+    {
+      "Province": "陕西省",
+      "City": "宝鸡市",
+      "ProvinceCode": "SAX",
+      "CityCode": "3"
+    },
+    {
+      "Province": "陕西省",
+      "City": "咸阳市",
+      "ProvinceCode": "SAX",
+      "CityCode": "4"
+    },
+    {
+      "Province": "陕西省",
+      "City": "渭南市",
+      "ProvinceCode": "SAX",
+      "CityCode": "5"
+    },
+    {
+      "Province": "陕西省",
+      "City": "延安市",
+      "ProvinceCode": "SAX",
+      "CityCode": "6"
+    },
+    {
+      "Province": "陕西省",
+      "City": "汉中市",
+      "ProvinceCode": "SAX",
+      "CityCode": "7"
+    },
+    {
+      "Province": "陕西省",
+      "City": "榆林市",
+      "ProvinceCode": "SAX",
+      "CityCode": "8"
+    },
+    {
+      "Province": "陕西省",
+      "City": "安康市",
+      "ProvinceCode": "SAX",
+      "CityCode": "9"
+    },
+    {
+      "Province": "陕西省",
+      "City": "商洛市",
+      "ProvinceCode": "SAX",
+      "CityCode": "10"
+    },
+    {
+      "Province": "陕西省",
+      "City": "安康地区",
+      "ProvinceCode": "SAX",
+      "CityCode": "24"
+    },
+    {
+      "Province": "陕西省",
+      "City": "商洛地区",
+      "ProvinceCode": "SAX",
+      "CityCode": "25"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "榆林地区",
+      "ProvinceCode": "SAX",
+      "CityCode": "27"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "兰州市",
+      "ProvinceCode": "GS",
+      "CityCode": "1"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "嘉峪关市",
+      "ProvinceCode": "GS",
+      "CityCode": "2"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "金昌市",
+      "ProvinceCode": "GS",
+      "CityCode": "3"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "白银市",
+      "ProvinceCode": "GS",
+      "CityCode": "4"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "天水市",
+      "ProvinceCode": "GS",
+      "CityCode": "5"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "武威市",
+      "ProvinceCode": "GS",
+      "CityCode": "6"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "张掖市",
+      "ProvinceCode": "GS",
+      "CityCode": "7"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "平凉市",
+      "ProvinceCode": "GS",
+      "CityCode": "8"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "酒泉市",
+      "ProvinceCode": "GS",
+      "CityCode": "9"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "庆阳市",
+      "ProvinceCode": "GS",
+      "CityCode": "10"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "定西市",
+      "ProvinceCode": "GS",
+      "CityCode": "11"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "陇南市",
+      "ProvinceCode": "GS",
+      "CityCode": "12"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "酒泉地区",
+      "ProvinceCode": "GS",
+      "CityCode": "21"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "张掖地区",
+      "ProvinceCode": "GS",
+      "CityCode": "22"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "武威地区",
+      "ProvinceCode": "GS",
+      "CityCode": "23"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "定西地区",
+      "ProvinceCode": "GS",
+      "CityCode": "24"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "陇南地区",
+      "ProvinceCode": "GS",
+      "CityCode": "26"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "平凉地区",
+      "ProvinceCode": "GS",
+      "CityCode": "27"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "庆阳地区",
+      "ProvinceCode": "GS",
+      "CityCode": "28"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "临夏回族自治州",
+      "ProvinceCode": "GS",
+      "CityCode": "29"
+    },
+    {
+      "Province": "甘肃省",
+      "City": "甘南藏族自治州",
+      "ProvinceCode": "GS",
+      "CityCode": "30"
+    },
+    {
+      "Province": "青海省",
+      "City": "西宁市",
+      "ProvinceCode": "QH",
+      "CityCode": "1"
+    },
+    {
+      "Province": "青海省",
+      "City": "海东市",
+      "ProvinceCode": "QH",
+      "CityCode": "2"
+    },
+    {
+      "Province": "青海省",
+      "City": "海东地区",
+      "ProvinceCode": "QH",
+      "CityCode": "21"
+    },
+    {
+      "Province": "青海省",
+      "City": "海北藏族自治州",
+      "ProvinceCode": "QH",
+      "CityCode": "22"
+    },
+    {
+      "Province": "青海省",
+      "City": "黄南藏族自治州",
+      "ProvinceCode": "QH",
+      "CityCode": "23"
+    },
+    {
+      "Province": "青海省",
+      "City": "海南藏族自治州",
+      "ProvinceCode": "QH",
+      "CityCode": "25"
+    },
+    {
+      "Province": "青海省",
+      "City": "果洛藏族自治州",
+      "ProvinceCode": "QH",
+      "CityCode": "26"
+    },
+    {
+      "Province": "青海省",
+      "City": "玉树藏族自治州",
+      "ProvinceCode": "QH",
+      "CityCode": "27"
+    },
+    {
+      "Province": "青海省",
+      "City": "海西蒙古族藏族自治州",
+      "ProvinceCode": "QH",
+      "CityCode": "28"
+    },
+    {
+      "Province": "宁夏回族自治区",
+      "City": "银川市",
+      "ProvinceCode": "NX",
+      "CityCode": "1"
+    },
+    {
+      "Province": "宁夏回族自治区",
+      "City": "石嘴山市",
+      "ProvinceCode": "NX",
+      "CityCode": "2"
+    },
+    {
+      "Province": "宁夏回族自治区",
+      "City": "吴忠市",
+      "ProvinceCode": "NX",
+      "CityCode": "3"
+    },
+    {
+      "Province": "宁夏回族自治区",
+      "City": "固原市",
+      "ProvinceCode": "NX",
+      "CityCode": "4"
+    },
+    {
+      "Province": "宁夏回族自治区",
+      "City": "中卫市",
+      "ProvinceCode": "NX",
+      "CityCode": "5"
+    },
+    {
+      "Province": "宁夏回族自治区",
+      "City": "固原地区",
+      "ProvinceCode": "NX",
+      "CityCode": "22"
+    },
+    {
+      "Province": "新疆维吾尔自治区",
+      "City": "乌鲁木齐市",
+      "ProvinceCode": "XJ",
+      "CityCode": "1"
+    },
+    {
+      "Province": "新疆维吾尔自治区",
+      "City": "克拉玛依市",
+      "ProvinceCode": "XJ",
+      "CityCode": "2"
+    },
+    {
+      "Province": "新疆维吾尔自治区",
+      "City": "吐鲁番地区",
+      "ProvinceCode": "XJ",
+      "CityCode": "21"
+    },
+    {
+      "Province": "新疆维吾尔自治区",
+      "City": "哈密地区",
+      "ProvinceCode": "XJ",
+      "CityCode": "22"
+    },
+    {
+      "Province": "新疆维吾尔自治区",
+      "City": "昌吉回族自治州",
+      "ProvinceCode": "XJ",
+      "CityCode": "23"
+    },
+    {
+      "Province": "新疆维吾尔自治区",
+      "City": "博尔塔拉蒙古自治州",
+      "ProvinceCode": "XJ",
+      "CityCode": "27"
+    },
+    {
+      "Province": "新疆维吾尔自治区",
+      "City": "巴音郭楞蒙古自治州",
+      "ProvinceCode": "XJ",
+      "CityCode": "28"
+    },
+    {
+      "Province": "新疆维吾尔自治区",
+      "City": "阿克苏地区",
+      "ProvinceCode": "XJ",
+      "CityCode": "29"
+    },
+    {
+      "Province": "新疆维吾尔自治区",
+      "City": "克孜勒苏柯尔克孜自治州",
+      "ProvinceCode": "XJ",
+      "CityCode": "30"
+    },
+    {
+      "Province": "新疆维吾尔自治区",
+      "City": "喀什地区",
+      "ProvinceCode": "XJ",
+      "CityCode": "31"
+    },
+    {
+      "Province": "新疆维吾尔自治区",
+      "City": "和田地区",
+      "ProvinceCode": "XJ",
+      "CityCode": "32"
+    },
+    {
+      "Province": "新疆维吾尔自治区",
+      "City": "伊犁哈萨克自治州",
+      "ProvinceCode": "XJ",
+      "CityCode": "40"
+    },
+    {
+      "Province": "新疆维吾尔自治区",
+      "City": "伊犁地区",
+      "ProvinceCode": "XJ",
+      "CityCode": "41"
+    },
+    {
+      "Province": "新疆维吾尔自治区",
+      "City": "塔城地区",
+      "ProvinceCode": "XJ",
+      "CityCode": "42"
+    },
+    {
+      "Province": "新疆维吾尔自治区",
+      "City": "阿勒泰地区",
+      "ProvinceCode": "XJ",
+      "CityCode": "43"
+    },
+    {
+      "Province": "新疆维吾尔自治区",
+      "City": "自治区直辖县级行政区划",
+      "ProvinceCode": "XJ",
+      "CityCode": "90"
+    }
+  ]
+}

@@ -53,7 +53,9 @@
                 </table>-->
        <!--  <table tableName="company_name_property" domainObjectName="CompanyNameProperty">
                 </table>-->
-         <table tableName="company_name_count" domainObjectName="CompanyNameCount">
+        <!-- <table tableName="company_name_count" domainObjectName="CompanyNameCount">
+                </table>-->
+         <table tableName="company_name_area" domainObjectName="CompanyNameArea">
                 </table>
 
 

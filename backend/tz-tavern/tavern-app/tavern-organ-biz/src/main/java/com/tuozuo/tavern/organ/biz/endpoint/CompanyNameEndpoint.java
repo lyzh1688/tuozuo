@@ -1,15 +1,20 @@
 package com.tuozuo.tavern.organ.biz.endpoint;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
+import com.tuozuo.tavern.organ.biz.dao.CompanyNameAreaDao;
 import com.tuozuo.tavern.organ.biz.dict.CompanyPropertyType;
 import com.tuozuo.tavern.organ.biz.dto.BuildNameDTO;
 import com.tuozuo.tavern.organ.biz.dto.CompanyPropertyDTO;
 import com.tuozuo.tavern.organ.biz.model.CompanyName;
+import com.tuozuo.tavern.organ.biz.model.CompanyNameArea;
 import com.tuozuo.tavern.organ.biz.model.CompanyNameProperty;
 import com.tuozuo.tavern.organ.biz.model.CompanyVerifyResult;
 import com.tuozuo.tavern.organ.biz.service.CompanyNameService;
 import com.tuozuo.tavern.organ.biz.service.CompanyPropertyService;
+import com.tuozuo.tavern.organ.biz.util.FileUtils;
 import com.tuozuo.tavern.organ.biz.vo.BuildNameVO;
 import com.tuozuo.tavern.organ.biz.vo.VerifyNameVO;
 import org.slf4j.Logger;
@@ -107,4 +112,28 @@ public class CompanyNameEndpoint {
             return TavernResponse.bizFailure("系统查询异常，请稍后再试");
         }
     }
+
+    /*@Autowired
+    private CompanyNameAreaDao companyNameAreaDao;
+
+    private void saveCompanyArea() {
+        String areas = FileUtils.readJsonFile("D:\\项目\\tuozuo.git\\backend\\tz-tavern\\tavern-app\\tavern-organ-biz\\src\\main\\resources\\area.json");
+        JSONObject areaJSON = JSONObject.parseObject(areas);
+        JSONArray areaArr = areaJSON.getJSONArray("Result");
+        List<CompanyNameArea> companyNameAreas = Lists.newArrayList();
+
+        for (int i = 0; i < areaArr.size(); i++) {
+            JSONObject object = areaArr.getJSONObject(i);
+            CompanyNameArea area = new CompanyNameArea();
+            area.setCityCode(object.getString("CityCode"));
+            area.setProvinceCode(object.getString("ProvinceCode"));
+            area.setProvinceName(object.getString("Province"));
+            area.setCityName(object.getString("City"));
+            companyNameAreas.add(area);
+        }
+        companyNameAreaDao.insertBatch(companyNameAreas);
+
+    }*/
+
+
 }
