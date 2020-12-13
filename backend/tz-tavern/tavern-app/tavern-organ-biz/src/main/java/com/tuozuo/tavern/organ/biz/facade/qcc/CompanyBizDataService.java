@@ -15,7 +15,7 @@ import java.util.Map;
 @Headers({"Content-Type: application/json,text/plain,text/html", "Accept: application/json,text/plain,text/html"})
 public interface CompanyBizDataService {
 
-    @RequestLine("GET /ECIV4/Search?key={key}&keyword={keyword}&pageIndex={pageIndex}&pageSize={pageSize}&dtype={dtype}")
+    @RequestLine("GET /ECIV4/Search?key={key}&provinceCode={provinceCode}&cityCode={cityCode}&keyword={keyword}&pageIndex={pageIndex}&pageSize={pageSize}&dtype={dtype}")
     CompanyBizResult getCompanyBizData(@HeaderMap Map<String, String> headerMap,
                                        @Param("key") String key,
                                        @Param("keyword") String keyword,

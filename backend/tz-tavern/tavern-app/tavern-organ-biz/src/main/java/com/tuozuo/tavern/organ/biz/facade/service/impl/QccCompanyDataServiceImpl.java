@@ -33,12 +33,23 @@ public class QccCompanyDataServiceImpl implements QccCompanyDataService {
 
 
     @Override
+    public CompanyBizResult queryCompanyData(String provinceCode, String cityCode, String pinyin, int pageNo, int pageSize) {
+        Map<String, String> reqHeader = Maps.newConcurrentMap();
+        String[] autherHeader = this.randomAuthentHeader();
+        reqHeader.put("Token", autherHeader[0]);
+        reqHeader.put("Timespan", autherHeader[1]);
+        CompanyBizResult companyBizResult = this.companyBizDataService.getCompanyBizData(reqHeader, key, pinyin,provinceCode, cityCode,  pageSize, pageNo, DataType.json.name());
+
+        return companyBizResult;
+    }
+
+    @Override
     public CompanyBizResult queryCompanyData(String pinyin, int pageNo, int pageSize) {
         Map<String, String> reqHeader = Maps.newConcurrentMap();
         String[] autherHeader = this.randomAuthentHeader();
         reqHeader.put("Token", autherHeader[0]);
         reqHeader.put("Timespan", autherHeader[1]);
-        CompanyBizResult companyBizResult = this.companyBizDataService.getCompanyBizData(reqHeader, key, pinyin, pageSize,pageNo , DataType.json.name());
+        CompanyBizResult companyBizResult = this.companyBizDataService.getCompanyBizData(reqHeader, key, pinyin, pageSize, pageNo, DataType.json.name());
 
         return companyBizResult;
     }

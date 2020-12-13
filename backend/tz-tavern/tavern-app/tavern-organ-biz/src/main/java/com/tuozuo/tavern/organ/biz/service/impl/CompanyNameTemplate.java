@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public abstract class CompanyNameTemplate implements CompanyNameService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyNameTemplate.class);
 
-    public abstract CompanyVerifyResult getSimilarResult(String name, String industryDesc) throws QccException;
+    public abstract CompanyVerifyResult getSimilarResult(String area,String name, String industryDesc) throws QccException;
 
     public abstract BigDecimal getPerfectScores();
 
@@ -29,7 +29,7 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
 
     public abstract List<String> splitName(String name);
 
-    public abstract List<CompanyNameRecord> transferPinyin(List<String> name);
+    public abstract List<CompanyNameRecord> transferPinyin(String area,List<String> name);
 
     public abstract List<CompanyNameRecord> getCompanyNameByFullName(String area, String name, String industryDesc) throws QccException;
 
@@ -45,7 +45,7 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
     public CompanyVerifyResult queryCompanyResult(String area, String name, String industryDesc) throws QccException {
 
         UserCompanyName userCompanyName = this.createUserCompanyName(area, name, industryDesc);
-        CompanyVerifyResult similarVerifyResult = this.getSimilarResult(name, industryDesc);
+        CompanyVerifyResult similarVerifyResult = this.getSimilarResult(area,name, industryDesc);
         if (similarVerifyResult != null) {
             return similarVerifyResult;
         }
@@ -53,7 +53,7 @@ public abstract class CompanyNameTemplate implements CompanyNameService {
         //1、二个字倒序，二个字以上拆词
         List<String> splitNames = this.splitName(name);
         //2、拼音转换
-        List<CompanyNameRecord> pinyinRecords = this.transferPinyin(splitNames);
+        List<CompanyNameRecord> pinyinRecords = this.transferPinyin(area,splitNames);
         //3、查询数据库或调用接口
         List<CompanyNameRecord> companyNameRecords = Lists.newArrayList();
         List<CompanyNameRecord> fullNameRecords = this.getCompanyNameByFullName(area, name, industryDesc);

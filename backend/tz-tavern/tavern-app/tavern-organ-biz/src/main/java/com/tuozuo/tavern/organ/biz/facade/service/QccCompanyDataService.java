@@ -8,8 +8,9 @@ import com.tuozuo.tavern.organ.biz.facade.qcc.model.CompanyBizResult;
  */
 public interface QccCompanyDataService {
 
-    CompanyBizResult queryCompanyData(String pinyin,int pageNo,int pageSize);
+    CompanyBizResult queryCompanyData(String provinceCode, String cityCode, String pinyin, int pageNo, int pageSize);
 
+    CompanyBizResult queryCompanyData(String pinyin, int pageNo, int pageSize);
 
 
 }

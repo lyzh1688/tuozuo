@@ -1,5 +1,7 @@
 package com.tuozuo.tavern.organ.biz.task;
 
+import com.tuozuo.tavern.organ.biz.dao.CompanyNameAreaDao;
+import com.tuozuo.tavern.organ.biz.model.CompanyNameArea;
 import com.tuozuo.tavern.organ.biz.store.CompanyPropertyStore;
 import com.tuozuo.tavern.organ.biz.util.FileUtils;
 import org.slf4j.Logger;
@@ -33,6 +35,8 @@ public class CompanyProperyStoreTask implements InitializingBean {
 
     @Autowired
     private CompanyPropertyStore companyPropertyStore;
+    @Autowired
+    private CompanyNameAreaDao companyNameAreaDao;
 
     @Scheduled(cron = "0 0 0/1 * * ? ")
     public void companyIndustryStore() {
@@ -70,11 +74,20 @@ public class CompanyProperyStoreTask implements InitializingBean {
         }
     }
 
+    @Scheduled(cron = "0 0 0/1 * * ? ")
+    public void qccAreaStore() {
+        List<CompanyNameArea> areaList = companyNameAreaDao.selectAll();
+        for (CompanyNameArea area : areaList) {
+            this.companyPropertyStore.updateQccAreaMap(area.getCityName(), area);
+        }
+    }
+
 
     @Override
     public void afterPropertiesSet() throws Exception {
         this.companyIndustryStore();
         this.companyAreaStore();
         this.companyTypeStore();
+        this.qccAreaStore();
     }
 }
