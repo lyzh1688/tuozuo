@@ -3,7 +3,9 @@ package com.tuozuo.tavern.organ.biz.facade.service.impl;
 import com.google.common.collect.Maps;
 import com.tuozuo.tavern.organ.biz.dict.DataType;
 import com.tuozuo.tavern.organ.biz.facade.qcc.CompanyBizDataService;
+import com.tuozuo.tavern.organ.biz.facade.qcc.model.CompanyBizData;
 import com.tuozuo.tavern.organ.biz.facade.qcc.model.CompanyBizResult;
+import com.tuozuo.tavern.organ.biz.facade.qcc.model.CompanyStatus;
 import com.tuozuo.tavern.organ.biz.facade.service.QccCompanyDataService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
@@ -12,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -38,8 +42,13 @@ public class QccCompanyDataServiceImpl implements QccCompanyDataService {
         String[] autherHeader = this.randomAuthentHeader();
         reqHeader.put("Token", autherHeader[0]);
         reqHeader.put("Timespan", autherHeader[1]);
-        CompanyBizResult companyBizResult = this.companyBizDataService.getCompanyBizData(reqHeader, key, pinyin,provinceCode, cityCode,  pageSize, pageNo, DataType.json.name());
-
+        CompanyBizResult companyBizResult = this.companyBizDataService.getCompanyBizData(reqHeader, key, pinyin, provinceCode, cityCode, pageSize, pageNo, DataType.json.name());
+        if (companyBizResult != null && companyBizResult.getBizData() != null && companyBizResult.getBizData().size() != 0) {
+            List<CompanyBizData> bizData = companyBizResult.getBizData().stream()
+                    .filter(data -> CompanyStatus.getOperatingStatus(data.getStatus()))
+                    .collect(Collectors.toList());
+            companyBizResult.setBizData(bizData);
+        }
         return companyBizResult;
     }
 
