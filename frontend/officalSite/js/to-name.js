@@ -76,6 +76,7 @@
             pagesize,
           async: true,
           dataType: "json",
+          timeout: 60000,
           success: function (data) {
             $("#result-container").show();
             $("body").mLoading("hide");
@@ -143,6 +144,7 @@
         url: "http://119.3.19.171//tuozuo/organbiz/v1/name/dict/" + dicName,
         async: true,
         dataType: "json",
+        timeout: 60000,
         success: function (data) {
           if (data.code == 0) {
             var getlogList = data.data;
@@ -219,6 +221,7 @@
           "&pageSize=" +
           pagesize,
         async: true,
+        timeout: 60000,
         dataType: "json",
         success: function (data) {
           $("#result-container").show();

@@ -36,7 +36,7 @@ else:
     names = list()
     #print(sys.argv[1])
     #with open("names.txt", "w+", encoding='utf-8') as f:
-    for i in get_source(int(sys.argv[1]), name_validate, get_stroke_list(sys.argv[3], allow_general)):
+    for i in get_source(int(sys.argv[1]), name_validate, get_stroke_list(sys.argv[2] + sys.argv[3], allow_general)):
         if i.stroke_number1 < min_stroke_count or i.stroke_number1 > max_stroke_count or \
                 i.stroke_number2 < min_stroke_count or i.stroke_number2 > max_stroke_count:
             # 笔画数过滤

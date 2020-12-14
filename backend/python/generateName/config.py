@@ -1,12 +1,12 @@
 # 选择词库
 # 0: "默认", 1: "诗经", 2: "楚辞", 3: "论语",
 # 4: "周易", 5: "唐诗", 6: "宋诗", 7: "宋词"
-name_source = 1
+name_source = 7
 
 # 姓，仅支持单姓
 last_name = "林"
-area_name = "上海"
-industry_name = "网络科技"
+area_name = "淄博"
+industry_name = "空调设备安装"
 prefer_word = ""
 is_two_word = False
 
@@ -14,7 +14,7 @@ is_two_word = False
 dislike_words = list("")
 
 # 最小笔画数
-min_stroke_count = 3
+min_stroke_count = 5
 
 # 最大笔画数
 max_stroke_count = 30
@@ -23,7 +23,7 @@ max_stroke_count = 30
 allow_general = False
 
 # 是否筛选名字，仅输出名字库中存在的名字，可以过滤明显不合适的名字
-name_validate = False
+name_validate = True
 
 # 是否筛选性别，男/女，空则不筛选，仅当开启名字筛选时有效
 gender = ""

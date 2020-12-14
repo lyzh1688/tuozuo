@@ -14,7 +14,7 @@ is_two_word = False
 dislike_words = list("")
 
 # 最小笔画数
-min_stroke_count = 3
+min_stroke_count = 5
 
 # 最大笔画数
 max_stroke_count = 30
@@ -23,7 +23,7 @@ max_stroke_count = 30
 allow_general = False
 
 # 是否筛选名字，仅输出名字库中存在的名字，可以过滤明显不合适的名字
-name_validate = False
+name_validate = True
 
 # 是否筛选性别，男/女，空则不筛选，仅当开启名字筛选时有效
 gender = ""

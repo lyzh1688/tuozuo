@@ -2,7 +2,10 @@ package com.tuozuo.tavern.organ.biz.service.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.tuozuo.tavern.organ.biz.dao.CompanyPropertyDao;
+import com.tuozuo.tavern.organ.biz.dict.CompanyPropertyType;
 import com.tuozuo.tavern.organ.biz.model.RecordItem;
 import com.tuozuo.tavern.organ.biz.model.RecordMark;
 import com.tuozuo.tavern.organ.biz.model.RecordResult;
@@ -10,11 +13,13 @@ import com.tuozuo.tavern.organ.biz.model.UserCompanyName;
 import com.tuozuo.tavern.organ.biz.service.CalculateRecordService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -28,14 +33,21 @@ public class CalculateRecordServiceImpl implements CalculateRecordService {
     private static BigDecimal pinyinPosScore = BigDecimal.valueOf(0.5);
     private static BigDecimal industryParam = BigDecimal.valueOf(0.8);
     private static BigDecimal totalScore = BigDecimal.valueOf(100);
+    private static Map<String, String> industryMap = null;
     //计算公式 总扣减分数=（wordDupScore*字号重复度*字号占原名称占比+pinyinDupScore*拼音重复度*拼音占原名称占比+
     // wordPosScore*字号偏移度*字号占原名称占比+pinyinPosScore*拼音偏移度*拼音占原名称占比）*industryParam + 行业描述重复扣减分
     // 行业描述重复扣减分=（wordDupScore*字号重复度*字号占原名称占比+pinyinDupScore*拼音重复度*拼音占原名称占比+
     // wordPosScore*字号偏移度*字号占原名称占比+pinyinPosScore*拼音偏移度*拼音占原名称占比）*(1-industryParam)
     //行业描述重复扣减分在不匹配时为0
 
+    @Autowired
+    private CompanyPropertyDao companyPropertyDao;
+
     @Override
     public RecordResult handleRecord(RecordItem item, UserCompanyName companyName) {
+        if (industryMap == null) {
+            industryMap = this.companyPropertyDao.selectIndustryAll(CompanyPropertyType.industry.name());
+        }
         return doCalculate(item, companyName);
     }
 
@@ -59,7 +71,7 @@ public class CalculateRecordServiceImpl implements CalculateRecordService {
             BigDecimal wordInRecordPct = getPct(sameWordList, recordNameList);
             BigDecimal pinyinInOriginPct = getPct(pinyinList, companyName.getNamePinYinList());
             BigDecimal pinyinInRecordPct = getPct(pinyinList, item.getNamePinYinList());
-            boolean isIndustryTypeSame = companyName.getIndustryDesc().equals(item.getIndustryDesc());
+            boolean isIndustryTypeSame = industryMap.getOrDefault(companyName.getIndustryDesc(), companyName.getIndustryDesc()).equals(industryMap.getOrDefault(item.getIndustryDesc(), item.getIndustryDesc()));
             BigDecimal wordPosPct = getPositionPct(sameWordList, recordNameList, originNameList);
             BigDecimal pinyinPosPct = getPositionPct(pinyinList, item.getNamePinYinList(), companyName.getNamePinYinList());
             RecordResult recordResult = new RecordResult();
@@ -76,33 +88,34 @@ public class CalculateRecordServiceImpl implements CalculateRecordService {
                     recordResult.setIndustryDescMinusScore(BigDecimal.valueOf(10));
                     return recordResult;
                 } else {
-                    recordResult.setTotalMinusScore(BigDecimal.valueOf(90));
-                    recordResult.setPinYinDupMinusScore(BigDecimal.valueOf(25));
-                    recordResult.setWordDupMinusScore(BigDecimal.valueOf(25));
-                    recordResult.setPinYinPosMinusScore(BigDecimal.valueOf(20));
-                    recordResult.setWordPosMinusScore(BigDecimal.valueOf(20));
-                    recordResult.setIndustryDescMinusScore(BigDecimal.ZERO);
-                    return recordResult;
-                }
-            } else if (pinyinInOriginPct.equals(BigDecimal.ONE.setScale(6)) && pinyinInRecordPct.equals(BigDecimal.ONE.setScale(6)) && item.getName().length() == companyName.getName().length() && pinyinPosPct.equals(BigDecimal.ONE.setScale(6)) && wordInRecordPct.compareTo(BigDecimal.ZERO.setScale(6))>0) {
-                if (isIndustryTypeSame) {
-                    recordResult.setTotalMinusScore(BigDecimal.valueOf(50));
-                    recordResult.setPinYinDupMinusScore(BigDecimal.valueOf(13));
-                    recordResult.setWordDupMinusScore(BigDecimal.valueOf(13));
-                    recordResult.setPinYinPosMinusScore(BigDecimal.valueOf(8));
-                    recordResult.setWordPosMinusScore(BigDecimal.valueOf(8));
-                    recordResult.setIndustryDescMinusScore(BigDecimal.valueOf(8));
-                    return recordResult;
-                } else {
-                    recordResult.setTotalMinusScore(BigDecimal.valueOf(30));
-                    recordResult.setPinYinDupMinusScore(BigDecimal.valueOf(10));
-                    recordResult.setWordDupMinusScore(BigDecimal.valueOf(10));
-                    recordResult.setPinYinPosMinusScore(BigDecimal.valueOf(5));
-                    recordResult.setWordPosMinusScore(BigDecimal.valueOf(5));
+                    recordResult.setTotalMinusScore(BigDecimal.valueOf(10));
+                    recordResult.setPinYinDupMinusScore(BigDecimal.valueOf(4));
+                    recordResult.setWordDupMinusScore(BigDecimal.valueOf(4));
+                    recordResult.setPinYinPosMinusScore(BigDecimal.valueOf(2));
+                    recordResult.setWordPosMinusScore(BigDecimal.valueOf(2));
                     recordResult.setIndustryDescMinusScore(BigDecimal.ZERO);
                     return recordResult;
                 }
             }
+//            else if (pinyinInOriginPct.equals(BigDecimal.ONE.setScale(6)) && pinyinInRecordPct.equals(BigDecimal.ONE.setScale(6)) && item.getName().length() == companyName.getName().length() && pinyinPosPct.equals(BigDecimal.ONE.setScale(6)) && wordInRecordPct.compareTo(BigDecimal.ZERO.setScale(6)) > 0) {
+//                if (isIndustryTypeSame) {
+//                    recordResult.setTotalMinusScore(BigDecimal.valueOf(50));
+//                    recordResult.setPinYinDupMinusScore(BigDecimal.valueOf(13));
+//                    recordResult.setWordDupMinusScore(BigDecimal.valueOf(13));
+//                    recordResult.setPinYinPosMinusScore(BigDecimal.valueOf(8));
+//                    recordResult.setWordPosMinusScore(BigDecimal.valueOf(8));
+//                    recordResult.setIndustryDescMinusScore(BigDecimal.valueOf(8));
+//                    return recordResult;
+//                } else {
+//                    recordResult.setTotalMinusScore(BigDecimal.valueOf(30));
+//                    recordResult.setPinYinDupMinusScore(BigDecimal.valueOf(10));
+//                    recordResult.setWordDupMinusScore(BigDecimal.valueOf(10));
+//                    recordResult.setPinYinPosMinusScore(BigDecimal.valueOf(5));
+//                    recordResult.setWordPosMinusScore(BigDecimal.valueOf(5));
+//                    recordResult.setIndustryDescMinusScore(BigDecimal.ZERO);
+//                    return recordResult;
+//                }
+//            }
             BigDecimal wordDupMinusScore;
             BigDecimal pinyinDupMinusScore;
             BigDecimal wordPosMinusScore;
@@ -237,6 +250,7 @@ public class CalculateRecordServiceImpl implements CalculateRecordService {
         }
         return pickedNum.divide(totalNum, 6, BigDecimal.ROUND_HALF_UP);
     }
+
 
 //    public static void main(String[] args) {
 //        RecordMark mark1 = new RecordMark();

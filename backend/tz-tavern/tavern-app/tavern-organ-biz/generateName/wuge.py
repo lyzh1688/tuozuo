@@ -18,7 +18,7 @@ def get_stroke_list(last_name, allow_general):
     # 姓氏转繁体
     converter = opencc.OpenCC('s2t')
     last_name = converter.convert(last_name)
-    n = get_stroke_number(last_name)%81
+    n = get_stroke_number(last_name)%50
     #print(last_name,n)
     for i in range(1, 81):
         for j in range(1, 81):
