@@ -17,6 +17,7 @@
         <module>tavern-authority</module>
         <module>tavern-xinruyi</module>
         <module>tavern-organ-biz</module>
+        <module>tavern-corp-assist</module>
     </modules>
 
 
