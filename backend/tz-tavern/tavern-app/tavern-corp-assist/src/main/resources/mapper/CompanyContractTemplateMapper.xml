@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuozuo.tavern.corp.assist.mapper.CompanyContractTemplateMapper">
+  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.corp.assist.model.CompanyContractTemplate">
+    <id column="template_id" jdbcType="VARCHAR" property="templateId" />
+    <result column="template_name" jdbcType="VARCHAR" property="templateName" />
+    <result column="template_field" jdbcType="VARCHAR" property="templateField" />
+    <result column="template_file_url" jdbcType="VARCHAR" property="templateFileUrl" />
+    <result column="template_class" jdbcType="VARCHAR" property="templateClass" />
+    <result column="template_file_path" jdbcType="VARCHAR" property="templateFilePath" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from company_contract_template
+    where template_id = #{templateId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tuozuo.tavern.corp.assist.model.CompanyContractTemplate">
+    insert into company_contract_template (template_id, template_name, template_field, 
+      template_file_url, template_class, template_file_path
+      )
+    values (#{templateId,jdbcType=VARCHAR}, #{templateName,jdbcType=VARCHAR}, #{templateField,jdbcType=VARCHAR}, 
+      #{templateFileUrl,jdbcType=VARCHAR}, #{templateClass,jdbcType=VARCHAR}, #{templateFilePath,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.corp.assist.model.CompanyContractTemplate">
+    update company_contract_template
+    set template_name = #{templateName,jdbcType=VARCHAR},
+      template_field = #{templateField,jdbcType=VARCHAR},
+      template_file_url = #{templateFileUrl,jdbcType=VARCHAR},
+      template_class = #{templateClass,jdbcType=VARCHAR},
+      template_file_path = #{templateFilePath,jdbcType=VARCHAR}
+    where template_id = #{templateId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select template_id, template_name, template_field, template_file_url, template_class, 
+    template_file_path
+    from company_contract_template
+    where template_id = #{templateId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select template_id, template_name, template_field, template_file_url, template_class, 
+    template_file_path
+    from company_contract_template
+  </select>
+</mapper>

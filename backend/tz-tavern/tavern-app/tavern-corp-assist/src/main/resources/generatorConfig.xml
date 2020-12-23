@@ -17,41 +17,17 @@
                         userId="root"
                         password="y2iaciej" />
 
-        <javaModelGenerator targetPackage="com.tuozuo.tavern.xinruyi.model" targetProject="src/main/java" >
+        <javaModelGenerator targetPackage="com.tuozuo.tavern.corp.assist.model" targetProject="src/main/java" >
             <property name="trimStrings" value = "true"></property>
         </javaModelGenerator>
 
         <sqlMapGenerator targetPackage="mapper/" targetProject="src/main/resources" />
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.tuozuo.tavern.xinruyi.mapper" targetProject="src/main/java" />
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.tuozuo.tavern.corp.assist.mapper" targetProject="src/main/java" />
 
-       <!-- <table tableName="company_info" domainObjectName="CompanyInfo">
-        </table>
-        <table tableName="company_info_ext" domainObjectName="CompanyInfoExt">
-        </table>
-        <table tableName="event_finish_list" domainObjectName="EventFinishList">
-        </table>
-        <table tableName="event_todo_list" domainObjectName="EventTodoList">
-        </table>
-        <table tableName="project_info" domainObjectName="ProjectInfo">
-        </table>
-        <table tableName="project_payment" domainObjectName="ProjectPayment">
-        </table>
-        <table tableName="project_payment_detail" domainObjectName="ProjectPaymentDetail">
-        </table>
-        <table tableName="project_staff" domainObjectName="ProjectStaff">
-        </table>
-        <table tableName="staff_resource_pool" domainObjectName="StaffResourcePool">
-        </table>-->
-        <!--<table tableName="bank_info" domainObjectName="BankInfo">
-        </table>-->
-       <!-- <table tableName="business_dict" domainObjectName="BusinessDict">
-        </table>-->
-        <!-- <table tableName="project_payment_snapshot" domainObjectName="ProjectPaymentSnapshot">
-                </table>-->
-        <!-- <table tableName="hot_project_info" domainObjectName="HotProjectInfo">
-                </table>-->
-         <table tableName="worker_staff_rel" domainObjectName="WorkerStaffRel">
+         <table tableName="company_contract_flow" domainObjectName="CompanyContractFlow">
+                </table>
+         <table tableName="company_contract_template" domainObjectName="CompanyContractTemplate">
                 </table>
 
 

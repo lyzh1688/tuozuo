@@ -22,4 +22,4 @@ spring:
     min-idle: 1
     initial-size: 2
   application:
-    name: tavern-xinruyi
+    name: tavern-corp-assist
