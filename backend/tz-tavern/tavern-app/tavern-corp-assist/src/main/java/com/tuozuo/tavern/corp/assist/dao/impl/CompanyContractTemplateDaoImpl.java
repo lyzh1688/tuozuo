@@ -19,4 +19,9 @@ public class CompanyContractTemplateDaoImpl extends ServiceImpl<CompanyContractT
     public List<CompanyContractTemplate> selectAll() {
         return this.list();
     }
+
+    @Override
+    public CompanyContractTemplate selectById(String templateId) {
+        return this.getById(templateId);
+    }
 }

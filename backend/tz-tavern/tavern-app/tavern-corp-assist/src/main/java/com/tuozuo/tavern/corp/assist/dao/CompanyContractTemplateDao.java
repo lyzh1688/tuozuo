@@ -12,4 +12,6 @@ public interface CompanyContractTemplateDao {
 
     List<CompanyContractTemplate> selectAll();
 
+    CompanyContractTemplate selectById(String templateId);
+
 }
