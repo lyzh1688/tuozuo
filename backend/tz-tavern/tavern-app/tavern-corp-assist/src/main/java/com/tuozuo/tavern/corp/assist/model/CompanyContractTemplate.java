@@ -1,7 +1,8 @@
 package com.tuozuo.tavern.corp.assist.model;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-
+@TableName("company_contract_template")
 public class CompanyContractTemplate extends Model<CompanyContractTemplate> {
     private String templateId;
 

@@ -1,9 +1,10 @@
 package com.tuozuo.tavern.corp.assist.model;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.util.Date;
-
+@TableName("company_contract_flow")
 public class CompanyContractFlow extends Model<CompanyContractFlow> {
     private String flowId;
 
