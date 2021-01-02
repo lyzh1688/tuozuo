@@ -91,4 +91,19 @@ public class CorporationTagEndpoint {
     }
 
 
+    /**
+     * 标签列表模糊查询
+     */
+    @GetMapping("")
+    public TavernResponse queryCorporationTags(@RequestParam(value = "tagName") String tagName,
+                                               @RequestParam(value = "queryCnt", defaultValue = "20") String queryCnt) {
+        try {
+            List<CorporationTagInfo> corporationTagInfoList = this.corporationTagService.queryTagsByName(tagName, Integer.parseInt(queryCnt));
+            return TavernResponse.ok(corporationTagInfoList);
+        } catch (Exception e) {
+            LOGGER.error("[标签列表模糊查询] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
 }

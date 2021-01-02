@@ -8,6 +8,8 @@ import com.tuozuo.tavern.corp.assist.service.CorporationTagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Code Monkey: 何彪 <br>
  * Dev Time: 2021/1/2 <br>
@@ -39,5 +41,10 @@ public class CorporationTagServiceImpl implements CorporationTagService {
     public IPage<CorporationTagInfo> queryTags(int pageNo, int pageSize) {
         Page<CorporationTagInfo> page = new Page<>(pageNo, pageSize);
         return this.corporationTagDao.selectTags(page);
+    }
+
+    @Override
+    public List<CorporationTagInfo> queryTagsByName(String tagName, int queryCnt) {
+        return this.corporationTagDao.selectTagsByName(tagName, queryCnt);
     }
 }
