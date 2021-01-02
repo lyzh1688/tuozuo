@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuozuo.tavern.corp.assist.mapper.CompanyContractFlowMapper">
-  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.corp.assist.model.CompanyContractFlow">
+<mapper namespace="com.tuozuo.tavern.corp.assist.mapper.CorporationContractFlowMapper">
+  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.corp.assist.model.CorporationContractFlow">
     <id column="flow_id" jdbcType="VARCHAR" property="flowId" />
     <result column="staff_id" jdbcType="VARCHAR" property="staffId" />
     <result column="template_id" jdbcType="VARCHAR" property="templateId" />
@@ -16,7 +16,7 @@
     delete from company_contract_flow
     where flow_id = #{flowId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.tuozuo.tavern.corp.assist.model.CompanyContractFlow">
+  <insert id="insert" parameterType="com.tuozuo.tavern.corp.assist.model.CorporationContractFlow">
     insert into company_contract_flow (flow_id, staff_id, template_id, 
       template_field, contract_signed_url, contract_signed_pic_url, 
       contract_signed_path, contract_date, client_name
@@ -26,7 +26,7 @@
       #{contractSignedPath,jdbcType=VARCHAR}, #{contractDate,jdbcType=TIMESTAMP}, #{clientName,jdbcType=VARCHAR}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.corp.assist.model.CompanyContractFlow">
+  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.corp.assist.model.CorporationContractFlow">
     update company_contract_flow
     set staff_id = #{staffId,jdbcType=VARCHAR},
       template_id = #{templateId,jdbcType=VARCHAR},

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 @TableName("company_contract_template")
-public class CompanyContractTemplate extends Model<CompanyContractTemplate> {
+public class CorporationContractTemplate extends Model<CorporationContractTemplate> {
     @TableId
     private String templateId;
 

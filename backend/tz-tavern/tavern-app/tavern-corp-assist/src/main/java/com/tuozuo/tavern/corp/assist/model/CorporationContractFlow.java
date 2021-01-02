@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.util.Date;
-@TableName("company_contract_flow")
-public class CompanyContractFlow extends Model<CompanyContractFlow> {
+@TableName("corporation_contract_flow")
+public class CorporationContractFlow extends Model<CorporationContractFlow> {
     @TableId
     private String flowId;
 

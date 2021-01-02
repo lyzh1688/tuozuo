@@ -1,15 +1,14 @@
 package com.tuozuo.tavern.corp.assist.service.impl;
 
-import com.tuozuo.tavern.corp.assist.FileType;
-import com.tuozuo.tavern.corp.assist.dao.CompanyContractFlowDao;
-import com.tuozuo.tavern.corp.assist.dao.CompanyContractTemplateDao;
-import com.tuozuo.tavern.corp.assist.model.CompanyContractFlow;
-import com.tuozuo.tavern.corp.assist.model.CompanyContractTemplate;
-import com.tuozuo.tavern.corp.assist.service.CompanyContractService;
+import com.tuozuo.tavern.corp.assist.dict.FileType;
+import com.tuozuo.tavern.corp.assist.dao.CorporationContractFlowDao;
+import com.tuozuo.tavern.corp.assist.dao.CorporationContractTemplateDao;
+import com.tuozuo.tavern.corp.assist.model.CorporationContractFlow;
+import com.tuozuo.tavern.corp.assist.model.CorporationContractTemplate;
+import com.tuozuo.tavern.corp.assist.service.CorporationContractService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -20,28 +19,28 @@ import java.util.List;
  * Dev Time: 2020/12/24 <br>
  */
 @Service
-public class CompanyContractServiceImpl implements CompanyContractService {
+public class CorporationContractServiceImpl implements CorporationContractService {
 
     @Autowired
-    private CompanyContractTemplateDao companyContractTemplateDao;
+    private CorporationContractTemplateDao corporationContractTemplateDao;
     @Autowired
-    private CompanyContractFlowDao companyContractFlowDao;
+    private CorporationContractFlowDao corporationContractFlowDao;
 
 
     @Override
-    public List<CompanyContractTemplate> queryAllCompanyContractTemplate() {
-        return this.companyContractTemplateDao.selectAll();
+    public List<CorporationContractTemplate> queryAllCompanyContractTemplate() {
+        return this.corporationContractTemplateDao.selectAll();
     }
 
     @Override
     public void previewContractFile(HttpServletResponse httpServletResponse, String templateId, String flowId) throws Exception {
         String filePath;
         if (StringUtils.isNoneEmpty(templateId)) {
-            CompanyContractTemplate companyContractTemplate = this.companyContractTemplateDao.selectById(templateId);
-            filePath = companyContractTemplate.getTemplateFilePath();
+            CorporationContractTemplate corporationContractTemplate = this.corporationContractTemplateDao.selectById(templateId);
+            filePath = corporationContractTemplate.getTemplateFilePath();
         } else {
-            CompanyContractFlow companyContractFlow = this.companyContractFlowDao.selectById(flowId);
-            filePath = companyContractFlow.getContractSignedPath();
+            CorporationContractFlow corporationContractFlow = this.corporationContractFlowDao.selectById(flowId);
+            filePath = corporationContractFlow.getContractSignedPath();
         }
 
         File pdf = new File(filePath);

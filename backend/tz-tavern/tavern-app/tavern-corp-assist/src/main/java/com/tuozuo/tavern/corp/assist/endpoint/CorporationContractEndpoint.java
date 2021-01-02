@@ -5,8 +5,8 @@ import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.corp.assist.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.corp.assist.dto.ContractTemplateDTO;
 import com.tuozuo.tavern.corp.assist.dto.ContractTemplateItemDTO;
-import com.tuozuo.tavern.corp.assist.model.CompanyContractTemplate;
-import com.tuozuo.tavern.corp.assist.service.CompanyContractService;
+import com.tuozuo.tavern.corp.assist.model.CorporationContractTemplate;
+import com.tuozuo.tavern.corp.assist.service.CorporationContractService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +26,12 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/tuozuo/corporation/v1/contract/")
-public class CompanyContractEndpoint {
+public class CorporationContractEndpoint {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CompanyContractEndpoint.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CorporationContractEndpoint.class);
 
     @Autowired
-    private CompanyContractService companyContractService;
+    private CorporationContractService corporationContractService;
 
     @Autowired
     private ModelMapConverterFactory converterFactory;
@@ -39,14 +39,14 @@ public class CompanyContractEndpoint {
     @GetMapping("template")
     public TavernResponse queryContractTemplate() {
         try {
-            List<CompanyContractTemplate> templates = this.companyContractService.queryAllCompanyContractTemplate();
-            Map<String, List<CompanyContractTemplate>> templateMap = templates.stream()
-                    .collect(Collectors.groupingBy(CompanyContractTemplate::getTemplateClass));
+            List<CorporationContractTemplate> templates = this.corporationContractService.queryAllCompanyContractTemplate();
+            Map<String, List<CorporationContractTemplate>> templateMap = templates.stream()
+                    .collect(Collectors.groupingBy(CorporationContractTemplate::getTemplateClass));
             List<ContractTemplateDTO> contractTemplateDTOList = Lists.newArrayList();
-            for (Map.Entry<String, List<CompanyContractTemplate>> entry : templateMap.entrySet()) {
+            for (Map.Entry<String, List<CorporationContractTemplate>> entry : templateMap.entrySet()) {
                 ContractTemplateDTO contractTemplateDTO = new ContractTemplateDTO();
                 String key = entry.getKey();
-                List<CompanyContractTemplate> value = entry.getValue();
+                List<CorporationContractTemplate> value = entry.getValue();
                 contractTemplateDTO.setTemplateClass(key);
                 List<ContractTemplateItemDTO> itemDTOList = value.stream()
                         .map(this.converterFactory::templateModelToDTO)
@@ -67,7 +67,7 @@ public class CompanyContractEndpoint {
                                     @RequestParam(value = "templateId", required = false) String templateId,
                                     @RequestParam(value = "flowId", required = false) String flowId) {
         try {
-            this.companyContractService.previewContractFile(response, templateId, flowId);
+            this.corporationContractService.previewContractFile(response, templateId, flowId);
         } catch (Exception e) {
             LOGGER.error("[模板列表] failed", e);
         }

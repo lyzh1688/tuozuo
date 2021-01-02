@@ -1,4 +1,4 @@
-package com.tuozuo.tavern.corp.assist;
+package com.tuozuo.tavern.corp.assist.dict;
 
 /**
  * Code Monkey: 何彪 <br>
