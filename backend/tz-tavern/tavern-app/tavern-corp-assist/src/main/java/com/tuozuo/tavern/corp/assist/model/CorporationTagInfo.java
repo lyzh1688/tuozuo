@@ -5,8 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.tuozuo.tavern.corp.assist.utils.UUIDUtil;
 
-import java.util.UUID;
-
 @TableName("corporation_tag_info")
 public class CorporationTagInfo extends Model<CorporationTagInfo> {
     @TableId

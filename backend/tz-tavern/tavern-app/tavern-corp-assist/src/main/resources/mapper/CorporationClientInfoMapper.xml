@@ -14,43 +14,35 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="valid" jdbcType="VARCHAR" property="valid" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from corporation_client_info
-    where client_id = #{clientId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.tuozuo.tavern.corp.assist.model.CorporationClientInfo">
-    insert into corporation_client_info (client_id, client_name, client_number, 
-      client_gender, contact, contact_number, 
-      contact_gender, alitalk, operator, 
-      create_time, valid)
-    values (#{clientId,jdbcType=VARCHAR}, #{clientName,jdbcType=VARCHAR}, #{clientNumber,jdbcType=VARCHAR}, 
-      #{clientGender,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{contactNumber,jdbcType=VARCHAR}, 
-      #{contactGender,jdbcType=VARCHAR}, #{alitalk,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{valid,jdbcType=VARCHAR})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.corp.assist.model.CorporationClientInfo">
-    update corporation_client_info
-    set client_name = #{clientName,jdbcType=VARCHAR},
-      client_number = #{clientNumber,jdbcType=VARCHAR},
-      client_gender = #{clientGender,jdbcType=VARCHAR},
-      contact = #{contact,jdbcType=VARCHAR},
-      contact_number = #{contactNumber,jdbcType=VARCHAR},
-      contact_gender = #{contactGender,jdbcType=VARCHAR},
-      alitalk = #{alitalk,jdbcType=VARCHAR},
-      operator = #{operator,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      valid = #{valid,jdbcType=VARCHAR}
-    where client_id = #{clientId,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select client_id, client_name, client_number, client_gender, contact, contact_number, 
-    contact_gender, alitalk, operator, create_time, valid
-    from corporation_client_info
-    where client_id = #{clientId,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select client_id, client_name, client_number, client_gender, contact, contact_number, 
-    contact_gender, alitalk, operator, create_time, valid
-    from corporation_client_info
+  <resultMap id="BaseResultsMap" type="com.tuozuo.tavern.corp.assist.model.CorporationClientTagInfo">
+    <id column="client_id" jdbcType="VARCHAR" property="clientId" />
+    <result column="client_name" jdbcType="VARCHAR" property="clientName" />
+    <result column="client_number" jdbcType="VARCHAR" property="clientNumber" />
+    <result column="client_gender" jdbcType="VARCHAR" property="clientGender" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="contact_number" jdbcType="VARCHAR" property="contactNumber" />
+    <result column="contact_gender" jdbcType="VARCHAR" property="contactGender" />
+    <result column="alitalk" jdbcType="VARCHAR" property="alitalk" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <collection property="tags" ofType="com.tuozuo.tavern.corp.assist.model.CorporationClientTagInfo" resultMap="ClientTagMap"/>
+  </resultMap>
+  <resultMap id="ClientTagMap" type="com.tuozuo.tavern.corp.assist.model.CorporationTagInfo" >
+  <result column="tag_id" jdbcType="VARCHAR" property="tagId" />
+  <result column="tag_name" jdbcType="VARCHAR" property="tagName" />
+  </resultMap>
+  <select id="selectClients" resultMap="BaseResultsMap">
+    select t1.client_id, t1.client_name, t1.client_number, t1.client_gender, t1.contact, t1.contact_number,
+    t1.contact_gender, t1.alitalk, t1.operator, date_format(t1.create_time , '%Y-%m-%d %H:%i:%S'), t1.valid,t3.tag_id,t3.tag_name
+    from corporation_client_info t1,corporation_client_tag_rel t2,corporation_tag_info t3
+    where t1.client_id = t2.client_id
+    and t2.tag_id = t3.tag_id
+    <if test="tagName != null and tagName != ''">
+      and t3.tag_name like concat('%', #{tagName}, '%')
+    </if>
+    <if test="clientName != null and clientName != ''">
+      and t1.client_name like concat('%', #{clientName}, '%')
+    </if>
+    order by create_time desc
   </select>
 </mapper>

@@ -1,16 +1,15 @@
 package com.tuozuo.tavern.corp.assist.model;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.google.common.collect.Lists;
 
-import java.time.LocalDateTime;
-@TableName("corporation_client_info")
-public class CorporationClientInfo extends Model<CorporationClientInfo> {
-    @TableId
+import java.util.List;
+
+public class CorporationClientTagInfo {
     private String clientId;
 
     private String clientName;
+
+    private List<CorporationTagInfo> tags = Lists.newArrayList();
 
     private String clientNumber;
 
@@ -26,9 +25,17 @@ public class CorporationClientInfo extends Model<CorporationClientInfo> {
 
     private String operator;
 
-    private LocalDateTime createTime;
+    private String createTime;
 
     private String valid;
+
+    public List<CorporationTagInfo> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<CorporationTagInfo> tags) {
+        this.tags = tags;
+    }
 
     public String getClientId() {
         return clientId;
@@ -102,11 +109,11 @@ public class CorporationClientInfo extends Model<CorporationClientInfo> {
         this.operator = operator == null ? null : operator.trim();
     }
 
-    public LocalDateTime getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(LocalDateTime createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 

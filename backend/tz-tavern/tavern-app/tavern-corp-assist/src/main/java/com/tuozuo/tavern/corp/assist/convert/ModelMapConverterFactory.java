@@ -1,7 +1,9 @@
 package com.tuozuo.tavern.corp.assist.convert;
 
 import com.tuozuo.tavern.corp.assist.dto.ContractTemplateItemDTO;
+import com.tuozuo.tavern.corp.assist.model.CorporationClientInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationContractTemplate;
+import com.tuozuo.tavern.corp.assist.vo.CorporationClientVO;
 import org.mapstruct.Mapper;
 
 
@@ -13,6 +15,8 @@ import org.mapstruct.Mapper;
 public interface ModelMapConverterFactory {
 
     ContractTemplateItemDTO templateModelToDTO(CorporationContractTemplate template);
+
+    CorporationClientInfo dtoToCorporationClientInfo(CorporationClientVO vo);
 
 
 }
