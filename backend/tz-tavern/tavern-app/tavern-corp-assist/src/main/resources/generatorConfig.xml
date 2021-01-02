@@ -13,7 +13,7 @@
         </commentGenerator>
 
        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://119.3.19.171:3306/xinruyi?characterEncoding=UTF-8"
+                        connectionURL="jdbc:mysql://119.3.19.171:3306/corporation?characterEncoding=UTF-8"
                         userId="root"
                         password="y2iaciej" />
 
@@ -25,10 +25,14 @@
 
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.tuozuo.tavern.corp.assist.mapper" targetProject="src/main/java" />
 
-         <table tableName="company_contract_flow" domainObjectName="CompanyContractFlow">
+         <!--<table tableName="company_contract_flow" domainObjectName="CompanyContractFlow">
                 </table>
          <table tableName="company_contract_template" domainObjectName="CompanyContractTemplate">
                 </table>
+        <table tableName="corporation_tag_info" domainObjectName="CorporationTagInfo">
+        </table>-->
+        <table tableName="corporation_client_info" domainObjectName="CorporationClientInfo">
+        </table>
 
 
 

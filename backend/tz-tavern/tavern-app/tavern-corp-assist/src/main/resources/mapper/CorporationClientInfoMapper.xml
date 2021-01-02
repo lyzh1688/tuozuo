@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuozuo.tavern.corp.assist.mapper.CorporationClientInfoMapper">
+  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.corp.assist.model.CorporationClientInfo">
+    <id column="client_id" jdbcType="VARCHAR" property="clientId" />
+    <result column="client_name" jdbcType="VARCHAR" property="clientName" />
+    <result column="client_number" jdbcType="VARCHAR" property="clientNumber" />
+    <result column="client_gender" jdbcType="VARCHAR" property="clientGender" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="contact_number" jdbcType="VARCHAR" property="contactNumber" />
+    <result column="contact_gender" jdbcType="VARCHAR" property="contactGender" />
+    <result column="alitalk" jdbcType="VARCHAR" property="alitalk" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="valid" jdbcType="VARCHAR" property="valid" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from corporation_client_info
+    where client_id = #{clientId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tuozuo.tavern.corp.assist.model.CorporationClientInfo">
+    insert into corporation_client_info (client_id, client_name, client_number, 
+      client_gender, contact, contact_number, 
+      contact_gender, alitalk, operator, 
+      create_time, valid)
+    values (#{clientId,jdbcType=VARCHAR}, #{clientName,jdbcType=VARCHAR}, #{clientNumber,jdbcType=VARCHAR}, 
+      #{clientGender,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{contactNumber,jdbcType=VARCHAR}, 
+      #{contactGender,jdbcType=VARCHAR}, #{alitalk,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{valid,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.corp.assist.model.CorporationClientInfo">
+    update corporation_client_info
+    set client_name = #{clientName,jdbcType=VARCHAR},
+      client_number = #{clientNumber,jdbcType=VARCHAR},
+      client_gender = #{clientGender,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      contact_number = #{contactNumber,jdbcType=VARCHAR},
+      contact_gender = #{contactGender,jdbcType=VARCHAR},
+      alitalk = #{alitalk,jdbcType=VARCHAR},
+      operator = #{operator,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      valid = #{valid,jdbcType=VARCHAR}
+    where client_id = #{clientId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select client_id, client_name, client_number, client_gender, contact, contact_number, 
+    contact_gender, alitalk, operator, create_time, valid
+    from corporation_client_info
+    where client_id = #{clientId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select client_id, client_name, client_number, client_gender, contact, contact_number, 
+    contact_gender, alitalk, operator, create_time, valid
+    from corporation_client_info
+  </select>
+</mapper>
