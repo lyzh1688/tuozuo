@@ -10,6 +10,9 @@ public class CorporationClientTagInfo {
 
     private String clientName;
 
+    private String corpId;
+    private String corpName;
+
     private List<CorporationTagInfo> tags = Lists.newArrayList();
 
     private String clientNumber;
@@ -33,6 +36,22 @@ public class CorporationClientTagInfo {
     private String createTime;
 
     private String valid;
+
+    public String getCorpId() {
+        return corpId;
+    }
+
+    public void setCorpId(String corpId) {
+        this.corpId = corpId;
+    }
+
+    public String getCorpName() {
+        return corpName;
+    }
+
+    public void setCorpName(String corpName) {
+        this.corpName = corpName;
+    }
 
     public String getUserId() {
         return userId;
