@@ -2,6 +2,7 @@ package com.tuozuo.tavern.corp.assist.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.tuozuo.tavern.corp.assist.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.corp.assist.dao.CorporationClientGroupRelDao;
 import com.tuozuo.tavern.corp.assist.dao.CorporationGroupInfoDao;
 import com.tuozuo.tavern.corp.assist.dict.ValidType;
@@ -10,6 +11,7 @@ import com.tuozuo.tavern.corp.assist.model.CorporationGroupClientInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationGroupInfo;
 import com.tuozuo.tavern.corp.assist.service.CorporationGroupInfoService;
 import com.tuozuo.tavern.corp.assist.utils.DateUtils;
+import com.tuozuo.tavern.corp.assist.utils.UUIDUtil;
 import com.tuozuo.tavern.corp.assist.vo.CorporationGroupInfoVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +33,13 @@ public class CorporationGroupInfoServiceImpl implements CorporationGroupInfoServ
     private CorporationGroupInfoDao corporationGroupInfoDao;
     @Autowired
     private CorporationClientGroupRelDao corporationClientGroupRelDao;
-
+    @Autowired
+    private ModelMapConverterFactory converterFactory;
 
     @Override
     public boolean addGroup(CorporationGroupInfoVO groupInfoVO) {
-        CorporationGroupInfo corporationGroupInfo = CorporationGroupInfo.create(groupInfoVO.getChatId(), groupInfoVO.getGroupName(), groupInfoVO.getGroupNotice());
+        CorporationGroupInfo corporationGroupInfo = converterFactory.dtoToCorporationGroupInfo(groupInfoVO);
+        corporationGroupInfo.setGroupId(UUIDUtil.randomUUID32());
         return this.corporationGroupInfoDao.insertGroup(corporationGroupInfo);
     }
 
@@ -47,7 +51,7 @@ public class CorporationGroupInfoServiceImpl implements CorporationGroupInfoServ
 
     @Override
     public boolean modifyGroup(CorporationGroupInfoVO groupInfoVO) {
-        CorporationGroupInfo corporationGroupInfo = CorporationGroupInfo.create(groupInfoVO.getGroupId(), groupInfoVO.getChatId(), groupInfoVO.getGroupName(), groupInfoVO.getGroupNotice());
+        CorporationGroupInfo corporationGroupInfo = converterFactory.dtoToCorporationGroupInfo(groupInfoVO);
         return this.corporationGroupInfoDao.updateGroup(corporationGroupInfo);
     }
 
