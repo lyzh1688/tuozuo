@@ -25,9 +25,29 @@ public class CorporationClientTagInfo {
 
     private String operator;
 
+    private String operatorId;
+
+    private String source;
+
     private String createTime;
 
     private String valid;
+
+    public String getOperatorId() {
+        return operatorId;
+    }
+
+    public void setOperatorId(String operatorId) {
+        this.operatorId = operatorId;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
 
     public List<CorporationTagInfo> getTags() {
         return tags;

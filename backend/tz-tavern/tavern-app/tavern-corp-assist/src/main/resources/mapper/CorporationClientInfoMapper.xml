@@ -10,9 +10,11 @@
         <result column="contact_number" jdbcType="VARCHAR" property="contactNumber"/>
         <result column="contact_gender" jdbcType="VARCHAR" property="contactGender"/>
         <result column="alitalk" jdbcType="VARCHAR" property="alitalk"/>
-        <result column="operator" jdbcType="VARCHAR" property="operator"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="valid" jdbcType="VARCHAR" property="valid"/>
+        <result column="operator" jdbcType="VARCHAR" property="operator" />
+        <result column="operator_id" jdbcType="VARCHAR" property="operatorId" />
+        <result column="source" jdbcType="VARCHAR" property="source" />
     </resultMap>
     <resultMap id="BaseResultsMap" type="com.tuozuo.tavern.corp.assist.model.CorporationClientTagInfo">
         <id column="client_id" jdbcType="VARCHAR" property="clientId"/>
@@ -23,8 +25,10 @@
         <result column="contact_number" jdbcType="VARCHAR" property="contactNumber"/>
         <result column="contact_gender" jdbcType="VARCHAR" property="contactGender"/>
         <result column="alitalk" jdbcType="VARCHAR" property="alitalk"/>
-        <result column="operator" jdbcType="VARCHAR" property="operator"/>
         <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
+        <result column="operator" jdbcType="VARCHAR" property="operator" />
+        <result column="operator_id" jdbcType="VARCHAR" property="operatorId" />
+        <result column="source" jdbcType="VARCHAR" property="source" />
         <collection property="tags" ofType="com.tuozuo.tavern.corp.assist.model.CorporationClientTagInfo"
                     resultMap="ClientTagMap"/>
     </resultMap>
@@ -35,6 +39,7 @@
     <select id="selectClients" resultMap="BaseResultsMap">
         select t1.client_id, t1.client_name, t1.client_number, t1.client_gender, t1.contact, t1.contact_number,
         t1.contact_gender, t1.alitalk, t1.operator, date_format(t1.create_time , '%Y-%m-%d %H:%i:%S') create_time,
+        t1.operator,t1.operator_id,t1.source,
         t1.valid,t3.tag_id,t3.tag_name
         from corporation_client_info t1,corporation_client_tag_rel t2,corporation_tag_info t3
         where t1.client_id = t2.client_id
@@ -49,6 +54,7 @@
     </select>
     <select id="selectClientsFromApp" resultMap="BaseResultsMap">
         select t1.client_id, t1.client_name, t1.client_number, t1.client_gender, t1.contact, t1.contact_number,
+        t1.operator,t1.operator_id,t1.source,
         t1.contact_gender, t1.alitalk, t1.operator, date_format(t1.create_time , '%Y-%m-%d %H:%i:%S') create_time,
         t1.valid,t3.tag_id,t3.tag_name
         from corporation_client_info t1,corporation_client_tag_rel t2,corporation_tag_info t3

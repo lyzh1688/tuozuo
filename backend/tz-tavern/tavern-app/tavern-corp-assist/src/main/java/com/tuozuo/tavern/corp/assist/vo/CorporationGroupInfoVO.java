@@ -10,6 +10,35 @@ public class CorporationGroupInfoVO {
 
     private String groupNotice;
 
+    private String operator;
+
+    private String operatorId;
+
+    private String source;
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
+
+    public String getOperatorId() {
+        return operatorId;
+    }
+
+    public void setOperatorId(String operatorId) {
+        this.operatorId = operatorId;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
 
     public String getChatId() {
         return chatId;

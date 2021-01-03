@@ -23,6 +23,13 @@ public class CorporationGroupInfo extends Model<CorporationGroupInfo> {
 
     private String valid;
 
+    private String operator;
+
+    private String operatorId;
+
+    private String source;
+
+
     public CorporationGroupInfo(String groupId, String valid) {
         this.groupId = groupId;
         this.valid = valid;
@@ -58,6 +65,30 @@ public class CorporationGroupInfo extends Model<CorporationGroupInfo> {
         return new CorporationGroupInfo(groupId, chatId, groupName, groupNotice);
     }
 
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
+
+    public String getOperatorId() {
+        return operatorId;
+    }
+
+    public void setOperatorId(String operatorId) {
+        this.operatorId = operatorId;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
 
     public String getValid() {
         return valid;

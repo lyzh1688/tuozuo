@@ -26,11 +26,30 @@ public class CorporationClientInfo extends Model<CorporationClientInfo> {
 
     private String alitalk;
 
-    private String operator;
 
     private LocalDateTime createTime;
 
     private String valid;
+
+    private String operator;
+
+    private String operatorId;
+
+    private String source;
+
+
+    public CorporationClientInfo() {
+    }
+
+    public CorporationClientInfo(String clientId, String valid) {
+        this.clientId = clientId;
+        this.valid = valid;
+    }
+
+
+    public static CorporationClientInfo create(String clientId, String valid) {
+        return new CorporationClientInfo(clientId, valid);
+    }
 
     public String getUserId() {
         return userId;
@@ -126,5 +145,21 @@ public class CorporationClientInfo extends Model<CorporationClientInfo> {
 
     public void setValid(String valid) {
         this.valid = valid == null ? null : valid.trim();
+    }
+
+    public String getOperatorId() {
+        return operatorId;
+    }
+
+    public void setOperatorId(String operatorId) {
+        this.operatorId = operatorId;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 }

@@ -15,7 +15,7 @@ public interface CorporationClientInfoDao {
 
     boolean insertClient(CorporationClientInfo corporationClientInfo);
 
-    boolean delClient(String clientId);
+    boolean delClient(CorporationClientInfo corporationClientInfo);
 
     boolean updateClient(CorporationClientInfo corporationClientInfo);
 

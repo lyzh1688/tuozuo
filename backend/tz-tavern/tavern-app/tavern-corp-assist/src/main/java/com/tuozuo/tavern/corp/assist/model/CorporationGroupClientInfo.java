@@ -14,9 +14,39 @@ public class CorporationGroupClientInfo {
 
     private String createTime;
 
+    private String operator;
+
+    private String operatorId;
+
+    private String source;
+
     private List<String> tags = Lists.newArrayList();
 
     private List<CorporationClientInfo> clients = Lists.newArrayList();
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
+
+    public String getOperatorId() {
+        return operatorId;
+    }
+
+    public void setOperatorId(String operatorId) {
+        this.operatorId = operatorId;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
 
     public String getGroupId() {
         return groupId;

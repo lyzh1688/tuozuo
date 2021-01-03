@@ -23,8 +23,8 @@ public class CorporationClientInfoDaoImpl extends ServiceImpl<CorporationClientI
     }
 
     @Override
-    public boolean delClient(String clientId) {
-        return this.removeById(clientId);
+    public boolean delClient(CorporationClientInfo corporationClientInfo) {
+        return this.updateById(corporationClientInfo);
     }
 
     @Override

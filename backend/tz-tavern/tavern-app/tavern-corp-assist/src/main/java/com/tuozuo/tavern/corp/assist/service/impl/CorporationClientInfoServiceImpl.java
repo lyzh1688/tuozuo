@@ -5,11 +5,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tuozuo.tavern.corp.assist.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.corp.assist.dao.CorporationClientInfoDao;
 import com.tuozuo.tavern.corp.assist.dao.CorporationClientTagRelDao;
+import com.tuozuo.tavern.corp.assist.dict.ValidType;
 import com.tuozuo.tavern.corp.assist.model.CorporationClientInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationClientTagInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationClientTagRel;
 import com.tuozuo.tavern.corp.assist.service.CorporationClientInfoService;
 import com.tuozuo.tavern.corp.assist.utils.DateUtils;
+import com.tuozuo.tavern.corp.assist.utils.UUIDUtil;
 import com.tuozuo.tavern.corp.assist.vo.CorporationClientVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +40,14 @@ public class CorporationClientInfoServiceImpl implements CorporationClientInfoSe
     @Override
     public boolean addClient(CorporationClientVO corporationClientVO) {
         CorporationClientInfo corporationClientInfo = this.converterFactory.dtoToCorporationClientInfo(corporationClientVO);
+        corporationClientInfo.setClientId(UUIDUtil.randomUUID32());
         return this.corporationClientInfoDao.insertClient(corporationClientInfo);
     }
 
     @Override
     public boolean delClient(String clientId) {
-        return this.corporationClientInfoDao.delClient(clientId);
+        CorporationClientInfo corporationClientInfo = CorporationClientInfo.create(clientId,ValidType.INVALID.getType());
+        return this.corporationClientInfoDao.delClient(corporationClientInfo);
     }
 
     @Override
