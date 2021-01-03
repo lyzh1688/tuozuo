@@ -2,14 +2,20 @@ package com.tuozuo.tavern.corp.assist.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.tuozuo.tavern.corp.assist.dao.CorporationClientGroupRelDao;
 import com.tuozuo.tavern.corp.assist.dao.CorporationGroupInfoDao;
 import com.tuozuo.tavern.corp.assist.dict.ValidType;
+import com.tuozuo.tavern.corp.assist.model.CorporationClientGroupRel;
 import com.tuozuo.tavern.corp.assist.model.CorporationGroupClientInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationGroupInfo;
 import com.tuozuo.tavern.corp.assist.service.CorporationGroupInfoService;
 import com.tuozuo.tavern.corp.assist.vo.CorporationGroupInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -20,6 +26,8 @@ public class CorporationGroupInfoServiceImpl implements CorporationGroupInfoServ
 
     @Autowired
     private CorporationGroupInfoDao corporationGroupInfoDao;
+    @Autowired
+    private CorporationClientGroupRelDao corporationClientGroupRelDao;
 
 
     @Override
@@ -49,5 +57,15 @@ public class CorporationGroupInfoServiceImpl implements CorporationGroupInfoServ
     @Override
     public CorporationGroupClientInfo queryGroupDetail(String groupId) {
         return this.corporationGroupInfoDao.selectGroupDetail(groupId);
+    }
+
+    @Transactional
+    @Override
+    public boolean bindGroupClientRel(String groupId, List<String> clientId) {
+        List<CorporationClientGroupRel> relList = clientId.stream()
+                .map(c -> CorporationClientGroupRel.create(c, groupId))
+                .collect(Collectors.toList());
+        this.corporationClientGroupRelDao.delByGroupId(groupId);
+        return this.corporationClientGroupRelDao.insertBatch(relList);
     }
 }

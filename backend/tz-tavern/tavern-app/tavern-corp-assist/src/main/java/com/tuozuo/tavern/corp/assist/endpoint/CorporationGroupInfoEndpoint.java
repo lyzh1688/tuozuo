@@ -5,6 +5,7 @@ import com.tuozuo.tavern.common.protocol.TavernResponse;
 import com.tuozuo.tavern.corp.assist.dto.CorporationGroupInfoDTO;
 import com.tuozuo.tavern.corp.assist.model.CorporationGroupClientInfo;
 import com.tuozuo.tavern.corp.assist.service.CorporationGroupInfoService;
+import com.tuozuo.tavern.corp.assist.vo.CorporationGroupClientVO;
 import com.tuozuo.tavern.corp.assist.vo.CorporationGroupInfoVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +37,7 @@ public class CorporationGroupInfoEndpoint {
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[添加客户群] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("[添加客户群] 异常");
         }
     }
 
@@ -50,7 +51,7 @@ public class CorporationGroupInfoEndpoint {
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[删除客户群] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("[删除客户群] 异常");
         }
     }
 
@@ -66,7 +67,7 @@ public class CorporationGroupInfoEndpoint {
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[修改客户群] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("[修改客户群] 异常");
         }
     }
 
@@ -88,7 +89,7 @@ public class CorporationGroupInfoEndpoint {
             return TavernResponse.ok(corporationGroupInfoDTO);
         } catch (Exception e) {
             LOGGER.error("[客户群列表] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("[客户群列表] 异常");
         }
     }
 
@@ -102,7 +103,22 @@ public class CorporationGroupInfoEndpoint {
             return TavernResponse.ok(corporationGroupClientInfo);
         } catch (Exception e) {
             LOGGER.error("[客户群详情] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("[客户群详情] 异常");
+        }
+    }
+
+
+    /**
+     * 绑定客户群
+     */
+    @PutMapping("/client/relation")
+    public TavernResponse bindCorporationGroup(@RequestBody @Valid CorporationGroupClientVO vo) {
+        try {
+            this.corporationGroupInfoService.bindGroupClientRel(vo.getGroupId(),vo.getClients());
+            return TavernResponse.OK;
+        } catch (Exception e) {
+            LOGGER.error("[绑定客户群] failed", e);
+            return TavernResponse.bizFailure("[绑定客户群] 异常");
         }
     }
 

@@ -23,5 +23,7 @@ public interface CorporationGroupInfoService {
 
     CorporationGroupClientInfo queryGroupDetail(String groupId);
 
+    boolean bindGroupClientRel(String groupId,List<String> clientId);
+
 
 }
