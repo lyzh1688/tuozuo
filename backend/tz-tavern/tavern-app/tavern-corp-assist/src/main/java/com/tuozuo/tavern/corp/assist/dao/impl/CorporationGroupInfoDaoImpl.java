@@ -9,6 +9,8 @@ import com.tuozuo.tavern.corp.assist.model.CorporationGroupClientInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationGroupInfo;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Code Monkey: 何彪 <br>
  * Dev Time: 2021/1/3 <br>
@@ -38,5 +40,10 @@ public class CorporationGroupInfoDaoImpl extends ServiceImpl<CorporationGroupInf
     @Override
     public CorporationGroupClientInfo selectGroupDetail(String groupId) {
         return this.baseMapper.selectGroupDetail(groupId);
+    }
+
+    @Override
+    public List<CorporationGroupClientInfo> selectGroupsFromApp(String tagName, String groupName, String groupId, String createTime) {
+        return this.baseMapper.selectGroupsFromApp(tagName, groupName, groupId, createTime);
     }
 }

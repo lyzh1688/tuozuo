@@ -71,7 +71,7 @@ public class CorporationClientInfoServiceImpl implements CorporationClientInfoSe
     @Override
     public List<CorporationClientTagInfo> queryClientsFromApp(String tagName, String clientName, String clientId, String createTime) {
         if (StringUtils.isEmpty(createTime)) {
-            createTime = DateUtils.formatDate(LocalDate.now().plusMonths(1), DateUtils.DEFAULT_SIMPLE_8__FORMATTER);
+            createTime = DateUtils.formatDate(LocalDate.now().plusMonths(1), DateUtils.DEFAULT_DATETIME_FORMATTER);
         }
         return this.corporationClientInfoDao.selectClientsFromApp(tagName, clientName, clientId, createTime);
     }

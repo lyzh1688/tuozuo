@@ -9,11 +9,14 @@ import com.tuozuo.tavern.corp.assist.model.CorporationClientGroupRel;
 import com.tuozuo.tavern.corp.assist.model.CorporationGroupClientInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationGroupInfo;
 import com.tuozuo.tavern.corp.assist.service.CorporationGroupInfoService;
+import com.tuozuo.tavern.corp.assist.utils.DateUtils;
 import com.tuozuo.tavern.corp.assist.vo.CorporationGroupInfoVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,5 +70,13 @@ public class CorporationGroupInfoServiceImpl implements CorporationGroupInfoServ
                 .collect(Collectors.toList());
         this.corporationClientGroupRelDao.delByGroupId(groupId);
         return this.corporationClientGroupRelDao.insertBatch(relList);
+    }
+
+    @Override
+    public List<CorporationGroupClientInfo> queryGroupsFromApp(String tagName, String groupName, String groupId, String createTime) {
+        if(StringUtils.isEmpty(createTime)){
+            createTime = DateUtils.formatDate(LocalDate.now().plusMonths(1), DateUtils.DEFAULT_DATETIME_FORMATTER);
+        }
+        return this.corporationGroupInfoDao.selectGroupsFromApp(tagName, groupName, groupId, createTime);
     }
 }

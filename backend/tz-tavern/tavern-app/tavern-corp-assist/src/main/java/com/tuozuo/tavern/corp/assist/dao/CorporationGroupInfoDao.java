@@ -22,5 +22,8 @@ public interface CorporationGroupInfoDao {
 
     CorporationGroupClientInfo selectGroupDetail(String groupId);
 
+    List<CorporationGroupClientInfo> selectGroupsFromApp( String tagName, String groupName, String groupId, String createTime);
+
+
 
 }

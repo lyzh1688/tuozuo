@@ -23,7 +23,9 @@ public interface CorporationGroupInfoService {
 
     CorporationGroupClientInfo queryGroupDetail(String groupId);
 
-    boolean bindGroupClientRel(String groupId,List<String> clientId);
+    boolean bindGroupClientRel(String groupId, List<String> clientId);
+
+    List<CorporationGroupClientInfo> queryGroupsFromApp(String tagName, String groupName, String groupId, String createTime);
 
 
 }

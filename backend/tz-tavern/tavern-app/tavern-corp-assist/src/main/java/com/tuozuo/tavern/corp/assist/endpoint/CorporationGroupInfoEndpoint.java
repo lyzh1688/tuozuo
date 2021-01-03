@@ -94,6 +94,23 @@ public class CorporationGroupInfoEndpoint {
     }
 
     /**
+     * 客户群列表Applet
+     */
+    @GetMapping("/applet")
+    public TavernResponse queryCorporationGroupFromApp(@RequestParam(value = "tagName", required = false) String tagName,
+                                                       @RequestParam(value = "groupName", required = false) String groupName,
+                                                       @RequestParam(value = "groupId", required = false) String groupId,
+                                                       @RequestParam(value = "createTime", required = false) String createTime) {
+        try {
+            List<CorporationGroupClientInfo> corporationGroupClientInfos = this.corporationGroupInfoService.queryGroupsFromApp(tagName, groupName, groupId, createTime);
+            return TavernResponse.ok(corporationGroupClientInfos);
+        } catch (Exception e) {
+            LOGGER.error("[客户群列表] failed", e);
+            return TavernResponse.bizFailure("[客户群列表] 异常");
+        }
+    }
+
+    /**
      * 客户群详情
      */
     @GetMapping("/{groupId}")
@@ -114,7 +131,7 @@ public class CorporationGroupInfoEndpoint {
     @PostMapping("/client/relation")
     public TavernResponse bindCorporationGroup(@RequestBody @Valid CorporationGroupClientVO vo) {
         try {
-            this.corporationGroupInfoService.bindGroupClientRel(vo.getGroupId(),vo.getClients());
+            this.corporationGroupInfoService.bindGroupClientRel(vo.getGroupId(), vo.getClients());
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[绑定客户群] failed", e);
