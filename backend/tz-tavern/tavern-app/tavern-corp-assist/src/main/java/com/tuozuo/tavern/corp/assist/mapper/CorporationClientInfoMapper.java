@@ -16,4 +16,9 @@ public interface CorporationClientInfoMapper extends BaseMapper<CorporationClien
     IPage<CorporationClientTagInfo> selectClients(Page page,
                                                   @Param("tagName") String tagName,
                                                   @Param("clientName") String clientName);
+
+    List<CorporationClientTagInfo> selectClientsFromApp(@Param("tagName") String tagName,
+                                                        @Param("clientName") String clientName,
+                                                        @Param("clientId") String clientId,
+                                                        @Param("createTime") String createTime);
 }

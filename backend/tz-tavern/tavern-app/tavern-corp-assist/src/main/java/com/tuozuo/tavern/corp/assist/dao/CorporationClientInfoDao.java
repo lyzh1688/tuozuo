@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tuozuo.tavern.corp.assist.model.CorporationClientInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationClientTagInfo;
 
+import java.util.List;
+
 /**
  * Code Monkey: 何彪 <br>
  * Dev Time: 2021/1/2 <br>
@@ -18,4 +20,9 @@ public interface CorporationClientInfoDao {
     boolean updateClient(CorporationClientInfo corporationClientInfo);
 
     IPage<CorporationClientTagInfo> queryClients(String tagName, String clientName, Page<CorporationClientTagInfo> page);
+
+    List<CorporationClientTagInfo> selectClientsFromApp(String tagName,
+                                                        String clientName,
+                                                        String clientId,
+                                                        String createTime);
 }

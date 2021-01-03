@@ -111,7 +111,7 @@ public class CorporationGroupInfoEndpoint {
     /**
      * 绑定客户群
      */
-    @PutMapping("/client/relation")
+    @PostMapping("/client/relation")
     public TavernResponse bindCorporationGroup(@RequestBody @Valid CorporationGroupClientVO vo) {
         try {
             this.corporationGroupInfoService.bindGroupClientRel(vo.getGroupId(),vo.getClients());

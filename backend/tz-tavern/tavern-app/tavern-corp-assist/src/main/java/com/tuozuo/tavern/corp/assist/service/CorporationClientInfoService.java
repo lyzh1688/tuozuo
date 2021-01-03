@@ -1,9 +1,10 @@
 package com.tuozuo.tavern.corp.assist.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.tuozuo.tavern.corp.assist.model.CorporationClientInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationClientTagInfo;
 import com.tuozuo.tavern.corp.assist.vo.CorporationClientVO;
+
+import java.util.List;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -18,4 +19,11 @@ public interface CorporationClientInfoService {
     boolean modifyClient(CorporationClientVO corporationClientVO);
 
     IPage<CorporationClientTagInfo> queryClients(String tagName, String clientName, int pageNo, int pageSize);
+
+    boolean bindClientTag(String clientId, List<String> tags);
+
+    List<CorporationClientTagInfo> queryClientsFromApp(String tagName,
+                                                        String clientName,
+                                                        String clientId,
+                                                        String createTime);
 }
