@@ -6,6 +6,7 @@ import java.util.List;
 
 public class CorporationClientTagInfo {
     private String clientId;
+    private String userId;
 
     private String clientName;
 
@@ -32,6 +33,14 @@ public class CorporationClientTagInfo {
     private String createTime;
 
     private String valid;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getOperatorId() {
         return operatorId;
