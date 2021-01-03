@@ -1,36 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuozuo.tavern.corp.assist.mapper.CorporationGroupInfoMapper">
-  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.corp.assist.model.CorporationGroupInfo">
+  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.corp.assist.model.CorporationGroupClientInfo">
     <id column="group_id" jdbcType="VARCHAR" property="groupId" />
+    <result column="chat_id" jdbcType="VARCHAR" property="chatId" />
     <result column="group_name" jdbcType="VARCHAR" property="groupName" />
     <result column="group_notice" jdbcType="VARCHAR" property="groupNotice" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <collection property="tags" ofType="java.lang.String">
+      <constructor>
+        <arg column="tags"/>
+      </constructor>
+    </collection>
+    <collection property="clients" ofType="com.tuozuo.tavern.corp.assist.model.CorporationClientInfo" resultMap="ClientMap"/>
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from corporation_group_info
-    where group_id = #{groupId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.tuozuo.tavern.corp.assist.model.CorporationGroupInfo">
-    insert into corporation_group_info (group_id, group_name, group_notice, 
-      create_time)
-    values (#{groupId,jdbcType=VARCHAR}, #{groupName,jdbcType=VARCHAR}, #{groupNotice,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.corp.assist.model.CorporationGroupInfo">
-    update corporation_group_info
-    set group_name = #{groupName,jdbcType=VARCHAR},
-      group_notice = #{groupNotice,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
-    where group_id = #{groupId,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select group_id, group_name, group_notice, create_time
-    from corporation_group_info
-    where group_id = #{groupId,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select group_id, group_name, group_notice, create_time
-    from corporation_group_info
+  <resultMap id="ClientMap" type="com.tuozuo.tavern.corp.assist.model.CorporationClientInfo" >
+    <result column="client_id" jdbcType="VARCHAR" property="clientId" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="client_name" jdbcType="VARCHAR" property="clientName" />
+    <result column="client_number" jdbcType="VARCHAR" property="clientNumber" />
+    <result column="client_gender" jdbcType="VARCHAR" property="clientGender" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="contact_number" jdbcType="VARCHAR" property="contactNumber" />
+    <result column="contact_gender" jdbcType="VARCHAR" property="contactGender" />
+    <result column="alitalk" jdbcType="VARCHAR" property="alitalk" />
+  </resultMap>
+  <select id="selectGroups" resultMap="BaseResultMap">
+    select t1.group_id,t1.chat_id, t1.group_name, t1.group_notice, date_format(t1.create_time , '%Y-%m-%d %H:%i:%S') create_time,
+    t5.tag_name tags,t3.client_id,t3.user_id,t3.client_name,t3.client_number,t3.client_gender,t3.contact,t3.contact_number,
+    t3.contact_gender,t3.alitalk
+    from corporation_group_info t1 left join corporation_client_group_rel t2 on t1.group_id = t2.group_id
+    left join corporation_client_info t3 on t2.client_id = t3.client_id
+    left join corporation_client_tag_rel t4 on t3.client_id = t4.client_id left join corporation_tag_info t5
+    on t4.tag_id = t5.tag_id
+    <where>
+      <if test="tagName != null and tagName != ''">
+        and t5.tag_name like concat('%', #{tagName}, '%')
+      </if>
+      <if test="groupName != null and groupName != ''">
+        and t1.group_name like concat('%', #{groupName}, '%')
+      </if>
+    </where>
+    order by t1.create_time desc
   </select>
 </mapper>

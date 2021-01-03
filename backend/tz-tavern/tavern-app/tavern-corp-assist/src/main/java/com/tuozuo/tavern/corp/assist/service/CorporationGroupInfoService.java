@@ -1,7 +1,9 @@
 package com.tuozuo.tavern.corp.assist.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.tuozuo.tavern.corp.assist.model.CorporationGroupClientInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationGroupInfo;
+import com.tuozuo.tavern.corp.assist.vo.CorporationGroupInfoVO;
 
 import java.util.List;
 
@@ -11,14 +13,13 @@ import java.util.List;
  */
 public interface CorporationGroupInfoService {
 
-    boolean addGroup(String GroupName);
+    boolean addGroup(CorporationGroupInfoVO groupInfoVO);
 
     boolean delGroup(String GroupId);
 
-    boolean modifyGroup(String GroupId, String GroupName);
+    boolean modifyGroup(CorporationGroupInfoVO groupInfoVO);
 
-    IPage<CorporationGroupInfo> queryGroups(int pageNo, int pageSize);
+    IPage<CorporationGroupClientInfo> queryGroups(String tagName, String groupName, int pageNo, int pageSize);
 
-    List<CorporationGroupInfo> queryGroupsByName(String GroupName, int queryCnt);
 
 }

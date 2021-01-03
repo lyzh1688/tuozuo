@@ -33,7 +33,7 @@
   </resultMap>
   <select id="selectClients" resultMap="BaseResultsMap">
     select t1.client_id, t1.client_name, t1.client_number, t1.client_gender, t1.contact, t1.contact_number,
-    t1.contact_gender, t1.alitalk, t1.operator, date_format(t1.create_time , '%Y-%m-%d %H:%i:%S'), t1.valid,t3.tag_id,t3.tag_name
+    t1.contact_gender, t1.alitalk, t1.operator, date_format(t1.create_time , '%Y-%m-%d %H:%i:%S') create_time, t1.valid,t3.tag_id,t3.tag_name
     from corporation_client_info t1,corporation_client_tag_rel t2,corporation_tag_info t3
     where t1.client_id = t2.client_id
     and t2.tag_id = t3.tag_id

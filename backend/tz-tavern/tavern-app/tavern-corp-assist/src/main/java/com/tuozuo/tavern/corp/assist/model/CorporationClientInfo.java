@@ -5,10 +5,12 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.time.LocalDateTime;
+
 @TableName("corporation_client_info")
 public class CorporationClientInfo extends Model<CorporationClientInfo> {
     @TableId
     private String clientId;
+    private String userId;
 
     private String clientName;
 
@@ -29,6 +31,14 @@ public class CorporationClientInfo extends Model<CorporationClientInfo> {
     private LocalDateTime createTime;
 
     private String valid;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getClientId() {
         return clientId;
