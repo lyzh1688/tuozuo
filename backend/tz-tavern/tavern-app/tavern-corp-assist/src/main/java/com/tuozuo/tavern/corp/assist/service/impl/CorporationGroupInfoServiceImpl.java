@@ -45,4 +45,9 @@ public class CorporationGroupInfoServiceImpl implements CorporationGroupInfoServ
         Page<CorporationGroupClientInfo> page = new Page<>(pageNo, pageSize);
         return this.corporationGroupInfoDao.selectGroups(page, tagName, groupName);
     }
+
+    @Override
+    public CorporationGroupClientInfo queryGroupDetail(String groupId) {
+        return this.corporationGroupInfoDao.selectGroupDetail(groupId);
+    }
 }

@@ -20,4 +20,7 @@ public interface CorporationGroupInfoDao {
 
     IPage<CorporationGroupClientInfo> selectGroups(Page<CorporationGroupClientInfo> page, String tagName, String groupName);
 
+    CorporationGroupClientInfo selectGroupDetail(String groupId);
+
+
 }

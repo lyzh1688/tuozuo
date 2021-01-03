@@ -15,11 +15,13 @@ public interface CorporationGroupInfoService {
 
     boolean addGroup(CorporationGroupInfoVO groupInfoVO);
 
-    boolean delGroup(String GroupId);
+    boolean delGroup(String groupId);
 
     boolean modifyGroup(CorporationGroupInfoVO groupInfoVO);
 
     IPage<CorporationGroupClientInfo> queryGroups(String tagName, String groupName, int pageNo, int pageSize);
+
+    CorporationGroupClientInfo queryGroupDetail(String groupId);
 
 
 }

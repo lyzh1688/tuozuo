@@ -59,7 +59,7 @@ public class CorporationGroupInfoEndpoint {
      */
     @PutMapping("/{groupId}")
     public TavernResponse modifyCorporationGroup(@PathVariable("groupId") String groupId,
-                                               @RequestBody @Valid CorporationGroupInfoVO vo) {
+                                                 @RequestBody @Valid CorporationGroupInfoVO vo) {
         try {
             vo.setGroupId(groupId);
             this.corporationGroupInfoService.modifyGroup(vo);
@@ -76,11 +76,11 @@ public class CorporationGroupInfoEndpoint {
      */
     @GetMapping("")
     public TavernResponse queryCorporationGroup(@RequestParam(value = "tagName", required = false) String tagName,
-                                              @RequestParam(value = "groupName", required = false) String groupName,
-                                              @RequestParam(value = "pageNo") int pageNo,
-                                              @RequestParam(value = "pageSize") int pageSize) {
+                                                @RequestParam(value = "groupName", required = false) String groupName,
+                                                @RequestParam(value = "pageNo") int pageNo,
+                                                @RequestParam(value = "pageSize") int pageSize) {
         try {
-            IPage<CorporationGroupClientInfo> page = this.corporationGroupInfoService.queryGroups(tagName,groupName,pageNo, pageSize);
+            IPage<CorporationGroupClientInfo> page = this.corporationGroupInfoService.queryGroups(tagName, groupName, pageNo, pageSize);
             List<CorporationGroupClientInfo> corporationGroupInfoList = page.getRecords();
             CorporationGroupInfoDTO corporationGroupInfoDTO = new CorporationGroupInfoDTO();
             corporationGroupInfoDTO.setGroups(corporationGroupInfoList);
@@ -88,6 +88,20 @@ public class CorporationGroupInfoEndpoint {
             return TavernResponse.ok(corporationGroupInfoDTO);
         } catch (Exception e) {
             LOGGER.error("[客户群列表] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
+
+    /**
+     * 客户群详情
+     */
+    @GetMapping("/{groupId}")
+    public TavernResponse queryCorporationGroupDetail(@PathVariable("groupId") String groupId) {
+        try {
+            CorporationGroupClientInfo corporationGroupClientInfo = this.corporationGroupInfoService.queryGroupDetail(groupId);
+            return TavernResponse.ok(corporationGroupClientInfo);
+        } catch (Exception e) {
+            LOGGER.error("[客户群详情] failed", e);
             return TavernResponse.bizFailure(e.getMessage());
         }
     }

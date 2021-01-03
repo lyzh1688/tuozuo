@@ -34,4 +34,9 @@ public class CorporationGroupInfoDaoImpl extends ServiceImpl<CorporationGroupInf
     public IPage<CorporationGroupClientInfo> selectGroups(Page<CorporationGroupClientInfo> page, String tagName, String groupName) {
         return this.baseMapper.selectGroups(page, tagName, groupName);
     }
+
+    @Override
+    public CorporationGroupClientInfo selectGroupDetail(String groupId) {
+        return this.baseMapper.selectGroupDetail(groupId);
+    }
 }
