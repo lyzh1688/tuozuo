@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * Dev Time: 2020/12/24 <br>
  */
 @RestController
-@RequestMapping("/tuozuo/corporation/v1/contract/")
+@RequestMapping("/tuozuo/corporation/v1/contract")
 public class CorporationContractEndpoint {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CorporationContractEndpoint.class);
@@ -36,7 +36,7 @@ public class CorporationContractEndpoint {
     @Autowired
     private ModelMapConverterFactory converterFactory;
 
-    @GetMapping("template")
+    @GetMapping("/template")
     public TavernResponse queryContractTemplate() {
         try {
             List<CorporationContractTemplate> templates = this.corporationContractService.queryAllCompanyContractTemplate();
@@ -62,7 +62,7 @@ public class CorporationContractEndpoint {
 
     }
 
-    @GetMapping("preview")
+    @GetMapping("/preview")
     public void previewContractFile(HttpServletResponse response,
                                     @RequestParam(value = "templateId", required = false) String templateId,
                                     @RequestParam(value = "flowId", required = false) String flowId) {

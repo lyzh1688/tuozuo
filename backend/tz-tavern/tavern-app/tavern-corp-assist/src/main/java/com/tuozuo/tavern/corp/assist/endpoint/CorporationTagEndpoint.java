@@ -18,7 +18,7 @@ import java.util.Map;
  * Dev Time: 2021/1/2 <br>
  */
 @RestController
-@RequestMapping("/tuozuo/corporation/v1/tag/")
+@RequestMapping("/tuozuo/corporation/v1/tag")
 public class CorporationTagEndpoint {
     private static final Logger LOGGER = LoggerFactory.getLogger(CorporationTagEndpoint.class);
 
@@ -75,7 +75,7 @@ public class CorporationTagEndpoint {
      * 标签列表
      */
     @GetMapping("")
-    public TavernResponse queryCorporationTag(@RequestParam(value = "tagName") String tagName,
+    public TavernResponse queryCorporationTag(@RequestParam(value = "tagName",required = false) String tagName,
                                               @RequestParam(value = "pageNo") int pageNo,
                                               @RequestParam(value = "pageSize") int pageSize) {
         try {
@@ -94,7 +94,7 @@ public class CorporationTagEndpoint {
      * 标签列表
      */
     @GetMapping("/applet")
-    public TavernResponse queryCorporationTagFromApp(@RequestParam(value = "tagName") String tagName,
+    public TavernResponse queryCorporationTagFromApp(@RequestParam(value = "tagName",required = false) String tagName,
                                               @RequestParam(value = "tagId",required = false) String tagId) {
         try {
             List<CorporationTagInfo> corporationTagInfoList = this.corporationTagService.queryTagsFromApp(tagName,tagId);
@@ -110,7 +110,7 @@ public class CorporationTagEndpoint {
      * 标签列表模糊查询
      */
     @GetMapping("/info")
-    public TavernResponse queryCorporationTags(@RequestParam(value = "tagName") String tagName,
+    public TavernResponse queryCorporationTags(@RequestParam(value = "tagName",required = false) String tagName,
                                                @RequestParam(value = "queryCnt", defaultValue = "20") String queryCnt) {
         try {
             List<CorporationTagInfo> corporationTagInfoList = this.corporationTagService.queryTagsByName(tagName, Integer.parseInt(queryCnt));

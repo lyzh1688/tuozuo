@@ -20,7 +20,7 @@ import java.util.List;
  * Dev Time: 2021/1/2 <br>
  */
 @RestController
-@RequestMapping("/tuozuo/corporation/v1/client/")
+@RequestMapping("/tuozuo/corporation/v1/client")
 public class CorporationClientInfoEndpoint {
     private static final Logger LOGGER = LoggerFactory.getLogger(CorporationClientInfoEndpoint.class);
 
