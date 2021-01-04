@@ -15,6 +15,8 @@ public interface AuthorityService {
 
     Optional<WXTokenAuthority> wxLogin(String code, String systemId, String roleGroup);
 
+    Optional<WXTokenAuthority> wxCPLogin(String code, String systemId, String roleGroup);
+
     boolean logout(String userId, String systemId, String roleGroup, String accessToken);
 
     boolean createUser(User user);

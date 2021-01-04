@@ -45,7 +45,7 @@
         <commons-codec>1.14</commons-codec>
         <jackson.version>2.9.9</jackson.version>
         <aspectj.version>1.8.10</aspectj.version>
-        <weixin-java-miniapp.version>3.9.4.B</weixin-java-miniapp.version>
+        <weixin-java-miniapp.version>4.0.0</weixin-java-miniapp.version>
     </properties>
 
 

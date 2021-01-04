@@ -27,6 +27,8 @@ wx:
     configs:
         appID: wx6cd4ee50f0f661fb
         secret: efb234f56a70aa868261bb298cdadb3e
+        corpID: ww44d16a013b30d82c
+        corpSecret: gYGYVPJymQqJZJ7v8qf0alF_2Ikr0_cqQYW9nl5DsdU
 #          token: #微信小程序消息服务器配置的token
 #          aesKey: #微信小程序消息服务器配置的EncodingAESKey
         msgDataFormat: JSON

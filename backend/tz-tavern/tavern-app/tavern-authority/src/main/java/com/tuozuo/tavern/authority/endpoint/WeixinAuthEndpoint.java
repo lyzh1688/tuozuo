@@ -45,4 +45,24 @@ public class WeixinAuthEndpoint {
         }
         return TavernResponse.bizFailure("code 无效");
     }
+    @RequestMapping(value = "/CPLogin", method = RequestMethod.POST)
+    public TavernResponse<WXTokenAuthority> CPLogin(@RequestParam("code") String code,
+                                                  @RequestParam("systemId") String systemId,
+                                                  @RequestParam("roleGroup") String roleGroup) {
+
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(code), "code 不能为空");
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(systemId), "systemId 不能为空");
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(roleGroup), "roleGroup 不能为空");
+
+        Optional<WXTokenAuthority> optional = this.authorityService.wxCPLogin(code, systemId, roleGroup);
+        if (optional.isPresent()) {
+            WXTokenAuthority tokenAuthority = optional.get();
+            if (tokenAuthority.getLoginSuccess()) {
+                return TavernResponse.ok(tokenAuthority);
+            } else {
+                return TavernResponse.createResponse(AUTH_FAILURE, tokenAuthority.getLoginMessage(), tokenAuthority);
+            }
+        }
+        return TavernResponse.bizFailure("code 无效");
+    }
 }

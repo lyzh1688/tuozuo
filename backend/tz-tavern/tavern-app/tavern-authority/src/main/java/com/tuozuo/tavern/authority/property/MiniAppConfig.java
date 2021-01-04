@@ -11,6 +11,24 @@ import org.springframework.stereotype.Component;
 public class MiniAppConfig {
     String appID;
     String secret;
+    String corpID;
+    String corpSecret;
+
+    public String getCorpID() {
+        return corpID;
+    }
+
+    public void setCorpID(String corpID) {
+        this.corpID = corpID;
+    }
+
+    public String getCorpSecret() {
+        return corpSecret;
+    }
+
+    public void setCorpSecret(String corpSecret) {
+        this.corpSecret = corpSecret;
+    }
 
     public String getAppID() {
         return appID;

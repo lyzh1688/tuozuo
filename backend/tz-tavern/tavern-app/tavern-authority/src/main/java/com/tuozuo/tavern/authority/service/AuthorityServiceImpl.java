@@ -12,6 +12,8 @@ import com.tuozuo.tavern.libs.auth.jwt.JwtAuthenticationProperty;
 import com.tuozuo.tavern.libs.auth.session.RedisSession;
 import com.tuozuo.tavern.libs.auth.session.SessionManager;
 import me.chanjar.weixin.common.error.WxErrorException;
+import me.chanjar.weixin.cp.api.WxCpService;
+import me.chanjar.weixin.cp.bean.WxCpMaJsCode2SessionResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,8 @@ public class AuthorityServiceImpl implements AuthorityService {
 
     @Autowired
     WxMaService wxMaService;
+    @Autowired
+    WxCpService wxCpService;
 
     @Override
     public RSAPublicKey getRSAPublicKeys(String userId, String systemId, String roleGroup) throws NoSuchAlgorithmException {
@@ -109,6 +113,42 @@ public class AuthorityServiceImpl implements AuthorityService {
                 return Optional.empty();
             }
             String openID = wxSessionResult.getOpenid();
+            //校验openID（即UserID）是否存在
+            User user = null;
+            user = this.authorityDao.getUser(openID, systemId, roleGroup);
+            if (user == null) {
+                user = new User();
+            }
+            //获取用户权限
+            Optional<Privilege> privilegeOp = this.privilegeDao.getPrivilege(openID, systemId, roleGroup);
+            if (privilegeOp.isPresent()) {
+                user.setPrivilege(privilegeOp.get());
+            } else {
+                user.setPrivilege(new Privilege(openID, systemId, roleGroup, Privilege.AUTHORITY_VISITOR));
+            }
+            WXTokenAuthority tokenAuthority = user.wxLogin(openID, systemId, roleGroup, property);
+            RedisSession session = new RedisSession(user.getUserId(), user.getSystemId(), user.getRoleGroup(), tokenAuthority.getAccessToken());
+            sessionManager.createOrRefreshSession(session);
+
+            return Optional.of(tokenAuthority);
+        } catch (WxErrorException e) {
+            LOGGER.error("微信服务器连接失败...", e);
+            return Optional.empty();
+        }
+
+    }
+
+    @Override
+    public Optional<WXTokenAuthority> wxCPLogin(String code, String systemId, String roleGroup) {
+        //获取openID
+        WxCpMaJsCode2SessionResult wxSessionResult = null;
+        try {
+            wxSessionResult = wxCpService.jsCode2Session(code);
+            if (wxSessionResult == null) {
+                LOGGER.error("微信服务器连接失败...");
+                return Optional.empty();
+            }
+            String openID = wxSessionResult.getUserId();
             //校验openID（即UserID）是否存在
             User user = null;
             user = this.authorityDao.getUser(openID, systemId, roleGroup);
