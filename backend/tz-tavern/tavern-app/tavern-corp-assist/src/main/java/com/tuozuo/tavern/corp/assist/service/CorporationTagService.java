@@ -17,7 +17,7 @@ public interface CorporationTagService {
 
     boolean modifyTag(String tagId,String tagName);
 
-    IPage<CorporationTagInfo> queryTags(int pageNo, int pageSize);
+    IPage<CorporationTagInfo> queryTags(String tagName,int pageNo, int pageSize);
 
     List<CorporationTagInfo> queryTagsByName(String tagName,int queryCnt);
 

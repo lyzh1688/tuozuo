@@ -34,8 +34,11 @@ public class CorporationTagDaoImpl extends ServiceImpl<CorporationTagInfoMapper,
     }
 
     @Override
-    public IPage<CorporationTagInfo> selectTags(Page<CorporationTagInfo> page) {
-        return this.page(page);
+    public IPage<CorporationTagInfo> selectTags(Page<CorporationTagInfo> page,String tagName) {
+        return this.page(page,Wrappers.<CorporationTagInfo>query()
+                .lambda()
+                .like(StringUtils.isNoneEmpty(tagName), CorporationTagInfo::getTagName, tagName)
+                .orderByAsc(CorporationTagInfo::getTagName));
     }
 
     @Override

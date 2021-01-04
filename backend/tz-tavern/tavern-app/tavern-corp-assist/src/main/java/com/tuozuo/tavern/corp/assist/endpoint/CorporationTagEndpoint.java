@@ -75,10 +75,11 @@ public class CorporationTagEndpoint {
      * 标签列表
      */
     @GetMapping("")
-    public TavernResponse queryCorporationTag(@RequestParam(value = "pageNo") int pageNo,
+    public TavernResponse queryCorporationTag(@RequestParam(value = "tagName") String tagName,
+                                              @RequestParam(value = "pageNo") int pageNo,
                                               @RequestParam(value = "pageSize") int pageSize) {
         try {
-            IPage<CorporationTagInfo> page = this.corporationTagService.queryTags(pageNo, pageSize);
+            IPage<CorporationTagInfo> page = this.corporationTagService.queryTags(tagName,pageNo, pageSize);
             List<CorporationTagInfo> corporationTagInfoList = page.getRecords();
             CorporationTagInfoDTO corporationTagInfoDTO = new CorporationTagInfoDTO();
             corporationTagInfoDTO.setTags(corporationTagInfoList);

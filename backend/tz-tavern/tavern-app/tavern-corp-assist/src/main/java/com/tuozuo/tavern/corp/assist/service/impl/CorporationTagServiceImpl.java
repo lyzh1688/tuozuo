@@ -38,9 +38,9 @@ public class CorporationTagServiceImpl implements CorporationTagService {
     }
 
     @Override
-    public IPage<CorporationTagInfo> queryTags(int pageNo, int pageSize) {
+    public IPage<CorporationTagInfo> queryTags(String tagName,int pageNo, int pageSize) {
         Page<CorporationTagInfo> page = new Page<>(pageNo, pageSize);
-        return this.corporationTagDao.selectTags(page);
+        return this.corporationTagDao.selectTags(page,tagName);
     }
 
     @Override

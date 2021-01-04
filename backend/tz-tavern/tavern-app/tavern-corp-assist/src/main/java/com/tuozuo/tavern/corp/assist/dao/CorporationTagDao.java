@@ -18,7 +18,7 @@ public interface CorporationTagDao {
 
     boolean updateTag(CorporationTagInfo corporationTagInfo);
 
-    IPage<CorporationTagInfo> selectTags(Page<CorporationTagInfo> page);
+    IPage<CorporationTagInfo> selectTags(Page<CorporationTagInfo> page,String tagName);
 
     List<CorporationTagInfo> selectTagsByName(String tagName, int queryCnt);
 }
