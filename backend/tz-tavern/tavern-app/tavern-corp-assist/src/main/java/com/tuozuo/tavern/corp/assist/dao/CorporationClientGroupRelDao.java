@@ -13,4 +13,6 @@ public interface CorporationClientGroupRelDao {
     boolean delByGroupId(String groupId);
 
     boolean insertBatch(List<CorporationClientGroupRel> rels);
+
+    boolean isValidGroup(String groupId);
 }

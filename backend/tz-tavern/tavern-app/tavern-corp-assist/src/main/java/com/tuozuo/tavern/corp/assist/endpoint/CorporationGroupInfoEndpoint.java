@@ -51,7 +51,7 @@ public class CorporationGroupInfoEndpoint {
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[删除客户群] failed", e);
-            return TavernResponse.bizFailure("[删除客户群] 异常");
+            return TavernResponse.bizFailure(e.getMessage());
         }
     }
 

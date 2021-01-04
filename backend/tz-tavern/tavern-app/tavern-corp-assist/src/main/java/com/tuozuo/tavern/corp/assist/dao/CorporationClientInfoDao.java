@@ -19,7 +19,9 @@ public interface CorporationClientInfoDao {
 
     boolean updateClient(CorporationClientInfo corporationClientInfo);
 
-    IPage<CorporationClientTagInfo> queryClients(String tagName, String clientName, Page<CorporationClientTagInfo> page);
+    IPage<CorporationClientTagInfo> selectClients(String tagName, String clientName, Page<CorporationClientTagInfo> page);
+
+    int selectClientsCnt(String tagName, String clientName);
 
     List<CorporationClientTagInfo> selectClientsFromApp(String tagName,
                                                         String clientName,

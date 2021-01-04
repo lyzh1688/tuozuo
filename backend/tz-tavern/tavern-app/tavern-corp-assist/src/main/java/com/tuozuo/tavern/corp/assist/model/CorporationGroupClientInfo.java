@@ -10,6 +10,8 @@ public class CorporationGroupClientInfo {
 
     private String groupName;
 
+    private String chatId;
+
     private String groupNotice;
 
     private String createTime;
@@ -23,6 +25,14 @@ public class CorporationGroupClientInfo {
     private List<String> tags = Lists.newArrayList();
 
     private List<CorporationClientInfo> clients = Lists.newArrayList();
+
+    public String getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(String chatId) {
+        this.chatId = chatId;
+    }
 
     public String getOperator() {
         return operator;

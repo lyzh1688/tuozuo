@@ -17,6 +17,10 @@ public interface CorporationClientInfoMapper extends BaseMapper<CorporationClien
                                                   @Param("tagName") String tagName,
                                                   @Param("clientName") String clientName);
 
+    int selectClientsCnt( @Param("tagName") String tagName,
+                          @Param("clientName") String clientName);
+
+
     List<CorporationClientTagInfo> selectClientsFromApp(@Param("tagName") String tagName,
                                                         @Param("clientName") String clientName,
                                                         @Param("clientId") String clientId,

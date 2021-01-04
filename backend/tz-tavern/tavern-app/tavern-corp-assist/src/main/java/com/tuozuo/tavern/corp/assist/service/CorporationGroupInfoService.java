@@ -15,7 +15,7 @@ public interface CorporationGroupInfoService {
 
     boolean addGroup(CorporationGroupInfoVO groupInfoVO);
 
-    boolean delGroup(String groupId);
+    boolean delGroup(String groupId) throws Exception;
 
     boolean modifyGroup(CorporationGroupInfoVO groupInfoVO);
 

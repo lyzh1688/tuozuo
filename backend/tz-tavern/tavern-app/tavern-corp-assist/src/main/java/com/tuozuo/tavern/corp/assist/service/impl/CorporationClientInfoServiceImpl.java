@@ -48,7 +48,7 @@ public class CorporationClientInfoServiceImpl implements CorporationClientInfoSe
 
     @Override
     public boolean delClient(String clientId) {
-        CorporationClientInfo corporationClientInfo = CorporationClientInfo.create(clientId,ValidType.INVALID.getType());
+        CorporationClientInfo corporationClientInfo = CorporationClientInfo.create(clientId, ValidType.INVALID.getType());
         return this.corporationClientInfoDao.delClient(corporationClientInfo);
     }
 
@@ -61,7 +61,10 @@ public class CorporationClientInfoServiceImpl implements CorporationClientInfoSe
     @Override
     public IPage<CorporationClientTagInfo> queryClients(String tagName, String clientName, int pageNo, int pageSize) {
         Page<CorporationClientTagInfo> page = new Page<CorporationClientTagInfo>(pageNo, pageSize);
-        return this.corporationClientInfoDao.queryClients(tagName, clientName, page);
+        IPage<CorporationClientTagInfo> infoIPage = this.corporationClientInfoDao.selectClients(tagName, clientName, page);
+        int count = this.corporationClientInfoDao.selectClientsCnt(tagName, clientName);
+        infoIPage.setTotal((long) count);
+        return infoIPage;
     }
 
     @Transactional

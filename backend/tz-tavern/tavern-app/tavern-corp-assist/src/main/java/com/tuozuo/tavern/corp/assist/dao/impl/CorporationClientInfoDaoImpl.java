@@ -1,12 +1,14 @@
 package com.tuozuo.tavern.corp.assist.dao.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tuozuo.tavern.corp.assist.dao.CorporationClientInfoDao;
 import com.tuozuo.tavern.corp.assist.mapper.CorporationClientInfoMapper;
 import com.tuozuo.tavern.corp.assist.model.CorporationClientInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationClientTagInfo;
+import com.tuozuo.tavern.corp.assist.model.CorporationClientTagRel;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -33,8 +35,13 @@ public class CorporationClientInfoDaoImpl extends ServiceImpl<CorporationClientI
     }
 
     @Override
-    public IPage<CorporationClientTagInfo> queryClients(String tagName, String clientName, Page<CorporationClientTagInfo> page) {
-        return this.baseMapper.selectClients(page,tagName,clientName);
+    public IPage<CorporationClientTagInfo> selectClients(String tagName, String clientName, Page<CorporationClientTagInfo> page) {
+        return this.baseMapper.selectClients(page, tagName, clientName);
+    }
+
+    @Override
+    public int selectClientsCnt(String tagName, String clientName) {
+        return this.baseMapper.selectClientsCnt(tagName, clientName);
     }
 
     @Override

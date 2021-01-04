@@ -46,7 +46,11 @@ public class CorporationGroupInfoServiceImpl implements CorporationGroupInfoServ
     }
 
     @Override
-    public boolean delGroup(String groupId) {
+    public boolean delGroup(String groupId) throws Exception {
+        boolean isValidGroup = this.corporationClientGroupRelDao.isValidGroup(groupId);
+        if(isValidGroup){
+            throw new Exception("该群尚有群成员,无法删除");
+        }
         CorporationGroupInfo corporationGroupInfo = CorporationGroupInfo.create(groupId, ValidType.INVALID.getType());
         return this.corporationGroupInfoDao.delGroup(corporationGroupInfo);
     }

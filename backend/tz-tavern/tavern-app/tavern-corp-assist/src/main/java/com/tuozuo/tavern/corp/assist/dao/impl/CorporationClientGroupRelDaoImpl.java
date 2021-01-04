@@ -26,4 +26,12 @@ public class CorporationClientGroupRelDaoImpl extends ServiceImpl<CorporationCli
     public boolean insertBatch(List<CorporationClientGroupRel> rels) {
         return this.saveBatch(rels);
     }
+
+    @Override
+    public boolean isValidGroup(String groupId) {
+        return this.list(Wrappers.<CorporationClientGroupRel>query()
+                .lambda()
+                .eq(CorporationClientGroupRel::getGroupId, groupId))
+                .size() > 0;
+    }
 }

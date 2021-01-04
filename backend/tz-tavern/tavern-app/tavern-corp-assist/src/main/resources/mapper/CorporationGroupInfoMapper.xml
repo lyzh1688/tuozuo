@@ -44,7 +44,7 @@
       <if test="groupName != null and groupName != ''">
         and t1.group_name like concat('%', #{groupName}, '%')
       </if>
-      and t1.valid = 1 and t3.valid = 1
+      and t1.valid = 1
     </where>
     order by t1.create_time desc
   </select>
@@ -64,7 +64,7 @@
       <if test="groupName != null and groupName != ''">
         and t1.group_name like concat('%', #{groupName}, '%')
       </if>
-      and t1.valid = 1 and t3.valid = 1
+      and t1.valid = 1
       and
       (
       t1.create_time <![CDATA[ < ]]> STR_TO_DATE(#{createTime}, '%Y-%m-%d %H:%i:%S')
@@ -86,7 +86,7 @@
     on t4.tag_id = t5.tag_id
     <where>
       t1.group_id = #{groupId}
-      and t1.valid = 1 and t3.valid = 1
+      and t1.valid = 1
     </where>
   </select>
 </mapper>

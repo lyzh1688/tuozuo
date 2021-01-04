@@ -50,7 +50,7 @@ public class CorporationTagEndpoint {
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[删除标签] failed", e);
-            return TavernResponse.bizFailure("[删除标签] 异常");
+            return TavernResponse.bizFailure(e.getMessage());
         }
     }
 
