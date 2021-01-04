@@ -27,4 +27,7 @@ public interface CorporationClientInfoDao {
                                                         String clientName,
                                                         String clientId,
                                                         String createTime);
+
+    CorporationClientTagInfo selectClientDetail(String clientId,String type);
+
 }

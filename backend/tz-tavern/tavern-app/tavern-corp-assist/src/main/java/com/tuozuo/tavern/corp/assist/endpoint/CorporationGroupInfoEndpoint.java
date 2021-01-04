@@ -113,7 +113,7 @@ public class CorporationGroupInfoEndpoint {
     /**
      * 客户群详情
      */
-    @GetMapping("/{groupId}")
+    @GetMapping("/detail/{groupId}")
     public TavernResponse queryCorporationGroupDetail(@PathVariable("groupId") String groupId) {
         try {
             CorporationGroupClientInfo corporationGroupClientInfo = this.corporationGroupInfoService.queryGroupDetail(groupId);

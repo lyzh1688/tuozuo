@@ -84,4 +84,10 @@ public class CorporationClientInfoServiceImpl implements CorporationClientInfoSe
         }
         return this.corporationClientInfoDao.selectClientsFromApp(tagName, clientName, clientId, createTime);
     }
+
+    @Override
+    public CorporationClientTagInfo queryClientDetail(String clientId, String type) {
+        return this.corporationClientInfoDao.selectClientDetail(clientId, type);
+    }
+
 }

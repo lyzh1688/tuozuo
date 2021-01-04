@@ -26,4 +26,6 @@ public interface CorporationClientInfoService {
                                                         String clientName,
                                                         String clientId,
                                                         String createTime);
+
+    CorporationClientTagInfo queryClientDetail(String clientId,String type);
 }

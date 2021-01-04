@@ -92,6 +92,20 @@ public class CorporationClientInfoEndpoint {
             return TavernResponse.bizFailure("客户列表 异常");
         }
     }
+    /**
+     * 客户详情
+     */
+    @GetMapping("/detail/{clientId}")
+    public TavernResponse queryCorporationClientDetail(@PathVariable("clientId") String clientId,
+                                                       @RequestParam(value = "type") String type){
+        try {
+            CorporationClientTagInfo corporationClientTagInfo = this.corporationClientInfoService.queryClientDetail(clientId, type);
+            return TavernResponse.ok(corporationClientTagInfo);
+        } catch (Exception e) {
+            LOGGER.error("[客户详情] failed", e);
+            return TavernResponse.bizFailure("客户详情 异常");
+        }
+    }
 
     /**
      * 客户列表Applet
