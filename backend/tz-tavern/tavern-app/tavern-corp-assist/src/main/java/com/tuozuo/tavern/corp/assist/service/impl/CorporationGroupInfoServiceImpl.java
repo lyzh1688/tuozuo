@@ -85,7 +85,7 @@ public class CorporationGroupInfoServiceImpl implements CorporationGroupInfoServ
     @Override
     public List<CorporationGroupClientInfo> queryGroupsFromApp(String tagName, String groupName, String groupId, String createTime) {
         if(StringUtils.isEmpty(createTime)){
-            createTime = DateUtils.formatDate(LocalDate.now().plusMonths(1), DateUtils.DEFAULT_DATETIME_FORMATTER);
+            createTime = DateUtils.formatDateTime(LocalDateTime.now().plusMonths(1), DateUtils.DEFAULT_DATETIME_FORMATTER);
         }
         return this.corporationGroupInfoDao.selectGroupsFromApp(tagName, groupName, groupId, createTime);
     }
