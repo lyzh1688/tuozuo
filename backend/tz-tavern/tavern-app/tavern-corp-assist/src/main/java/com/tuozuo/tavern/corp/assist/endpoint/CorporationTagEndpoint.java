@@ -90,12 +90,26 @@ public class CorporationTagEndpoint {
             return TavernResponse.bizFailure(e.getMessage());
         }
     }
+    /**
+     * 标签列表
+     */
+    @GetMapping("/applet")
+    public TavernResponse queryCorporationTagFromApp(@RequestParam(value = "tagName") String tagName,
+                                              @RequestParam(value = "tagId",required = false) String tagId) {
+        try {
+            List<CorporationTagInfo> corporationTagInfoList = this.corporationTagService.queryTagsFromApp(tagName,tagId);
+            return TavernResponse.ok(corporationTagInfoList);
+        } catch (Exception e) {
+            LOGGER.error("[标签列表] failed", e);
+            return TavernResponse.bizFailure(e.getMessage());
+        }
+    }
 
 
     /**
      * 标签列表模糊查询
      */
-    @GetMapping("")
+    @GetMapping("/info")
     public TavernResponse queryCorporationTags(@RequestParam(value = "tagName") String tagName,
                                                @RequestParam(value = "queryCnt", defaultValue = "20") String queryCnt) {
         try {

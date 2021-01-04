@@ -21,4 +21,7 @@ public interface CorporationTagDao {
     IPage<CorporationTagInfo> selectTags(Page<CorporationTagInfo> page,String tagName);
 
     List<CorporationTagInfo> selectTagsByName(String tagName, int queryCnt);
+
+    List<CorporationTagInfo> selectTagsFromApp(String tagName, String tagId);
+
 }

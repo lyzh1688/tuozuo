@@ -15,10 +15,12 @@ public interface CorporationTagService {
 
     boolean delTag(String tagId);
 
-    boolean modifyTag(String tagId,String tagName);
+    boolean modifyTag(String tagId, String tagName);
 
-    IPage<CorporationTagInfo> queryTags(String tagName,int pageNo, int pageSize);
+    IPage<CorporationTagInfo> queryTags(String tagName, int pageNo, int pageSize);
 
-    List<CorporationTagInfo> queryTagsByName(String tagName,int queryCnt);
+    List<CorporationTagInfo> queryTagsByName(String tagName, int queryCnt);
+
+    List<CorporationTagInfo> queryTagsFromApp(String tagName, String tagId);
 
 }

@@ -47,4 +47,9 @@ public class CorporationTagServiceImpl implements CorporationTagService {
     public List<CorporationTagInfo> queryTagsByName(String tagName, int queryCnt) {
         return this.corporationTagDao.selectTagsByName(tagName, queryCnt);
     }
+
+    @Override
+    public List<CorporationTagInfo> queryTagsFromApp(String tagName, String tagId) {
+        return null;
+    }
 }
