@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tuozuo.tavern.corp.assist.dao.CorporationClientTagRelDao;
 import com.tuozuo.tavern.corp.assist.mapper.CorporationClientTagRelMapper;
+import com.tuozuo.tavern.corp.assist.model.CorporationClientGroupRel;
 import com.tuozuo.tavern.corp.assist.model.CorporationClientTagRel;
 import org.springframework.stereotype.Repository;
 
@@ -26,5 +27,12 @@ public class CorporationClientTagRelDaoImpl extends ServiceImpl<CorporationClien
         return this.remove(Wrappers.<CorporationClientTagRel>query()
                 .lambda()
                 .eq(CorporationClientTagRel::getClientId, clientId));
+    }
+
+    @Override
+    public boolean isExistTag(String tagId) {
+        return this.list(Wrappers.<CorporationClientTagRel>query()
+                .lambda()
+                .eq(CorporationClientTagRel::getTagId, tagId)).size() > 0;
     }
 }

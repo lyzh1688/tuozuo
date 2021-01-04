@@ -13,4 +13,6 @@ public interface CorporationClientTagRelDao {
     boolean insertBatch(List<CorporationClientTagRel> rels);
 
     boolean delByClientId(String clientId);
+
+    boolean isExistTag(String tagId);
 }

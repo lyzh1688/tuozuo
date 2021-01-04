@@ -2,6 +2,7 @@ package com.tuozuo.tavern.corp.assist.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.tuozuo.tavern.corp.assist.dao.CorporationClientTagRelDao;
 import com.tuozuo.tavern.corp.assist.dao.CorporationTagDao;
 import com.tuozuo.tavern.corp.assist.model.CorporationTagInfo;
 import com.tuozuo.tavern.corp.assist.service.CorporationTagService;
@@ -19,6 +20,8 @@ public class CorporationTagServiceImpl implements CorporationTagService {
 
     @Autowired
     private CorporationTagDao corporationTagDao;
+    @Autowired
+    private CorporationClientTagRelDao corporationClientTagRelDao;
 
     @Override
     public boolean addTag(String tagName) {
@@ -27,7 +30,11 @@ public class CorporationTagServiceImpl implements CorporationTagService {
     }
 
     @Override
-    public boolean delTag(String tagId) {
+    public boolean delTag(String tagId) throws Exception {
+        boolean isExistTag = this.corporationClientTagRelDao.isExistTag(tagId);
+        if(isExistTag){
+            throw new Exception("该标签还有客户正在使用,无法删除");
+        }
         return this.corporationTagDao.delTag(tagId);
     }
 

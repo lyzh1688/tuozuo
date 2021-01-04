@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,6 +42,7 @@ public class CorporationClientInfoServiceImpl implements CorporationClientInfoSe
     public boolean addClient(CorporationClientVO corporationClientVO) {
         CorporationClientInfo corporationClientInfo = this.converterFactory.dtoToCorporationClientInfo(corporationClientVO);
         corporationClientInfo.setClientId(UUIDUtil.randomUUID32());
+        corporationClientInfo.setCreateTime(LocalDateTime.now());
         return this.corporationClientInfoDao.insertClient(corporationClientInfo);
     }
 

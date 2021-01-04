@@ -36,7 +36,7 @@ public class CorporationTagEndpoint {
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[添加标签] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("[添加标签] 异常");
         }
     }
 
@@ -50,7 +50,7 @@ public class CorporationTagEndpoint {
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[删除标签] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("[删除标签] 异常");
         }
     }
 
@@ -66,7 +66,7 @@ public class CorporationTagEndpoint {
             return TavernResponse.OK;
         } catch (Exception e) {
             LOGGER.error("[修改标签] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("[修改标签] 异常");
         }
     }
 
@@ -87,7 +87,7 @@ public class CorporationTagEndpoint {
             return TavernResponse.ok(corporationTagInfoDTO);
         } catch (Exception e) {
             LOGGER.error("[标签列表] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("[标签列表] 异常");
         }
     }
     /**
@@ -101,7 +101,7 @@ public class CorporationTagEndpoint {
             return TavernResponse.ok(corporationTagInfoList);
         } catch (Exception e) {
             LOGGER.error("[标签列表] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("[标签列表] 异常");
         }
     }
 
@@ -117,7 +117,7 @@ public class CorporationTagEndpoint {
             return TavernResponse.ok(corporationTagInfoList);
         } catch (Exception e) {
             LOGGER.error("[标签列表模糊查询] failed", e);
-            return TavernResponse.bizFailure(e.getMessage());
+            return TavernResponse.bizFailure("[标签列表模糊查询] 异常");
         }
     }
 

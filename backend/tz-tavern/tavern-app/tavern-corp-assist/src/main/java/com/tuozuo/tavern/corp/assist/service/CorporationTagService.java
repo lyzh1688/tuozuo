@@ -13,7 +13,7 @@ public interface CorporationTagService {
 
     boolean addTag(String tagName);
 
-    boolean delTag(String tagId);
+    boolean delTag(String tagId) throws Exception;
 
     boolean modifyTag(String tagId, String tagName);
 
