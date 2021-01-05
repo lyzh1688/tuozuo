@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuozuo.tavern.corp.assist.mapper.CorporationInfoMapper">
+  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.corp.assist.model.CorporationInfo">
+    <result column="corp_id" jdbcType="VARCHAR" property="corpId" />
+    <result column="corp_name" jdbcType="VARCHAR" property="corpName" />
+    <result column="corp_type" jdbcType="VARCHAR" property="corpType" />
+    <result column="tax_type" jdbcType="VARCHAR" property="taxType" />
+    <result column="register_park" jdbcType="VARCHAR" property="registerPark" />
+    <result column="corp_status" jdbcType="VARCHAR" property="corpStatus" />
+    <result column="boss_name" jdbcType="VARCHAR" property="bossName" />
+    <result column="boss_number" jdbcType="VARCHAR" property="bossNumber" />
+    <result column="boss_gender" jdbcType="VARCHAR" property="bossGender" />
+    <result column="boss_id_number" jdbcType="VARCHAR" property="bossIdNumber" />
+    <result column="business_scope" jdbcType="VARCHAR" property="businessScope" />
+    <result column="register_date" jdbcType="DATE" property="registerDate" />
+    <result column="register_asset" jdbcType="DECIMAL" property="registerAsset" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="valid" jdbcType="VARCHAR" property="valid" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="operator_id" jdbcType="VARCHAR" property="operatorId" />
+    <result column="source" jdbcType="VARCHAR" property="source" />
+  </resultMap>
+  <insert id="insert" parameterType="com.tuozuo.tavern.corp.assist.model.CorporationInfo">
+    insert into corporation_info (corp_id, corp_name, corp_type, 
+      tax_type, register_park, corp_status, 
+      boss_name, boss_number, boss_gender, 
+      boss_id_number, business_scope, register_date, 
+      register_asset, create_time, valid, 
+      operator, operator_id, source
+      )
+    values (#{corpId,jdbcType=VARCHAR}, #{corpName,jdbcType=VARCHAR}, #{corpType,jdbcType=VARCHAR}, 
+      #{taxType,jdbcType=VARCHAR}, #{registerPark,jdbcType=VARCHAR}, #{corpStatus,jdbcType=VARCHAR}, 
+      #{bossName,jdbcType=VARCHAR}, #{bossNumber,jdbcType=VARCHAR}, #{bossGender,jdbcType=VARCHAR}, 
+      #{bossIdNumber,jdbcType=VARCHAR}, #{businessScope,jdbcType=VARCHAR}, #{registerDate,jdbcType=DATE}, 
+      #{registerAsset,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{valid,jdbcType=VARCHAR}, 
+      #{operator,jdbcType=VARCHAR}, #{operatorId,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}
+      )
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select corp_id, corp_name, corp_type, tax_type, register_park, corp_status, boss_name, 
+    boss_number, boss_gender, boss_id_number, business_scope, register_date, register_asset, 
+    create_time, valid, operator, operator_id, source
+    from corporation_info
+  </select>
+</mapper>
