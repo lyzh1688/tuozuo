@@ -5,26 +5,20 @@
     <id column="tag_id" jdbcType="VARCHAR" property="tagId" />
     <result column="tag_name" jdbcType="VARCHAR" property="tagName" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from corporation_tag_info
-    where tag_id = #{tagId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.tuozuo.tavern.corp.assist.model.CorporationTagInfo">
-    insert into corporation_tag_info (tag_id, tag_name)
-    values (#{tagId,jdbcType=VARCHAR}, #{tagName,jdbcType=VARCHAR})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.corp.assist.model.CorporationTagInfo">
-    update corporation_tag_info
-    set tag_name = #{tagName,jdbcType=VARCHAR}
-    where tag_id = #{tagId,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+
+  <select id="selectTagsFromApp" resultMap="BaseResultMap">
     select tag_id, tag_name
     from corporation_tag_info
-    where tag_id = #{tagId,jdbcType=VARCHAR}
+    <where>
+      <if test="tagName != null and tagName != ''">
+        and tag_name like concat('%', #{tagName}, '%')
+      </if>
+      <if test="tagId != null and tagId != ''">
+        and tag_id <![CDATA[ < ]]> #{tagId,jdbcType=VARCHAR}
+      </if>
+    </where>
+    order by tag_id desc
+    limit 0,20
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select tag_id, tag_name
-    from corporation_tag_info
-  </select>
+
 </mapper>

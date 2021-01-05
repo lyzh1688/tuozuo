@@ -52,11 +52,6 @@ public class CorporationTagDaoImpl extends ServiceImpl<CorporationTagInfoMapper,
 
     @Override
     public List<CorporationTagInfo> selectTagsFromApp(String tagName, String tagId) {
-        return this.list(Wrappers.<CorporationTagInfo>query()
-                .lambda()
-                .like(StringUtils.isNoneEmpty(tagName), CorporationTagInfo::getTagName, tagName)
-                .lt(StringUtils.isNoneEmpty(tagId),CorporationTagInfo::getTagId, tagId)
-                .orderByAsc(CorporationTagInfo::getTagId)
-                .last("limit " + 20));
+        return this.baseMapper.selectTagsFromApp(tagName,tagId);
     }
 }

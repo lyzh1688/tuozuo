@@ -57,6 +57,6 @@ public class CorporationTagServiceImpl implements CorporationTagService {
 
     @Override
     public List<CorporationTagInfo> queryTagsFromApp(String tagName, String tagId) {
-        return null;
+        return this.corporationTagDao.selectTagsFromApp(tagName, tagId);
     }
 }
