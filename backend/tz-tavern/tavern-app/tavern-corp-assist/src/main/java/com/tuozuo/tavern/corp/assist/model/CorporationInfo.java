@@ -1,9 +1,14 @@
 package com.tuozuo.tavern.corp.assist.model;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+
 import java.math.BigDecimal;
 import java.util.Date;
-
-public class CorporationInfo {
+@TableName("corporation_info")
+public class CorporationInfo extends Model<CorporationInfo> {
+    @TableId
     private String corpId;
 
     private String corpName;

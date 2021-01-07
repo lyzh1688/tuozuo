@@ -1,8 +1,8 @@
 package com.tuozuo.tavern.corp.assist.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.tuozuo.tavern.corp.assist.model.CorporationGroupClientInfo;
-import com.tuozuo.tavern.corp.assist.vo.CorporationGroupInfoVO;
+import com.tuozuo.tavern.corp.assist.model.CorporationInfo;
+import com.tuozuo.tavern.corp.assist.vo.CorporationInfoVO;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -10,13 +10,13 @@ import com.tuozuo.tavern.corp.assist.vo.CorporationGroupInfoVO;
  */
 public interface CorporationInfoService {
 
-    boolean addCorporation(CorporationGroupInfoVO groupInfoVO);
+    boolean addCorporation(CorporationInfoVO corporationInfoVO);
 
-    boolean delCorporation(String groupId) throws Exception;
+    boolean delCorporation(String corpId) throws Exception;
 
-    boolean modifyCorporation(CorporationGroupInfoVO groupInfoVO);
+    boolean modifyCorporation(CorporationInfoVO corporationInfoVO);
 
-    IPage<CorporationGroupClientInfo> queryCorporations(String tagName, String groupName, int pageNo, int pageSize);
+    IPage<CorporationInfo> queryCorporations(String corpName, String clientName, int pageNo, int pageSize);
 
-    CorporationGroupClientInfo queryCorporationDetail(String groupId);
+    CorporationInfo queryCorporationDetail(String corpId);
 }
