@@ -1,10 +1,12 @@
 package com.tuozuo.tavern.corp.assist.dao.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tuozuo.tavern.corp.assist.dao.CorporationClientInfoDao;
 import com.tuozuo.tavern.corp.assist.mapper.CorporationClientInfoMapper;
+import com.tuozuo.tavern.corp.assist.model.CorporationClientGroupRel;
 import com.tuozuo.tavern.corp.assist.model.CorporationClientInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationClientTagInfo;
 import org.springframework.stereotype.Repository;
@@ -50,5 +52,23 @@ public class CorporationClientInfoDaoImpl extends ServiceImpl<CorporationClientI
     @Override
     public CorporationClientTagInfo selectClientDetail(String clientId, String type) {
         return this.baseMapper.selectClientDetail(clientId, type);
+    }
+
+    @Override
+    public CorporationClientInfo selectClient(String clientId, String type) {
+        if (type.equals("1")) {
+            return this.getOne(Wrappers.<CorporationClientInfo>query()
+                    .lambda()
+                    .eq(CorporationClientInfo::getClientId, clientId));
+        } else {
+            return this.getOne(Wrappers.<CorporationClientInfo>query()
+                    .lambda()
+                    .eq(CorporationClientInfo::getUserId, clientId));
+        }
+    }
+
+    @Override
+    public List<CorporationClientTagInfo> selectAllClients(String tagName, String clientName) {
+        return this.baseMapper.selectAllClients(tagName, clientName);
     }
 }

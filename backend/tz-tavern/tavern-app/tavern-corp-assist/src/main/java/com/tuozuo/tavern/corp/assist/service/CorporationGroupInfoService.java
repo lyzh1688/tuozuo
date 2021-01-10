@@ -1,6 +1,8 @@
 package com.tuozuo.tavern.corp.assist.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.tuozuo.tavern.corp.assist.dto.CorporationClientInfoDTO;
+import com.tuozuo.tavern.corp.assist.dto.CorporationGroupClientDTO;
 import com.tuozuo.tavern.corp.assist.model.CorporationGroupClientInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationGroupInfo;
 import com.tuozuo.tavern.corp.assist.vo.CorporationGroupInfoVO;
@@ -26,6 +28,9 @@ public interface CorporationGroupInfoService {
     boolean bindGroupClientRel(String groupId, List<String> clientId);
 
     List<CorporationGroupClientInfo> queryGroupsFromApp(String tagName, String groupName, String groupId, String createTime);
+
+
+    CorporationGroupClientDTO queryCorporationGroupClient(String chatId) throws Exception;
 
 
 }

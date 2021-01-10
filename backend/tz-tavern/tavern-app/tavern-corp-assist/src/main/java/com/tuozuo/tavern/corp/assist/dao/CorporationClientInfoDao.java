@@ -28,6 +28,12 @@ public interface CorporationClientInfoDao {
                                                         String clientId,
                                                         String createTime);
 
-    CorporationClientTagInfo selectClientDetail(String clientId,String type);
+    CorporationClientTagInfo selectClientDetail(String clientId, String type);
+
+
+    CorporationClientInfo selectClient(String clientId, String type);
+
+    List<CorporationClientTagInfo> selectAllClients(String tagName,
+                                                    String clientName);
 
 }

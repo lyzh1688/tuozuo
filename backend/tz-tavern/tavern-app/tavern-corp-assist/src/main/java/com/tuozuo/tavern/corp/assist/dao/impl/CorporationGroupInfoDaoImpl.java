@@ -1,10 +1,12 @@
 package com.tuozuo.tavern.corp.assist.dao.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tuozuo.tavern.corp.assist.dao.CorporationGroupInfoDao;
 import com.tuozuo.tavern.corp.assist.mapper.CorporationGroupInfoMapper;
+import com.tuozuo.tavern.corp.assist.model.CorporationClientInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationGroupClientInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationGroupInfo;
 import org.springframework.stereotype.Repository;
@@ -33,7 +35,7 @@ public class CorporationGroupInfoDaoImpl extends ServiceImpl<CorporationGroupInf
     }
 
     @Override
-    public IPage<CorporationGroupClientInfo> selectGroups(Page<CorporationGroupClientInfo> page, String tagName, String groupName) {
+    public IPage<CorporationGroupClientInfo> selectGroup(Page<CorporationGroupClientInfo> page, String tagName, String groupName) {
         return this.baseMapper.selectGroups(page, tagName, groupName);
     }
 
@@ -45,5 +47,17 @@ public class CorporationGroupInfoDaoImpl extends ServiceImpl<CorporationGroupInf
     @Override
     public List<CorporationGroupClientInfo> selectGroupsFromApp(String tagName, String groupName, String groupId, String createTime) {
         return this.baseMapper.selectGroupsFromApp(tagName, groupName, groupId, createTime);
+    }
+
+    @Override
+    public CorporationGroupInfo selectGroupByChatId(String chatId) {
+        return this.getOne(Wrappers.<CorporationGroupInfo>query()
+                .lambda()
+                .eq(CorporationGroupInfo::getChatId, chatId));
+    }
+
+    @Override
+    public CorporationGroupClientInfo selectGroup(String chatId) {
+        return this.baseMapper.selectGroupClients(chatId);
     }
 }

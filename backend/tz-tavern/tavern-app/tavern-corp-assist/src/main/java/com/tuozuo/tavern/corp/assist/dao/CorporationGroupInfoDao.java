@@ -18,11 +18,15 @@ public interface CorporationGroupInfoDao {
 
     boolean updateGroup(CorporationGroupInfo corporationGroupInfo);
 
-    IPage<CorporationGroupClientInfo> selectGroups(Page<CorporationGroupClientInfo> page, String tagName, String groupName);
+    IPage<CorporationGroupClientInfo> selectGroup(Page<CorporationGroupClientInfo> page, String tagName, String groupName);
 
     CorporationGroupClientInfo selectGroupDetail(String groupId);
 
     List<CorporationGroupClientInfo> selectGroupsFromApp( String tagName, String groupName, String groupId, String createTime);
+
+    CorporationGroupInfo selectGroupByChatId(String chatId);
+
+    CorporationGroupClientInfo selectGroup(String chatId);
 
 
 

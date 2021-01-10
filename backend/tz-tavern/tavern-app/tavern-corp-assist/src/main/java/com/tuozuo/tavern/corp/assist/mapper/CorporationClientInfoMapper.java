@@ -28,4 +28,8 @@ public interface CorporationClientInfoMapper extends BaseMapper<CorporationClien
 
     CorporationClientTagInfo selectClientDetail(@Param("clientId")String clientId,@Param("type")String type);
 
+
+    List<CorporationClientTagInfo> selectAllClients(@Param("tagName") String tagName,
+                                                        @Param("clientName") String clientName);
+
 }

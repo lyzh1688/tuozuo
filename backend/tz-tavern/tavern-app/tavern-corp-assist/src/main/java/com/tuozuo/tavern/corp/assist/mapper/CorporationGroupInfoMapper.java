@@ -17,4 +17,6 @@ public interface CorporationGroupInfoMapper extends BaseMapper<CorporationGroupI
     List<CorporationGroupClientInfo> selectGroupsFromApp(@Param("tagName") String tagName, @Param("groupName") String groupName, @Param("groupId") String groupId, @Param("createTime") String createTime);
 
     CorporationGroupClientInfo selectGroupDetail(@Param("groupId") String groupId);
+
+    CorporationGroupClientInfo selectGroupClients(@Param("chatId") String chatId);
 }

@@ -2,6 +2,7 @@ package com.tuozuo.tavern.corp.assist.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.common.collect.Maps;
 import com.tuozuo.tavern.corp.assist.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.corp.assist.dao.CorporationClientInfoDao;
 import com.tuozuo.tavern.corp.assist.dao.CorporationClientTagRelDao;
@@ -21,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -62,6 +65,8 @@ public class CorporationClientInfoServiceImpl implements CorporationClientInfoSe
     public IPage<CorporationClientTagInfo> queryClients(String tagName, String clientName, int pageNo, int pageSize) {
         Page<CorporationClientTagInfo> page = new Page<CorporationClientTagInfo>(pageNo, pageSize);
         IPage<CorporationClientTagInfo> infoIPage = this.corporationClientInfoDao.selectClients(tagName, clientName, page);
+        List<CorporationClientTagInfo> corporationClientTagInfos = this.createClientTagInfo(tagName, clientName, infoIPage.getRecords());
+        infoIPage.setRecords(corporationClientTagInfos);
         int count = this.corporationClientInfoDao.selectClientsCnt(tagName, clientName);
         infoIPage.setTotal((long) count);
         return infoIPage;
@@ -82,7 +87,9 @@ public class CorporationClientInfoServiceImpl implements CorporationClientInfoSe
         if (StringUtils.isEmpty(createTime)) {
             createTime = DateUtils.formatDateTime(LocalDateTime.now().plusMonths(1), DateUtils.DEFAULT_DATETIME_FORMATTER);
         }
-        return this.corporationClientInfoDao.selectClientsFromApp(tagName, clientName, clientId, createTime);
+        List<CorporationClientTagInfo> tagInfoList = this.corporationClientInfoDao.selectClientsFromApp(tagName, clientName, clientId, createTime);
+        tagInfoList = this.createClientTagInfo(tagName, clientName, tagInfoList);
+        return tagInfoList;
     }
 
     @Override
@@ -90,4 +97,20 @@ public class CorporationClientInfoServiceImpl implements CorporationClientInfoSe
         return this.corporationClientInfoDao.selectClientDetail(clientId, type);
     }
 
+
+    private List<CorporationClientTagInfo> createClientTagInfo(String tagName, String clientName, List<CorporationClientTagInfo> tagInfoList) {
+        if (Objects.nonNull(tagName)) {
+            List<CorporationClientTagInfo> allClientInfos = this.corporationClientInfoDao.selectAllClients(tagName, clientName);
+            Map<String, CorporationClientTagInfo> clientTagMap = allClientInfos.stream()
+                    .collect(Collectors.toMap(CorporationClientTagInfo::getClientId, v -> v));
+            tagInfoList = tagInfoList.stream()
+                    .peek(client -> {
+                        if (clientTagMap.containsKey(client.getClientId())) {
+                            CorporationClientTagInfo tagInfo = clientTagMap.get(client.getClientId());
+                            client.setTags(tagInfo.getTags());
+                        }
+                    }).collect(Collectors.toList());
+        }
+        return tagInfoList;
+    }
 }

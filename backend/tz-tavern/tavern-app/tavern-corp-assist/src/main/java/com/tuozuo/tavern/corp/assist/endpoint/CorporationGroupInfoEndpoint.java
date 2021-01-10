@@ -2,6 +2,7 @@ package com.tuozuo.tavern.corp.assist.endpoint;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
+import com.tuozuo.tavern.corp.assist.dto.CorporationGroupClientDTO;
 import com.tuozuo.tavern.corp.assist.dto.CorporationGroupInfoDTO;
 import com.tuozuo.tavern.corp.assist.model.CorporationGroupClientInfo;
 import com.tuozuo.tavern.corp.assist.service.CorporationGroupInfoService;
@@ -136,6 +137,20 @@ public class CorporationGroupInfoEndpoint {
         } catch (Exception e) {
             LOGGER.error("[绑定客户群] failed", e);
             return TavernResponse.bizFailure("[绑定客户群] 异常");
+        }
+    }
+
+    /**
+     * 查询微信群客户详情
+     */
+    @GetMapping("/wechat/detail/{chatId}")
+    public TavernResponse queryCorporationGroupClientDetail(@PathVariable("chatId") String chatId) {
+        try {
+            CorporationGroupClientDTO corporationGroupClientDTO = this.corporationGroupInfoService.queryCorporationGroupClient(chatId);
+            return TavernResponse.ok(corporationGroupClientDTO);
+        } catch (Exception e) {
+            LOGGER.error("[查询微信群客户详情] failed", e);
+            return TavernResponse.bizFailure("[查询微信群客户详情] 异常");
         }
     }
 
