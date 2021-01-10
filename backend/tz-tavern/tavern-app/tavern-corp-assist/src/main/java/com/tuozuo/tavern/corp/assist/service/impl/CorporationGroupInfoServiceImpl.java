@@ -187,6 +187,7 @@ public class CorporationGroupInfoServiceImpl implements CorporationGroupInfoServ
             CorporationGroupMember groupMember = new CorporationGroupMember();
             groupMember.setUserIdBackend(c.getClientId());
             groupMember.setStatus("1");
+            corporationGroupMembers.add(groupMember);
         }
 
         corporationGroupClientDTO.getGroupChat().setMemberList(corporationGroupMembers);
