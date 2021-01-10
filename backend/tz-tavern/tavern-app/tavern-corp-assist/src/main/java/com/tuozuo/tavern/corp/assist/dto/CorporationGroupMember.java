@@ -7,6 +7,7 @@ package com.tuozuo.tavern.corp.assist.dto;
 public class CorporationGroupMember {
     private String userId;          //	群成员id（企业微信，仅后端维护则为空）
     private String userIdBackend;   //	群成员id（后端，未关联则为空）
+    private String bindStatus;
     private String status;          //	状态：1仅后端维护，2、仅实际群有，3、已关联双端数据
     private String name;            //	外部联系人的名称
     private String avatar;          //	外部联系人头像，第三方不可获取
@@ -30,6 +31,14 @@ public class CorporationGroupMember {
 
     public void setUserIdBackend(String userIdBackend) {
         this.userIdBackend = userIdBackend;
+    }
+
+    public String getBindStatus() {
+        return bindStatus;
+    }
+
+    public void setBindStatus(String bindStatus) {
+        this.bindStatus = bindStatus;
     }
 
     public String getStatus() {

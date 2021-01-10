@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tuozuo.tavern.corp.assist.dao.CorporationClientInfoDao;
 import com.tuozuo.tavern.corp.assist.mapper.CorporationClientInfoMapper;
+import com.tuozuo.tavern.corp.assist.model.CorporationClientCorpInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationClientGroupRel;
 import com.tuozuo.tavern.corp.assist.model.CorporationClientInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationClientTagInfo;
@@ -70,5 +71,10 @@ public class CorporationClientInfoDaoImpl extends ServiceImpl<CorporationClientI
     @Override
     public List<CorporationClientTagInfo> selectAllClients(String tagName, String clientName) {
         return this.baseMapper.selectAllClients(tagName, clientName);
+    }
+
+    @Override
+    public List<CorporationClientCorpInfo> selectClientCorpInfo(List<String> clientIds) {
+        return this.baseMapper.selectClientCorpInfo(clientIds);
     }
 }

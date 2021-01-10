@@ -3,6 +3,7 @@ package com.tuozuo.tavern.corp.assist.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.tuozuo.tavern.corp.assist.model.CorporationClientCorpInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationClientInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationClientTagInfo;
 import org.apache.ibatis.annotations.Mapper;
@@ -17,8 +18,8 @@ public interface CorporationClientInfoMapper extends BaseMapper<CorporationClien
                                                   @Param("tagName") String tagName,
                                                   @Param("clientName") String clientName);
 
-    int selectClientsCnt( @Param("tagName") String tagName,
-                          @Param("clientName") String clientName);
+    int selectClientsCnt(@Param("tagName") String tagName,
+                         @Param("clientName") String clientName);
 
 
     List<CorporationClientTagInfo> selectClientsFromApp(@Param("tagName") String tagName,
@@ -26,10 +27,11 @@ public interface CorporationClientInfoMapper extends BaseMapper<CorporationClien
                                                         @Param("clientId") String clientId,
                                                         @Param("createTime") String createTime);
 
-    CorporationClientTagInfo selectClientDetail(@Param("clientId")String clientId,@Param("type")String type);
+    CorporationClientTagInfo selectClientDetail(@Param("clientId") String clientId, @Param("type") String type);
 
 
     List<CorporationClientTagInfo> selectAllClients(@Param("tagName") String tagName,
-                                                        @Param("clientName") String clientName);
+                                                    @Param("clientName") String clientName);
 
+    List<CorporationClientCorpInfo> selectClientCorpInfo(@Param("list") List<String> clientIds);
 }

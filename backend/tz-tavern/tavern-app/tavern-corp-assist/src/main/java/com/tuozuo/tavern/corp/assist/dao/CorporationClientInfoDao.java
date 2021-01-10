@@ -2,6 +2,7 @@ package com.tuozuo.tavern.corp.assist.dao;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.tuozuo.tavern.corp.assist.model.CorporationClientCorpInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationClientInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationClientTagInfo;
 
@@ -35,5 +36,7 @@ public interface CorporationClientInfoDao {
 
     List<CorporationClientTagInfo> selectAllClients(String tagName,
                                                     String clientName);
+
+    List<CorporationClientCorpInfo> selectClientCorpInfo(List<String> clientIds);
 
 }

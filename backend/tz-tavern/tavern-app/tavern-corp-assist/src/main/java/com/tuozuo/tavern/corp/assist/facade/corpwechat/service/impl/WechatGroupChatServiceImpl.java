@@ -81,7 +81,7 @@ public class WechatGroupChatServiceImpl implements WechatGroupChatService {
         }
         if (isAbnormalResponse(clientInfo.getErrCode())) {
             LOGGER.error("[获取客户信息出错] externalUserId: {} errorcode: {} errormsg: {}", externalUserId, clientInfo.getErrCode(), clientInfo.getErrMsg());
-            return null;
+            return clientInfo;
         } else {
             return clientInfo;
         }

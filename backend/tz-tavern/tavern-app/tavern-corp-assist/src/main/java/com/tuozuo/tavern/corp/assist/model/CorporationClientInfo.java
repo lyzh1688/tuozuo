@@ -26,7 +26,6 @@ public class CorporationClientInfo extends Model<CorporationClientInfo> {
 
     private String alitalk;
 
-
     private LocalDateTime createTime;
 
     private String valid;

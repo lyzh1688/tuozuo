@@ -13,15 +13,13 @@ import com.tuozuo.tavern.corp.assist.dto.CorporationGroupClientDTO;
 import com.tuozuo.tavern.corp.assist.dto.CorporationGroupMember;
 import com.tuozuo.tavern.corp.assist.facade.corpwechat.model.*;
 import com.tuozuo.tavern.corp.assist.facade.corpwechat.service.WechatGroupChatService;
-import com.tuozuo.tavern.corp.assist.model.CorporationClientGroupRel;
-import com.tuozuo.tavern.corp.assist.model.CorporationClientInfo;
-import com.tuozuo.tavern.corp.assist.model.CorporationGroupClientInfo;
-import com.tuozuo.tavern.corp.assist.model.CorporationGroupInfo;
+import com.tuozuo.tavern.corp.assist.model.*;
 import com.tuozuo.tavern.corp.assist.service.CorporationGroupInfoService;
 import com.tuozuo.tavern.corp.assist.utils.DateUtils;
 import com.tuozuo.tavern.corp.assist.utils.UUIDUtil;
 import com.tuozuo.tavern.corp.assist.vo.CorporationGroupInfoVO;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -141,6 +139,7 @@ public class CorporationGroupInfoServiceImpl implements CorporationGroupInfoServ
 
         //群成员维度信息
         Map<String, CorporationClientInfo> clientInfoMap = Maps.newHashMap();
+        CorporationGroupClientInfo unBindGroupClientInfo = new CorporationGroupClientInfo();
         List<CorporationClientInfo> unBindClients = Lists.newArrayList();
 
 
@@ -153,6 +152,8 @@ public class CorporationGroupInfoServiceImpl implements CorporationGroupInfoServ
                     .stream()
                     .filter(c -> c.getUserId() == null)
                     .collect(Collectors.toList());
+            BeanUtils.copyProperties(corporationGroupClientInfo, unBindGroupClientInfo);
+            unBindGroupClientInfo.setClients(unBindClients);
         }
 
 
@@ -167,27 +168,46 @@ public class CorporationGroupInfoServiceImpl implements CorporationGroupInfoServ
                     //创建group member
                     CorporationGroupMember groupMember = new CorporationGroupMember();
                     groupMember.setUserId(m.getUserId());
-                    if (Objects.nonNull(clientInfo)) {
-                        groupMember = this.converterFactory.clientInfoToGroupMember(clientInfo);
-                        if (finalClientInfoMap.containsKey(clientInfo.getExternalUserId())) {
-                            CorporationClientInfo corporationClientInfo = finalClientInfoMap.get(clientInfo.getExternalUserId());
+                    if (Objects.nonNull(clientInfo) && clientInfo.getErrCode() == 0) {
+                        groupMember = this.converterFactory.clientInfoToGroupMember(clientInfo.getClientInfoDetail());
+                        groupMember.setBindStatus("1");
+                        if (finalClientInfoMap.containsKey(clientInfo.getClientInfoDetail().getExternalUserId())) {
+                            CorporationClientInfo corporationClientInfo = finalClientInfoMap.get(clientInfo.getClientInfoDetail().getExternalUserId());
                             groupMember.setUserIdBackend(corporationClientInfo.getClientId());
                             groupMember.setStatus("3");
                         } else {
                             groupMember.setStatus("2");
                         }
                     } else {
+                        groupMember.setBindStatus("0");
                         groupMember.setStatus("2");
                     }
                     corporationGroupMembers.add(groupMember);
                 });
 
         //处理未关联
-        for (CorporationClientInfo c : unBindClients) {
-            CorporationGroupMember groupMember = new CorporationGroupMember();
-            groupMember.setUserIdBackend(c.getClientId());
-            groupMember.setStatus("1");
-            corporationGroupMembers.add(groupMember);
+        if (unBindClients.size() != 0) {
+            List<String> clientIds = unBindClients.stream()
+                    .map(CorporationClientInfo::getClientId)
+                    .collect(Collectors.toList());
+
+
+            List<CorporationClientCorpInfo> clientCorpInfos = this.corporationClientInfoDao.selectClientCorpInfo(clientIds);
+            Map<String, CorporationClientCorpInfo> clientCorpInfoMap = clientCorpInfos.parallelStream()
+                    .collect(Collectors.toMap(CorporationClientCorpInfo::getClientId, v -> v));
+            for (CorporationClientInfo c : unBindClients) {
+                CorporationGroupMember groupMember = new CorporationGroupMember();
+                if (clientCorpInfoMap.containsKey(c.getClientId())) {
+                    CorporationClientCorpInfo corporationClientCorpInfo = clientCorpInfoMap.get(c.getClientId());
+                    groupMember.setCorpName(corporationClientCorpInfo.getCorpName());
+                }
+                groupMember.setName(c.getClientName());
+                groupMember.setGender(c.getClientGender());
+                groupMember.setUserIdBackend(c.getClientId());
+                groupMember.setStatus("1");
+                groupMember.setBindStatus("-1");
+                corporationGroupMembers.add(groupMember);
+            }
         }
 
         corporationGroupClientDTO.getGroupChat().setMemberList(corporationGroupMembers);
