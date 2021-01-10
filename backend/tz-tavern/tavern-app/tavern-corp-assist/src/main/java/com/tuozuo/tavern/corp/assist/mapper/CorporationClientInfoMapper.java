@@ -34,4 +34,7 @@ public interface CorporationClientInfoMapper extends BaseMapper<CorporationClien
                                                     @Param("clientName") String clientName);
 
     List<CorporationClientCorpInfo> selectClientCorpInfo(@Param("list") List<String> clientIds);
+
+
+    List<CorporationClientInfo> selectClientsByUserIds(@Param("list") List<String> userIds);
 }

@@ -40,6 +40,18 @@
         <result column="tag_id" jdbcType="VARCHAR" property="tagId"/>
         <result column="tag_name" jdbcType="VARCHAR" property="tagName"/>
     </resultMap>
+
+    <select id="selectClientsByUserIds" resultMap="BaseResultMap">
+        select t1.client_id, t1.user_id,t1.client_name, t1.client_number, t1.client_gender, t1.contact, t1.contact_number,
+        t1.contact_gender, t1.alitalk,  date_format(t1.create_time , '%Y-%m-%d %H:%i:%S') create_time,
+        t1.operator,t1.operator_id,t1.source,
+        t1.valid from corporation_client_info t1
+        <where>
+            <foreach collection="list" item="item" open="(" close=")" separator="or">
+                t1.user_id = #{item}
+            </foreach>
+        </where>
+    </select>
     <select id="selectClients" resultMap="BaseResultsMap">
         select t1.client_id, t1.user_id,t1.client_name, t1.client_number, t1.client_gender, t1.contact, t1.contact_number,
         t1.contact_gender, t1.alitalk,  date_format(t1.create_time , '%Y-%m-%d %H:%i:%S') create_time,

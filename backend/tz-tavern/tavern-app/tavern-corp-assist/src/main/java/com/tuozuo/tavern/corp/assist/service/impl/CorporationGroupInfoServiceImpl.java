@@ -122,6 +122,7 @@ public class CorporationGroupInfoServiceImpl implements CorporationGroupInfoServ
 
         //拉出所有的库中所有groupClient
         CorporationGroupClientInfo corporationGroupClientInfo = this.corporationGroupInfoDao.selectGroup(chatId);
+        //
 
         //1、group:
         //则返回微信用户，用户和绑定后端关系
@@ -159,10 +160,13 @@ public class CorporationGroupInfoServiceImpl implements CorporationGroupInfoServ
 
         List<CorporationGroupMember> corporationGroupMembers = Lists.newArrayList();
         List<MemberList> memberLists = groupChatDetail.getGroupChat().getMemberList();
+        //拉出所有绑定用户的客户
+        List<String> userIds = memberLists.stream().map(MemberList::getUserId).collect(Collectors.toList());
+        List<CorporationClientInfo> clientInfos = this.corporationClientInfoDao.selectClientsByUserIds(userIds);
+        Map<String, CorporationClientInfo> corporationClientInfoMap = clientInfos.stream().collect(Collectors.toMap(CorporationClientInfo::getUserId, v -> v));
 
         //有关联关系用户
-        Map<String, CorporationClientInfo> finalClientInfoMap = clientInfoMap;
-        memberLists.parallelStream()
+        memberLists.stream()
                 .forEach(m -> {
                     ClientInfo clientInfo = this.wechatGroupChatService.getClientInfo(accessToken.getAccessToken(), m.getUserId());
                     //创建group member
@@ -171,8 +175,8 @@ public class CorporationGroupInfoServiceImpl implements CorporationGroupInfoServ
                     if (Objects.nonNull(clientInfo) && clientInfo.getErrCode() == 0) {
                         groupMember = this.converterFactory.clientInfoToGroupMember(clientInfo.getClientInfoDetail());
                         groupMember.setBindStatus("1");
-                        if (finalClientInfoMap.containsKey(clientInfo.getClientInfoDetail().getExternalUserId())) {
-                            CorporationClientInfo corporationClientInfo = finalClientInfoMap.get(clientInfo.getClientInfoDetail().getExternalUserId());
+                        if (corporationClientInfoMap.containsKey(clientInfo.getClientInfoDetail().getExternalUserId())) {
+                            CorporationClientInfo corporationClientInfo = corporationClientInfoMap.get(clientInfo.getClientInfoDetail().getExternalUserId());
                             groupMember.setUserIdBackend(corporationClientInfo.getClientId());
                             groupMember.setStatus("3");
                         } else {

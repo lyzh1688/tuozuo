@@ -34,6 +34,8 @@ public interface CorporationClientInfoDao {
 
     CorporationClientInfo selectClient(String clientId, String type);
 
+    List<CorporationClientInfo> selectClientsByUserIds(List<String> userIds);
+
     List<CorporationClientTagInfo> selectAllClients(String tagName,
                                                     String clientName);
 

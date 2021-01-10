@@ -69,6 +69,11 @@ public class CorporationClientInfoDaoImpl extends ServiceImpl<CorporationClientI
     }
 
     @Override
+    public List<CorporationClientInfo> selectClientsByUserIds(List<String> userIds) {
+        return this.baseMapper.selectClientsByUserIds(userIds);
+    }
+
+    @Override
     public List<CorporationClientTagInfo> selectAllClients(String tagName, String clientName) {
         return this.baseMapper.selectAllClients(tagName, clientName);
     }
