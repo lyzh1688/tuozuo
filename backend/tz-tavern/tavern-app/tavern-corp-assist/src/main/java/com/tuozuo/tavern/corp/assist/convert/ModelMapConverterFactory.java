@@ -29,7 +29,7 @@ public interface ModelMapConverterFactory {
     CorporationGroupInfo dtoToCorporationGroupInfo(CorporationGroupInfoVO vo);
 
     @Mappings({
-            @Mapping(source = "externalUserId", target = "userIdBackend"),})
+            @Mapping(source = "externalUserId", target = "userId"),})
     CorporationGroupMember clientInfoToGroupMember(ClientInfoDetail clientInfoDetail);
 
 
