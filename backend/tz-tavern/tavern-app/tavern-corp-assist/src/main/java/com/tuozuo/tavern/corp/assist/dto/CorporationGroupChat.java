@@ -13,8 +13,17 @@ public class CorporationGroupChat {
     private String chatId;//	客户群ID(企业微信)
     private String chatIdBackend;//	客户群id（后端，未关联则为空）
     private String name;
+    private String nameBackend;
     private List<CorporationGroupMember> memberList = Lists.newArrayList();
 
+
+    public String getNameBackend() {
+        return nameBackend;
+    }
+
+    public void setNameBackend(String nameBackend) {
+        this.nameBackend = nameBackend;
+    }
 
     public String getChatId() {
         return chatId;

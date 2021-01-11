@@ -134,6 +134,7 @@ public class CorporationGroupInfoServiceImpl implements CorporationGroupInfoServ
             corporationGroupClientDTO.setStatus("2");
         } else {
             corporationGroupClientDTO.getGroupChat().setChatIdBackend(corporationGroupClientInfo.getGroupId());
+            corporationGroupClientDTO.getGroupChat().setNameBackend(corporationGroupClientInfo.getGroupName());
             corporationGroupClientDTO.setStatus("1");
         }
 
