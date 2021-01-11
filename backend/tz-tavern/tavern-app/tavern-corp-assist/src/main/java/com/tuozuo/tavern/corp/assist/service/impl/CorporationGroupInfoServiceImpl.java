@@ -160,24 +160,24 @@ public class CorporationGroupInfoServiceImpl implements CorporationGroupInfoServ
 
         List<CorporationGroupMember> corporationGroupMembers = Lists.newArrayList();
         List<MemberList> memberLists = groupChatDetail.getGroupChat().getMemberList();
+
         //拉出所有绑定用户的客户
         List<String> userIds = memberLists.stream().map(MemberList::getUserId).collect(Collectors.toList());
         List<CorporationClientInfo> clientInfos = this.corporationClientInfoDao.selectClientsByUserIds(userIds);
         Map<String, CorporationClientInfo> corporationClientInfoMap = clientInfos.stream().collect(Collectors.toMap(CorporationClientInfo::getUserId, v -> v));
 
+
         //有关联关系用户
-        memberLists.stream()
+        Map<String, CorporationClientInfo> finalClientInfoMap = clientInfoMap;
+        memberLists.parallelStream()
                 .forEach(m -> {
                     ClientInfo clientInfo = this.wechatGroupChatService.getClientInfo(accessToken.getAccessToken(), m.getUserId());
                     //创建group member
                     CorporationGroupMember groupMember = new CorporationGroupMember();
-                    groupMember.setUserId(m.getUserId());
                     if (Objects.nonNull(clientInfo) && clientInfo.getErrCode() == 0) {
                         groupMember = this.converterFactory.clientInfoToGroupMember(clientInfo.getClientInfoDetail());
                         groupMember.setBindStatus("1");
-                        if (corporationClientInfoMap.containsKey(clientInfo.getClientInfoDetail().getExternalUserId())) {
-                            CorporationClientInfo corporationClientInfo = corporationClientInfoMap.get(clientInfo.getClientInfoDetail().getExternalUserId());
-                            groupMember.setUserIdBackend(corporationClientInfo.getClientId());
+                        if (finalClientInfoMap.containsKey(clientInfo.getClientInfoDetail().getExternalUserId())) {
                             groupMember.setStatus("3");
                         } else {
                             groupMember.setStatus("2");
@@ -185,6 +185,10 @@ public class CorporationGroupInfoServiceImpl implements CorporationGroupInfoServ
                     } else {
                         groupMember.setBindStatus("0");
                         groupMember.setStatus("2");
+                    }
+                    groupMember.setUserId(m.getUserId());
+                    if(corporationClientInfoMap.containsKey(m.getUserId())){
+                        groupMember.setUserIdBackend(corporationClientInfoMap.get(m.getUserId()).getClientId());
                     }
                     corporationGroupMembers.add(groupMember);
                 });
