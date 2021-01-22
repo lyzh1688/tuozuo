@@ -25,10 +25,10 @@ spring:
 wx:
   miniapp:
     configs:
-        appID: wx6cd4ee50f0f661fb
-        secret: efb234f56a70aa868261bb298cdadb3e
+        appID: wx6e2285d0991dc05b
+        secret: f5cc49b20ab058f16da1d980220cdd8a
         corpID: ww44d16a013b30d82c
-        corpSecret: gYGYVPJymQqJZJ7v8qf0alF_2Ikr0_cqQYW9nl5DsdU
+        corpSecret: 7eN2czjpUPaea2yvrMYhGvwbdwwuZzLd0WnlxD7DFTY
 #          token: #微信小程序消息服务器配置的token
 #          aesKey: #微信小程序消息服务器配置的EncodingAESKey
         msgDataFormat: JSON

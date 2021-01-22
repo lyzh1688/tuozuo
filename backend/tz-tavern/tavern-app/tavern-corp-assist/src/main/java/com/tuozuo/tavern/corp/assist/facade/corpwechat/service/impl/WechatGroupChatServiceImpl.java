@@ -26,7 +26,7 @@ public class WechatGroupChatServiceImpl implements WechatGroupChatService {
 
     @Value("${wechat.corp.id:ww44d16a013b30d82c}")
     private String id;
-    @Value("${wechat.corp.secret:LrKlEA5KSwBTUeAaC405qBjvtj_cPkoig9sQYsfV-fo}")
+    @Value("${wechat.corp.secret:7eN2czjpUPaea2yvrMYhGvwbdwwuZzLd0WnlxD7DFTY}")
     private String secret;
 
     @Autowired
