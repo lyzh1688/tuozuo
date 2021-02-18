@@ -12,9 +12,9 @@ const tagsApi = {
  * @param {Number} pageNo 页码
  * @param {Number} pageSize 分页大小
  */
-export function getClientTags (tagName,pageNo,pageSize) {
+export function getClientTags (tagName, pageNo, pageSize) {
   return request({
-    url: tagsApi.getClientTagsURL +'?tagName='+tagName+'&pageNo='+pageNo+'&pageSize='+pageSize,
+    url: tagsApi.getClientTagsURL + '?tagName=' + tagName + '&pageNo=' + pageNo + '&pageSize=' + pageSize,
     method: 'get'
   })
 }

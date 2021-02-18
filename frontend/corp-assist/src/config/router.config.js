@@ -10,20 +10,20 @@ import { bxAnaalyse } from '@/core/icons'
 export const asyncRouterMap = [
 
   {
-    path: '/financialServices',
-    name: 'FinancialServices',
+    path: '/clientManagement',
+    name: 'ClientManagement',
     redirect: '/dashboard/workplace',
     component: BasicLayout,
-    meta: { title: '财务服务', keepAlive: true, icon: 'account-book', permission: ['admin', 'corpAssist.staff.normal', 'corpAssist.staff.visitor'] },
+    meta: { title: '客户管理', keepAlive: true, icon: 'account-book', permission: ['admin', 'corpAssist.staff.normal', 'corpAssist.staff.visitor'] },
     children: [
       {
-        path: '/financialServices/console',
-        name: 'Console',
-        component: resolve => require(['@/views/user/Console'], resolve),
-        meta: { title: '控制台', keepAlive: true, permission: ['admin', 'corpAssist.staff.normal'] }
+        path: '/clientManagement/tagList',
+        name: 'TagList',
+        component: resolve => require(['@/views/clientManagement/tagManagement/TagList'], resolve),
+        meta: { title: '标签管理', keepAlive: true, permission: ['admin', 'corpAssist.staff.normal'] }
       },
       {
-        path: '/financialServices/myInfo',
+        path: '/clientManagement/myInfo',
         name: 'MyInfo',
         component: resolve => require(['@/views/user/MyInfo'], resolve),
         // component: () => import('@/views/user/MyInfo'),
