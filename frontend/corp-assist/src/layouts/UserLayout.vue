@@ -47,7 +47,7 @@ export default {
 <style lang="less" scoped>
 #userLayout.user-layout-wrapper {
     height: 100%;
-    background: #f0f2f5 url(~@/assets/background.svg) no-repeat 50%;
+    background: #f0f2f5 url(~@/assets/background.jpg) no-repeat 50%;
     background-size: 100% 100%;
     &.mobile {
       .container {
