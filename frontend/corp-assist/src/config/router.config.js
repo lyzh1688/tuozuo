@@ -23,11 +23,11 @@ export const asyncRouterMap = [
         meta: { title: '标签管理', keepAlive: true, permission: ['admin', 'corpAssist.staff.normal'] }
       },
       {
-        path: '/clientManagement/myInfo',
-        name: 'MyInfo',
-        component: resolve => require(['@/views/user/MyInfo'], resolve),
+        path: '/clientManagement/clientList',
+        name: 'ClientList',
+        component: resolve => require(['@/views/clientManagement/clientManage/ClientList'], resolve),
         // component: () => import('@/views/user/MyInfo'),
-        meta: { title: '我的', keepAlive: true, permission: ['admin', 'corpAssist.staff.normal', 'corpAssist.staff.visitor'] }
+        meta: { title: '客户列表', keepAlive: true, permission: ['admin', 'corpAssist.staff.normal', 'corpAssist.staff.visitor'] }
       }
     ]
   },
