@@ -37,10 +37,43 @@
       #{operator,jdbcType=VARCHAR}, #{operatorId,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}
       )
   </insert>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select corp_id, corp_name, corp_type, tax_type, register_park, corp_status, boss_name, 
-    boss_number, boss_gender, boss_id_number, business_scope, register_date, register_asset, 
-    create_time, valid, operator, operator_id, source
-    from corporation_info
+  <select id="selectByPage" resultMap="BaseResultMap">
+    select t1.corp_id, t1.corp_name, t1.corp_type, t1.tax_type, t1.register_park, t1.corp_status, t1.boss_name,
+    t1.boss_number, t1.boss_gender, t1.boss_id_number, t1.business_scope, t1.register_date, t1.register_asset,
+    t1.create_time, t1.valid, t1.operator, t1.operator_id, t1.source
+    from corporation_info t1 left join corporation_client_info t2
+    on t1.corp_id = t2.corp_id
+    <where>
+      <if test="corpName != null and corpName != ''">
+       and corp_name like concat('%', #{corpName}, '%')
+      </if>
+      <if test="corpName != null and corpName != ''">
+        and t2.client_name like concat('%', #{clientName}, '%')
+      </if>
+    </where>
+  </select>
+  <select id="selectFromApp" resultMap="BaseResultMap">
+    select t1.corp_id, t1.corp_name, t1.corp_type, t1.tax_type, t1.register_park, t1.corp_status, t1.boss_name,
+    t1.boss_number, t1.boss_gender, t1.boss_id_number, t1.business_scope, t1.register_date, t1.register_asset,
+    t1.create_time, t1.valid, t1.operator, t1.operator_id, t1.source
+    from corporation_info t1 left join corporation_client_info t2
+    on t1.corp_id = t2.corp_id
+    <where>
+      <if test="corpName != null and corpName != ''">
+        and corp_name like concat('%', #{corpName}, '%')
+      </if>
+      <if test="corpName != null and corpName != ''">
+        and t2.client_name like concat('%', #{clientName}, '%')
+      </if>
+      and t1.valid = 1
+      and
+      (
+      t1.create_time <![CDATA[ < ]]> STR_TO_DATE(#{createTime}, '%Y-%m-%d %H:%i:%S')
+      or (t1.create_time = STR_TO_DATE(#{createTime}, '%Y-%m-%d %H:%i:%S') and t1.corp_id <![CDATA[ < ]]>
+      #{corpId,jdbcType=VARCHAR})
+      )
+    </where>
+    order by t1.create_time desc,t1.corp_id desc
+    limit 0,20
   </select>
 </mapper>

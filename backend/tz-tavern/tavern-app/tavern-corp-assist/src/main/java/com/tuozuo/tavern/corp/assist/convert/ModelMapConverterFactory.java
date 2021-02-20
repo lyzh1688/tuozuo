@@ -8,8 +8,10 @@ import com.tuozuo.tavern.corp.assist.facade.corpwechat.model.MemberList;
 import com.tuozuo.tavern.corp.assist.model.CorporationClientInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationContractTemplate;
 import com.tuozuo.tavern.corp.assist.model.CorporationGroupInfo;
+import com.tuozuo.tavern.corp.assist.model.CorporationInfo;
 import com.tuozuo.tavern.corp.assist.vo.CorporationClientVO;
 import com.tuozuo.tavern.corp.assist.vo.CorporationGroupInfoVO;
+import com.tuozuo.tavern.corp.assist.vo.CorporationInfoVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -31,6 +33,10 @@ public interface ModelMapConverterFactory {
     @Mappings({
             @Mapping(source = "externalUserId", target = "userId"),})
     CorporationGroupMember clientInfoToGroupMember(ClientInfoDetail clientInfoDetail);
+
+    @Mappings({
+            @Mapping(source = "registerDate", target = "registerDate", dateFormat = "yyyyMMdd"),})
+    CorporationInfo voToCorporationInfo(CorporationInfoVO vo);
 
 
 }

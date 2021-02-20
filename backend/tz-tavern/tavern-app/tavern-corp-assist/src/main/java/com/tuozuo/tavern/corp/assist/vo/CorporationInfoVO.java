@@ -9,6 +9,7 @@ import java.math.BigDecimal;
  */
 public class CorporationInfoVO {
 
+    private String corpId;
     private String clientId;
     private String corpName;
     @NotNull(message = "corpType 不能为空")
@@ -34,6 +35,14 @@ public class CorporationInfoVO {
     private String operatorId;
     private String operator;
     private String source;
+
+    public String getCorpId() {
+        return corpId;
+    }
+
+    public void setCorpId(String corpId) {
+        this.corpId = corpId;
+    }
 
     public String getClientId() {
         return clientId;

@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 @TableName("corporation_info")
 public class CorporationInfo extends Model<CorporationInfo> {
@@ -31,11 +33,11 @@ public class CorporationInfo extends Model<CorporationInfo> {
 
     private String businessScope;
 
-    private Date registerDate;
+    private LocalDate registerDate;
 
     private BigDecimal registerAsset;
 
-    private Date createTime;
+    private LocalDateTime createTime;
 
     private String valid;
 
@@ -44,6 +46,13 @@ public class CorporationInfo extends Model<CorporationInfo> {
     private String operatorId;
 
     private String source;
+
+    public static CorporationInfo create(String corpId,String valid){
+        CorporationInfo corporationInfo = new CorporationInfo();
+        corporationInfo.setCorpId(corpId);
+        corporationInfo.setValid(valid);
+        return corporationInfo;
+    }
 
     public String getCorpId() {
         return corpId;
@@ -133,11 +142,11 @@ public class CorporationInfo extends Model<CorporationInfo> {
         this.businessScope = businessScope == null ? null : businessScope.trim();
     }
 
-    public Date getRegisterDate() {
+    public LocalDate getRegisterDate() {
         return registerDate;
     }
 
-    public void setRegisterDate(Date registerDate) {
+    public void setRegisterDate(LocalDate registerDate) {
         this.registerDate = registerDate;
     }
 
@@ -149,11 +158,11 @@ public class CorporationInfo extends Model<CorporationInfo> {
         this.registerAsset = registerAsset;
     }
 
-    public Date getCreateTime() {
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
 
