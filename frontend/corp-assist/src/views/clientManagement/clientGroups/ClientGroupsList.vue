@@ -4,11 +4,11 @@
       <a-skeleton :loading="infoLoading" active title>
         <a-row>
           <a-col :sm="8" :xs="24">
-            <span style="padding:5px;">客户名称</span>
+            <span style="padding:5px;">客户群名称</span>
             <a-input
               style="width:80%;"
               size="small"
-              v-model="queryParam.clientName"
+              v-model="queryParam.groupName"
               placeholder="客户名称"
               @keypress.enter="refresh = !refresh"
             />
@@ -23,63 +23,67 @@
               @keypress.enter="refresh = !refresh"
             />
           </a-col>
-          <a-button type="dashed" size="small" @click="handleAdd()">新增客户</a-button>
+          <a-button type="dashed" size="small" @click="handleAdd()">新增客户群</a-button>
           <a-button type="primary" size="small" @click="refresh = !refresh">查询</a-button>
         </a-row>
       </a-skeleton>
     </a-card>
-    <a-card style="margin-top: 24px" :bordered="false" title="客户列表">
+    <a-card style="margin-top: 24px" :bordered="false" title="客户群列表">
       <s-table
         ref="table"
         size="default"
-        rowKey="clientId"
+        rowKey="groupId"
         :pageSize="20"
         :columns="columns"
         :data="loadData"
         showPagination="true"
       >
         <span slot="no" slot-scope="text, record, index">{{ index + 1 }}</span>
-        <span slot="clientName" slot-scope="text, record">
+        <span slot="groupName" slot-scope="text, record">
           <a-button type=" dashed" size="small" @click="handleDetail(record)">{{ text }}</a-button>
         </span>
-        <span slot="clientGender" slot-scope="text">{{ genderMap[text] }}</span>
         <span slot="tags" slot-scope="text, record">{{
-          record.tags == null || record.tags == '' ? '' : record.tags.map(v => v.tagName).join(',')
+          record.tags == null || record.tags == '' ? '' : record.tags.join(',')
         }}</span>
         <span slot="ops" slot-scope="text, record">
           <a-button type="primary" size="small" @click="handleUpdate(record)">修改</a-button>
           <a-divider type="vertical" />
-          <a-button type="primary" size="small" @click="handleUpdateTag(record)">标签</a-button>
+          <a-button type="primary" size="small" @click="handleUpdateClients(record)">客户</a-button>
           <a-divider type="vertical" />
           <a-button type="danger" size="small" @click="handleDelete(record)">删除</a-button>
         </span>
       </s-table>
     </a-card>
-    <clientform
+    <clientgroupform
       :title="formTitle"
       ref="tagForm"
       :visible="showMdl"
       :loading="confirmLoading"
-      :model="clientMdl"
+      :model="clientGroupMdl"
       :isUpdate="isupdate"
       :isShowOnly="isShowOnly"
       @cancel="handleCancel"
       @ok="handleOk"
     >
       <template v-slot:other v-if="isShowOnly">
-
         <a-form-item label="标签">
-          <a-tag v-for="item in clientMdl.tags" :key="item.tagId">{{ item.tagName }}</a-tag>
+          <a-tag v-for="item in clientGroupMdl.tags" :key="item">{{ item }}</a-tag>
+        </a-form-item>
+        <a-form-item label="客户">
+          <a-tag v-for="item in clientGroupMdl.clients" :key="item.clientId">{{ item.clientName }}</a-tag>
+        </a-form-item>
+        <a-form-item label="创建时间">
+          <span>{{ clientGroupMdl.createTime }}</span>
         </a-form-item>
       </template>
-    </clientform>
-    <modifytagdrawer
+    </clientgroupform>
+    <modifyclientlistdrawer
       ref="modifytagdrawer"
       :visible="drawerVisible"
-      :clientTagList="currentClient.tagList"
-      :clientId="currentClient.clientId"
+      :clientList="currentClientGroup.clientList"
+      :groupId="currentClientGroup.groupId"
       @onclose="drawerVisible = false,refresh=!refresh"
-    ></modifytagdrawer>
+    ></modifyclientlistdrawer>
   </page-header-wrapper>
 </template>
 
@@ -87,9 +91,9 @@
 import { Modal } from 'ant-design-vue'
 import { STable } from '@/components'
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
-import { getClients, deleteClient, addClient, modifyClient, getClientDetail } from '@/api/client'
-import clientform from './form/ClientForm'
-import modifytagdrawer from './form/modifyTagDrawer'
+import { getClientGroups, deleteClientGroup, addClientGroup, modifyClientGroup, getClientGroupDetail } from '@/api/clientGroups'
+import clientgroupform from './form/ClientGroupForm'
+import modifyclientlistdrawer from './form/ModifyClientListDrawer'
 import { mapState } from 'vuex'
 const columns = [
   {
@@ -97,24 +101,9 @@ const columns = [
     scopedSlots: { customRender: 'no' }
   },
   {
-    title: '客户名称',
-    dataIndex: 'clientName',
-    scopedSlots: { customRender: 'clientName' }
-  },
-  {
-    title: '公司名称',
-    dataIndex: 'corpName',
-    scopedSlots: { customRender: 'corpName' }
-  },
-  {
-    title: '客户电话',
-    dataIndex: 'clientNumber',
-    scopedSlots: { customRender: 'clientNumber' }
-  },
-  {
-    title: '客户性别',
-    dataIndex: 'clientGender',
-    scopedSlots: { customRender: 'clientGender' }
+    title: '客户群名称',
+    dataIndex: 'groupName',
+    scopedSlots: { customRender: 'groupName' }
   },
   {
     title: '标签',
@@ -126,6 +115,11 @@ const columns = [
     dataIndex: 'source',
     scopedSlots: { customRender: 'source' }
   },
+   {
+    title: '创建时间',
+    dataIndex: 'createTime',
+    scopedSlots: { customRender: 'createTime' }
+  },
   {
     title: '操作',
     dataIndex: 'ops',
@@ -133,24 +127,24 @@ const columns = [
   }
 ]
 export default {
-  name: 'ClientList',
+  name: 'ClientGroupsList',
   data () {
     this.columns = columns
     return {
-      currentClient: {
-        clientId: '',
-        tagList: []
+      currentClientGroup: {
+        groupId: '',
+        clientList: []
       },
       confirmLoading: false,
       showMdl: false,
-      clientMdl: {},
+      clientGroupMdl: {},
       isupdate: false,
       isShowOnly: false,
       refresh: false,
       drawerVisible: false,
       queryParam: {
         tagName: '',
-        clientName: ''
+        groupName: ''
       },
       genderMap: {
         1: '男',
@@ -162,9 +156,9 @@ export default {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
         console.log('loadData request parameters:', requestParameters)
         this.infoLoading = true
-        return getClients(
+        return getClientGroups(
           requestParameters.tagName,
-          requestParameters.clientName,
+          requestParameters.groupName,
           requestParameters.pageNo,
           requestParameters.pageSize
         )
@@ -172,7 +166,7 @@ export default {
             const result = Response
             // console.log('getTradeflow', result)
             if (success(result)) {
-              const ans = result.data.clients
+              const ans = result.data.groups
               setTimeout(() => {
                 this.infoLoading = false
               }, 600)
@@ -237,7 +231,7 @@ export default {
         content: '是否确认删除？该操作不可逆！',
         onOk: () => {
           this.confirmLoading = true
-          deleteClient(record.clientId)
+          deleteClientGroup(record.groupId)
             .then(response => {
               const result = response
               if (success(result)) {
@@ -282,7 +276,7 @@ export default {
         if (!errors) {
           this.confirmLoading = true
           if (this.isupdate) {
-            modifyClient(values)
+            modifyClientGroup(values)
               .then(response => {
                 const result = response
                 if (success(result)) {
@@ -314,7 +308,7 @@ export default {
                 this.confirmLoading = false
               })
           } else {
-            addClient(values)
+            addClientGroup(values)
               .then(response => {
                 const result = response
                 if (success(result)) {
@@ -360,7 +354,7 @@ export default {
       // tmp['authLetterFile	'] = null
       // tmp['bankFlowFile	'] = null
       this.formTitle = '新增客户'
-      this.clientMdl = {
+      this.clientGroupMdl = {
         operatorId: this.username,
         operator: this.username,
         source: 'PC'
@@ -378,28 +372,28 @@ export default {
       this.showMdl = true
       this.isShowOnly = false
     },
-    handleUpdateTag (record) {
+    handleUpdateClients (record) {
       this.isupdate = true
       this.drawerVisible = true
-      this.currentClient.tagList = record.tags.map(v => v.tagId)
-      this.currentClient.clientId = record.clientId
+      this.currentClientGroup.clientList = record.clients.map(v => v.clientId)
+      this.currentClientGroup.groupId = record.groupId
       this.isShowOnly = false
     },
     getDetail (record) {
       this.formTitle = '客户详情'
       this.isShowOnly = true
       this.confirmLoading = true
-      getClientDetail(record.clientId)
+      getClientGroupDetail(record.groupId)
         .then(response => {
           const result = response
           if (success(result)) {
-            this.clientMdl = {
+            this.clientGroupMdl = {
               ...result.data,
-              clientId: record.clientId
+              clientId: record.groupId
             }
             if (this.isupdate) {
-              this.clientMdl.operatorId = this.username
-              this.clientMdl.operator = this.username
+              this.clientGroupMdl.operatorId = this.username
+              this.clientGroupMdl.operator = this.username
             }
 
             this.confirmLoading = false
@@ -457,8 +451,8 @@ export default {
   // },
   components: {
     STable,
-    clientform,
-    modifytagdrawer
+    clientgroupform,
+    modifyclientlistdrawer
   },
   watch: {
     refresh: function (newVal, oldVal) {

@@ -28,32 +28,39 @@ export const asyncRouterMap = [
         component: resolve => require(['@/views/clientManagement/clientManage/ClientList'], resolve),
         // component: () => import('@/views/user/MyInfo'),
         meta: { title: '客户列表', keepAlive: true, permission: ['admin', 'corpAssist.staff.normal', 'corpAssist.staff.visitor'] }
-      }
-    ]
-  },
-  {
-    path: '/humanResourceService',
-    name: 'humanResourceService',
-    redirect: '/humanResourceService/resourcePool',
-    component: BasicLayout,
-    meta: { title: '人员管理', keepAlive: true, icon: 'account-book', permission: ['admin', 'corpAssist.staff.normal'] },
-    children: [
-      {
-        path: '/humanResourceService/resourcePool',
-        name: 'HumanResourcePool',
-        component: resolve => require(['@/views/humanRources/StaffResourcePool'], resolve),
-        // component: () => import('@/views/user/staffList'),
-        meta: { title: '人力资源池', keepAlive: true, permission: ['admin', 'corpAssist.staff.normal'] }
       },
       {
-        path: '/humanResourceService/projectStaffList',
-        name: 'ProjectStaff',
-        component: resolve => require(['@/views/humanRources/ProjectStaff'], resolve),
-        // component: () => import('@/views/user/staffInfo'),
-        meta: { title: '项目人员管理', keepAlive: true, permission: ['admin', 'corpAssist.staff.normal'] }
+        path: '/clientManagement/clientGroupsList',
+        name: 'ClientGroupsList',
+        component: resolve => require(['@/views/clientManagement/clientGroups/ClientGroupsList'], resolve),
+        // component: () => import('@/views/user/MyInfo'),
+        meta: { title: '客户群列表', keepAlive: true, permission: ['admin', 'corpAssist.staff.normal', 'corpAssist.staff.visitor'] }
       }
     ]
   },
+  // {
+  //   path: '/humanResourceService',
+  //   name: 'humanResourceService',
+  //   redirect: '/humanResourceService/resourcePool',
+  //   component: BasicLayout,
+  //   meta: { title: '人员管理', keepAlive: true, icon: 'account-book', permission: ['admin', 'corpAssist.staff.normal'] },
+  //   children: [
+  //     {
+  //       path: '/humanResourceService/resourcePool',
+  //       name: 'HumanResourcePool',
+  //       component: resolve => require(['@/views/humanRources/StaffResourcePool'], resolve),
+  //       // component: () => import('@/views/user/staffList'),
+  //       meta: { title: '人力资源池', keepAlive: true, permission: ['admin', 'corpAssist.staff.normal'] }
+  //     },
+  //     {
+  //       path: '/humanResourceService/projectStaffList',
+  //       name: 'ProjectStaff',
+  //       component: resolve => require(['@/views/humanRources/ProjectStaff'], resolve),
+  //       // component: () => import('@/views/user/staffInfo'),
+  //       meta: { title: '项目人员管理', keepAlive: true, permission: ['admin', 'corpAssist.staff.normal'] }
+  //     }
+  //   ]
+  // },
   {
     path: '/',
     name: 'index',

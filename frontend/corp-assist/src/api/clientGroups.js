@@ -5,7 +5,7 @@ const clientApi = {
   modifyClientGroupURL: process.env.VUE_APP_SYSTEM_URL + '/v1/group/',
   getClientGroupsURL: process.env.VUE_APP_SYSTEM_URL + '/v1/group',
   addGroupClientsURL: process.env.VUE_APP_SYSTEM_URL + '/v1/group/client/relation',
-  getClientGroupDetailURL: process.env.VUE_APP_SYSTEM_URL + '/v1/group/detail/',
+  getClientGroupDetailURL: process.env.VUE_APP_SYSTEM_URL + '/v1/group/detail/'
 }
 /**
  * 获取客户群列表
@@ -14,20 +14,20 @@ const clientApi = {
  * @param {Number} pageNo 页码
  * @param {Number} pageSize 分页大小
  */
-export function getClientGroups (tagName,groupName,pageNo,pageSize) {
+export function getClientGroups (tagName, groupName, pageNo, pageSize) {
   return request({
-    url: clientApi.getClientGroupsURL +'?tagName='+tagName+'&groupName='+groupName+'&pageNo='+pageNo+'&pageSize='+pageSize,
+    url: clientApi.getClientGroupsURL + '?tagName=' + tagName + '&groupName=' + groupName + '&pageNo=' + pageNo + '&pageSize=' + pageSize,
     method: 'get'
   })
 }
 /**
  * 添加客户群
  * @param {Object} form 客户群表单信息
- * chatId	是	String	企业微信群ID	
-groupName	是	String	群名称	
-groupNotice	是	String	群通知	
-operatorId	否	String	创建人ID	
-operator	否	String	创建人	
+ * chatId	是	String	企业微信群ID
+groupName	是	String	群名称
+groupNotice	是	String	群通知
+operatorId	否	String	创建人ID
+operator	否	String	创建人
 source	否	String	来源	PC/Applet
  */
 export function addClientGroup (form) {
@@ -61,11 +61,11 @@ export function getClientGroupDetail (groupId) {
  * 修改客户群
  * @param {Object} form 客户表单信息
  * groupId 是	String	客户群Id
- * chatId	是	String	企业微信群ID	
-groupName	否	String	群名称	
-groupNotice	否	String	群通知	
-operatorId	否	String	创建人ID	
-operator	否	String	创建人	
+ * chatId	是	String	企业微信群ID
+groupName	否	String	群名称
+groupNotice	否	String	群通知
+operatorId	否	String	创建人ID
+operator	否	String	创建人
 source	否	String	来源	PC/Applet
  */
 export function modifyClientGroup (form) {
@@ -77,9 +77,9 @@ export function modifyClientGroup (form) {
 }
 /**
  * 客户群添加客户
- * @param {object} form 客户id 
- * groupId 客户id 
- * clients 标签ids 
+ * @param {object} form 客户id
+ * groupId 客户id
+ * clients 标签ids
  */
 export function addGroupClients (form) {
     return request({

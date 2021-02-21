@@ -18,87 +18,27 @@
     <a-spin :spinning="loading">
       <a-form :form="form" v-bind="formLayout">
         <!-- 检查是否有 id 并且大于0，大于0是修改。其他是新增，新增不显示主键ID -->
-        <a-form-item v-show="false" label="客户Id">
-          <a-input v-decorator="['clientId', { validateTrigger: 'blur' }]" />
+        <a-form-item v-show="false" label="客户群Id">
+          <a-input v-decorator="['groupId', { validateTrigger: 'blur' }]" />
         </a-form-item>
-        <a-form-item label="公司名称">
+        <a-form-item label="客户群名称">
           <a-input
             :disabled="isShowOnly"
             v-decorator="[
-              'corpId',
-              { rules: [{ required: false, message: '请输入公司名称！' }], validateTrigger: 'blur' }
-            ]"
-          />
-        </a-form-item>
-        <a-form-item label="客户名称">
-          <a-input
-            :disabled="isShowOnly"
-            v-decorator="[
-              'clientName',
+              'groupName',
               { rules: [{ required: true, message: '请输入客户名称！' }], validateTrigger: 'blur' }
             ]"
           />
         </a-form-item>
-        <a-form-item label="客户电话">
+        <a-form-item label="群通知">
           <a-input
             :disabled="isShowOnly"
             v-decorator="[
-              'clientNumber',
-              { rules: [{ required: true, message: '请输入客户电话！' }], validateTrigger: 'blur' }
+              'groupNotice',
+              { rules: [{ required: false, message: '请输入客户电话！' }], validateTrigger: 'blur' }
             ]"
           />
         </a-form-item>
-        <a-form-item label="客户性别">
-          <a-select
-            :disabled="isShowOnly"
-            v-decorator="['clientGender', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
-            @change="handleChane"
-          >
-            <a-select-option
-              v-for="item in genderList"
-              :key="item.code"
-            >{{ item.name }}</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item label="联系人名称">
-          <a-input
-            :disabled="isShowOnly"
-            v-decorator="[
-              'contact',
-              { rules: [{ required: true, message: '请输入联系人名称！' }], validateTrigger: 'blur' }
-            ]"
-          />
-        </a-form-item>
-        <a-form-item label="联系人电话">
-          <a-input
-            :disabled="isShowOnly"
-            v-decorator="[
-              'contactNumber',
-              { rules: [{ required: true, message: '请输入联系人电话！' }], validateTrigger: 'blur' }
-            ]"
-          />
-        </a-form-item>
-        <a-form-item label="联系人性别">
-          <a-select
-            :disabled="isShowOnly"
-            v-decorator="['contactGender', {rules: [{required: true, message: '请选择！'}], validateTrigger: 'blur'}]"
-            @change="handleChane2"
-          >
-            <a-select-option
-              v-for="item in genderList"
-              :key="item.code"
-            >{{ item.name }}</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item label="阿里旺旺号">
-          <a-input
-            :disabled="isShowOnly"
-            v-decorator="[
-              'alitalk',
-              { rules: [{ required: false, message: '请输入阿里旺旺号！' }], validateTrigger: 'blur' }
-            ]"
-          />
-        </a-form-item >
         <a-form-item v-show="isShowOnly" label="操作人">
           <a-input
             :disabled="isShowOnly"
@@ -136,20 +76,15 @@
 import pick from 'lodash.pick'
 // 表单字段
 const fields = [
-  'clientId', //	String	客户ID
-  'userId', //	是	String	客户微信ID
-  'corpId', //	是	String	企业ID	关联企业
-  'clientName', //	是	String	客户名称
-  'clientNumber', //	是	String	客户电话
-  'clientGender', //	是	String	客户性别
-  'contact', //	否	String	联系人姓名
-  'contactNumber', //	否	String	联系人电话
-  'contactGender', //	否	String	联系人性别
-  'alitalk', //	否	String	阿里旺旺号
+  'groupId', //	String	客户群ID
+  'chatId', //	是	String	客户群微信ID
+  'groupName', //	是	String	客户群名称
+  'groupNotice', //	是	String	群通知
   'operatorId', //	否	String	创建人ID
   'operator', //	否	String	创建人
   'source', //	否	String	来源	PC/Applet
-  'tags' //	否	String	来源	PC/Applet
+  'tags', //	否	String	来源	PC/Applet，
+  'clients'
 ]
 export default {
   props: {

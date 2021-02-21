@@ -34,19 +34,19 @@
 
 <script>
 import { success, errorMessage, needLogin } from '@/utils/helper/responseHelper'
-import { fuzzygetClientTags } from '@/api/clientTag'
-import { addClientTags } from '@/api/client'
+import { getClients } from '@/api/client'
+import { addGroupClients } from '@/api/clientGroups'
 export default {
   props: {
     visible: {
       type: Boolean,
       required: true
     },
-    clientTagList: {
+    clientList: {
       type: Array,
       default: () => []
     },
-    clientId: {
+    groupId: {
       type: String,
       default: ''
     }
@@ -76,10 +76,10 @@ export default {
     handleSave () {
       this.tagListLoading = true
       const form = {
-        clientId: this.clientId,
-        tags: this.targetKeys
+        groupId: this.groupId,
+        clients: this.targetKeys
       }
-      addClientTags(form)
+      addGroupClients(form)
         .then((Response) => {
           const result = Response
           if (success(result)) {
@@ -117,16 +117,16 @@ export default {
     handleSearch (dir, value) {
       console.log('search:', dir, value)
     },
-    fetchTagList () {
+    fetchClientList () {
       this.tagListLoading = true
-      fuzzygetClientTags('', 9999)
+      getClients('', '', 1, 9999)
         .then((Response) => {
           const result = Response
           if (success(result)) {
-            this.tagList = result.data.map(v => {
+            this.tagList = result.data.clients.map(v => {
               return {
-          key: v.tagId,
-          title: v.tagName
+          key: v.clientId,
+          title: v.clientName
         }
             })
             // console.log(this.clientTagList)
@@ -154,14 +154,14 @@ export default {
     },
     visibleChange (data) {
       if (data) {
-        this.targetKeys = this.clientTagList
-        this.fetchTagList()
+        this.targetKeys = this.clientList
+        this.fetchClientList()
       }
     }
   },
   watch: {
       clientTagList (oldvalue, newvalue) {
-          this.fetchTagList()
+          this.fetchClientList()
       }
   }
 }
