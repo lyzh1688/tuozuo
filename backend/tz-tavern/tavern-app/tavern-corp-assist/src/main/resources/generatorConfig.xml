@@ -31,7 +31,7 @@
                 </table>
         <table tableName="corporation_tag_info" domainObjectName="CorporationTagInfo">
         </table>-->
-        <table tableName="corporation_info" domainObjectName="CorporationInfo">
+        <table tableName="business_dict" domainObjectName="BusinessDict">
         </table>
 
 

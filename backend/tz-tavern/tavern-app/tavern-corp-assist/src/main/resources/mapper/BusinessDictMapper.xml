@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuozuo.tavern.corp.assist.mapper.BusinessDictMapper">
+  <resultMap id="BaseResultMap" type="com.tuozuo.tavern.corp.assist.model.BusinessDict">
+    <id column="business_id" jdbcType="VARCHAR" property="businessId" />
+    <id column="business_group" jdbcType="VARCHAR" property="businessGroup" />
+    <result column="business_name" jdbcType="VARCHAR" property="businessName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    delete from business_dict
+    where business_id = #{businessId,jdbcType=VARCHAR}
+      and business_group = #{businessGroup,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tuozuo.tavern.corp.assist.model.BusinessDict">
+    insert into business_dict (business_id, business_group, business_name
+      )
+    values (#{businessId,jdbcType=VARCHAR}, #{businessGroup,jdbcType=VARCHAR}, #{businessName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.tuozuo.tavern.corp.assist.model.BusinessDict">
+    update business_dict
+    set business_name = #{businessName,jdbcType=VARCHAR}
+    where business_id = #{businessId,jdbcType=VARCHAR}
+      and business_group = #{businessGroup,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    select business_id, business_group, business_name
+    from business_dict
+    where business_id = #{businessId,jdbcType=VARCHAR}
+      and business_group = #{businessGroup,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select business_id, business_group, business_name
+    from business_dict
+  </select>
+</mapper>
