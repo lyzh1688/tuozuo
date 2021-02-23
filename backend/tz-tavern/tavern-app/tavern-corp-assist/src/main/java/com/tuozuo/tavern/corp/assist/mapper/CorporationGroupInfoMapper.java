@@ -14,6 +14,10 @@ import java.util.List;
 public interface CorporationGroupInfoMapper extends BaseMapper<CorporationGroupInfo> {
     IPage<CorporationGroupClientInfo> selectGroups(Page<CorporationGroupClientInfo> page, @Param("tagName") String tagName, @Param("groupName") String groupName);
 
+    int selectGroupsCnt(@Param("tagName") String tagName, @Param("groupName") String groupName);
+
+    List<CorporationGroupClientInfo> selectGroupsByIds(@Param("list") List<String> groupIds);
+
     List<CorporationGroupClientInfo> selectGroupsFromApp(@Param("tagName") String tagName, @Param("groupName") String groupName, @Param("groupId") String groupId, @Param("createTime") String createTime);
 
     CorporationGroupClientInfo selectGroupDetail(@Param("groupId") String groupId);

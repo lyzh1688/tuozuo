@@ -5,10 +5,8 @@ import com.tuozuo.tavern.corp.assist.dto.CorporationGroupMember;
 import com.tuozuo.tavern.corp.assist.facade.corpwechat.model.ClientInfo;
 import com.tuozuo.tavern.corp.assist.facade.corpwechat.model.ClientInfoDetail;
 import com.tuozuo.tavern.corp.assist.facade.corpwechat.model.MemberList;
-import com.tuozuo.tavern.corp.assist.model.CorporationClientInfo;
-import com.tuozuo.tavern.corp.assist.model.CorporationContractTemplate;
-import com.tuozuo.tavern.corp.assist.model.CorporationGroupInfo;
-import com.tuozuo.tavern.corp.assist.model.CorporationInfo;
+import com.tuozuo.tavern.corp.assist.model.*;
+import com.tuozuo.tavern.corp.assist.vo.CorporationBusinessDictVO;
 import com.tuozuo.tavern.corp.assist.vo.CorporationClientVO;
 import com.tuozuo.tavern.corp.assist.vo.CorporationGroupInfoVO;
 import com.tuozuo.tavern.corp.assist.vo.CorporationInfoVO;
@@ -37,6 +35,9 @@ public interface ModelMapConverterFactory {
     @Mappings({
             @Mapping(source = "registerDate", target = "registerDate", dateFormat = "yyyyMMdd"),})
     CorporationInfo voToCorporationInfo(CorporationInfoVO vo);
+
+
+    BusinessDict voToBusinessDict(CorporationBusinessDictVO vo);
 
 
 }

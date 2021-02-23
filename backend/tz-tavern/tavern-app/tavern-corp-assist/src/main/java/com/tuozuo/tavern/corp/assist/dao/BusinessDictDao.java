@@ -12,10 +12,10 @@ public interface BusinessDictDao {
 
     boolean insertDict(BusinessDict businessDict);
 
-    boolean delDict(BusinessDict businessDict);
+    boolean delDict(String dictId);
 
     boolean updateDict(BusinessDict businessDict);
 
-    IPage<BusinessDict> selectDicts(Page<BusinessDict> page, String businessName);
+    IPage<BusinessDict> selectDicts(Page<BusinessDict> page, String businessName,String businessGroup);
 
 }
