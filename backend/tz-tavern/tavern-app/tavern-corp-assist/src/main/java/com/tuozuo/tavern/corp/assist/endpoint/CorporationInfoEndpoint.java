@@ -94,6 +94,20 @@ public class CorporationInfoEndpoint {
     }
 
     /**
+     * 公司列表
+     */
+    @GetMapping("/detail/{corpId}")
+    public TavernResponse queryCorporationInfoDetail(@PathVariable("corpId") String corpId) {
+        try {
+            CorporationInfo corporationInfo = this.corporationInfoService.queryCorporationDetail(corpId);
+            return TavernResponse.ok(corporationInfo);
+        } catch (Exception e) {
+            LOGGER.error("[公司列表] failed", e);
+            return TavernResponse.bizFailure("公司列表 异常");
+        }
+    }
+
+    /**
      * 公司列表Applet
      */
     @GetMapping("/applet")

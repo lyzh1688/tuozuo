@@ -67,6 +67,6 @@ public class CorporationInfoServiceImpl implements CorporationInfoService {
 
     @Override
     public CorporationInfo queryCorporationDetail(String corpId) {
-        return null;
+        return this.corporationInfoDao.selectCorporationDetail(corpId);
     }
 }
