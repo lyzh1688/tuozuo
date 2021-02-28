@@ -7,7 +7,11 @@
     <result column="corp_type" jdbcType="VARCHAR" property="corpType" />
     <result column="tax_type" jdbcType="VARCHAR" property="taxType" />
     <result column="register_park" jdbcType="VARCHAR" property="registerPark" />
-    <result column="corp_status" jdbcType="VARCHAR" property="corpStatus" />
+    <result column="corp_status" jdbcType="VARCHAR" property="corpStatusId" />
+    <result column="corp_type_id" jdbcType="VARCHAR" property="corpTypeId" />
+    <result column="tax_type_id" jdbcType="VARCHAR" property="taxTypeId" />
+    <result column="register_park_id" jdbcType="VARCHAR" property="registerParkId" />
+    <result column="corp_status_id" jdbcType="VARCHAR" property="corpStatusId" />
     <result column="boss_name" jdbcType="VARCHAR" property="bossName" />
     <result column="boss_number" jdbcType="VARCHAR" property="bossNumber" />
     <result column="boss_gender" jdbcType="VARCHAR" property="bossGender" />

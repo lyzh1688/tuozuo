@@ -75,16 +75,10 @@ public class CorporationBusinessDictEndpoint {
      */
     @GetMapping("")
     public TavernResponse queryBusinessDict(@RequestParam(value = "businessName", required = false) String businessName,
-                                            @RequestParam(value = "businessGroup", required = false) String businessGroup,
-                                            @RequestParam(value = "pageNo") int pageNo,
-                                            @RequestParam(value = "pageSize") int pageSize) {
+                                            @RequestParam(value = "businessGroup", required = false) String businessGroup) {
         try {
-            IPage<BusinessDict> page = this.businessDictService.queryDicts(pageNo, pageSize, businessName, businessGroup);
-            List<BusinessDict> businessDicts = page.getRecords();
-            CorporationBusinessDictDTO dictInfoDTO = new CorporationBusinessDictDTO();
-            dictInfoDTO.setDicts(businessDicts);
-            dictInfoDTO.setTotal((int) page.getTotal());
-            return TavernResponse.ok(dictInfoDTO);
+            List<BusinessDict> businessDicts = this.businessDictService.queryDicts(businessName, businessGroup);
+            return TavernResponse.ok(businessDicts);
         } catch (Exception e) {
             LOGGER.error("[业务字典列表] failed", e);
             return TavernResponse.bizFailure("[业务字典列表] 异常");

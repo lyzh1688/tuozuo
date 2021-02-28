@@ -10,6 +10,8 @@ import com.tuozuo.tavern.corp.assist.mapper.BusinessDictMapper;
 import com.tuozuo.tavern.corp.assist.model.BusinessDict;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Code Monkey: 何彪 <br>
  * Dev Time: 2021/2/20 <br>
@@ -30,13 +32,13 @@ public class BusinessDictDaoImpl extends ServiceImpl<BusinessDictMapper, Busines
     public boolean updateDict(BusinessDict businessDict) {
         return this.update(businessDict, Wrappers.<BusinessDict>query()
                 .lambda()
-                .eq(StringUtils.isNotEmpty(businessDict.getBusinessGroup()),BusinessDict::getBusinessGroup, businessDict.getBusinessGroup())
-                .eq(StringUtils.isNotEmpty(businessDict.getBusinessId()),BusinessDict::getBusinessId, businessDict.getBusinessId()));
+                .eq(StringUtils.isNotEmpty(businessDict.getBusinessGroup()), BusinessDict::getBusinessGroup, businessDict.getBusinessGroup())
+                .eq(StringUtils.isNotEmpty(businessDict.getBusinessId()), BusinessDict::getBusinessId, businessDict.getBusinessId()));
     }
 
     @Override
-    public IPage<BusinessDict> selectDicts(Page<BusinessDict> page, String businessName, String businessGroup) {
-        return this.page(page, Wrappers.<BusinessDict>query()
+    public List<BusinessDict> selectDicts(String businessName, String businessGroup) {
+        return this.list(Wrappers.<BusinessDict>query()
                 .lambda()
                 .like(StringUtils.isNotEmpty(businessName), BusinessDict::getBusinessName, businessName)
                 .like(StringUtils.isNotEmpty(businessGroup), BusinessDict::getBusinessGroup, businessGroup)

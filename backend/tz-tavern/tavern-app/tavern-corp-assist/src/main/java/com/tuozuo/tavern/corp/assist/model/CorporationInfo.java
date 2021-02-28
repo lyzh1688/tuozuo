@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+
 @TableName("corporation_info")
 public class CorporationInfo extends Model<CorporationInfo> {
     @TableId
@@ -19,9 +20,15 @@ public class CorporationInfo extends Model<CorporationInfo> {
 
     private String taxType;
 
+    private String corpTypeId;
+
+    private String taxTypeId;
+
     private String registerPark;
+    private String registerParkId;
 
     private String corpStatus;
+    private String corpStatusId;
 
     private String bossName;
 
@@ -47,11 +54,44 @@ public class CorporationInfo extends Model<CorporationInfo> {
 
     private String source;
 
-    public static CorporationInfo create(String corpId,String valid){
+    public static CorporationInfo create(String corpId, String valid) {
         CorporationInfo corporationInfo = new CorporationInfo();
         corporationInfo.setCorpId(corpId);
         corporationInfo.setValid(valid);
         return corporationInfo;
+    }
+
+
+    public String getCorpTypeId() {
+        return corpTypeId;
+    }
+
+    public void setCorpTypeId(String corpTypeId) {
+        this.corpTypeId = corpTypeId;
+    }
+
+    public String getTaxTypeId() {
+        return taxTypeId;
+    }
+
+    public void setTaxTypeId(String taxTypeId) {
+        this.taxTypeId = taxTypeId;
+    }
+
+    public String getRegisterParkId() {
+        return registerParkId;
+    }
+
+    public void setRegisterParkId(String registerParkId) {
+        this.registerParkId = registerParkId;
+    }
+
+    public String getCorpStatusId() {
+        return corpStatusId;
+    }
+
+    public void setCorpStatusId(String corpStatusId) {
+        this.corpStatusId = corpStatusId;
     }
 
     public String getCorpId() {

@@ -11,6 +11,8 @@ import com.tuozuo.tavern.corp.assist.vo.CorporationBusinessDictVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Code Monkey: 何彪 <br>
  * Dev Time: 2021/2/22 <br>
@@ -41,8 +43,7 @@ public class BusinessDictServiceImpl implements BusinessDictService {
     }
 
     @Override
-    public IPage<BusinessDict> queryDicts(int pageNo, int pageSize, String businessName,String businessGroup) {
-        Page<BusinessDict> page = new Page<>(pageNo, pageSize);
-        return this.businessDictDao.selectDicts(page,businessName,businessGroup);
+    public List<BusinessDict> queryDicts(String businessName, String businessGroup) {
+        return this.businessDictDao.selectDicts(businessName, businessGroup);
     }
 }

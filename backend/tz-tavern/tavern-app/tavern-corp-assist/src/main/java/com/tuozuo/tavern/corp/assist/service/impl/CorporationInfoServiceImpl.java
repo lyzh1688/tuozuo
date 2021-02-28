@@ -6,8 +6,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tuozuo.tavern.corp.assist.convert.ModelMapConverterFactory;
 import com.tuozuo.tavern.corp.assist.dao.CorporationInfoDao;
 import com.tuozuo.tavern.corp.assist.dict.ValidType;
+import com.tuozuo.tavern.corp.assist.model.BusinessDict;
 import com.tuozuo.tavern.corp.assist.model.CorporationGroupClientInfo;
 import com.tuozuo.tavern.corp.assist.model.CorporationInfo;
+import com.tuozuo.tavern.corp.assist.service.BusinessDictService;
 import com.tuozuo.tavern.corp.assist.service.CorporationInfoService;
 import com.tuozuo.tavern.corp.assist.utils.DateUtils;
 import com.tuozuo.tavern.corp.assist.vo.CorporationInfoVO;
@@ -18,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -30,6 +33,8 @@ public class CorporationInfoServiceImpl implements CorporationInfoService {
     private CorporationInfoDao corporationInfoDao;
     @Autowired
     private ModelMapConverterFactory converterFactory;
+    @Autowired
+    private BusinessDictService businessDictService;
 
 
     @Override
@@ -54,7 +59,15 @@ public class CorporationInfoServiceImpl implements CorporationInfoService {
     @Override
     public IPage<CorporationInfo> queryCorporations(String corpName, String clientName, int pageNo, int pageSize) {
         Page<CorporationInfo> page = new Page<>(pageNo, pageSize);
-        return this.corporationInfoDao.selectCorporations(corpName, clientName, page);
+        IPage<CorporationInfo> iPage = this.corporationInfoDao.selectCorporations(corpName, clientName, page);
+        List<CorporationInfo> list = iPage.getRecords().stream()
+                .map(info -> {
+                    info.setCorpStatus();
+
+
+                });
+
+        return iPage;
     }
 
     @Override

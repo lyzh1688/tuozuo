@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tuozuo.tavern.corp.assist.model.BusinessDict;
 
+import java.util.List;
+
 /**
  * Code Monkey: 何彪 <br>
  * Dev Time: 2021/2/20 <br>
@@ -16,6 +18,6 @@ public interface BusinessDictDao {
 
     boolean updateDict(BusinessDict businessDict);
 
-    IPage<BusinessDict> selectDicts(Page<BusinessDict> page, String businessName,String businessGroup);
+    List<BusinessDict> selectDicts(String businessName, String businessGroup);
 
 }
