@@ -78,10 +78,11 @@ public class CorporationClientInfoEndpoint {
     @GetMapping("")
     public TavernResponse queryCorporationClient(@RequestParam(value = "tagName", required = false) String tagName,
                                                  @RequestParam(value = "clientName", required = false) String clientName,
+                                                 @RequestParam(value = "corpName", required = false) String corpName,
                                                  @RequestParam(value = "pageNo") int pageNo,
                                                  @RequestParam(value = "pageSize") int pageSize) {
         try {
-            IPage<CorporationClientTagInfo> page = this.corporationClientInfoService.queryClients(tagName, clientName, pageNo, pageSize);
+            IPage<CorporationClientTagInfo> page = this.corporationClientInfoService.queryClients(tagName, clientName, pageNo, pageSize,corpName);
             List<CorporationClientTagInfo> corporationClientInfoList = page.getRecords();
             CorporationClientInfoDTO corporationClientInfoDTO = new CorporationClientInfoDTO();
             corporationClientInfoDTO.setClients(corporationClientInfoList);
@@ -114,9 +115,10 @@ public class CorporationClientInfoEndpoint {
     public TavernResponse queryCorporationClientFromApp(@RequestParam(value = "tagName", required = false) String tagName,
                                                         @RequestParam(value = "clientName", required = false) String clientName,
                                                         @RequestParam(value = "clientId", required = false) String clientId,
-                                                        @RequestParam(value = "createTime", required = false) String createTime) {
+                                                        @RequestParam(value = "createTime", required = false) String createTime,
+                                                        @RequestParam(value = "corpName", required = false) String corpName) {
         try {
-            List<CorporationClientTagInfo> corporationClientTagInfos = this.corporationClientInfoService.queryClientsFromApp(tagName, clientName, clientId, createTime);
+            List<CorporationClientTagInfo> corporationClientTagInfos = this.corporationClientInfoService.queryClientsFromApp(tagName, clientName, clientId, createTime,corpName);
             return TavernResponse.ok(corporationClientTagInfos);
         } catch (Exception e) {
             LOGGER.error("[客户列表] failed", e);

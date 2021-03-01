@@ -1,6 +1,7 @@
 package com.tuozuo.tavern.corp.assist.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.tuozuo.tavern.corp.assist.dto.CorporationDTO;
 import com.tuozuo.tavern.corp.assist.model.CorporationInfo;
 import com.tuozuo.tavern.corp.assist.vo.CorporationInfoVO;
 
@@ -18,9 +19,11 @@ public interface CorporationInfoService {
 
     boolean modifyCorporation(CorporationInfoVO corporationInfoVO);
 
-    IPage<CorporationInfo> queryCorporations(String corpName, String clientName, int pageNo, int pageSize);
+    IPage<CorporationDTO> queryCorporations(String corpName, String clientName, int pageNo, int pageSize);
 
-    List<CorporationInfo> queryCorporationsFromApp(String corpName, String clientName,String corpId,String createDate);
+    List<CorporationDTO> queryCorporationsFromApp(String corpName, String clientName,String corpId,String createDate);
 
     CorporationInfo queryCorporationDetail(String corpId);
+
+    List<CorporationInfo> fuzzyQuery(String corpName,int queryCnt);
 }

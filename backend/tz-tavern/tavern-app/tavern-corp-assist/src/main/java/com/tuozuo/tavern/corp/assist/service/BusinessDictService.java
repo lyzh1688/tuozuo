@@ -1,11 +1,10 @@
 package com.tuozuo.tavern.corp.assist.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tuozuo.tavern.corp.assist.model.BusinessDict;
 import com.tuozuo.tavern.corp.assist.vo.CorporationBusinessDictVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Code Monkey: 何彪 <br>
@@ -19,6 +18,8 @@ public interface BusinessDictService {
 
     boolean modifyDict(CorporationBusinessDictVO vo);
 
-    List<BusinessDict> queryDicts( String businessName, String businessGroup);
+    List<BusinessDict> queryDicts(String businessName, String businessGroup);
+
+    Map<String,Map<String,String>> queryDicts();
 
 }

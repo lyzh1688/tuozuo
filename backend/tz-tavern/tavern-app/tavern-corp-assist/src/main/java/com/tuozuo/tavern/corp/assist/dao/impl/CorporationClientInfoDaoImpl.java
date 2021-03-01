@@ -36,18 +36,18 @@ public class CorporationClientInfoDaoImpl extends ServiceImpl<CorporationClientI
     }
 
     @Override
-    public IPage<CorporationClientTagInfo> selectClients(String tagName, String clientName, Page<CorporationClientTagInfo> page) {
-        return this.baseMapper.selectClients(page, tagName, clientName);
+    public IPage<CorporationClientTagInfo> selectClients(String tagName, String clientName, Page<CorporationClientTagInfo> page,String corpName) {
+        return this.baseMapper.selectClients(page, tagName, clientName,corpName);
     }
 
     @Override
-    public int selectClientsCnt(String tagName, String clientName) {
-        return this.baseMapper.selectClientsCnt(tagName, clientName);
+    public int selectClientsCnt(String tagName, String clientName,String corpName) {
+        return this.baseMapper.selectClientsCnt(tagName, clientName,corpName);
     }
 
     @Override
-    public List<CorporationClientTagInfo> selectClientsFromApp(String tagName, String clientName, String clientId, String createTime) {
-        return this.baseMapper.selectClientsFromApp(tagName, clientName, clientId, createTime);
+    public List<CorporationClientTagInfo> selectClientsFromApp(String tagName, String clientName, String clientId, String createTime,String corpName) {
+        return this.baseMapper.selectClientsFromApp(tagName, clientName, clientId, createTime,corpName);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.tuozuo.tavern.corp.assist.convert;
 
 import com.tuozuo.tavern.corp.assist.dto.ContractTemplateItemDTO;
+import com.tuozuo.tavern.corp.assist.dto.CorporationFuzzyDTO;
 import com.tuozuo.tavern.corp.assist.dto.CorporationGroupMember;
 import com.tuozuo.tavern.corp.assist.facade.corpwechat.model.ClientInfo;
 import com.tuozuo.tavern.corp.assist.facade.corpwechat.model.ClientInfoDetail;
@@ -13,6 +14,8 @@ import com.tuozuo.tavern.corp.assist.vo.CorporationInfoVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
+
+import java.util.List;
 
 
 /**
@@ -38,6 +41,8 @@ public interface ModelMapConverterFactory {
 
 
     BusinessDict voToBusinessDict(CorporationBusinessDictVO vo);
+
+    List<CorporationFuzzyDTO> corpToDTO(List<CorporationInfo> corporationInfos);
 
 
 }

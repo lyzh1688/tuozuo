@@ -1,6 +1,8 @@
 package com.tuozuo.tavern.corp.assist.dao.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tuozuo.tavern.corp.assist.dao.CorporationInfoDao;
@@ -49,5 +51,14 @@ public class CorporationInfoDaoImpl extends ServiceImpl<CorporationInfoMapper, C
     @Override
     public List<CorporationInfo> selectCorporationsFromApp(String corpName, String clientName, String corpId, String createTime) {
         return this.corporationInfoMapper.selectFromApp(corpName, clientName, corpId, createTime);
+    }
+
+    @Override
+    public List<CorporationInfo> fuzzyQuery(String corpName, int queryCnt) {
+        return this.list(Wrappers.<CorporationInfo>query()
+                .lambda()
+                .like(StringUtils.isNotEmpty(corpName), CorporationInfo::getCorpName, corpName)
+                .orderByDesc(CorporationInfo::getCreateTime)
+                .last("limit " + queryCnt));
     }
 }

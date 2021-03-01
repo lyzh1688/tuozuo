@@ -23,4 +23,6 @@ public interface CorporationInfoDao {
     CorporationInfo selectCorporationDetail(String corpId);
 
     List<CorporationInfo> selectCorporationsFromApp(String corpName, String clientName, String corpId, String createTime);
+
+    List<CorporationInfo> fuzzyQuery(String corpName,int queryCnt);
 }

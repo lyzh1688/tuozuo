@@ -1,18 +1,8 @@
-package com.tuozuo.tavern.corp.assist.model;
-
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
+package com.tuozuo.tavern.corp.assist.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
-@TableName("corporation_info")
-public class CorporationInfo extends Model<CorporationInfo> {
-    @TableId
+public class CorporationDTO  {
     private String corpId;
 
     private String corpName;
@@ -21,17 +11,14 @@ public class CorporationInfo extends Model<CorporationInfo> {
 
     private String taxType;
 
-    @TableField(exist = false)
     private String corpTypeId;
-    @TableField(exist = false)
+
     private String taxTypeId;
 
     private String registerPark;
-    @TableField(exist = false)
     private String registerParkId;
 
     private String corpStatus;
-    @TableField(exist = false)
     private String corpStatusId;
 
     private String bossName;
@@ -39,33 +26,22 @@ public class CorporationInfo extends Model<CorporationInfo> {
     private String bossNumber;
 
     private String bossGender;
-    @TableField(exist = false)
     private String bossGenderId;
 
     private String bossIdNumber;
 
     private String businessScope;
 
-    private LocalDate registerDate;
+    private String registerDate;
 
     private BigDecimal registerAsset;
 
-    private LocalDateTime createTime;
-
-    private String valid;
 
     private String operator;
 
     private String operatorId;
 
     private String source;
-
-    public static CorporationInfo create(String corpId, String valid) {
-        CorporationInfo corporationInfo = new CorporationInfo();
-        corporationInfo.setCorpId(corpId);
-        corporationInfo.setValid(valid);
-        return corporationInfo;
-    }
 
     public String getBossGenderId() {
         return bossGenderId;
@@ -195,11 +171,11 @@ public class CorporationInfo extends Model<CorporationInfo> {
         this.businessScope = businessScope == null ? null : businessScope.trim();
     }
 
-    public LocalDate getRegisterDate() {
+    public String getRegisterDate() {
         return registerDate;
     }
 
-    public void setRegisterDate(LocalDate registerDate) {
+    public void setRegisterDate(String registerDate) {
         this.registerDate = registerDate;
     }
 
@@ -209,22 +185,6 @@ public class CorporationInfo extends Model<CorporationInfo> {
 
     public void setRegisterAsset(BigDecimal registerAsset) {
         this.registerAsset = registerAsset;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getValid() {
-        return valid;
-    }
-
-    public void setValid(String valid) {
-        this.valid = valid == null ? null : valid.trim();
     }
 
     public String getOperator() {

@@ -20,14 +20,14 @@ public interface CorporationClientInfoDao {
 
     boolean updateClient(CorporationClientInfo corporationClientInfo);
 
-    IPage<CorporationClientTagInfo> selectClients(String tagName, String clientName, Page<CorporationClientTagInfo> page);
+    IPage<CorporationClientTagInfo> selectClients(String tagName, String clientName, Page<CorporationClientTagInfo> page,String corpName);
 
-    int selectClientsCnt(String tagName, String clientName);
+    int selectClientsCnt(String tagName, String clientName,String corpName);
 
     List<CorporationClientTagInfo> selectClientsFromApp(String tagName,
                                                         String clientName,
                                                         String clientId,
-                                                        String createTime);
+                                                        String createTime,String corpName);
 
     CorporationClientTagInfo selectClientDetail(String clientId, String type);
 

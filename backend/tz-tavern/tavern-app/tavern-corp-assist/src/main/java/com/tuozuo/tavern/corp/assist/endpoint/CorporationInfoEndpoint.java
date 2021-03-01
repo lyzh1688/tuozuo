@@ -2,6 +2,9 @@ package com.tuozuo.tavern.corp.assist.endpoint;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tuozuo.tavern.common.protocol.TavernResponse;
+import com.tuozuo.tavern.corp.assist.convert.ModelMapConverterFactory;
+import com.tuozuo.tavern.corp.assist.dto.CorporationDTO;
+import com.tuozuo.tavern.corp.assist.dto.CorporationFuzzyDTO;
 import com.tuozuo.tavern.corp.assist.dto.CorporationInfoDTO;
 import com.tuozuo.tavern.corp.assist.model.CorporationInfo;
 import com.tuozuo.tavern.corp.assist.service.CorporationInfoService;
@@ -26,6 +29,9 @@ public class CorporationInfoEndpoint {
 
     @Autowired
     private CorporationInfoService corporationInfoService;
+
+    @Autowired
+    ModelMapConverterFactory factory;
 
     /**
      * 添加公司
@@ -81,8 +87,8 @@ public class CorporationInfoEndpoint {
                                                @RequestParam(value = "pageNo") int pageNo,
                                                @RequestParam(value = "pageSize") int pageSize) {
         try {
-            IPage<CorporationInfo> page = this.corporationInfoService.queryCorporations(corpName, clientName, pageNo, pageSize);
-            List<CorporationInfo> corporationInfos = page.getRecords();
+            IPage<CorporationDTO> page = this.corporationInfoService.queryCorporations(corpName, clientName, pageNo, pageSize);
+            List<CorporationDTO> corporationInfos = page.getRecords();
             CorporationInfoDTO corporationClientInfoDTO = new CorporationInfoDTO();
             corporationClientInfoDTO.setCorps(corporationInfos);
             corporationClientInfoDTO.setTotal((int) page.getTotal());
@@ -116,10 +122,26 @@ public class CorporationInfoEndpoint {
                                                       @RequestParam(value = "corpId", required = false) String corpId,
                                                       @RequestParam(value = "createTime", required = false) String createTime) {
         try {
-            List<CorporationInfo> corporationInfos = this.corporationInfoService.queryCorporationsFromApp(corpName, clientName, corpId, createTime);
+            List<CorporationDTO> corporationInfos = this.corporationInfoService.queryCorporationsFromApp(corpName, clientName, corpId, createTime);
             return TavernResponse.ok(corporationInfos);
         } catch (Exception e) {
             LOGGER.error("[公司列表] failed", e);
+            return TavernResponse.bizFailure("公司列表 异常");
+        }
+    }
+
+    /**
+     * 公司模糊搜索
+     */
+    @GetMapping("/fuzzy")
+    public TavernResponse fuzzyQueryCorporationInfos(@RequestParam(value = "corpName", required = false) String corpName,
+                                                     @RequestParam(value = "queryCnt", required = false, defaultValue = "20") String queryCnt) {
+        try {
+            List<CorporationInfo> corporationInfos = this.corporationInfoService.fuzzyQuery(corpName, Integer.parseInt(queryCnt));
+            List<CorporationFuzzyDTO> dtos = this.factory.corpToDTO(corporationInfos);
+            return TavernResponse.ok(dtos);
+        } catch (Exception e) {
+            LOGGER.error("[公司模糊搜索] failed", e);
             return TavernResponse.bizFailure("公司列表 异常");
         }
     }

@@ -7,11 +7,7 @@
     <result column="corp_type" jdbcType="VARCHAR" property="corpType" />
     <result column="tax_type" jdbcType="VARCHAR" property="taxType" />
     <result column="register_park" jdbcType="VARCHAR" property="registerPark" />
-    <result column="corp_status" jdbcType="VARCHAR" property="corpStatusId" />
-    <result column="corp_type_id" jdbcType="VARCHAR" property="corpTypeId" />
-    <result column="tax_type_id" jdbcType="VARCHAR" property="taxTypeId" />
-    <result column="register_park_id" jdbcType="VARCHAR" property="registerParkId" />
-    <result column="corp_status_id" jdbcType="VARCHAR" property="corpStatusId" />
+    <result column="corp_status" jdbcType="VARCHAR" property="corpStatus" />
     <result column="boss_name" jdbcType="VARCHAR" property="bossName" />
     <result column="boss_number" jdbcType="VARCHAR" property="bossNumber" />
     <result column="boss_gender" jdbcType="VARCHAR" property="bossGender" />
@@ -49,12 +45,14 @@
     on t1.corp_id = t2.corp_id
     <where>
       <if test="corpName != null and corpName != ''">
-       and corp_name like concat('%', #{corpName}, '%')
+       and t1.corp_name like concat('%', #{corpName}, '%')
       </if>
-      <if test="corpName != null and corpName != ''">
+      <if test="clientName != null and clientName != ''">
         and t2.client_name like concat('%', #{clientName}, '%')
       </if>
+      and t1.valid = '1'
     </where>
+    order by t1.create_time desc
   </select>
   <select id="selectFromApp" resultMap="BaseResultMap">
     select t1.corp_id, t1.corp_name, t1.corp_type, t1.tax_type, t1.register_park, t1.corp_status, t1.boss_name,
@@ -64,9 +62,9 @@
     on t1.corp_id = t2.corp_id
     <where>
       <if test="corpName != null and corpName != ''">
-        and corp_name like concat('%', #{corpName}, '%')
+        and t1.corp_name like concat('%', #{corpName}, '%')
       </if>
-      <if test="corpName != null and corpName != ''">
+      <if test="clientName != null and clientName != ''">
         and t2.client_name like concat('%', #{clientName}, '%')
       </if>
       and t1.valid = 1

@@ -18,14 +18,14 @@ public interface CorporationClientInfoService {
 
     boolean modifyClient(CorporationClientVO corporationClientVO);
 
-    IPage<CorporationClientTagInfo> queryClients(String tagName, String clientName, int pageNo, int pageSize);
+    IPage<CorporationClientTagInfo> queryClients(String tagName, String clientName, int pageNo, int pageSize,String corpName);
 
     boolean bindClientTag(String clientId, List<String> tags);
 
     List<CorporationClientTagInfo> queryClientsFromApp(String tagName,
                                                         String clientName,
                                                         String clientId,
-                                                        String createTime);
+                                                        String createTime,String corpName);
 
     CorporationClientTagInfo queryClientDetail(String clientId,String type);
 }

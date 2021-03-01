@@ -62,12 +62,12 @@ public class CorporationClientInfoServiceImpl implements CorporationClientInfoSe
     }
 
     @Override
-    public IPage<CorporationClientTagInfo> queryClients(String tagName, String clientName, int pageNo, int pageSize) {
+    public IPage<CorporationClientTagInfo> queryClients(String tagName, String clientName, int pageNo, int pageSize,String corpName) {
         Page<CorporationClientTagInfo> page = new Page<CorporationClientTagInfo>(pageNo, pageSize);
-        IPage<CorporationClientTagInfo> infoIPage = this.corporationClientInfoDao.selectClients(tagName, clientName, page);
+        IPage<CorporationClientTagInfo> infoIPage = this.corporationClientInfoDao.selectClients(tagName, clientName, page,corpName);
         List<CorporationClientTagInfo> corporationClientTagInfos = this.createClientTagInfo(tagName, clientName, infoIPage.getRecords());
         infoIPage.setRecords(corporationClientTagInfos);
-        int count = this.corporationClientInfoDao.selectClientsCnt(tagName, clientName);
+        int count = this.corporationClientInfoDao.selectClientsCnt(tagName, clientName,corpName);
         infoIPage.setTotal((long) count);
         return infoIPage;
     }
@@ -83,11 +83,11 @@ public class CorporationClientInfoServiceImpl implements CorporationClientInfoSe
     }
 
     @Override
-    public List<CorporationClientTagInfo> queryClientsFromApp(String tagName, String clientName, String clientId, String createTime) {
+    public List<CorporationClientTagInfo> queryClientsFromApp(String tagName, String clientName, String clientId, String createTime,String corpName) {
         if (StringUtils.isEmpty(createTime)) {
             createTime = DateUtils.formatDateTime(LocalDateTime.now().plusMonths(1), DateUtils.DEFAULT_DATETIME_FORMATTER);
         }
-        List<CorporationClientTagInfo> tagInfoList = this.corporationClientInfoDao.selectClientsFromApp(tagName, clientName, clientId, createTime);
+        List<CorporationClientTagInfo> tagInfoList = this.corporationClientInfoDao.selectClientsFromApp(tagName, clientName, clientId, createTime,corpName);
         tagInfoList = this.createClientTagInfo(tagName, clientName, tagInfoList);
         return tagInfoList;
     }

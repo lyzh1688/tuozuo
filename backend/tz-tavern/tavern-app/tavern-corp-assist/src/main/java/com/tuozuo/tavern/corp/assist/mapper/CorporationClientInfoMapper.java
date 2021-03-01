@@ -16,16 +16,20 @@ public interface CorporationClientInfoMapper extends BaseMapper<CorporationClien
 
     IPage<CorporationClientTagInfo> selectClients(Page page,
                                                   @Param("tagName") String tagName,
-                                                  @Param("clientName") String clientName);
+                                                  @Param("clientName") String clientName,
+                                                  @Param("corpName") String corpName
+                                                  );
 
     int selectClientsCnt(@Param("tagName") String tagName,
-                         @Param("clientName") String clientName);
+                         @Param("clientName") String clientName,
+                         @Param("corpName") String corpName);
 
 
     List<CorporationClientTagInfo> selectClientsFromApp(@Param("tagName") String tagName,
                                                         @Param("clientName") String clientName,
                                                         @Param("clientId") String clientId,
-                                                        @Param("createTime") String createTime);
+                                                        @Param("createTime") String createTime,
+                                                        @Param("corpName") String corpName);
 
     CorporationClientTagInfo selectClientDetail(@Param("clientId") String clientId, @Param("type") String type);
 

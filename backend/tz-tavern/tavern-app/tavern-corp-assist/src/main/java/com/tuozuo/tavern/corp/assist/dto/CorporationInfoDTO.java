@@ -1,7 +1,6 @@
 package com.tuozuo.tavern.corp.assist.dto;
 
 import com.google.common.collect.Lists;
-import com.tuozuo.tavern.corp.assist.model.CorporationInfo;
 
 import java.util.List;
 
@@ -10,14 +9,14 @@ import java.util.List;
  * Dev Time: 2021/1/5 <br>
  */
 public class CorporationInfoDTO {
-    private List<CorporationInfo> corps = Lists.newArrayList();
+    private List<CorporationDTO> corps = Lists.newArrayList();
     private int total;
 
-    public List<CorporationInfo> getCorps() {
+    public List<CorporationDTO> getCorps() {
         return corps;
     }
 
-    public void setCorps(List<CorporationInfo> corps) {
+    public void setCorps(List<CorporationDTO> corps) {
         this.corps = corps;
     }
 

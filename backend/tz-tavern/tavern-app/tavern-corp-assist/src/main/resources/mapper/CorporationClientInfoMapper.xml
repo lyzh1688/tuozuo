@@ -13,9 +13,9 @@
         <result column="alitalk" jdbcType="VARCHAR" property="alitalk"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="valid" jdbcType="VARCHAR" property="valid"/>
-        <result column="operator" jdbcType="VARCHAR" property="operator" />
-        <result column="operator_id" jdbcType="VARCHAR" property="operatorId" />
-        <result column="source" jdbcType="VARCHAR" property="source" />
+        <result column="operator" jdbcType="VARCHAR" property="operator"/>
+        <result column="operator_id" jdbcType="VARCHAR" property="operatorId"/>
+        <result column="source" jdbcType="VARCHAR" property="source"/>
     </resultMap>
     <resultMap id="BaseResultsMap" type="com.tuozuo.tavern.corp.assist.model.CorporationClientTagInfo">
         <id column="client_id" jdbcType="VARCHAR" property="clientId"/>
@@ -30,9 +30,9 @@
         <result column="contact_gender" jdbcType="VARCHAR" property="contactGender"/>
         <result column="alitalk" jdbcType="VARCHAR" property="alitalk"/>
         <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
-        <result column="operator" jdbcType="VARCHAR" property="operator" />
-        <result column="operator_id" jdbcType="VARCHAR" property="operatorId" />
-        <result column="source" jdbcType="VARCHAR" property="source" />
+        <result column="operator" jdbcType="VARCHAR" property="operator"/>
+        <result column="operator_id" jdbcType="VARCHAR" property="operatorId"/>
+        <result column="source" jdbcType="VARCHAR" property="source"/>
         <collection property="tags" ofType="com.tuozuo.tavern.corp.assist.model.CorporationClientTagInfo"
                     resultMap="ClientTagMap"/>
     </resultMap>
@@ -42,8 +42,9 @@
     </resultMap>
 
     <select id="selectClientsByUserIds" resultMap="BaseResultMap">
-        select t1.client_id, t1.user_id,t1.client_name, t1.client_number, t1.client_gender, t1.contact, t1.contact_number,
-        t1.contact_gender, t1.alitalk,  date_format(t1.create_time , '%Y-%m-%d %H:%i:%S') create_time,
+        select t1.client_id, t1.user_id,t1.client_name, t1.client_number, t1.client_gender, t1.contact,
+        t1.contact_number,
+        t1.contact_gender, t1.alitalk, date_format(t1.create_time , '%Y-%m-%d %H:%i:%S') create_time,
         t1.operator,t1.operator_id,t1.source,
         t1.valid from corporation_client_info t1
         <where>
@@ -53,76 +54,66 @@
         </where>
     </select>
     <select id="selectClients" resultMap="BaseResultsMap">
-        select t1.client_id, t1.user_id,t1.client_name, t1.client_number, t1.client_gender, t1.contact, t1.contact_number,
-        t1.contact_gender, t1.alitalk,  date_format(t1.create_time , '%Y-%m-%d %H:%i:%S') create_time,
+        select t1.client_id, t1.user_id,t1.client_name, t1.client_number, t1.client_gender, t1.contact,
+        t1.contact_number,
+        t1.contact_gender, t1.alitalk, date_format(t1.create_time , '%Y-%m-%d %H:%i:%S') create_time,
         t1.operator,t1.operator_id,t1.source,
         t1.valid,t3.tag_id,t3.tag_name,t4.corp_id,t4.corp_name
         from corporation_client_info t1 left join corporation_info t4 on t1.corp_id = t4.corp_id left join
-        corporation_client_tag_rel t2 on t1.client_id = t2.client_id  left join corporation_tag_info t3 on t2.tag_id = t3.tag_id
+        corporation_client_tag_rel t2 on t1.client_id = t2.client_id left join corporation_tag_info t3 on t2.tag_id =
+        t3.tag_id
         <where>
             t1.valid = 1
-        <if test="tagName != null and tagName != ''">
-            and t3.tag_name like concat('%', #{tagName}, '%')
-        </if>
-        <if test="clientName != null and clientName != ''">
-            and t1.client_name like concat('%', #{clientName}, '%')
-        </if>
+            <if test="tagName != null and tagName != ''">
+                and t3.tag_name like concat('%', #{tagName}, '%')
+            </if>
+            <if test="clientName != null and clientName != ''">
+                and t1.client_name like concat('%', #{clientName}, '%')
+            </if>
+            <if test="corpName != null and corpName != ''">
+                and t4.corp_name like concat('%', #{corpName}, '%')
+            </if>
         </where>
         order by t1.create_time desc
     </select>
     <select id="selectAllClients" resultMap="BaseResultsMap">
         select t1.client_id, t3.tag_id,t3.tag_name
         from corporation_client_info t1 left join corporation_info t4 on t1.corp_id = t4.corp_id left join
-        corporation_client_tag_rel t2 on t1.client_id = t2.client_id  left join corporation_tag_info t3 on t2.tag_id = t3.tag_id
+        corporation_client_tag_rel t2 on t1.client_id = t2.client_id left join corporation_tag_info t3 on t2.tag_id =
+        t3.tag_id
         <where>
             t1.valid = 1
-        <if test="clientName != null and clientName != ''">
-            and t1.client_name like concat('%', #{clientName}, '%')
-        </if>
+            <if test="clientName != null and clientName != ''">
+                and t1.client_name like concat('%', #{clientName}, '%')
+            </if>
         </where>
         order by t1.create_time desc
     </select>
     <select id="selectClientDetail" resultMap="BaseResultsMap">
-        select t1.client_id, t1.user_id,t1.client_name, t1.client_number, t1.client_gender, t1.contact, t1.contact_number,
-        t1.contact_gender, t1.alitalk,  date_format(t1.create_time , '%Y-%m-%d %H:%i:%S') create_time,
+        select t1.client_id, t1.user_id,t1.client_name, t1.client_number, t1.client_gender, t1.contact,
+        t1.contact_number,
+        t1.contact_gender, t1.alitalk, date_format(t1.create_time , '%Y-%m-%d %H:%i:%S') create_time,
         t1.operator,t1.operator_id,t1.source,
         t1.valid,t3.tag_id,t3.tag_name,t4.corp_id,t4.corp_name
         from corporation_client_info t1 left join corporation_info t4 on t1.corp_id = t4.corp_id left join
-        corporation_client_tag_rel t2 on t1.client_id = t2.client_id  left join corporation_tag_info t3 on t2.tag_id = t3.tag_id
+        corporation_client_tag_rel t2 on t1.client_id = t2.client_id left join corporation_tag_info t3 on t2.tag_id =
+        t3.tag_id
         <where>
             t1.valid = 1
-        <if test='type != null and type == "1"'>
-            and t1.client_id = #{clientId}
-        </if>
-         <if test='type != null and type == "2"'>
-            and t1.user_id = #{clientId}
-        </if>
+            <if test='type != null and type == "1"'>
+                and t1.client_id = #{clientId}
+            </if>
+            <if test='type != null and type == "2"'>
+                and t1.user_id = #{clientId}
+            </if>
         </where>
     </select>
     <select id="selectClientsCnt" resultType="int">
         select count(1) from
         ( select t1.*
-            from corporation_client_info t1 left join corporation_info t4 on t1.corp_id = t4.corp_id left join
-            corporation_client_tag_rel t2 on t1.client_id = t2.client_id  left join corporation_tag_info t3 on t2.tag_id = t3.tag_id
-            <where>
-                t1.valid = 1
-            <if test="tagName != null and tagName != ''">
-                and t3.tag_name like concat('%', #{tagName}, '%')
-            </if>
-            <if test="clientName != null and clientName != ''">
-                and t1.client_name like concat('%', #{clientName}, '%')
-            </if>
-            </where>
-            group by t1.client_id
-        ) t
-    </select>
-    <select id="selectClientsFromApp" resultMap="BaseResultsMap">
-        select t1.client_id, t1.user_id,t1.client_name, t1.client_number, t1.client_gender, t1.contact, t1.contact_number,
-        t1.contact_gender, t1.alitalk,  date_format(t1.create_time , '%Y-%m-%d %H:%i:%S') create_time,
-        t1.operator,t1.operator_id,t1.source,
-        t1.valid,t3.tag_id,t3.tag_name,t4.corp_id,t4.corp_name
         from corporation_client_info t1 left join corporation_info t4 on t1.corp_id = t4.corp_id left join
-        corporation_client_tag_rel t2 on t1.client_id = t2.client_id  left join corporation_tag_info t3 on t2.tag_id = t3.tag_id
+        corporation_client_tag_rel t2 on t1.client_id = t2.client_id left join corporation_tag_info t3 on t2.tag_id =
+        t3.tag_id
         <where>
             t1.valid = 1
             <if test="tagName != null and tagName != ''">
@@ -130,6 +121,33 @@
             </if>
             <if test="clientName != null and clientName != ''">
                 and t1.client_name like concat('%', #{clientName}, '%')
+            </if>
+            <if test="corpName != null and corpName != ''">
+                and t4.corp_name like concat('%', #{corpName}, '%')
+            </if>
+        </where>
+        group by t1.client_id
+        ) t
+    </select>
+    <select id="selectClientsFromApp" resultMap="BaseResultsMap">
+        select t1.client_id, t1.user_id,t1.client_name, t1.client_number, t1.client_gender, t1.contact,
+        t1.contact_number,
+        t1.contact_gender, t1.alitalk, date_format(t1.create_time , '%Y-%m-%d %H:%i:%S') create_time,
+        t1.operator,t1.operator_id,t1.source,
+        t1.valid,t3.tag_id,t3.tag_name,t4.corp_id,t4.corp_name
+        from corporation_client_info t1 left join corporation_info t4 on t1.corp_id = t4.corp_id left join
+        corporation_client_tag_rel t2 on t1.client_id = t2.client_id left join corporation_tag_info t3 on t2.tag_id =
+        t3.tag_id
+        <where>
+            t1.valid = 1
+            <if test="tagName != null and tagName != ''">
+                and t3.tag_name like concat('%', #{tagName}, '%')
+            </if>
+            <if test="clientName != null and clientName != ''">
+                and t1.client_name like concat('%', #{clientName}, '%')
+            </if>
+            <if test="corpName != null and corpName != ''">
+                and t4.corp_name like concat('%', #{corpName}, '%')
             </if>
             and
             (
@@ -142,7 +160,8 @@
         limit 0,20
     </select>
 
-    <select id="selectClientCorpInfo" parameterType="list" resultType="com.tuozuo.tavern.corp.assist.model.CorporationClientCorpInfo">
+    <select id="selectClientCorpInfo" parameterType="list"
+            resultType="com.tuozuo.tavern.corp.assist.model.CorporationClientCorpInfo">
         select t1.client_id clientId,
         t1.user_id userId,
         t1.client_name clientName,
@@ -165,7 +184,7 @@
         t2.register_date registerDate,
         t2.register_asset registerAsset
         from corporation_client_info t1 left join corporation_client_rel t3 on t1.client_id = t3.client_id
-        left join corporation_info t2 on t3.corp_id  = t2.corp_id
+        left join corporation_info t2 on t3.corp_id = t2.corp_id
         <where>
             <foreach collection="list" index="index" item="item" open="( " close=" )" separator="or">
                 t1.client_id = #{item}
