@@ -105,7 +105,7 @@ public class CorporationInfoEndpoint {
     @GetMapping("/detail/{corpId}")
     public TavernResponse queryCorporationInfoDetail(@PathVariable("corpId") String corpId) {
         try {
-            CorporationInfo corporationInfo = this.corporationInfoService.queryCorporationDetail(corpId);
+            CorporationDTO corporationInfo = this.corporationInfoService.queryCorporationDetail(corpId);
             return TavernResponse.ok(corporationInfo);
         } catch (Exception e) {
             LOGGER.error("[公司列表] failed", e);

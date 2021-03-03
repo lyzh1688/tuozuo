@@ -138,8 +138,33 @@ public class CorporationInfoServiceImpl implements CorporationInfoService {
     }
 
     @Override
-    public CorporationInfo queryCorporationDetail(String corpId) {
-        return this.corporationInfoDao.selectCorporationDetail(corpId);
+    public CorporationDTO queryCorporationDetail(String corpId) {
+        CorporationInfo info = this.corporationInfoDao.selectCorporationDetail(corpId);
+        Map<String, Map<String, String>> map = this.businessDictService.queryDicts();
+        CorporationDTO corporationDTO = new CorporationDTO();
+        BeanUtils.copyProperties(info, corporationDTO);
+        if (map.containsKey("corpStatus")) {
+            corporationDTO.setCorpStatus(map.get("corpStatus").get(info.getCorpStatus()));
+        }
+        corporationDTO.setCorpStatusId(info.getCorpStatus());
+        if (map.containsKey("gender")) {
+            corporationDTO.setBossGender(map.get("gender").get(info.getBossGender()));
+        }
+        corporationDTO.setBossGenderId(info.getBossGender());
+        if (map.containsKey("registerPark")) {
+            corporationDTO.setRegisterPark(map.get("registerPark").get(info.getRegisterPark()));
+        }
+        corporationDTO.setRegisterParkId(info.getRegisterPark());
+        if (map.containsKey("corpType")) {
+            corporationDTO.setCorpType(map.get("corpType").get(info.getCorpType()));
+        }
+        corporationDTO.setCorpTypeId(info.getCorpType());
+        if (map.containsKey("taxType")) {
+            corporationDTO.setTaxType(map.get("taxType").get(info.getTaxType()));
+        }
+        corporationDTO.setTaxTypeId(info.getTaxType());
+        corporationDTO.setRegisterDate(DateUtils.formatDate(info.getRegisterDate(), DateUtils.SIMPLE_8_FORMATTER));
+        return corporationDTO;
     }
 
     @Override

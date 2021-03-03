@@ -23,7 +23,7 @@ public interface CorporationInfoService {
 
     List<CorporationDTO> queryCorporationsFromApp(String corpName, String clientName,String corpId,String createDate);
 
-    CorporationInfo queryCorporationDetail(String corpId);
+    CorporationDTO queryCorporationDetail(String corpId);
 
     List<CorporationInfo> fuzzyQuery(String corpName,int queryCnt);
 }
