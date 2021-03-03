@@ -16,6 +16,8 @@
         <result column="operator" jdbcType="VARCHAR" property="operator"/>
         <result column="operator_id" jdbcType="VARCHAR" property="operatorId"/>
         <result column="source" jdbcType="VARCHAR" property="source"/>
+        <result column="corp_id" jdbcType="VARCHAR" property="corpId"/>
+        <result column="corp_name" jdbcType="VARCHAR" property="corpName"/>
     </resultMap>
     <resultMap id="BaseResultsMap" type="com.tuozuo.tavern.corp.assist.model.CorporationClientTagInfo">
         <id column="client_id" jdbcType="VARCHAR" property="clientId"/>

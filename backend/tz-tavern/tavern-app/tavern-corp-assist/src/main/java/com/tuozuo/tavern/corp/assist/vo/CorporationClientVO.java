@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
  */
 public class CorporationClientVO {
 
+    private String corpId;
     private String clientId;
     private String userId;
     @NotNull(message = "clientName is not null")
@@ -30,6 +31,14 @@ public class CorporationClientVO {
     private String operatorId;
 
     private String source;
+
+    public String getCorpId() {
+        return corpId;
+    }
+
+    public void setCorpId(String corpId) {
+        this.corpId = corpId;
+    }
 
     public String getUserId() {
         return userId;

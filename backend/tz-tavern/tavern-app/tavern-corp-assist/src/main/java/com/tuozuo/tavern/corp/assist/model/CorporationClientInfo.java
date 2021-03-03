@@ -1,5 +1,6 @@
 package com.tuozuo.tavern.corp.assist.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -36,6 +37,26 @@ public class CorporationClientInfo extends Model<CorporationClientInfo> {
 
     private String source;
 
+    private String corpId;
+
+    @TableField(exist = false)
+    private String corpName;
+
+    public String getCorpName() {
+        return corpName;
+    }
+
+    public void setCorpName(String corpName) {
+        this.corpName = corpName;
+    }
+
+    public String getCorpId() {
+        return corpId;
+    }
+
+    public void setCorpId(String corpId) {
+        this.corpId = corpId;
+    }
 
     public CorporationClientInfo() {
     }
